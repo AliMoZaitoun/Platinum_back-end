@@ -2,7 +2,7 @@
 set -e
 
 echo "Waiting for database connection..."
-until php artisan db:monitor --databases=pqsql 2>/dev/null; do
+until php artisan db:monitor --databases=pgsql 2>/dev/null; do
     echo "DB not ready, retrying in 3 seconds..."
     sleep 3
 done
