@@ -2,39 +2,53 @@
 
 namespace App\DAO;
 
-use App\DTOs\Role\RoleDTO;
+use App\DTOs\Role\CreateRoleDTO;
+use App\DTOs\Role\Update\UpdateRoleDTO;
 use App\Exceptions\NotFoundException;
 use Spatie\Permission\Models\Role;
 
 class RoleDAO
 {
-    public function createRole(RoleDTO $roleDTO)
-    {
-        return Role::create($roleDTO->toArray());
-    }
-
-    public function getRoles()
+    public function index()
     {
         return Role::all();
     }
 
-    public function getRoleById($role_id)
+    public function store(CreateRoleDTO $roleDTO)
     {
-        return Role::findById($role_id) ?? throw new NotFoundException('Role');
+        return Role::create($roleDTO->toArray());
     }
 
-    public function getRoleByName($role_name)
+    public function show($id)
+    {
+        return Role::findById($id) ?? throw new NotFoundException('Role');
+    }
+
+    public function showByName($role_name)
     {
         return Role::findByName($role_name) ?? throw new NotFoundException('Role');
     }
 
-    public function updateRole(Role $role, RoleDTO $roleDTO)
+    public function update(int $id, UpdateRoleDTO $roleDTO)
     {
-        return $role->update(array_filter($roleDTO->toArray(), fn($v) => !is_null($v)));
+        $role = $this->show($id);
+        return $role->update($roleDTO->toArray());
     }
 
-    public function deleteRole(Role $role)
+    public function selectPermissions(int $id, $permissions)
     {
+        $role = $this->show($id);
+        return $role->syncPermissions($permissions);
+    }
+
+    public function removePermission(Role $role, $permission)
+    {
+        return $role->revokePermissionTo($permission);
+    }
+
+    public function destroy(int $id)
+    {
+        $role = $this->show($id);
         return $role->delete();
     }
 }

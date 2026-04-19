@@ -9,59 +9,82 @@ use Spatie\Permission\Models\Role;
 
 class RoleAndPermissionSeeder extends Seeder
 {
-
     public function run(): void
     {
-        $permissions = [
-            'create warehouse',
-            'read warehouse',
-            'update warehouse',
-            'delete warehouse',
-
-            'create item',
-            'read item',
-            'update item',
-            'delete item',
-
-            'create role',
-            'read role',
-            'update role',
-            'delete role',
-
-            'create permission',
-            'read permission',
-            'update permission',
-            'delete permission',
-
-            'create offering',
-            'read offering',
-            'update offering',
-            'delete offering',
+        $resources = [
+            'client',
+            'engineer',
+            'employee',
+            'warehouse',
+            'item',
+            'department',
+            'role',
+            'offering',
+            'project',
+            'building',
+            'unit',
+            'favorite',
+            'appointment',
+            'order',
+            'availableSlot'
         ];
 
-        // Create all permissions
-        foreach ($permissions as $permission) {
-            Permission::firstOrCreate(['name' => $permission]);
+        $actions = ['read', 'create', 'update', 'delete'];
+
+        foreach ($resources as $resource) {
+            foreach ($actions as $action) {
+                Permission::create(['name' => "$action.$resource"]);
+            }
         }
 
         // Admin — gets everything
         $admin = Role::firstOrCreate(['name' => 'admin']);
-        $admin->syncPermissions($permissions);
+        $admin->syncPermissions(Permission::all());
 
-        // Employee — limited access
+        // Employee
         $employee = Role::firstOrCreate(['name' => 'employee']);
         $employee->syncPermissions([
-            'read warehouse',
-            'read item',
-            'create item',
-            'update item',
-            'read offering',
+            'read.warehouse',
+            'read.item',
+            'create.item',
+            'update.item',
+            'read.offering',
+            'read.project',
+            'read.building',
+            'read.unit',
+            'create.appointment',
+            'read.appointment',
+            'update.appointment',
+            'delete.appointment',
+            'read.order',
+            'update.order',
+            'delete.order',
+            'create.availableSlot',
+            'read.availableSlot',
+            'update.availableSlot',
+            'delete.availableSlot'
         ]);
 
-        // Client — read only
+        // Engineer
+        $engineer = Role::firstOrCreate(['name' => 'engineer']);
+        $engineer->syncPermissions([
+            'read.project',
+            'read.building',
+        ]);
+
+        // Client
         $client = Role::firstOrCreate(['name' => 'client']);
         $client->syncPermissions([
-            'read offering',
+            'read.offering',
+            'read.unit',
+            'read.building',
+            'create.favorite',
+            'read.favorite',
+            'delete.favorite',
+            'read.appointment',
+            'create.order',
+            'read.order',
+            'delete.order',
         ]);
     }
 }

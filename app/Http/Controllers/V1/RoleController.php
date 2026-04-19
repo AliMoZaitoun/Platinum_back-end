@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\V1;
 
+use App\DTOs\Role\CreateRoleDTO;
 use App\DTOs\Role\RoleDTO;
+use App\DTOs\Role\Update\UpdateRoleDTO;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\CreateRoleRequest;
 use App\Services\RoleService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
@@ -15,39 +18,54 @@ class RoleController extends Controller
         private RoleService $roleService
     ) {}
 
-    public function createRole(Request $request)
+    public function index()
     {
-        $roleDTO = new RoleDTO(
-            id: null,
-            name: $request->input('name'),
-            guard_name: $request->input('guard_name')
-        );
-
-        $role = $this->roleService->createRole($roleDTO);
-        return $this->successResponse($role, 'Role created successfully.');
+        $roles = $this->roleService->index();
+        return $this->successResponse($roles);
     }
 
-    public function getRoles()
+    public function store(CreateRoleRequest $request)
     {
-        $roles = $this->roleService->getRoles();
-        return $this->successResponse($roles, 'Roles retrieved successfully.');
+        $roleDTO = CreateRoleDTO::fromRequest($request->validated());
+
+        $role = $this->roleService->store($roleDTO);
+        return $this->successResponse($role, __('messages.common.stored'));
     }
 
-    public function getRoleById($role_id)
+    public function show($id)
     {
-        $role = $this->roleService->getRoleById($role_id);
-        return $this->successResponse($role, 'Role retrieved successfully.');
+        $role = $this->roleService->show($id);
+        return $this->successResponse($role);
     }
 
-    public function getRoleByName($role_name)
+    public function showByName($role_name)
     {
-        $role = $this->roleService->getRoleByName($role_name);
-        return $this->successResponse($role, 'Role retrieved successfully.');
+        $role = $this->roleService->showByName($role_name);
+        return $this->successResponse($role);
     }
 
-    public function deleteRole($role_id)
+    public function update(int $id, Request $request)
     {
-        $this->roleService->deleteRole($role_id);
-        return $this->successResponse([], 'Role removed successfully.');
+        $roleDTO = UpdateRoleDTO::fromRequest($request->all());
+        $role = $this->roleService->update($id, $roleDTO);
+        return $this->successResponse($role, __('messages.common.updated'));
+    }
+
+    public function selectPermission(int $id, Request $request)
+    {
+        $role = $this->roleService->selectPermission($id, $request->input('permissions'));
+        return $this->successResponse($role);
+    }
+
+    public function removePermission(int $id, Request $request)
+    {
+        $role = $this->roleService->removePermission($id, $request->input('permissions'));
+        return $this->successResponse($role);
+    }
+
+    public function destroy($id)
+    {
+        $this->roleService->destroy($id);
+        return $this->successResponse([], __('messages.common.deleted'));
     }
 }

@@ -7,7 +7,7 @@ trait ResponseTrait
     public function successResponse($data, $message = "Request was successful", $code = 200)
     {
         return response()->json([
-            'status'  => __('messages.success'),
+            'status'  => __('messages.common.success'),
             'message' => $message,
             'data'    => $data
         ], $code);
@@ -16,7 +16,7 @@ trait ResponseTrait
     public function errorResponse($message = "An error occurred", $code = 400, $errors = [])
     {
         return response()->json([
-            'status'  => __('messages.error'),
+            'status'  => __('messages.common.error'),
             'message' => $message,
             'errors'  => $errors
         ], $code);
@@ -26,7 +26,7 @@ trait ResponseTrait
     {
         return $this->successResponse(
             $resourceClass::collection($collection),
-            $collection->isEmpty() ? __('messages.empty') : __($messageKey)
+            $collection->isEmpty() ? __('messages.common.empty') : __($messageKey)
         );
     }
 }

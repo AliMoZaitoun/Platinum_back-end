@@ -15,7 +15,7 @@ class EmployeeRequest extends FormRequest
     public function rules(): array
     {
         return array_merge([
-            // Employee-specific validation rules can be added here
+            'position' => 'required|string'
         ], (new SignUpRequest())->rules());
     }
 }

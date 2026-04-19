@@ -3,7 +3,8 @@
 namespace App\Services;
 
 use App\DAO\RoleDAO;
-use App\DTOs\Role\RoleDTO;
+use App\DTOs\Role\CreateRoleDTO;
+use App\DTOs\Role\Update\UpdateRoleDTO;
 
 class RoleService
 {
@@ -11,29 +12,47 @@ class RoleService
         private RoleDAO $roleDAO
     ) {}
 
-    public function createRole(RoleDTO $roleDTO)
+    public function index()
     {
-        return $this->roleDAO->createRole($roleDTO);
+        return $this->roleDAO->index();
     }
 
-    public function getRoles()
+    public function store(CreateRoleDTO $roleDTO)
     {
-        return $this->roleDAO->getRoles();
+        return $this->roleDAO->store($roleDTO);
     }
 
-    public function getRoleById($role_id)
+    public function show($id)
     {
-        return $this->roleDAO->getRoleById($role_id);
+        return $this->roleDAO->show($id);
     }
 
-    public function getRoleByName($role_name)
+    public function showByName($role_name)
     {
-        return $this->roleDAO->getRoleByName($role_name);
+        return $this->roleDAO->showByName($role_name);
     }
 
-    public function deleteRole($role_id)
+    public function update(int $id, UpdateRoleDTO $roleDTO)
     {
-        $role = $this->roleDAO->getRoleById($role_id);
-        return $this->roleDAO->deleteRole($role);
+        return $this->roleDAO->update($id, $roleDTO);
+    }
+
+    public function selectPermission(int $id, array $permissions)
+    {
+        return $this->roleDAO->selectPermissions($id, $permissions);
+    }
+
+    public function removePermission(int $id, array $permissions)
+    {
+        $role = $this->roleDAO->show($id);
+        foreach ($permissions as $per) {
+            $this->roleDAO->removePermission($role, $per);
+        }
+        return $role;
+    }
+
+    public function destroy($id)
+    {
+        return $this->roleDAO->destroy($id);
     }
 }

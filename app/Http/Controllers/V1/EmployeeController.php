@@ -8,46 +8,58 @@ use App\DTOs\User\CreateEmployeeDTO;
 use App\DTOs\User\CreateUserDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\EmployeeRequest;
-use App\Services\EmployeeService;
+use App\Services\User\EmployeeService;
+use App\Traits\ProvidesUserResource;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
-    use ResponseTrait;
+    use ResponseTrait, ProvidesUserResource;
 
     public function __construct(
         private EmployeeService $employeeService
     ) {}
 
-    public function registerEmployee(EmployeeRequest $employeeRequest)
+    public function index()
     {
-        $userDTO = CreateUserDTO::fromRequest($employeeRequest->all(), 'employee');
-
-        $employeeDTO = new CreateEmployeeDTO(
-            id: null,
-            user_id: null
-        );
-
-        $data = $this->employeeService->createEmployee($userDTO, $employeeDTO);
-        return $this->successResponse($data);
+        $employees = $this->employeeService->index();
+        return $this->successResponse($employees);
     }
 
-    public function update(Request $request)
+    public function store(EmployeeRequest $employeeRequest)
     {
-        $userDTO = new UpdateUserDTO(
-            firstName: $request->input('first_name'),
-            lastName: $request->input('last_name'),
-            address: $request->input('address'),
-            phone: $request->input('phone'),
-            email: $request->input('email')
-        );
+        $userDTO = CreateUserDTO::fromRequest($employeeRequest->validated(), 'employee');
 
-        $employeeDTO = new UpdateEmployeeDTO(
-            user_id: null
-        );
+        $employeeDTO = CreateEmployeeDTO::fromRequest($employeeRequest->validated());
 
-        $employee = $this->employeeService->updateEmployee($userDTO, $employeeDTO);
-        return $this->successResponse($employee, 'Employee updated successfully');
+        $user = $this->employeeService->store($userDTO, $employeeDTO);
+        $user = $this->resolveUserResource($user);
+        return $this->successResponse($user, __('messages.common.stored'));
+    }
+
+    public function show($id)
+    {
+        $employee = $this->employeeService->show($id);
+        $user = $this->resolveUserResource($employee);
+        return $this->successResponse($user);
+    }
+
+
+    public function update(int $id, Request $request)
+    {
+        $userDTO = UpdateUserDTO::fromRequest($request->all());
+
+        $employeeDTO = UpdateEmployeeDTO::fromRequest($request->all());
+
+        $user = $this->employeeService->update($id, $userDTO, $employeeDTO);
+        $user = $this->resolveUserResource($user);
+        return $this->successResponse($user, __('messages.common.updated'));
+    }
+
+    public function destroy($id)
+    {
+        $this->employeeService->destroy($id);
+        return $this->successResponse([], __('messages.common.deleted'));
     }
 }

@@ -8,51 +8,61 @@ use App\DTOs\User\CreateEngineerDTO;
 use App\DTOs\User\CreateUserDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\EngineerRequest;
-use App\Services\EngineerService;
+use App\Services\User\EngineerService;
+use App\Traits\ProvidesUserResource;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 
 class EngineerController extends Controller
 {
-    use ResponseTrait;
+    use ResponseTrait, ProvidesUserResource;
 
     public function __construct(
         private EngineerService $engineerService
     ) {}
 
-    public function registerEngineer(EngineerRequest $engineerRequest)
+    public function index()
     {
-        $userDTO = CreateUserDTO::fromRequest($engineerRequest->all(), 'engineer');
-
-        $engineerDTO = new CreateEngineerDTO(
-            id: null,
-            user_id: null,
-            experience_years: $engineerRequest->input('experience_years'),
-            specialization: $engineerRequest->input('specialization')
-        );
-
-        $data = $this->engineerService->createEngineer($userDTO, $engineerDTO);
-        return $this->successResponse($data);
+        $engineers = $this->engineerService->index();
+        return $this->successResponse($engineers);
     }
 
-    public function updateEngineer(Request $request)
+    public function store(EngineerRequest $engineerRequest)
     {
-        $userDTO = new UpdateUserDTO(
-            firstName: $request->input('first_name'),
-            lastName: $request->input('last_name'),
-            address: $request->input('address'),
-            phone: $request->input('phone'),
-            email: $request->input('email')
-        );
+        $userDTO = CreateUserDTO::fromRequest($engineerRequest->validated(), 'engineer');
 
-        $engineerDTO = new UpdateEngineerDTO(
-            id: null,
-            user_id: null,
-            experience_years: $request->input('experience_years'),
-            specialization: $request->input('specialization')
-        );
+        $engineerDTO = CreateEngineerDTO::fromRequest($engineerRequest->validated());
 
-        $engineer = $this->engineerService->updateEngineer($userDTO, $engineerDTO);
-        return $this->successResponse($engineer, 'Engineer updated successfully');
+        $user = $this->engineerService->store($userDTO, $engineerDTO);
+
+        // $user = $this->resolveUserResource($user);
+
+        // For Testing
+        $user['user'] = $this->resolveUserResource($user['user']);
+
+        return $this->successResponse($user, __('messages.auth.otp_sent'), 201);
+    }
+
+    public function show($id)
+    {
+        $engineer = $this->engineerService->show($id);
+        $user = $this->resolveUserResource($engineer);
+        return $this->successResponse($user);
+    }
+
+    public function update(int $id, Request $request)
+    {
+        $userDTO = UpdateUserDTO::fromRequest($request->all());
+
+        $engineerDTO = UpdateEngineerDTO::fromRequest($request->all());
+
+        $engineer = $this->engineerService->update($id, $userDTO, $engineerDTO);
+        return $this->successResponse($engineer, __('messages.common.updated'));
+    }
+
+    public function destroy($id)
+    {
+        $this->engineerService->destroy($id);
+        return $this->successResponse([], __('messages.common.deleted'));
     }
 }

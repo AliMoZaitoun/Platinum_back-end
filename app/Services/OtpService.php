@@ -20,7 +20,8 @@ class OtpService
     public function createCode($userId)
     {
         $code = $this->generateCode();
-        return $this->otpCodeDAO->store($userId, $code);
+        $this->otpCodeDAO->store($userId, $code);
+        return $code;
     }
 
     public function verifyCode($userId, $code)

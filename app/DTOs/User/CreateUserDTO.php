@@ -2,6 +2,8 @@
 
 namespace App\DTOs\User;
 
+use Illuminate\Support\Facades\Hash;
+
 class CreateUserDTO
 {
     public function __construct(
@@ -13,7 +15,7 @@ class CreateUserDTO
         public string $email,
         public string $gender,
         public string $role,
-        public string $password
+        public string $password,
     ) {}
 
     public static function fromRequest(array $request, string $role): self
@@ -27,7 +29,22 @@ class CreateUserDTO
             email: $request['email'],
             gender: $request['gender'],
             role: $role,
-            password: $request['password']
+            password: $request['password'],
         );
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'first_name' => $this->firstName,
+            'last_name'  => $this->lastName,
+            'email'      => $this->email,
+            'phone'      => $this->phone,
+            'address'    => $this->address,
+            'gender'     => $this->gender,
+            'address'    => $this->address,
+            'role'       => $this->role,
+            'password'   => Hash::make($this->password),
+        ];
     }
 }

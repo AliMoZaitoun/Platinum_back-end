@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use App\Traits\ResponseTrait;
+use Exception;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Validation\UnauthorizedException;
 use Illuminate\Validation\ValidationException;
@@ -22,15 +23,15 @@ class Handler
         });
 
         $exceptions->render(function (UnauthorizedException $e) {
-            return $this->errorResponse($e->getMessage(), 401);
+            return $this->errorResponse(__('messages.common.unauthorized'), 401);
         });
 
         $exceptions->render(function (UnauthorizedExceptionSpatie $e) {
-            return $this->errorResponse("You do not have the required permission.", 401);
+            return $this->errorResponse(__('messages.common.unauthorized'), 401);
         });
 
         $exceptions->render(function (AccessDeniedHttpException $e) {
-            return $this->errorResponse("Access Denied.", 403);
+            return $this->errorResponse(__('messages.common.unauthorized'), 403);
         });
 
         $exceptions->render(function (ValidationException $e) {
@@ -44,5 +45,9 @@ class Handler
         $exceptions->render(function (OtpCodeExpiredException $e) {
             return $this->errorResponse($e->getMessage(), $e->getCode() ?: 403);
         });
+
+        // $exceptions->render(function (Exception $e) {
+        //     return $this->errorResponse($e->getMessage(), $e->getCode() ?: 403);
+        // });
     }
 }
