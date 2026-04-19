@@ -17,6 +17,7 @@ use App\Http\Controllers\V1\Sales\AppointmentController;
 use App\Http\Controllers\V1\Sales\OrderController;
 use App\Http\Controllers\V1\Core\WarehouseController;
 use App\Http\Controllers\V1\Sales\AvailabilitySlotController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 // Auth
@@ -279,4 +280,10 @@ Route::prefix('availableSlot')->middleware('auth:sanctum')->group(function () {
 
     Route::delete('{id}', [AvailabilitySlotController::class, 'destroy'])
         ->middleware(['permission:delete.availableSlot']);
+});
+
+
+Route::get('/run-seeder', function () {
+    Artisan::call('db:seed --force');
+    return 'Seeder Done';
 });
