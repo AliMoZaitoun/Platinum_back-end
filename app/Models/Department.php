@@ -8,5 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 #[Fillable(['name', 'description'])]
 class Department extends Model
 {
-    //
+    public function employees()
+    {
+        return $this->hasMany(Employee_Department::class);
+    }
 }

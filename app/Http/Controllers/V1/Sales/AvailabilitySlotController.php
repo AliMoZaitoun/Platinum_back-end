@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\V1\Sales;
 
-use App\DAO\Sales\AvailabilitySlotService;
+use App\Services\Sales\AvailabilitySlotService;
 use App\DTOs\Sales\Create\CreateAvailabilitySlotDTO;
 use App\DTOs\Sales\Update\UpdateAvailabilitySlotDTO;
 use App\Http\Controllers\Controller;

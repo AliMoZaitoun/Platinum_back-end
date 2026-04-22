@@ -25,6 +25,6 @@ class Appointment extends Model
 
     public function av_slots()
     {
-        return $this->hasMany(Availability_slot::class, 'av_slot_id');
+        return $this->hasMany(AvailabilitySlot::class, 'av_slot_id');
     }
 }

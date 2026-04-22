@@ -5,19 +5,19 @@ namespace App\DTOs\Sales\Create;
 class CreateOrderDTO
 {
     public function __construct(
-        public int $client_id,
-        public int $unit_id,
-        public int $offering_id,
+        public ?int $client_id,
+        public ?int $unit_id,
+        public ?int $offering_id,
         public string $status
     ) {}
 
     public static function fromRequest(array $request)
     {
         return new self(
-            client_id: $request['client_id'],
-            unit_id: $request['unit_id'],
-            offering_id: $request['offering_id'],
-            status: $request['status']
+            client_id: $request['client_id'] ?? null,
+            unit_id: $request['unit_id'] ?? null,
+            offering_id: $request['offering_id'] ?? null,
+            status: $request['status'] ?? 'pending'
         );
     }
 

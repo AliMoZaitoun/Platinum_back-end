@@ -27,7 +27,8 @@ class ProjectDAO
     public function update(int $id, UpdateProjectDTO $projectDTO)
     {
         $project = $this->show($id);
-        return $project->update($projectDTO->toArray());
+        $project->update($projectDTO->toArray());
+        return $project;
     }
 
     public function destroy($id)

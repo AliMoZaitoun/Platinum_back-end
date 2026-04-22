@@ -2,6 +2,7 @@
 
 namespace App\Services\User;
 
+use App\DAO\Core\EmployeeDepartmentDAO;
 use App\DAO\User\EmployeeDAO;
 use App\DAO\User\UserDAO;
 use App\DTOs\User\Update\UpdateEmployeeDTO;
@@ -16,6 +17,7 @@ class EmployeeService
     public function __construct(
         private EmployeeDAO $employeeDAO,
         private UserDAO $userDAO,
+        private EmployeeDepartmentDAO $employeeDepartmentDAO,
         private Transaction $transaction
     ) {}
 
@@ -59,6 +61,7 @@ class EmployeeService
 
     public function destroy($id)
     {
+        $this->employeeDepartmentDAO->destroyByEmployee($id);
         return $this->employeeDAO->destroy($id);
     }
 }

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 
-#[Fillable(['user_id', 'position'])]
+#[Fillable(['user_id'])]
 
 class Employee extends Model
 {
@@ -17,5 +17,10 @@ class Employee extends Model
     public function av_slots()
     {
         return $this->hasMany(Availability_slot::class);
+    }
+
+    public function departments()
+    {
+        return $this->hasMany(EmployeeDepartment::class);
     }
 }

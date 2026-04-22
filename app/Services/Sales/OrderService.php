@@ -5,6 +5,7 @@ namespace App\Services\Sales;
 use App\DAO\Sales\OrderDAO;
 use App\DTOs\Sales\Create\CreateOrderDTO;
 use App\DTOs\Sales\Update\UpdateOrderDTO;
+use Illuminate\Support\Facades\Auth;
 
 class OrderService
 {
@@ -19,6 +20,8 @@ class OrderService
 
     public function store(CreateOrderDTO $orderDTO)
     {
+        $user = Auth::user();
+        $orderDTO->client_id = $user->client->id;
         return $this->orderDAO->store($orderDTO);
     }
 

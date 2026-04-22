@@ -8,6 +8,8 @@ use App\DTOs\User\Update\UpdateClientDTO;
 use App\DTOs\User\Update\UpdateUserDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Client\ClientRequest;
+use App\Models\Client;
+use App\Services\AIService;
 use App\Services\User\ClientService;
 use App\Traits\ProvidesUserResource;
 use App\Traits\ResponseTrait;
@@ -38,7 +40,7 @@ class ClientController extends Controller
         // $user = $this->resolveUserResource($user);
 
         // For Testing
-        $user = $this->resolveUserResource($user['user']);
+        $user['user'] = $this->resolveUserResource($user['user']);
 
         return $this->successResponse($user, __('messages.auth.otp_sent'), 201);
     }
@@ -65,5 +67,34 @@ class ClientController extends Controller
     {
         $this->clientService->destroy($id);
         return $this->successResponse([], __('messages.common.deleted'));
+    }
+
+
+    public function generatePlan(Request $request, $id, AIService $aiService)
+    {
+        $client = Client::findOrFail($id);
+
+        // 1. استدعاء الخدمة
+        // لنفرض أننا نمرر المساحة وعدد الغرف من الداتابيز أو الريكويست
+        $suggestion = $aiService->suggestLayout(
+            $request->input('area'),
+            $request->input('rooms_count')
+        );
+
+        // 2. حفظ النتيجة في المودل
+        $client->update([
+            'ai_layout_suggestion' => $suggestion,
+            'last_ai_prompt' => "Area: {$request->area}, Rooms: {$request->rooms_count}"
+        ]);
+
+        return response()->json([
+            'message' => 'AI Plan generated successfully!',
+            'suggestion' => $suggestion
+        ]);
+    }
+
+    public function listModels(AIService $service)
+    {
+        return $service->listModels();
     }
 }

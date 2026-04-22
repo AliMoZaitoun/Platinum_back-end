@@ -7,7 +7,8 @@ class CreateEmployeeDTO
     public function __construct(
         public ?int $id,
         public ?int $user_id,
-        public string $position
+        public ?int $department_id,
+        public ?string $position
     ) {}
 
     public static function fromRequest(array $request): self
@@ -15,15 +16,15 @@ class CreateEmployeeDTO
         return new self(
             id: null,
             user_id: null,
-            position: $request['position']
+            position: $request['position'] ?? null,
+            department_id: $request['department_id'] ?? null
         );
     }
 
     public function toArray()
     {
-        return [
-            'user_id'  => $this->user_id,
-            'position' => $this->position
-        ];
+        return array_filter([
+            'user_id'  => $this->user_id
+        ], fn($value) => !is_null($value));
     }
 }

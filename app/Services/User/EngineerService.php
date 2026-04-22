@@ -36,13 +36,11 @@ class EngineerService
             $user = $this->userDAO->store($userDTO);
             $engineerDTO->user_id = $user->id;
 
+            $this->userDAO->verify($user);
+
             $this->engineerDAO->store($engineerDTO);
 
-            $code = $this->otpService->createCode($user->id);
-            // event(new OTPEvent($code, $user->email));
-
-            // For Testing
-            return ['user' => $user, 'otp' => $code];
+            return $user;
         });
     }
 

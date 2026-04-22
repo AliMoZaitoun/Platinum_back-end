@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EmployeeDepartmentController;
 use App\Http\Controllers\V1\Core\OfferingController;
 use App\Http\Controllers\V1\AuthController;
 use App\Http\Controllers\V1\Client\ClientController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\V1\Core\WarehouseController;
 use App\Http\Controllers\V1\Sales\AvailabilitySlotController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 // Auth
 Route::post('verifyEmail', [AuthController::class, 'verifyEmail']);
@@ -27,6 +29,10 @@ Route::post('changePassword', [AuthController::class, 'changePassword'])->middle
 Route::post('forgotPassword', [AuthController::class, 'forgotPassword']);
 Route::post('resetPassword', [AuthController::class, 'resetPassword']);
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+
+// Test
+Route::post('gemini/{id}', [ClientController::class, 'generatePlan']);
+Route::get('listModels', [ClientController::class, 'listModels']);
 
 // OTP
 Route::post('resendCode/{userId}', [OtpController::class, 'resendCode']);
@@ -147,6 +153,27 @@ Route::prefix('department')->middleware('auth:sanctum')->group(function () {
         ->middleware(['permission:delete.department']);
 });
 
+// Department
+Route::prefix('employeeDepartment')->middleware('auth:sanctum')->group(function () {
+    Route::post('/', [EmployeeDepartmentController::class, 'store'])
+        ->middleware(['permission:create.department']);
+
+    Route::put('{id}', [EmployeeDepartmentController::class, 'update'])
+        ->middleware(['permission:read.department']);
+
+    Route::get('/', [EmployeeDepartmentController::class, 'index'])
+        ->middleware(['permission:read.department']);
+
+    Route::get('depByEmployee/{employeeId}', [EmployeeDepartmentController::class, 'findByEmployee'])
+        ->middleware(['permission:read.department']);
+
+    Route::get('empByDepartment/{departmentId}', [EmployeeDepartmentController::class, 'findByDepartment'])
+        ->middleware(['permission:read.department']);
+
+    Route::delete('{id}', [EmployeeDepartmentController::class, 'destroy'])
+        ->middleware(['permission:delete.department']);
+});
+
 
 // Offering
 Route::prefix('offering')->middleware('auth:sanctum')->group(function () {
@@ -248,23 +275,6 @@ Route::prefix('order')->middleware('auth:sanctum')->group(function () {
         ->middleware(['permission:delete.order']);
 });
 
-Route::prefix('appointment')->middleware('auth:sanctum')->group(function () {
-    Route::get('/', [AppointmentController::class, 'index'])
-        ->middleware(['permission:read.appointment']);
-
-    Route::post('/', [AppointmentController::class, 'store'])
-        ->middleware(['permission:create.appointment']);
-
-    Route::get('{id}', [AppointmentController::class, 'show'])
-        ->middleware(['permission:read.appointment']);
-
-    Route::put('{id}', [AppointmentController::class, 'update'])
-        ->middleware(['permission:update.appointment']);
-
-    Route::delete('{id}', [AppointmentController::class, 'destroy'])
-        ->middleware(['permission:delete.appointment']);
-});
-
 Route::prefix('availableSlot')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [AvailabilitySlotController::class, 'index'])
         ->middleware(['permission:read.availableSlot']);
@@ -282,6 +292,23 @@ Route::prefix('availableSlot')->middleware('auth:sanctum')->group(function () {
         ->middleware(['permission:delete.availableSlot']);
 });
 
+
+Route::prefix('appointment')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [AppointmentController::class, 'index'])
+        ->middleware(['permission:read.appointment']);
+
+    Route::post('/', [AppointmentController::class, 'store'])
+        ->middleware(['permission:create.appointment']);
+
+    Route::get('{id}', [AppointmentController::class, 'show'])
+        ->middleware(['permission:read.appointment']);
+
+    Route::put('{id}', [AppointmentController::class, 'update'])
+        ->middleware(['permission:update.appointment']);
+
+    Route::delete('{id}', [AppointmentController::class, 'destroy'])
+        ->middleware(['permission:delete.appointment']);
+});
 
 Route::get('/run-seeder', function () {
     Artisan::call('db:seed --force');

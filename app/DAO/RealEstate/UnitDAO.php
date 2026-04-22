@@ -27,7 +27,8 @@ class UnitDAO
     public function update(int $id, UpdateUnitDTO $UnitDTO)
     {
         $unit = $this->show($id);
-        return $unit->update($UnitDTO->toArray());
+        $unit->update($UnitDTO->toArray());
+        return $unit;
     }
 
     public function destroy($id)

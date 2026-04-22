@@ -3,13 +3,16 @@
 namespace App\Services\Core;
 
 use App\DAO\Core\DepartmentDAO;
+use App\DAO\Core\EmployeeDepartmentDAO;
+use App\DTOs\Core\AssignEmployeeDepartmentDTO;
 use App\DTOs\Core\CreateDepartmentDTO;
 use App\DTOs\Core\Update\UpdateDepartmentDTO;
 
 class DepartmentService
 {
     public function __construct(
-        private DepartmentDAO $departmentDAO
+        private DepartmentDAO $departmentDAO,
+        private EmployeeDepartmentDAO $employeeDepartmentDAO
     ) {}
 
     public function index()
@@ -34,6 +37,12 @@ class DepartmentService
 
     public function destroy(int $id)
     {
+        $this->employeeDepartmentDAO->destroyByDepartment($id);
         return $this->departmentDAO->destroy($id);
+    }
+
+    public function assign(AssignEmployeeDepartmentDTO $dto)
+    {
+        return $this->employeeDepartmentDAO->store($dto);
     }
 }

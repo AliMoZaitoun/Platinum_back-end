@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 
-#[Fillable(['user_id', 'birth_date', 'job_title', 'social_status', 'national_id'])]
+#[Fillable(['user_id', 'birth_date', 'job_title', 'social_status', 'national_id', 'ai_layout_suggestion', 'last_ai_prompt'])]
 
 class Client extends Model
 {

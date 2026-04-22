@@ -27,7 +27,8 @@ class BuildingDAO
     public function update(int $id, UpdateBuildingDTO $buildingDTO)
     {
         $building = $this->show($id);
-        return $building->update($buildingDTO->toArray());
+        $building->update($buildingDTO->toArray());
+        return $building;
     }
 
     public function destroy($id)

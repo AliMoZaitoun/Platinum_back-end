@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('availability_slots', function (Blueprint $table) {
+        Schema::create('employee_departments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
-            $table->uuid('batch_id');
-            $table->time('start_time');
-            $table->enum('status', ['available', 'booked', 'cancelled'])->default('available');
+            $table->foreignId('department_id')->constrained()->onDelete('cascade');
+            $table->date('from_date');
+            $table->date('to_date')->nullable();
+            $table->string('position');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('availability_slots');
+        Schema::dropIfExists('employee_departments');
     }
 };

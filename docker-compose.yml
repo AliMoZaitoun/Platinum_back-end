@@ -10,7 +10,9 @@ services:
       - ./:/var/www
     networks:
       - const-network
-
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
   db:
     image: mysql:8.4
     container_name: platinum-db
@@ -41,7 +43,6 @@ networks:
   const-network:
     driver: bridge
     name: const-network
-
 
 volumes:
   const-db-data:

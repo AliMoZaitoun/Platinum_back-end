@@ -15,7 +15,7 @@ class EmployeeRequest extends FormRequest
     public function rules(): array
     {
         return array_merge([
-            'position' => 'required|string'
+            'department_id' => 'nullable|integer|exists:departments,id',
         ], (new SignUpRequest())->rules());
     }
 }

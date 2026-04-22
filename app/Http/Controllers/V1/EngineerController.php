@@ -35,12 +35,9 @@ class EngineerController extends Controller
 
         $user = $this->engineerService->store($userDTO, $engineerDTO);
 
-        // $user = $this->resolveUserResource($user);
+        $user = $this->resolveUserResource($user);
 
-        // For Testing
-        $user['user'] = $this->resolveUserResource($user['user']);
-
-        return $this->successResponse($user, __('messages.auth.otp_sent'), 201);
+        return $this->successResponse($user, __('messages.common.stored'), 201);
     }
 
     public function show($id)
