@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->float('latitude');
             $table->float('longitude');
+            $table->integer('radius_meters');
             $table->enum('status', ['completed', 'in_progress', 'stopped']);
             $table->timestamps();
         });

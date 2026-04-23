@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['name', 'description', 'latitude', 'longitude', 'status'])]
+#[Fillable(['name', 'description', 'latitude', 'longitude', 'radius_meters', 'status'])]
 class Project extends Model
 {
     public function buildings()

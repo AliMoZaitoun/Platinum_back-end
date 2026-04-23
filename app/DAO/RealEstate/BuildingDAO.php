@@ -11,7 +11,7 @@ class BuildingDAO
 {
     public function index(int $project_id)
     {
-        return Building::where('project_id', $project_id);
+        return Building::where('project_id', $project_id)->get();
     }
 
     public function store(CreateBuildingDTO $buildingDTO)

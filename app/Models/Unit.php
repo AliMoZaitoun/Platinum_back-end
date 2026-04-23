@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['building_id', 'unit_number', 'floor', 'area', 'price', 'status'])]
+#[Fillable(['building_id', 'unit_number', 'floor', 'area', 'rooms_count', 'price', 'status'])]
 class Unit extends Model
 {
     public function building()

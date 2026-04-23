@@ -39,13 +39,16 @@ Route::post('resendCode/{userId}', [OtpController::class, 'resendCode']);
 
 // Client
 Route::prefix('client')->group(function () {
-    Route::get('/', [ClientController::class, 'index'])
-        ->middleware(['permission:read.client']);
-
     Route::post('/', [ClientController::class, 'store']);
-    Route::get('{id}', [ClientController::class, 'show']);
-    Route::put('{id}', [ClientController::class, 'update']);
-    Route::delete('{id}', [ClientController::class, 'destroy']);
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/', [ClientController::class, 'index'])
+            ->middleware(['permission:read.client']);
+
+        Route::get('{id}', [ClientController::class, 'show']);
+        Route::put('{id}', [ClientController::class, 'update']);
+        Route::delete('{id}', [ClientController::class, 'destroy']);
+    });
 });
 
 // Engineer
@@ -200,8 +203,8 @@ Route::prefix('project')->middleware('auth:sanctum')->group(function () {
     Route::put('{id}', [ProjectController::class, 'update'])
         ->middleware(['permission:update.project']);
 
-    Route::get('/', [ProjectController::class, 'index'])
-        ->middleware(['permission:read.project']);
+    Route::get('/', [ProjectController::class, 'index']);
+    // ->middleware(['permission:read.project']);
 
     Route::get('{id}', [ProjectController::class, 'show'])
         ->middleware(['permission:read.project']);
@@ -262,6 +265,11 @@ Route::prefix('order')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [OrderController::class, 'index'])
         ->middleware(['permission:read.order']);
 
+    Route::get('ordersByClient/{client_id}', [OrderController::class, 'ordersByClient'])
+        ->middleware(['permission:read.order']);
+
+    Route::get('myOrders', [OrderController::class, 'myOrders']);
+
     Route::post('/', [OrderController::class, 'store'])
         ->middleware(['permission:create.order']);
 
@@ -308,6 +316,9 @@ Route::prefix('appointment')->middleware('auth:sanctum')->group(function () {
 
     Route::delete('{id}', [AppointmentController::class, 'destroy'])
         ->middleware(['permission:delete.appointment']);
+
+    Route::get('myAppointments', [AppointmentController::class, 'myAppointments']);
+    Route::post('askChangeTime/{id}', [AppointmentController::class, 'askChangeTime']);
 });
 
 Route::get('/run-seeder', function () {

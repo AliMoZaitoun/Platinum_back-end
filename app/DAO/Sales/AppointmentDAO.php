@@ -24,6 +24,11 @@ class AppointmentDAO
         return Appointment::find($id) ?? throw new NotFoundException("Appointment");
     }
 
+    public function showByClient(int $client_id)
+    {
+        return Appointment::where('client_id', $client_id)->get();
+    }
+
     public function update(int $id, UpdateAppointmentDTO $appointmentDTO)
     {
         $appointment = $this->show($id);

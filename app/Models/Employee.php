@@ -16,7 +16,7 @@ class Employee extends Model
 
     public function av_slots()
     {
-        return $this->hasMany(Availability_slot::class);
+        return $this->hasMany(AvailabilitySlot::class);
     }
 
     public function departments()

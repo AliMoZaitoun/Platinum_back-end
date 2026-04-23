@@ -11,7 +11,7 @@ class UnitDAO
 {
     public function index(int $building_id)
     {
-        return Unit::where('building_id', $building_id);
+        return Unit::where('building_id', $building_id)->get();
     }
 
     public function store(CreateUnitDTO $UnitDTO)

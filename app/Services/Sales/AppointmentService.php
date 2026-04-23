@@ -5,6 +5,7 @@ namespace App\DAO\Sales;
 use App\DTOs\Sales\Create\CreateAppointmentDTO;
 use App\DTOs\Sales\Create\UpdateAppointmentDTO;
 use App\Exceptions\NotFoundException;
+use Illuminate\Support\Facades\Auth;
 
 class AppointmentService
 {
@@ -28,6 +29,14 @@ class AppointmentService
     public function show(int $id)
     {
         return $this->appointmentDAO->show($id);
+    }
+
+    public function myAppointments()
+    {
+        $user = Auth::user();
+        if (!$user->client)
+            throw new NotFoundException("Client");
+        return $this->appointmentDAO->showByClient($user->client->id);
     }
 
     public function update(int $id, UpdateAppointmentDTO $appointmentDTO)

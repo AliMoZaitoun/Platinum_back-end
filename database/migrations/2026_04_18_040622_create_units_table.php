@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('building_id')->constrained()->onDelete('cascade');
             $table->string('unit_number')->unique();
             $table->integer('floor');
+            $table->integer('rooms_count')->nullable();
             $table->float('area');
             $table->enum('type', ['social', 'vip']);
             $table->float('price');

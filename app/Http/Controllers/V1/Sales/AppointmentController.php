@@ -36,6 +36,12 @@ class AppointmentController extends Controller
         return $this->successResponse($appointment);
     }
 
+    public function myAppointments()
+    {
+        $appointments = $this->appointmentService->myAppointments();
+        return $this->successResponse($appointments);
+    }
+
     public function update(int $id, Request $request)
     {
         $appointmentDTO = UpdateAppointmentDTO::fromRequest($request->all());

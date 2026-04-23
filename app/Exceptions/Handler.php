@@ -42,6 +42,10 @@ class Handler
             return $this->errorResponse($e->getMessage(), $e->getCode() ?: 404);
         });
 
+        $exceptions->render(function (InvalidCredentialException $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode() ?: 401);
+        });
+
         $exceptions->render(function (OtpCodeExpiredException $e) {
             return $this->errorResponse($e->getMessage(), $e->getCode() ?: 403);
         });

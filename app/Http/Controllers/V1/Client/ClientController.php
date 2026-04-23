@@ -8,6 +8,7 @@ use App\DTOs\User\Update\UpdateClientDTO;
 use App\DTOs\User\Update\UpdateUserDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Client\ClientRequest;
+use App\Http\Resources\V1\ClientDetailResource;
 use App\Models\Client;
 use App\Services\AIService;
 use App\Services\User\ClientService;
@@ -26,7 +27,7 @@ class ClientController extends Controller
     public function index()
     {
         $clients = $this->clientService->index();
-        return $this->successResponse($clients, __('messages.common.success'), 200);
+        return $this->successCollection($clients);
     }
 
     public function store(ClientRequest $clientRequest)

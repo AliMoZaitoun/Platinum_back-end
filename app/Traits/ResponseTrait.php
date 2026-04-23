@@ -4,11 +4,12 @@ namespace App\Traits;
 
 trait ResponseTrait
 {
-    public function successResponse($data, $message = "Request was successful", $code = 200)
+    use ProvidesUserResource;
+    public function successResponse($data, $message = null, $code = 200)
     {
         return response()->json([
             'status'  => __('messages.common.success'),
-            'message' => $message,
+            'message' => $message ?? __('messages.common.success'),
             'data'    => $data
         ], $code);
     }
@@ -22,10 +23,14 @@ trait ResponseTrait
         ], $code);
     }
 
-    public function successCollection($collection, $resourceClass, $messageKey)
+    public function successCollection($collection, $messageKey = "messages.common.sucess")
     {
+        $data = [];
+        foreach ($collection as $item) {
+            $data[] = $this->resolveUserResource($item->user);
+        }
         return $this->successResponse(
-            $resourceClass::collection($collection),
+            $data,
             $collection->isEmpty() ? __('messages.common.empty') : __($messageKey)
         );
     }

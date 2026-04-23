@@ -4,6 +4,7 @@ namespace App\Services\User;
 
 use App\DAO\RefreshTokenDAO;
 use App\DAO\User\UserDAO;
+use App\Exceptions\InvalidCredentialException;
 use App\Services\OtpService;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +26,7 @@ class AuthService
             'password' => $credentials['password'],
         ];
 
-        if (!Auth::attempt($credentials)) throw new Exception(__('messages.auth.invalid'));
+        if (!Auth::attempt($credentials)) throw new InvalidCredentialException();
 
         $user = Auth::user();
         $token = $user->createToken('auth_token')->plainTextToken;

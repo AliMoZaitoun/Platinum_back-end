@@ -24,6 +24,11 @@ class OrderDAO
         return Order::find($id) ?? throw new NotFoundException("Order");
     }
 
+    public function ordersByClient(int $client_id)
+    {
+        return Order::where('client_id', $client_id)->get();
+    }
+
     public function update(int $id, UpdateOrderDTO $orderDTO)
     {
         $order = $this->show($id);

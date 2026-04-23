@@ -15,8 +15,8 @@ class CreateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'unit_id'    => 'required_without:service_id|prohibited_if:service_id,true',
-            'service_id' => 'required_without:unit_id|prohibited_if:unit_id,true'
+            'unit_id'     => 'required_without:offering_id|prohibited_if:offering_id,true|exists:units,id',
+            'offering_id' => 'required_without:unit_id|prohibited_if:unit_id,true|exists:offerings,id'
         ];
     }
 }

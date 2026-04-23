@@ -24,7 +24,7 @@ class EngineerController extends Controller
     public function index()
     {
         $engineers = $this->engineerService->index();
-        return $this->successResponse($engineers);
+        return $this->successCollection($engineers);
     }
 
     public function store(EngineerRequest $engineerRequest)

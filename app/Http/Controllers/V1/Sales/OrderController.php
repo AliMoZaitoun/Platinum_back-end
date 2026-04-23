@@ -36,6 +36,18 @@ class OrderController extends Controller
         return $this->successResponse($order);
     }
 
+    public function ordersByClient(int $client_id)
+    {
+        $orders = $this->orderService->ordersByClient($client_id);
+        return $this->successResponse($orders);
+    }
+
+    public function myOrders()
+    {
+        $orders = $this->orderService->myOrders();
+        return $this->successResponse($orders);
+    }
+
     public function update(int $id, Request $request)
     {
         $orderDTO = UpdateOrderDTO::fromRequest($request->all());

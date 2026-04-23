@@ -20,6 +20,7 @@ class BuildingController extends Controller
     public function index(int $project_id)
     {
         $buildings = $this->buildingService->index($project_id);
+
         return $this->successResponse($buildings);
     }
 
