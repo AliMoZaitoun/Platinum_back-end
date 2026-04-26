@@ -26,7 +26,9 @@ class RoleAndPermissionSeeder extends Seeder
             'favorite',
             'appointment',
             'order',
-            'availableSlot'
+            'availableSlot',
+            'advertisment',
+            'location',
         ];
 
         $actions = ['read', 'create', 'update', 'delete'];
@@ -56,6 +58,14 @@ class RoleAndPermissionSeeder extends Seeder
             'read.appointment',
             'update.appointment',
             'delete.appointment',
+            'create.advertisment',
+            'update.advertisment',
+            'read.advertisment',
+            'delete.advertisment',
+            'create.location',
+            'update.location',
+            'read.location',
+            'delete.location',
             'read.order',
             'update.order',
             'delete.order',
@@ -83,8 +93,8 @@ class RoleAndPermissionSeeder extends Seeder
             'delete.favorite',
             'read.appointment',
             'create.order',
-            'read.order',
-            'delete.order',
+            'read.advertisment',
+            'read.location',
         ]);
     }
 }

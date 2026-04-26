@@ -5,7 +5,7 @@ namespace App\DTOs\RealEstate\Update;
 class UpdateLocationDTO
 {
     public function __construct(
-        public ?string $name,
+        public ?array $name,
         public ?string $type,
         public ?int $parent_id
     ) {}

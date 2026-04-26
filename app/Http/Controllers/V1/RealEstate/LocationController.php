@@ -24,7 +24,7 @@ class LocationController extends Controller
 
     public function store(Request $request)
     {
-        $dto = CreateLocationDTO::fromRequest($request->validated());
+        $dto = CreateLocationDTO::fromRequest($request->all());
         $location = $this->locationService->store($dto);
         return $this->successResponse($location, __('messages.common.stored'), 201);
     }

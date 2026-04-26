@@ -48,7 +48,7 @@ class UnitDAO
             $query->where('units.price', '<=', $filters['price_max']);
         }
 
-        if (!empty($filters['rooms_count'])) {
+        if (isset($filters['rooms_count']) && $filters['rooms_count'] !== '') {
             $query->where('units.rooms_count', $filters['rooms_count']);
         }
 

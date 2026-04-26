@@ -39,6 +39,22 @@ services:
     networks:
       - const-network
 
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: platinum-phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+
+      UPLOAD_LIMIT: 64M
+    ports:
+      - "8081:80"
+    networks:
+      - const-network
+
 networks:
   const-network:
     driver: bridge
