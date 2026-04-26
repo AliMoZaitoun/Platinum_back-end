@@ -36,6 +36,12 @@ class UnitController extends Controller
         return $this->successResponse($unit);
     }
 
+    public function search(Request $request)
+    {
+        $units = $this->unitService->search($request->all());
+        return $this->successResponse($units);
+    }
+
     public function update(int $id, Request $request)
     {
         $unitDTO = UpdateUnitDTO::fromRequest($request->all());

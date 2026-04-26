@@ -17,6 +17,7 @@ class CreateBuildingRequest extends FormRequest
         return [
             'project_id' => 'required|exists:projects,id',
             'building_number' => 'required|string',
+            'location_id' => 'nullable|integer|exists:locations,id',
             'floors_count' => 'required|integer',
             'status' => 'required'
         ];

@@ -24,7 +24,7 @@ class EmployeeController extends Controller
     public function index()
     {
         $employees = $this->employeeService->index();
-        return $this->successCollection($employees);
+        return $this->successUserCollection($employees);
     }
 
     public function store(EmployeeRequest $employeeRequest)

@@ -27,7 +27,7 @@ class ClientController extends Controller
     public function index()
     {
         $clients = $this->clientService->index();
-        return $this->successCollection($clients);
+        return $this->successUserCollection($clients);
     }
 
     public function store(ClientRequest $clientRequest)

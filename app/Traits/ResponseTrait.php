@@ -23,7 +23,7 @@ trait ResponseTrait
         ], $code);
     }
 
-    public function successCollection($collection, $messageKey = "messages.common.sucess")
+    public function successUserCollection($collection, $messageKey = "messages.common.sucess")
     {
         $data = [];
         foreach ($collection as $item) {
@@ -31,7 +31,15 @@ trait ResponseTrait
         }
         return $this->successResponse(
             $data,
-            $collection->isEmpty() ? __('messages.common.empty') : __($messageKey)
+            $collection->isEmpty() ? __('messages.system.no_results') : __($messageKey)
+        );
+    }
+
+    public function successCollection($collection, $resourceClass, $messageKey)
+    {
+        return $this->successResponse(
+            $resourceClass::collection($collection),
+            $collection->isEmpty() ? __('messages.system.no_results') : __($messageKey)
         );
     }
 }

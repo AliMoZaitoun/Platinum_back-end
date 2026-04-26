@@ -23,4 +23,9 @@ class Employee extends Model
     {
         return $this->hasMany(EmployeeDepartment::class);
     }
+
+    public function advertisments()
+    {
+        return $this->hasMany(Advertisement::class);
+    }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Requests\V1;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateOfferingRequest extends FormRequest
+class CreateSolutionRequest extends FormRequest
 {
     public function authorize(): bool
     {

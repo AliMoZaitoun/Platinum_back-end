@@ -27,23 +27,11 @@ return [
         'otp_verified' => 'OTP verified successfully.',
         'otp_invalid' => 'Invalid or expired OTP.',
     ],
+
     'system' => [
         'validation' => 'The given data was invalid.',
         'db_error' => 'A system error occurred. Please contact support with code: :trace_id',
         'no_results' => 'No results found.',
     ],
 
-    'user' => [
-        'label' => 'User',
-    ],
-
-    'client' => [
-        'label' => 'Client',
-    ],
-
-    'employee' => [
-        'label' => 'Employee',
-        'promoted' => 'Employee has been promoted successfully.',
-        'unauthorized_promo' => 'You are not authorized to promote to this position.',
-    ],
 ];

@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('projects', function (Blueprint $table) {
+        Schema::create('solutions', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('description')->nullable();
-            $table->foreignId('location_id')->constrained()->onDelete('restrict');
-            $table->decimal('latitude', 10, 8)->index()->nullable();
-            $table->decimal('longitude', 11, 8)->index()->nullable();
-            $table->integer('radius_meters');
-            $table->enum('status', ['completed', 'in_progress', 'stopped']);
+            $table->decimal('price', 10, 2);
             $table->timestamps();
         });
     }
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('projects');
+        Schema::dropIfExists('solutions');
     }
 };

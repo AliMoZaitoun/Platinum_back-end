@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\V1\Core;
 
 use App\DTOs\Core\AssignEmployeeDepartmentDTO;
 use App\DTOs\Core\Update\UpdateEmployeeDepartmentDTO;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Core\AssignEmployeeDepartmentRequest;
 use App\Services\Core\EmployeeDepartmentService;
 use App\Traits\ResponseTrait;

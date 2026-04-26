@@ -7,6 +7,7 @@ class UpdateProjectDTO
     public function __construct(
         public ?string $name,
         public ?string $description,
+        public ?int $location_id,
         public ?float $latitude,
         public ?float $longitude,
         public ?int $radius_meters,
@@ -18,6 +19,7 @@ class UpdateProjectDTO
         return new self(
             name: $request['name'] ?? null,
             description: $request['description'] ?? null,
+            location_id: $request['location_id'] ?? null,
             latitude: $request['latitude'] ?? null,
             longitude: $request['longitude'] ?? null,
             radius_meters: $request['radius_meters'] ?? null,
@@ -30,6 +32,7 @@ class UpdateProjectDTO
         return array_filter([
             'name'  => $this->name,
             'description'  => $this->description,
+            'location_id'  => $this->location_id,
             'latitude'  => $this->latitude,
             'longitude'  => $this->longitude,
             'radius_meters' => $this->radius_meters,

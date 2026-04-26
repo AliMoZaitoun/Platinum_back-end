@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['client_id', 'unit_id', 'offering_id', 'status'])]
+#[Fillable(['client_id', 'unit_id', 'solution_id', 'status'])]
 class Order extends Model
 {
     public function client()
@@ -18,8 +18,8 @@ class Order extends Model
         return $this->belongsTo(Unit::class);
     }
 
-    public function offering()
+    public function solution()
     {
-        return $this->belongsTo(Offering::class);
+        return $this->belongsTo(Solution::class);
     }
 }

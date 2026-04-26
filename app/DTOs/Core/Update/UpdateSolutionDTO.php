@@ -2,7 +2,7 @@
 
 namespace App\DTOs\Core\Update;
 
-class UpdateOfferingDTO
+class UpdateSolutionDTO
 {
     public function __construct(
         public ?string $name = null,

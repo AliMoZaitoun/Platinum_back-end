@@ -2,7 +2,7 @@
 
 namespace App\DTOs\Core;
 
-class CreateOfferingDTO
+class CreateSolutionDTO
 {
     public function __construct(
         public ?int $id,

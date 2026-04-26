@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('buildings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
+            $table->foreignId('location_id')->nullable()->constrained()->onDelete('restrict');
             $table->string('building_number');
             $table->integer('floors_count');
             $table->enum('status', ['completed', 'in_progress', 'stopped']);

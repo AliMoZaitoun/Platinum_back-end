@@ -17,8 +17,9 @@ class CreateProjectRequest extends FormRequest
         return [
             'name' => 'required|string',
             'description' => 'nullable|string',
-            'latitude' => 'required|decimal:0,10',
-            'longitude' => 'required|decimal:0,10',
+            'location_id' => 'required|integer|exists:locations,id',
+            'latitude'  => 'required|numeric|between:-90,90',
+            'longitude' => 'required|numeric|between:-180,180',
             'radius_meters' => 'required|integer',
             'status' => 'required|in:completed,in_progress,stopped'
         ];

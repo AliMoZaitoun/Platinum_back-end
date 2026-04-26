@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
 #[Fillable(['name', 'description', 'price'])]
-class Offering extends Model
+class Solution extends Model
 {
     public function orders()
     {
-        return $this->hasMany(Offering::class);
+        return $this->hasMany(Solution::class);
     }
 }

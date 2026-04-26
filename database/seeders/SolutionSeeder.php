@@ -2,14 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Models\Offering;
+use App\Models\Solution;
 use Illuminate\Database\Seeder;
 
-class OfferingSeeder extends Seeder
+class SolutionSeeder extends Seeder
 {
     public function run(): void
     {
-        $offerings = [
+        $solutions = [
             [
                 'name'        => 'Residential Property Sale',
                 'description' => 'Full-service brokerage for buying and selling residential properties including apartments, villas, and townhouses. Includes market valuation, listing, showings, and closing support.',
@@ -62,8 +62,8 @@ class OfferingSeeder extends Seeder
             ],
         ];
 
-        foreach ($offerings as $offering) {
-            Offering::create($offering);
+        foreach ($solutions as $solution) {
+            Solution::create($solution);
         }
     }
 }

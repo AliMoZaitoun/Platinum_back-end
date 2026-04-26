@@ -20,7 +20,7 @@ class CreateUnitRequest extends FormRequest
             'floor' => 'required|integer',
             'area'  => 'required|decimal:0,3',
             'type' => 'required|in:social,vip',
-            'price' => 'required|decimal:0,3',
+            'price' => 'required|numeric|min:0|max:999999999999.99',
             'status' => 'required|in:available,reserved,sold,maintenance'
         ];
     }

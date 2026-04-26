@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\EmployeeDepartmentController;
-use App\Http\Controllers\V1\Core\OfferingController;
+use App\Http\Controllers\AdvertisementController;
+use App\Http\Controllers\V1\RealEstate\LocationController;
+use App\Http\Controllers\V1\Core\EmployeeDepartmentController;
+use App\Http\Controllers\V1\Core\SolutionController;
 use App\Http\Controllers\V1\AuthController;
 use App\Http\Controllers\V1\Client\ClientController;
 use App\Http\Controllers\V1\Client\FavoriteController;
@@ -178,22 +180,40 @@ Route::prefix('employeeDepartment')->middleware('auth:sanctum')->group(function 
 });
 
 
-// Offering
-Route::prefix('offering')->middleware('auth:sanctum')->group(function () {
-    Route::post('/', [OfferingController::class, 'store'])
-        ->middleware(['permission:create.offering']);
+// Solution
+Route::prefix('solution')->middleware('auth:sanctum')->group(function () {
+    Route::post('/', [SolutionController::class, 'store'])
+        ->middleware(['permission:create.solution']);
 
-    Route::put('{id}', [OfferingController::class, 'update'])
-        ->middleware(['permission:read.offering']);
+    Route::put('{id}', [SolutionController::class, 'update'])
+        ->middleware(['permission:read.solution']);
 
-    Route::get('/', [OfferingController::class, 'index'])
-        ->middleware(['permission:read.offering']);
+    Route::get('/', [SolutionController::class, 'index'])
+        ->middleware(['permission:read.solution']);
 
-    Route::get('{id}', [OfferingController::class, 'show'])
-        ->middleware(['permission:read.offering']);
+    Route::get('{id}', [SolutionController::class, 'show'])
+        ->middleware(['permission:read.solution']);
 
-    Route::delete('{id}', [OfferingController::class, 'destroy'])
-        ->middleware(['permission:delete.offering']);
+    Route::delete('{id}', [SolutionController::class, 'destroy'])
+        ->middleware(['permission:delete.solution']);
+});
+
+// Location
+Route::prefix('location')->middleware('auth:sanctum')->group(function () {
+    Route::post('/', [LocationController::class, 'store'])
+        ->middleware(['permission:create.location']);
+
+    Route::put('{id}', [LocationController::class, 'update'])
+        ->middleware(['permission:read.location']);
+
+    Route::get('/', [LocationController::class, 'index'])
+        ->middleware(['permission:read.location']);
+
+    Route::get('{id}', [LocationController::class, 'show'])
+        ->middleware(['permission:read.location']);
+
+    Route::delete('{id}', [LocationController::class, 'destroy'])
+        ->middleware(['permission:delete.location']);
 });
 
 Route::prefix('project')->middleware('auth:sanctum')->group(function () {
@@ -239,6 +259,8 @@ Route::prefix('unit')->middleware('auth:sanctum')->group(function () {
 
     Route::get('ofBuilding/{building_id}', [UnitController::class, 'index'])
         ->middleware(['permission:read.unit']);
+
+    Route::get('search', [UnitController::class, 'search']);
 
     Route::get('{id}', [UnitController::class, 'show'])
         ->middleware(['permission:read.unit']);
@@ -300,7 +322,6 @@ Route::prefix('availableSlot')->middleware('auth:sanctum')->group(function () {
         ->middleware(['permission:delete.availableSlot']);
 });
 
-
 Route::prefix('appointment')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [AppointmentController::class, 'index'])
         ->middleware(['permission:read.appointment']);
@@ -319,6 +340,23 @@ Route::prefix('appointment')->middleware('auth:sanctum')->group(function () {
 
     Route::get('myAppointments', [AppointmentController::class, 'myAppointments']);
     Route::post('askChangeTime/{id}', [AppointmentController::class, 'askChangeTime']);
+});
+
+Route::prefix('advertisment')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [AdvertisementController::class, 'index'])
+        ->middleware(['permission:read.advertisment']);
+
+    Route::post('/', [AdvertisementController::class, 'store'])
+        ->middleware(['permission:create.advertisment']);
+
+    Route::get('{id}', [AdvertisementController::class, 'show'])
+        ->middleware(['permission:read.advertisment']);
+
+    Route::put('{id}', [AdvertisementController::class, 'update'])
+        ->middleware(['permission:update.advertisment']);
+
+    Route::delete('{id}', [AdvertisementController::class, 'destroy'])
+        ->middleware(['permission:delete.advertisment']);
 });
 
 Route::get('/run-seeder', function () {

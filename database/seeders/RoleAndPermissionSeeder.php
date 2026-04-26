@@ -19,7 +19,7 @@ class RoleAndPermissionSeeder extends Seeder
             'item',
             'department',
             'role',
-            'offering',
+            'solution',
             'project',
             'building',
             'unit',
@@ -48,7 +48,7 @@ class RoleAndPermissionSeeder extends Seeder
             'read.item',
             'create.item',
             'update.item',
-            'read.offering',
+            'read.solution',
             'read.project',
             'read.building',
             'read.unit',
@@ -75,7 +75,7 @@ class RoleAndPermissionSeeder extends Seeder
         // Client
         $client = Role::firstOrCreate(['name' => 'client']);
         $client->syncPermissions([
-            'read.offering',
+            'read.solution',
             'read.unit',
             'read.building',
             'create.favorite',
