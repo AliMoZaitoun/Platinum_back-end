@@ -360,6 +360,6 @@ Route::prefix('advertisment')->middleware('auth:sanctum')->group(function () {
 });
 
 Route::get('/run-seeder', function () {
-    Artisan::call('db:seed --force');
+    Artisan::call('php artisan mi:f --seed --force');
     return 'Seeder Done';
 });
