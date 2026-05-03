@@ -53,8 +53,9 @@ class EngineerController extends Controller
 
         $engineerDTO = UpdateEngineerDTO::fromRequest($request->all());
 
-        $engineer = $this->engineerService->update($id, $userDTO, $engineerDTO);
-        return $this->successResponse($engineer, __('messages.common.updated'));
+        $user = $this->engineerService->update($id, $userDTO, $engineerDTO);
+        $data['user'] = $this->resolveUserResource($user);
+        return $this->successResponse($data, __('messages.common.updated'));
     }
 
     public function destroy($id)

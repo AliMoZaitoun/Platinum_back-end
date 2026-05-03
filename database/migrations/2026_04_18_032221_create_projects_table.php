@@ -20,6 +20,8 @@ return new class extends Migration
             $table->decimal('longitude', 11, 8)->index()->nullable();
             $table->integer('radius_meters');
             $table->enum('status', ['completed', 'in_progress', 'stopped']);
+            $table->date('start_date');
+            $table->date('end_date')->nullable();
             $table->timestamps();
         });
     }

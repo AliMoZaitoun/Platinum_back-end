@@ -21,7 +21,9 @@ class CreateProjectRequest extends FormRequest
             'latitude'  => 'required|numeric|between:-90,90',
             'longitude' => 'required|numeric|between:-180,180',
             'radius_meters' => 'required|integer',
-            'status' => 'required|in:completed,in_progress,stopped'
+            'status' => 'required|in:completed,in_progress,stopped',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date'
         ];
     }
 }

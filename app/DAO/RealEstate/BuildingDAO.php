@@ -9,9 +9,11 @@ use App\Models\Building;
 
 class BuildingDAO
 {
-    public function index(int $project_id)
+    public function index(int $project_id, array $relations = [])
     {
-        return Building::where('project_id', $project_id)->get();
+        $defaultRelation = ['project'];
+        $allRelations = array_merge($defaultRelation, $relations);
+        return Building::with($allRelations)->where('project_id', $project_id)->get();
     }
 
     public function store(CreateBuildingDTO $buildingDTO)

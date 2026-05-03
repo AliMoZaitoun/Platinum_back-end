@@ -6,6 +6,8 @@ use App\Models\Project;
 use App\Models\Location;
 use Illuminate\Database\Seeder;
 
+use function Symfony\Component\Clock\now;
+
 class ProjectSeeder extends Seeder
 {
     public function run()
@@ -21,6 +23,8 @@ class ProjectSeeder extends Seeder
             'longitude' => 36.24650000,
             'radius_meters' => 500,
             'status' => 'in_progress',
+            'start_date' => '2024-12-08',
+            'end_date' => now()
         ]);
 
         Project::create([
@@ -31,6 +35,7 @@ class ProjectSeeder extends Seeder
             'longitude' => 36.21000000,
             'radius_meters' => 1200,
             'status' => 'stopped',
+            'start_date' => now()
         ]);
     }
 }

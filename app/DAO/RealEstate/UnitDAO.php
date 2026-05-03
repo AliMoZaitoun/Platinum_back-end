@@ -9,9 +9,11 @@ use App\Models\Unit;
 
 class UnitDAO
 {
-    public function index(int $building_id)
+    public function index(int $building_id, array $relations)
     {
-        return Unit::where('building_id', $building_id)->get();
+        $defaultRelation = ['building.project'];
+        $allRelations = array_merge($defaultRelation, $relations);
+        return Unit::with($allRelations)->where('building_id', $building_id)->get();
     }
 
     public function store(CreateUnitDTO $UnitDTO)

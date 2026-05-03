@@ -3,13 +3,20 @@
 namespace App\Services\Core;
 
 use App\DAO\Core\EmployeeDepartmentDAO;
+use App\DAO\RoleDAO;
+use App\DAO\User\EmployeeDAO;
 use App\DTOs\Core\AssignEmployeeDepartmentDTO;
 use App\DTOs\Core\Update\UpdateEmployeeDepartmentDTO;
+use App\Enums\UserRole;
+use App\Services\TransactionService;
 
 class EmployeeDepartmentService
 {
     public function __construct(
-        private EmployeeDepartmentDAO $employeeDepartmentDAO
+        private EmployeeDepartmentDAO $employeeDepartmentDAO,
+        private TransactionService $transaction,
+        private EmployeeDAO $employeeDAO,
+        private RoleDAO $roleDAO
     ) {}
 
     public function index()
@@ -19,7 +26,17 @@ class EmployeeDepartmentService
 
     public function store(AssignEmployeeDepartmentDTO $dto)
     {
-        return $this->employeeDepartmentDAO->store($dto);
+        return $this->transaction->execute(function () use ($dto) {
+            $record = $this->employeeDepartmentDAO->store($dto);
+
+            $employee = $this->employeeDAO->show($dto->employee_id);
+            $user = $employee->user;
+
+            $spaiteRole = UserRole::getRoleFromPosition($dto->position);
+            $this->roleDAO->syncUserRoles($user, ['employee', $spaiteRole->value]);
+
+            return $record;
+        });
     }
 
     public function show(int $id)

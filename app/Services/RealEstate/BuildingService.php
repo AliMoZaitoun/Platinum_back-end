@@ -12,9 +12,9 @@ class BuildingService
         private BuildingDAO $buildingDAO
     ) {}
 
-    public function index(int $project_id)
+    public function index(int $project_id, array $relations = [])
     {
-        return $this->buildingDAO->index($project_id);
+        return $this->buildingDAO->index($project_id, $relations);
     }
 
     public function store(CreateBuildingDTO $buildingDTO)

@@ -26,7 +26,7 @@ class LocationSeeder extends Seeder
         // 3. الأحياء
         $districts = [
             ['ar' => 'المزة', 'en' => 'Al-Mazza'],
-            ['ar' => 'كفرسوسة', 'en' => 'Kفرسوسة'],
+            ['ar' => 'كفرسوسة', 'en' => 'Kafr Sousa'],
             ['ar' => 'مشروع دمر', 'en' => 'Project Dummar'],
         ];
 

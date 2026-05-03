@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['employee_id', 'department_id', 'from_date', 'to_date', 'position'])]
+#[Fillable(['employee_id', 'department_id', 'from_date', 'position', 'to_date'])]
 class EmployeeDepartment extends Model
 {
     public function employee()

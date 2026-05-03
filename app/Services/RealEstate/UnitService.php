@@ -13,9 +13,9 @@ class UnitService
         private UnitDAO $unitDAO
     ) {}
 
-    public function index(int $building_id)
+    public function index(int $building_id, array $relations = [])
     {
-        return $this->unitDAO->index($building_id);
+        return $this->unitDAO->index($building_id, $relations);
     }
 
     public function store(CreateUnitDTO $unitDTO)

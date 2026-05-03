@@ -9,9 +9,11 @@ use App\Models\Project;
 
 class ProjectDAO
 {
-    public function index()
+    public function index(array $relations = [])
     {
-        return Project::all();
+        $defaultRelations = ['location'];
+        $allRelations = array_merge($defaultRelations, $relations);
+        return Project::with($allRelations)->get();
     }
 
     public function store(CreateProjectDTO $projectDTO)

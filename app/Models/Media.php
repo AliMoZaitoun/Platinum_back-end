@@ -5,7 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['mediable_id', 'mediable_type', 'file_path', 'original_name', 'file_type', 'custom_properties'])]
+#[Fillable([
+    'uuid',
+    'mediable_id',
+    'mediable_type',
+    'path',
+    'original_name',
+    'type',
+    'custom_properties',
+    'user_created_at'
+])]
 
 class Media extends Model
 {

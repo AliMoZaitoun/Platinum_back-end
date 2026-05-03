@@ -12,9 +12,9 @@ class LocationService
         private LocationDAO $locationDAO
     ) {}
 
-    public function index()
+    public function index(array $relations = [])
     {
-        return $this->locationDAO->index();
+        return $this->locationDAO->index($relations);
     }
 
     public function store(CreateLocationDTO $dto)

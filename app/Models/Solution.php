@@ -10,6 +10,6 @@ class Solution extends Model
 {
     public function orders()
     {
-        return $this->hasMany(Solution::class);
+        return $this->hasMany(Order::class);
     }
 }

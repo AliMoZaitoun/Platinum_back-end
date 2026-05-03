@@ -23,7 +23,7 @@ trait ProvidesUserResource
             'engineer' => new EngineerDetailResource($user),
             'employee' => new EmployeeDetailResource($user),
             'client'   => new ClientDetailResource($user),
-            default    => new UserResource($user),
+            default    => ['account' => new UserResource($user)],
         };
     }
 }

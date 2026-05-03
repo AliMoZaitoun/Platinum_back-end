@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AdvertisementController;
+use App\Http\Controllers\V1\Marketing\AdvertisementController;
 use App\Http\Controllers\V1\RealEstate\LocationController;
 use App\Http\Controllers\V1\Core\EmployeeDepartmentController;
 use App\Http\Controllers\V1\Core\SolutionController;
@@ -19,10 +19,10 @@ use App\Http\Controllers\V1\RoleController;
 use App\Http\Controllers\V1\Sales\AppointmentController;
 use App\Http\Controllers\V1\Sales\OrderController;
 use App\Http\Controllers\V1\Core\WarehouseController;
+use App\Http\Controllers\V1\RealEstate\EngineerProjectController;
 use App\Http\Controllers\V1\Sales\AvailabilitySlotController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
 
 // Auth
 Route::post('verifyEmail', [AuthController::class, 'verifyEmail']);
@@ -54,7 +54,7 @@ Route::prefix('client')->group(function () {
 });
 
 // Engineer
-Route::prefix('engineer')->group(function () {
+Route::prefix('engineer')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [EngineerController::class, 'index'])
         ->middleware(['permission:read.engineer']);
 
@@ -65,8 +65,21 @@ Route::prefix('engineer')->group(function () {
     Route::delete('{id}', [EngineerController::class, 'destroy']);
 });
 
+Route::prefix('engineer-project')->middleware('auth:sanctum')->group(function () {
+    Route::post('assign', [EngineerProjectController::class, 'store'])
+        ->middleware('permission:create.engineer');
+    Route::get('/', [EngineerProjectController::class, 'index'])
+        ->middleware('permission:read.engineer');
+
+    Route::get('engProjects/{engineer_id}', [EngineerProjectController::class, 'engProjects']);
+    Route::get('proEngineers/{project_id}', [EngineerProjectController::class, 'proEngineers']);
+
+    Route::put('{id}', [EngineerProjectController::class, 'update']);
+    Route::delete('{id}', [EngineerProjectController::class, 'destroy']);
+});
+
 // Employee
-Route::prefix('employee')->group(function () {
+Route::prefix('employee')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [EmployeeController::class, 'index']);
     Route::post('/', [EmployeeController::class, 'store']);
     Route::get('{id}', [EmployeeController::class, 'show']);
@@ -160,7 +173,7 @@ Route::prefix('department')->middleware('auth:sanctum')->group(function () {
 
 // Department
 Route::prefix('employeeDepartment')->middleware('auth:sanctum')->group(function () {
-    Route::post('/', [EmployeeDepartmentController::class, 'store'])
+    Route::post('assign/', [EmployeeDepartmentController::class, 'store'])
         ->middleware(['permission:create.department']);
 
     Route::put('{id}', [EmployeeDepartmentController::class, 'update'])
@@ -178,7 +191,6 @@ Route::prefix('employeeDepartment')->middleware('auth:sanctum')->group(function 
     Route::delete('{id}', [EmployeeDepartmentController::class, 'destroy'])
         ->middleware(['permission:delete.department']);
 });
-
 
 // Solution
 Route::prefix('solution')->middleware('auth:sanctum')->group(function () {
@@ -216,6 +228,7 @@ Route::prefix('location')->middleware('auth:sanctum')->group(function () {
         ->middleware(['permission:delete.location']);
 });
 
+// Project
 Route::prefix('project')->middleware('auth:sanctum')->group(function () {
     Route::post('/', [ProjectController::class, 'store'])
         ->middleware(['permission:create.project']);
@@ -233,6 +246,7 @@ Route::prefix('project')->middleware('auth:sanctum')->group(function () {
         ->middleware(['permission:delete.project']);
 });
 
+// Building
 Route::prefix('building')->middleware('auth:sanctum')->group(function () {
     Route::post('/', [BuildingController::class, 'store'])
         ->middleware(['permission:create.building']);
@@ -250,6 +264,7 @@ Route::prefix('building')->middleware('auth:sanctum')->group(function () {
         ->middleware(['permission:destroy.building']);
 });
 
+// Unit
 Route::prefix('unit')->middleware('auth:sanctum')->group(function () {
     Route::post('/', [UnitController::class, 'store'])
         ->middleware(['permission:create.unit']);
@@ -269,6 +284,7 @@ Route::prefix('unit')->middleware('auth:sanctum')->group(function () {
         ->middleware(['permission:destroy.unit']);
 });
 
+// Favorite
 Route::prefix('favorite')->middleware('auth:sanctum')->group(function () {
     Route::get('my', [FavoriteController::class, 'index'])
         ->middleware(['permission:read.favorite']);
@@ -283,6 +299,7 @@ Route::prefix('favorite')->middleware('auth:sanctum')->group(function () {
         ->middleware(['permission:delete.favorite']);
 });
 
+// Order
 Route::prefix('order')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [OrderController::class, 'index'])
         ->middleware(['permission:read.order']);
@@ -305,6 +322,7 @@ Route::prefix('order')->middleware('auth:sanctum')->group(function () {
         ->middleware(['permission:delete.order']);
 });
 
+// Available slot
 Route::prefix('availableSlot')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [AvailabilitySlotController::class, 'index'])
         ->middleware(['permission:read.availableSlot']);
@@ -322,6 +340,7 @@ Route::prefix('availableSlot')->middleware('auth:sanctum')->group(function () {
         ->middleware(['permission:delete.availableSlot']);
 });
 
+// Appointment
 Route::prefix('appointment')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [AppointmentController::class, 'index'])
         ->middleware(['permission:read.appointment']);
@@ -342,6 +361,7 @@ Route::prefix('appointment')->middleware('auth:sanctum')->group(function () {
     Route::post('askChangeTime/{id}', [AppointmentController::class, 'askChangeTime']);
 });
 
+// Advertisment
 Route::prefix('advertisment')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [AdvertisementController::class, 'index'])
         ->middleware(['permission:read.advertisment']);

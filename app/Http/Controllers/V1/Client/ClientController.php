@@ -60,8 +60,8 @@ class ClientController extends Controller
         $clientDTO = UpdateClientDTO::fromRequest($request->all());
 
         $user = $this->clientService->update($id, $userDTO, $clientDTO);
-        $user = $this->resolveUserResource($user);
-        return $this->successResponse($user, __('messages.common.updated'));
+        $data['user'] = $this->resolveUserResource($user);
+        return $this->successResponse($data, __('messages.common.updated'));
     }
 
     public function destroy($id)

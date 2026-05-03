@@ -9,9 +9,11 @@ use App\Models\Location;
 
 class LocationDAO
 {
-    public function index()
+    public function index(array $relations = [])
     {
-        return Location::all();
+        $defaultRelations = ['parent'];
+        $allRelations = array_merge($defaultRelations, $relations);
+        return Location::with($allRelations)->get();
     }
 
     public function store(CreateLocationDTO $dto)

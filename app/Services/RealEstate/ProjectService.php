@@ -12,9 +12,9 @@ class ProjectService
         private ProjectDAO $projectDAO
     ) {}
 
-    public function index()
+    public function index(array $relations = [])
     {
-        return $this->projectDAO->index();
+        return $this->projectDAO->index($relations);
     }
 
     public function store(CreateProjectDTO $projectDTO)

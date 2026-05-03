@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\V1\Marketing;
 
 use App\DTOs\Marketing\Create\CreateAdDTO;
 use App\DTOs\Marketing\Update\UpdateAdDTO;
