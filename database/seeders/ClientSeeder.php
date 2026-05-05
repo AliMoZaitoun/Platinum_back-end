@@ -19,7 +19,7 @@ class ClientSeeder extends Seeder
                 'phone'             => '+31 6 20000001',
                 'address'           => 'Bergweg 120, Rotterdam, South Holland',
                 'gender'            => 'male',
-                'role'              => 'client',
+                'type'              => 'client',
                 'password'          => Hash::make('password'),
                 'email_verified_at' => now(),
                 'client' => [
@@ -36,7 +36,7 @@ class ClientSeeder extends Seeder
                 'phone'             => '+31 6 20000002',
                 'address'           => 'Westersingel 55, Rotterdam, South Holland',
                 'gender'            => 'female',
-                'role'              => 'client',
+                'type'              => 'client',
                 'password'          => Hash::make('password'),
                 'email_verified_at' => now(),
                 'client' => [
@@ -53,7 +53,7 @@ class ClientSeeder extends Seeder
                 'phone'             => '+31 6 20000003',
                 'address'           => 'Teilingerstraat 30, Rotterdam, South Holland',
                 'gender'            => 'male',
-                'role'              => 'client',
+                'type'              => 'client',
                 'password'          => Hash::make('password'),
                 'email_verified_at' => now(),
                 'client' => [
@@ -70,7 +70,7 @@ class ClientSeeder extends Seeder
                 'phone'             => '+31 6 20000004',
                 'address'           => 'Keizerstraat 14, Schiedam, South Holland',
                 'gender'            => 'female',
-                'role'              => 'client',
+                'type'              => 'client',
                 'password'          => Hash::make('password'),
                 'email_verified_at' => now(),
                 'client' => [
@@ -87,7 +87,7 @@ class ClientSeeder extends Seeder
                 'phone'             => '+31 6 20000005',
                 'address'           => 'Pijnackerstraat 8, Rotterdam, South Holland',
                 'gender'            => 'male',
-                'role'              => 'client',
+                'type'              => 'client',
                 'password'          => Hash::make('password'),
                 'email_verified_at' => now(),
                 'client' => [
@@ -104,7 +104,7 @@ class ClientSeeder extends Seeder
                 'phone'             => '+31 6 20000006',
                 'address'           => 'Beukelsdijk 77, Rotterdam, South Holland',
                 'gender'            => 'female',
-                'role'              => 'client',
+                'type'              => 'client',
                 'password'          => Hash::make('password'),
                 'email_verified_at' => now(),
                 'client' => [
@@ -121,7 +121,7 @@ class ClientSeeder extends Seeder
                 'phone'             => '+31 6 20000007',
                 'address'           => 'Aleidisstraat 3, Delft, South Holland',
                 'gender'            => 'male',
-                'role'              => 'client',
+                'type'              => 'client',
                 'password'          => Hash::make('password'),
                 'email_verified_at' => now(),
                 'client' => [
@@ -138,7 +138,7 @@ class ClientSeeder extends Seeder
                 'phone'             => '+31 6 20000008',
                 'address'           => 'Zuiderpark 19, Rotterdam, South Holland',
                 'gender'            => 'female',
-                'role'              => 'client',
+                'type'              => 'client',
                 'password'          => Hash::make('password'),
                 'email_verified_at' => now(),
                 'client' => [

@@ -6,6 +6,7 @@ use App\DTOs\Sales\Create\CreateOrderDTO;
 use App\DTOs\Sales\Update\UpdateOrderDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Sales\CreateOrderRequest;
+use App\Http\Resources\V1\OrderResource;
 use App\Services\Sales\OrderService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ class OrderController extends Controller
     public function index()
     {
         $orders = $this->orderService->index();
-        return $this->successResponse($orders);
+        return $this->successCollection($orders, OrderResource::class);
     }
 
     public function store(CreateOrderRequest $request)
@@ -39,13 +40,13 @@ class OrderController extends Controller
     public function ordersByClient(int $client_id)
     {
         $orders = $this->orderService->ordersByClient($client_id);
-        return $this->successResponse($orders);
+        return $this->successCollection($orders, OrderResource::class);
     }
 
     public function myOrders()
     {
         $orders = $this->orderService->myOrders();
-        return $this->successResponse($orders);
+        return $this->successCollection($orders, OrderResource::class);
     }
 
     public function update(int $id, Request $request)

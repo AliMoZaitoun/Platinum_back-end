@@ -11,7 +11,7 @@ class EmployeeSeeder extends Seeder
     public function run(): void
     {
         // Create an employee record for every non-admin user
-        $users = User::where('role', 'employee')->get();
+        $users = User::where('type', 'employee')->get();
 
         foreach ($users as $user) {
             $user->assignRole('employee');

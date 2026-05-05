@@ -38,9 +38,6 @@ class ClientController extends Controller
 
         $user = $this->clientService->store($userDTO, $clientDTO);
 
-        // $user = $this->resolveUserResource($user);
-
-        // For Testing
         $user['user'] = $this->resolveUserResource($user['user']);
 
         return $this->successResponse($user, __('messages.auth.otp_sent'), 201);

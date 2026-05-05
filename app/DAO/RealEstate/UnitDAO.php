@@ -9,7 +9,7 @@ use App\Models\Unit;
 
 class UnitDAO
 {
-    public function index(int $building_id, array $relations)
+    public function index(int $building_id, array $relations = [])
     {
         $defaultRelation = ['building.project'];
         $allRelations = array_merge($defaultRelation, $relations);

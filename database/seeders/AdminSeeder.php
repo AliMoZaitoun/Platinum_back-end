@@ -19,7 +19,7 @@ class AdminSeeder extends Seeder
             'phone'             => '9999999999',
             'address'           => 'Syria',
             'gender'            => 'male',
-            'role'              => 'admin',
+            'type'              => 'admin',
             'password'          => bcrypt("password"),
             'email_verified_at' => now()
         ]);

@@ -14,11 +14,11 @@ class CreateUserDTO
         public string $phone,
         public string $email,
         public string $gender,
-        public string $role,
+        public string $type,
         public string $password,
     ) {}
 
-    public static function fromRequest(array $request, string $role): self
+    public static function fromRequest(array $request, string $type): self
     {
         return new self(
             id: null,
@@ -28,7 +28,7 @@ class CreateUserDTO
             phone: $request['phone'],
             email: $request['email'],
             gender: $request['gender'],
-            role: $role,
+            type: $type,
             password: $request['password'],
         );
     }
@@ -43,7 +43,7 @@ class CreateUserDTO
             'address'    => $this->address,
             'gender'     => $this->gender,
             'address'    => $this->address,
-            'role'       => $this->role,
+            'type'       => $this->type,
             'password'   => Hash::make($this->password),
         ];
     }

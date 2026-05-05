@@ -20,9 +20,9 @@ class RoleDAO
         return Role::create($roleDTO->toArray());
     }
 
-    public function show($id)
+    public function show($id, $guardName = null)
     {
-        return Role::findById($id) ?? throw new NotFoundException('Role');
+        return Role::findById($id, $guardName) ?? throw new NotFoundException('Role');
     }
 
     public function showByName($role_name)

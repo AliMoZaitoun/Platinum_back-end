@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('department_id')->constrained()->onDelete('cascade');
             $table->date('from_date');
             $table->date('to_date')->nullable();
-            $table->enum('position', ['manager', 'supervisor', 'staff']);
+            $table->enum('position', ['manager', 'supervisor', 'staff'])->default('staff');
             $table->softDeletes();
             $table->timestamps();
         });

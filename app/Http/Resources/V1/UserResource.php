@@ -14,11 +14,12 @@ class UserResource extends JsonResource
             'full_name'     => $this->fullName,
             'email'         => $this->email,
             'phone'         => $this->phone,
-            'role'          => $this->role,
+            'type'          => $this->type,
             'address'       => $this->address,
-            'created_at'    => $this->created_at->format('Y-m-d H:i'),
+            'created_at'    => $this->created_at->format('Y-m-d h:i A'),
             'created_from'  => $this->created_at->diffForHumans(),
-            'verified_at'   => $this?->email_verified_at?->format('Y-m-d H:i')
+            'verified_at'   => $this?->email_verified_at?->format('Y-m-d h:i A'),
+            'roles'         => $this->getRoleNames()
         ];
     }
 }

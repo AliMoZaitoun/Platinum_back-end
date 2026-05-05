@@ -13,9 +13,9 @@ class OrderService
         private OrderDAO $orderDAO
     ) {}
 
-    public function index()
+    public function index(array $relations = [])
     {
-        return $this->orderDAO->index();
+        return $this->orderDAO->index($relations);
     }
 
     public function store(CreateOrderDTO $orderDTO)

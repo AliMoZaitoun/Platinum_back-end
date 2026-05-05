@@ -7,7 +7,6 @@ use App\DAO\RoleDAO;
 use App\DAO\User\EmployeeDAO;
 use App\DTOs\Core\AssignEmployeeDepartmentDTO;
 use App\DTOs\Core\Update\UpdateEmployeeDepartmentDTO;
-use App\Enums\UserRole;
 use App\Services\TransactionService;
 
 class EmployeeDepartmentService
@@ -32,8 +31,7 @@ class EmployeeDepartmentService
             $employee = $this->employeeDAO->show($dto->employee_id);
             $user = $employee->user;
 
-            $spaiteRole = UserRole::getRoleFromPosition($dto->position);
-            $this->roleDAO->syncUserRoles($user, ['employee', $spaiteRole->value]);
+            $this->roleDAO->syncUserRoles($user, ['employee', $this->roleDAO->show($dto->role_id, 'web')]);
 
             return $record;
         });

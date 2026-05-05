@@ -9,9 +9,11 @@ use App\Models\Order;
 
 class OrderDAO
 {
-    public function index()
+    public function index(array $relations = [])
     {
-        return Order::all();
+        $defaultRelation = ['unit', 'client', 'solution'];
+        $allRelations = array_merge($defaultRelation, $relations);
+        return Order::with($allRelations)->get();
     }
 
     public function store(CreateOrderDTO $orderDTO)
@@ -21,12 +23,12 @@ class OrderDAO
 
     public function show(int $id)
     {
-        return Order::find($id) ?? throw new NotFoundException("Order");
+        return Order::where('id', $id)->with(['unit', 'client', 'solution'])->get() ?? throw new NotFoundException("Order");
     }
 
     public function ordersByClient(int $client_id)
     {
-        return Order::where('client_id', $client_id)->get();
+        return Order::where('client_id', $client_id)->with(['unit', 'client', 'solution'])->get();
     }
 
     public function update(int $id, UpdateOrderDTO $orderDTO)

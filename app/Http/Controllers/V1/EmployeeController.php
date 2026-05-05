@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1;
 
+use App\DTOs\Core\AssignEmployeeDepartmentDTO;
 use App\DTOs\User\Update\UpdateEmployeeDTO;
 use App\DTOs\User\Update\UpdateUserDTO;
 use App\DTOs\User\CreateEmployeeDTO;
