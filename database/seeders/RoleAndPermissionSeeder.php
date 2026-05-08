@@ -30,6 +30,7 @@ class RoleAndPermissionSeeder extends Seeder
             'availableSlot',
             'advertisment',
             'location',
+            'report'
         ];
 
         $actions = ['read', 'create', 'update', 'delete'];
@@ -53,6 +54,8 @@ class RoleAndPermissionSeeder extends Seeder
         $engineer->syncPermissions([
             'read.project',
             'read.building',
+            'create.report',
+            'read.report'
         ]);
 
         // Client

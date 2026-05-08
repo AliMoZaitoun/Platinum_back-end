@@ -101,8 +101,8 @@ class AuthService
         $user = $this->userDAO->findById($storedToken->user_id);
         $access_token = $user->createToken('auth_token')->plainTextToken;
 
-        $plainRefresh  = Str::random(64);
-        $hashedRefresh  = hash('sha256', $plainRefresh);
+        $plainRefresh = Str::random(64);
+        $hashedRefresh = hash('sha256', $plainRefresh);
         $this->refreshTokenDAO->update($storedToken, $hashedRefresh);
 
         $tokens = [

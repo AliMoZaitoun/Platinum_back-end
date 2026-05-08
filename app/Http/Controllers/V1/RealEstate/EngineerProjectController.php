@@ -10,6 +10,7 @@ use App\Http\Resources\V1\Core\EngineerProjectResource;
 use App\Services\RealEstate\EngineerProjectService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EngineerProjectController extends Controller
 {
@@ -26,14 +27,20 @@ class EngineerProjectController extends Controller
     public function store(AssignEngineerProjectRequest $request)
     {
         $dto = AssignEngProDTO::fromRequest($request->validated());
-        $location = $this->engProService->store($dto);
-        return $this->useResource($location, EngineerProjectResource::class, __('messages.common.stored'), 201);
+        $projectEng = $this->engProService->store($dto);
+        return $this->useResource($projectEng, EngineerProjectResource::class, __('messages.common.stored'), 201);
     }
 
     public function show(int $id)
     {
-        $location = $this->engProService->show($id);
-        return $this->useResource($location, EngineerProjectResource::class);
+        $projectEng = $this->engProService->show($id);
+        return $this->useResource($projectEng, EngineerProjectResource::class);
+    }
+
+    public function myProjects()
+    {
+        $projects = $this->engProService->myProjects();
+        return $this->successCollection($projects, EngineerProjectResource::class);
     }
 
     public function engProjects(int $engineer_id)
@@ -55,7 +62,7 @@ class EngineerProjectController extends Controller
         return $this->useResource($location, EngineerProjectResource::class, __('messages.common.updated'), 200);
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $this->engProService->destroy($id);
         return $this->successResponse([], __('messages.common.deleted'), 200);

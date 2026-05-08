@@ -2,39 +2,39 @@
 
 namespace App\DAO\RealEstate;
 
-use App\DTOs\RealEstate\Create\CreateProjectDTO;
-use App\DTOs\RealEstate\Update\UpdateProjectDTO;
+use App\DTOs\Engineering\CreateReportDTO;
 use App\Exceptions\NotFoundException;
 use App\Models\ConstructionReport;
-use App\Models\Project;
 
 class ConstructionReportDAO
 {
     public function index()
     {
-        return ConstructionReport::all();
+        return ConstructionReport::latest('report_date')->get();
     }
 
-    public function store(CreateProjectDTO $projectDTO)
+    public function store(CreateReportDTO $dto)
     {
-        return ConstructionReport::create($projectDTO->toArray());
+        return ConstructionReport::updateOrCreate(
+            ['uuid' => $dto->uuid],
+            $dto->toArray()
+        );
     }
 
     public function show(int $id)
     {
-        return ConstructionReport::find($id) ?? throw new NotFoundException("Project");
+        return ConstructionReport::find($id) ?? throw new NotFoundException("Report");
     }
 
-    public function update(int $id, UpdateProjectDTO $projectDTO)
+    public function findByUuid(string $uuid)
     {
-        $project = $this->show($id);
-        $project->update($projectDTO->toArray());
-        return $project;
+        return ConstructionReport::where('uuid', $uuid)->first()
+            ?? throw new NotFoundException("Report");
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
-        $project = $this->show($id);
-        return $project->delete();
+        $report = $this->show($id);
+        return $report->delete();
     }
 }

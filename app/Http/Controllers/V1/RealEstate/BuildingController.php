@@ -45,7 +45,7 @@ class BuildingController extends Controller
         return $this->useResource($building, BuildingResource::class, __('messages.common.updated'), 200);
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $this->buildingService->destroy($id);
         return $this->successResponse([], __('messages.common.deleted'), 200);

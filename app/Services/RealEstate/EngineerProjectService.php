@@ -29,6 +29,12 @@ class EngineerProjectService
         return $this->engineerProjectDAO->show($id);
     }
 
+    public function myProjects()
+    {
+        $user = Auth::user();
+        $eng = $user->engineer;
+        return $this->engProjects($eng->id);
+    }
     public function engProjects(int $id)
     {
         return $this->engineerProjectDAO->engProjects($id);
@@ -44,7 +50,7 @@ class EngineerProjectService
         return $this->engineerProjectDAO->update($id, $dto);
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         return $this->engineerProjectDAO->destroy($id);
     }

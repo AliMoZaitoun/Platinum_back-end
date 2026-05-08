@@ -2,38 +2,65 @@
 
 namespace App\Services\RealEstate;
 
-use App\DAO\RealEstate\BuildingDAO;
-use App\DTOs\RealEstate\Create\CreateBuildingDTO;
-use App\DTOs\RealEstate\Update\UpdateBuildingDTO;
+use App\DAO\RealEstate\ConstructionReportDAO;
+use App\DTOs\Engineering\CreateReportDTO;
+use App\Services\FileManagerService;
+use App\Services\TransactionService;
 
 class ConstructionReportService
 {
     public function __construct(
-        private BuildingDAO $buildingDAO
+        private ConstructionReportDAO $dao,
+        private FileManagerService $fileManager,
+        private TransactionService $transaction
     ) {}
 
-    public function index(int $project_id)
+    public function index()
     {
-        return $this->buildingDAO->index($project_id);
+        return $this->dao->index();
     }
 
-    public function store(CreateBuildingDTO $buildingDTO)
+    public function store(CreateReportDTO $dto, $attachments = null)
     {
-        return $this->buildingDAO->store($buildingDTO);
+        return $this->transaction->execute(function () use ($dto, $attachments) {
+            $report = $this->dao->store($dto);
+
+            if ($attachments) {
+                $this->fileManager->storeFile(
+                    model: $report,
+                    files: $attachments,
+                    folderPath: "projects/{$report->project_id}/reports",
+                    relationName: 'media'
+                );
+            }
+            return $report;
+        });
+    }
+
+    public function attachImagesByUuid(string $reportUuid, $attachments)
+    {
+        $report = $this->dao->findByUuid($reportUuid);
+
+        return $this->fileManager->storeFile(
+            model: $report,
+            files: $attachments,
+            folderPath: "projects/{$report->project_id}/reports",
+            relationName: 'media'
+        );
     }
 
     public function show(int $id)
     {
-        return $this->buildingDAO->show($id);
+        return $this->dao->show($id);
     }
 
-    public function update(int $id, UpdateBuildingDTO $buildingDTO)
+    public function findByUuid(string $uuid)
     {
-        return $this->buildingDAO->update($id, $buildingDTO);
+        return $this->dao->findByUuid($uuid);
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
-        return $this->buildingDAO->destroy($id);
+        return $this->dao->destroy($id);
     }
 }

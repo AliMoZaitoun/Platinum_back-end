@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Validation\UnauthorizedException;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Database\QueryException;
 use InvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Spatie\Permission\Exceptions\UnauthorizedException as UnauthorizedExceptionSpatie;
@@ -54,6 +55,11 @@ class Handler
         $exceptions->render(function (InvalidArgumentException $e) {
             return $this->errorResponse($e->getMessage(), $e->getCode() ?: 403);
         });
+
+        // $exceptions->render(function (QueryException $e) {
+        //     return $this->errorResponse($e, $e->getCode() ?: 403);
+        // });
+
         // $exceptions->render(function (Exception $e) {
         //     return $this->errorResponse($e->getMessage(), $e->getCode() ?: 403);
         // });

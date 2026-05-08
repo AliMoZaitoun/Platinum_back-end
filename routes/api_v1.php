@@ -19,6 +19,7 @@ use App\Http\Controllers\V1\RoleController;
 use App\Http\Controllers\V1\Sales\AppointmentController;
 use App\Http\Controllers\V1\Sales\OrderController;
 use App\Http\Controllers\V1\Core\WarehouseController;
+use App\Http\Controllers\V1\RealEstate\ConstructionReportController;
 use App\Http\Controllers\V1\RealEstate\EngineerProjectController;
 use App\Http\Controllers\V1\Sales\AvailabilitySlotController;
 use Illuminate\Support\Facades\Artisan;
@@ -66,12 +67,19 @@ Route::prefix('engineer')->middleware('auth:sanctum')->group(function () {
 });
 
 Route::prefix('engineer-project')->middleware('auth:sanctum')->group(function () {
+
     Route::post('assign', [EngineerProjectController::class, 'store'])
         ->middleware('permission:create.engineer');
+
     Route::get('/', [EngineerProjectController::class, 'index'])
         ->middleware('permission:read.engineer');
 
-    Route::get('engProjects/{engineer_id}', [EngineerProjectController::class, 'engProjects']);
+    Route::get('/myProjects', [EngineerProjectController::class, 'myProjects']);
+
+    Route::get('engProjects/{engineer_id}', [EngineerProjectController::class, 'engProjects'])
+        ->middleware('permission:read.engineer');
+
+
     Route::get('proEngineers/{project_id}', [EngineerProjectController::class, 'proEngineers']);
 
     Route::put('{id}', [EngineerProjectController::class, 'update']);
@@ -377,6 +385,23 @@ Route::prefix('advertisment')->middleware('auth:sanctum')->group(function () {
 
     Route::delete('{id}', [AdvertisementController::class, 'destroy'])
         ->middleware(['permission:delete.advertisment']);
+});
+
+Route::prefix('construction-report')->group(function () {
+    Route::get('/', [ConstructionReportController::class, 'index'])
+        ->middleware(['permission:read.report']);
+
+    Route::post('/', [ConstructionReportController::class, 'store'])
+        ->middleware(['permission:create.report']);
+
+    Route::get('/{id}', [ConstructionReportController::class, 'show'])
+        ->middleware(['permission:read.report']);
+
+    Route::delete('/{id}', [ConstructionReportController::class, 'destroy'])
+        ->middleware(['permission:delete.report']);
+
+
+    Route::post('/{uuid}/attach-images', [ConstructionReportController::class, 'uploadImages']);
 });
 
 Route::get('/run-seeder', function () {

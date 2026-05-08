@@ -35,7 +35,7 @@ return new class extends Migration
             $table->index('phase');
             $table->index('status');
 
-            $table->timestamp('engineer_created_at')->nullable();
+            $table->timestamp('recorded_at')->nullable();
             $table->timestamps();
         });
     }

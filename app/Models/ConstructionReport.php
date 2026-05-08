@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
     'status',
     'manpower_count',
     'issues_count',
-    'user_created_at'
+    'recorded_at'
 ])]
 class ConstructionReport extends Model
 {
@@ -29,7 +29,7 @@ class ConstructionReport extends Model
         return $this->belongsTo(Engineer::class);
     }
 
-    public function media()
+    public function attachments()
     {
         return $this->morphMany(Media::class, 'mediable');
     }
