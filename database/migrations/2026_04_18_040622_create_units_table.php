@@ -25,6 +25,7 @@ return new class extends Migration
             $table->index(['rooms_count', 'area'], 'idx_units_specs');
             $table->index('price', 'idx_search_price');
             $table->unique(['building_id', 'unit_number']);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

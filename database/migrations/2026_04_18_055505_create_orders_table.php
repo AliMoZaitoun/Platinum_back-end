@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('unit_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('solution_id')->nullable()->constrained()->onDelete('cascade');
             $table->enum('status', ['pending', 'accepted', 'rejected']);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

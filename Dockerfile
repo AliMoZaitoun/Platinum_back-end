@@ -1,12 +1,17 @@
-FROM php:8.4-fpm
+FROM php:8.5-fpm-alpine
 
-RUN apt-get update && apt-get install -y \
-    git curl libpng-dev libonig-dev \
-    libxml2-dev zip unzip libpq-dev
+RUN apk add --no-cache \
+    git \
+    curl \
+    libpng-dev \
+    oniguruma-dev \
+    libxml2-dev \
+    zip \
+    unzip \
+    postgresql-dev \
+    linux-headers
 
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-
-RUN docker-php-ext-install pdo_mysql pdo_pgsql pgsql mbstring exif pcntl bcmath gd
+RUN docker-php-ext-install pdo_pgsql pgsql mbstring exif pcntl bcmath gd
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
@@ -20,6 +25,7 @@ RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
 EXPOSE 8080
 
-COPY docker/start.sh /start.sh
-RUN chmod +x /start.sh
-CMD ["/start.sh"]
+COPY docker/start.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+CMD ["/bin/sh", "/entrypoint.sh"]

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('building_number');
             $table->integer('floors_count');
             $table->enum('status', ['completed', 'in_progress', 'stopped']);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

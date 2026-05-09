@@ -18,10 +18,8 @@ return new class extends Migration
             $table->string('job_title');
             $table->enum('social_status', ['single', 'married', 'divorced', 'widowed']);
 
-            $table->text('ai_layout_suggestion')->nullable();
-            $table->text('last_ai_prompt')->nullable();
-
             $table->string('national_id')->unique();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

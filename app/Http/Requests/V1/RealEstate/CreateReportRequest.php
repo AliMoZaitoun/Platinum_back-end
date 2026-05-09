@@ -19,13 +19,16 @@ class CreateReportRequest extends FormRequest
             'project_id'            => 'required|exists:projects,id',
             'engineer_id'           => 'required|exists:engineers,id',
             'phase'                 => 'required|in:excavation,foundation,structural,finishing,electrical,plumbing',
-            'completion_percentage' => 'required|integer|min:0|max:100',
-            'daily_progress'        => 'required|integer',
+            'completion_percentage' => 'required|numeric|min:0|max:100',
+            'daily_progress'        => 'required|numeric',
             'status'                => 'required|in:on_track,delayed,blocked',
             'report_date'           => 'required|date',
+            'manpower_count'        => 'required|integer',
+            'issues_count'          => 'required|integer',
+            'description'           => 'nullable|string',
             'recorded_at'           => 'nullable|date',
             'attachments'           => 'nullable|array',
-            'attachments.*'         => 'file|mimes:jpg,jpeg,png,pdf,docx,xlsx,zip|max:10240',
+            'attachments.*'         => 'file|mimes:jpg,jpeg,png,pdf,docx,xlsx,zip,txt|max:10240',
         ];
     }
 }

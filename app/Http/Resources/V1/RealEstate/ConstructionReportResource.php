@@ -8,11 +8,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ConstructionReportResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
         return [
@@ -24,12 +19,11 @@ class ConstructionReportResource extends JsonResource
                 'status' => $this->status,
                 'completion_percentage' => (float) $this->completion_percentage,
                 'daily_progress' => (float) $this->daily_progress,
-                'report_date' => $this->report_date->format('Y-m-d'),
+                'report_date' => $this->report_date,
             ],
 
             'content' => [
                 'description' => $this->description,
-                'notes' => $this->notes ?? 'No additional notes',
             ],
 
             'relationships' => [
@@ -40,8 +34,9 @@ class ConstructionReportResource extends JsonResource
             'attachments' => $this->formatAttachments(),
 
             'timestamps' => [
-                'created_at' => $this->created_at->toDateTimeString(),
-                'updated_at' => $this->updated_at->toDateTimeString(),
+                'recorded_at' => $this->recorded_at,
+                'created_at'  => $this->created_at->format('Y-m-d h:i A'),
+                'updated_at'  => $this->updated_at->format('Y-m-d h:i A'),
             ],
         ];
     }

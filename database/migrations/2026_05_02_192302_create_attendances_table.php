@@ -34,6 +34,8 @@ return new class extends Migration
             $table->index(['engineer_id', 'project_id']);
             $table->index('status');
 
+            $table->softDeletes();
+
             $table->timestamps();
         });
     }

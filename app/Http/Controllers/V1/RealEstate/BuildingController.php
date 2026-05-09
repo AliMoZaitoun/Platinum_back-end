@@ -11,6 +11,10 @@ use App\Services\RealEstate\BuildingService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 
+/**
+ * @method void authorize(mixed $ability, mixed|array $arguments = [])
+ */
+
 class BuildingController extends Controller
 {
     use ResponseTrait;
@@ -20,6 +24,7 @@ class BuildingController extends Controller
 
     public function index(int $project_id)
     {
+        $this->authorize('view');
         $buildings = $this->buildingService->index($project_id);
 
         return $this->successCollection($buildings, BuildingResource::class);
@@ -27,6 +32,7 @@ class BuildingController extends Controller
 
     public function store(CreateBuildingRequest $request)
     {
+        $this->authorize('create');
         $buildingDTO = CreateBuildingDTO::fromRequest($request->validated());
         $building = $this->buildingService->store($buildingDTO);
         return $this->useResource($building, BuildingResource::class, __('messages.common.stored'), 201);
@@ -34,12 +40,14 @@ class BuildingController extends Controller
 
     public function show(int $id)
     {
+        $this->authorize('view');
         $building = $this->buildingService->show($id);
         return $this->useResource($building, BuildingResource::class);
     }
 
     public function update(int $id, Request $request)
     {
+        $this->authorize('update');
         $buildingDTO = UpdateBuildingDTO::fromRequest($request->all());
         $building = $this->buildingService->update($id, $buildingDTO);
         return $this->useResource($building, BuildingResource::class, __('messages.common.updated'), 200);
@@ -47,6 +55,7 @@ class BuildingController extends Controller
 
     public function destroy(int $id)
     {
+        $this->authorize('delete');
         $this->buildingService->destroy($id);
         return $this->successResponse([], __('messages.common.deleted'), 200);
     }

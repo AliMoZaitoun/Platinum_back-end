@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
             $table->date('start_date');
             $table->date('end_date')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

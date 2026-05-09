@@ -22,6 +22,7 @@ return new class extends Migration
             $table->date('expiry_date')->nullable();
             $table->date('purchase_date')->nullable();
             $table->date('received_date')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

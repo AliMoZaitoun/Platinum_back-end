@@ -238,58 +238,43 @@ Route::prefix('location')->middleware('auth:sanctum')->group(function () {
 
 // Project
 Route::prefix('project')->middleware('auth:sanctum')->group(function () {
-    Route::post('/', [ProjectController::class, 'store'])
-        ->middleware(['permission:create.project']);
+    Route::post('/', [ProjectController::class, 'store']);
 
-    Route::put('{id}', [ProjectController::class, 'update'])
-        ->middleware(['permission:update.project']);
+    Route::put('{id}', [ProjectController::class, 'update']);
 
     Route::get('/', [ProjectController::class, 'index']);
-    // ->middleware(['permission:read.project']);
 
-    Route::get('{id}', [ProjectController::class, 'show'])
-        ->middleware(['permission:read.project']);
+    Route::get('{id}', [ProjectController::class, 'show']);
 
-    Route::delete('{id}', [ProjectController::class, 'destroy'])
-        ->middleware(['permission:delete.project']);
+    Route::delete('{id}', [ProjectController::class, 'destroy']);
 });
 
 // Building
 Route::prefix('building')->middleware('auth:sanctum')->group(function () {
-    Route::post('/', [BuildingController::class, 'store'])
-        ->middleware(['permission:create.building']);
+    Route::post('/', [BuildingController::class, 'store']);
 
-    Route::put('{id}', [BuildingController::class, 'update'])
-        ->middleware(['permission:update.building']);
+    Route::put('{id}', [BuildingController::class, 'update']);
 
-    Route::get('ofProject/{project_id}', [BuildingController::class, 'index'])
-        ->middleware(['permission:read.building']);
+    Route::get('ofProject/{project_id}', [BuildingController::class, 'index']);
 
-    Route::get('{id}', [BuildingController::class, 'show'])
-        ->middleware(['permission:read.building']);
+    Route::get('{id}', [BuildingController::class, 'show']);
 
-    Route::delete('{id}', [BuildingController::class, 'destroy'])
-        ->middleware(['permission:destroy.building']);
+    Route::delete('{id}', [BuildingController::class, 'destroy']);
 });
 
 // Unit
 Route::prefix('unit')->middleware('auth:sanctum')->group(function () {
-    Route::post('/', [UnitController::class, 'store'])
-        ->middleware(['permission:create.unit']);
+    Route::post('/', [UnitController::class, 'store']);
 
-    Route::put('{id}', [UnitController::class, 'update'])
-        ->middleware(['permission:update.unit']);
+    Route::put('{id}', [UnitController::class, 'update']);
 
-    Route::get('ofBuilding/{building_id}', [UnitController::class, 'index'])
-        ->middleware(['permission:read.unit']);
+    Route::get('ofBuilding/{building_id}', [UnitController::class, 'index']);
 
     Route::get('search', [UnitController::class, 'search']);
 
-    Route::get('{id}', [UnitController::class, 'show'])
-        ->middleware(['permission:read.unit']);
+    Route::get('{id}', [UnitController::class, 'show']);
 
-    Route::delete('{id}', [UnitController::class, 'destroy'])
-        ->middleware(['permission:destroy.unit']);
+    Route::delete('{id}', [UnitController::class, 'destroy']);
 });
 
 // Favorite
@@ -387,7 +372,7 @@ Route::prefix('advertisment')->middleware('auth:sanctum')->group(function () {
         ->middleware(['permission:delete.advertisment']);
 });
 
-Route::prefix('construction-report')->group(function () {
+Route::prefix('construction-report')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [ConstructionReportController::class, 'index'])
         ->middleware(['permission:read.report']);
 

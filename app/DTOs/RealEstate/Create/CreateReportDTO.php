@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DTOs\Engineering;
+namespace App\DTOs\RealEstate\Create;
 
 class CreateReportDTO
 {

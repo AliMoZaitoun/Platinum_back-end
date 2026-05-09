@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('created_by')->constrained()->on('engineers')->cascadeOnDelete();
             $table->foreignId('av_slot_id')->constrained()->on('availability_slots')->cascadeOnDelete();
             $table->enum('status', ['pending', 'done', 'cancelled']);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -11,6 +11,10 @@ use App\Services\RealEstate\ProjectService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 
+/**
+ * @method void authorize(mixed $ability, mixed|array $arguments = [])
+ */
+
 class ProjectController extends Controller
 {
     use ResponseTrait;
@@ -20,12 +24,14 @@ class ProjectController extends Controller
 
     public function index()
     {
+        $this->authorize('view');
         $projects = $this->projectService->index(['buildings']);
         return $this->successCollection($projects, ProjectResource::class);
     }
 
     public function store(CreateProjectRequest $request)
     {
+        $this->authorize('create');
         $projectDTO = CreateProjectDTO::fromRequest($request->validated());
         $project = $this->projectService->store($projectDTO);
         return $this->useResource($project, ProjectResource::class, __('messages.common.stored'), 201);
@@ -33,19 +39,22 @@ class ProjectController extends Controller
 
     public function show(int $id)
     {
+        $this->authorize('view');
         $project = $this->projectService->show($id);
         return $this->useResource($project, ProjectResource::class);
     }
 
     public function update(int $id, Request $request)
     {
+        $this->authorize('update');
         $projectDTO = UpdateProjectDTO::fromRequest($request->all());
         $project = $this->projectService->update($id, $projectDTO);
         return $this->useResource($project, ProjectResource::class, __('messages.common.updated'), 200);
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
+        $this->authorize('delete');
         $this->projectService->destroy($id);
         return $this->successResponse([], __('messages.common.deleted'), 200);
     }

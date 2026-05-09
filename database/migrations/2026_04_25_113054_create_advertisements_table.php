@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('description');
             $table->enum('status', ['enabled', 'disabled']);
             $table->date('duration');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

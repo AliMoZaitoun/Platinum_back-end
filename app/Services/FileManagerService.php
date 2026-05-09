@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 class FileManagerService
 {
     protected $disk = "uploads";
-    public function storeFile($model, array|UploadedFile $files, $folderPath, $relationName = 'media', ?callable $typeResolver = null)
+    public function storeFile($model, array|UploadedFile $files, $folderPath, $relationName = 'attachments', ?callable $typeResolver = null)
     {
         $files = is_array($files) ? $files : [$files];
         $storedRecords = [];

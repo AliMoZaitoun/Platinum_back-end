@@ -16,6 +16,8 @@ return new class extends Migration
             $table->json('name');
             $table->enum('type', ['country', 'city', 'district']);
             $table->foreignId('parent_id')->nullable()->constrained('locations')->onDelete('cascade');
+            $table->softDeletes();
+
             $table->timestamps();
         });
     }

@@ -29,13 +29,16 @@ return new class extends Migration
             $table->integer('manpower_count')->unsigned()->default(0);
             $table->integer('issues_count')->unsigned()->default(0);
             $table->text('description')->nullable();
-            $table->date('report_date');
+            $table->timestamp('report_date');
 
             $table->index(['project_id', 'report_date']);
             $table->index('phase');
             $table->index('status');
 
             $table->timestamp('recorded_at')->nullable();
+
+            $table->softDeletes();
+
             $table->timestamps();
         });
     }

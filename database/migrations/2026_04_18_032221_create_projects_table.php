@@ -22,6 +22,7 @@ return new class extends Migration
             $table->enum('status', ['completed', 'in_progress', 'stopped']);
             $table->date('start_date');
             $table->date('end_date')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

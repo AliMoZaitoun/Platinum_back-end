@@ -3,7 +3,7 @@
 namespace App\Services\RealEstate;
 
 use App\DAO\RealEstate\ConstructionReportDAO;
-use App\DTOs\Engineering\CreateReportDTO;
+use App\DTOs\RealEstate\Create\CreateReportDTO;
 use App\Services\FileManagerService;
 use App\Services\TransactionService;
 

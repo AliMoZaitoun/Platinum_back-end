@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\V1\RealEstate;
 
-use App\DTOs\Engineering\CreateReportDTO;
+use App\DTOs\RealEstate\Create\CreateReportDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\RealEstate\CreateReportRequest;
 use App\Http\Resources\V1\RealEstate\ConstructionReportResource;

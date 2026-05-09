@@ -2,7 +2,7 @@
 
 namespace App\DAO\RealEstate;
 
-use App\DTOs\Engineering\CreateReportDTO;
+use App\DTOs\RealEstate\Create\CreateReportDTO;
 use App\Exceptions\NotFoundException;
 use App\Models\ConstructionReport;
 

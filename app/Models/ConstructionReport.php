@@ -13,10 +13,13 @@ use Illuminate\Database\Eloquent\Model;
     'completion_percentage',
     'daily_progress',
     'status',
+    'report_date',
     'manpower_count',
     'issues_count',
-    'recorded_at'
+    'recorded_at',
+    'description'
 ])]
+
 class ConstructionReport extends Model
 {
     public function project()
