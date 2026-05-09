@@ -33,7 +33,7 @@ class RoleAndPermissionSeeder extends Seeder
             'report'
         ];
 
-        $actions = ['read', 'create', 'update', 'delete'];
+        $actions = ['read', 'create', 'update', 'archive', 'restore', 'delete'];
 
         foreach ($resources as $resource) {
             foreach ($actions as $action) {
