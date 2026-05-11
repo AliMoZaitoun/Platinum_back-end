@@ -1,10 +1,13 @@
 #!/bin/sh
 set -e
 
-echo "Waiting for database connection..."
+DB_HOST=${DB_HOST:-127.0.0.1}
+DB_PORT=${DB_PORT:-5432}
 
-until nc -z platinum-db 5432; do
-    echo "PostgreSQL is unavailable - sleeping"
+echo "Checking connection to $DB_HOST on port $DB_PORT..."
+
+until nc -z $DB_HOST $DB_PORT; do
+    echo "Waiting for Database Host ($DB_HOST)..."
     sleep 2
 done
 
