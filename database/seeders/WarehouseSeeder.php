@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Warehouse;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Core\Warehouse;
 use Illuminate\Database\Seeder;
 
 class WarehouseSeeder extends Seeder

@@ -3,6 +3,7 @@
 namespace App\Http\Resources\V1\RealEstate;
 
 use App\Http\Resources\V1\EngineerDetailResource;
+use App\Http\Resources\V1\MediaResouce;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -31,7 +32,7 @@ class ConstructionReportResource extends JsonResource
                 'engineer' => new EngineerDetailResource($this->whenLoaded('engineer')),
             ],
 
-            'attachments' => $this->formatAttachments(),
+            'media' => MediaResouce::collection($this->media),
 
             'timestamps' => [
                 'recorded_at' => $this->recorded_at,
@@ -39,20 +40,5 @@ class ConstructionReportResource extends JsonResource
                 'updated_at'  => $this->updated_at->format('Y-m-d h:i A'),
             ],
         ];
-    }
-
-    private function formatAttachments(): array
-    {
-        if (!$this->attachments) {
-            return [];
-        }
-
-        return collect($this->attachments)->map(function ($path) {
-            return [
-                'file_name' => basename($path),
-                'url' => asset('storage/' . $path),
-                'extension' => pathinfo($path, PATHINFO_EXTENSION),
-            ];
-        })->toArray();
     }
 }

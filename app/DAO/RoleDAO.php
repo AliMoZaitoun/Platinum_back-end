@@ -2,7 +2,7 @@
 
 namespace App\DAO;
 
-use App\DTOs\Role\CreateRoleDTO;
+use App\DTOs\Role\Create\CreateRoleDTO;
 use App\DTOs\Role\Update\UpdateRoleDTO;
 use App\Exceptions\NotFoundException;
 use App\Models\User;
@@ -20,12 +20,12 @@ class RoleDAO
         return Role::create($roleDTO->toArray());
     }
 
-    public function show($id, $guardName = null)
+    public function show(int $id, $guardName = null)
     {
         return Role::findById($id, $guardName) ?? throw new NotFoundException('Role');
     }
 
-    public function showByName($role_name)
+    public function showByName(string $role_name)
     {
         return Role::findByName($role_name) ?? throw new NotFoundException('Role');
     }
@@ -46,13 +46,13 @@ class RoleDAO
         return $role->update($roleDTO->toArray());
     }
 
-    public function selectPermissions(int $id, $permissions)
+    public function selectPermissions(int $id, array $permissions)
     {
         $role = $this->show($id);
         return $role->syncPermissions($permissions);
     }
 
-    public function removePermission(Role $role, $permission)
+    public function removePermission(Role $role, string $permission)
     {
         return $role->revokePermissionTo($permission);
     }

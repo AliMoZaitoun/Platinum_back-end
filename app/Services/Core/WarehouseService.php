@@ -3,7 +3,7 @@
 namespace App\Services\Core;
 
 use App\DAO\Core\WarehouseDAO;
-use App\DTOs\Core\CreateWarehouseDTO;
+use App\DTOs\Core\Create\CreateWarehouseDTO;
 use App\DTOs\Core\Update\UpdateWarehouseDTO;
 
 class WarehouseService

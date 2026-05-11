@@ -5,7 +5,7 @@ namespace App\DAO\RealEstate;
 use App\DTOs\RealEstate\Create\CreateUnitDTO;
 use App\DTOs\RealEstate\Update\UpdateUnitDTO;
 use App\Exceptions\NotFoundException;
-use App\Models\Unit;
+use App\Models\RealEstate\Unit;
 
 class UnitDAO
 {

@@ -5,7 +5,7 @@ namespace App\DAO\Sales;
 use App\DTOs\Sales\Create\CreateAvailabilitySlotDTO;
 use App\DTOs\Sales\Update\UpdateAvailabilitySlotDTO;
 use App\Exceptions\NotFoundException;
-use App\Models\AvailabilitySlot;
+use App\Models\Sales\AvailabilitySlot;
 
 use function Symfony\Component\Clock\now;
 
@@ -13,7 +13,7 @@ class AvailabilitySlotDAO
 {
     public function index()
     {
-        return AvailabilitySlot::all();
+        return AvailabilitySlot::with('engineer')->get();
     }
 
     public function store(CreateAvailabilitySlotDTO $dto)
@@ -33,7 +33,7 @@ class AvailabilitySlotDAO
 
     public function show(int $id)
     {
-        return AvailabilitySlot::find($id) ?? throw new NotFoundException("Appointment");
+        return AvailabilitySlot::where('id', $id)->with('engineer')->get() ?? throw new NotFoundException("Appointment");
     }
 
     public function update(int $id, UpdateAvailabilitySlotDTO $appointmentDTO)

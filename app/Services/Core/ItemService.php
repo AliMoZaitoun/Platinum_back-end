@@ -3,7 +3,7 @@
 namespace App\Services\Core;
 
 use App\DAO\Core\ItemDAO;
-use App\DTOs\Core\CreateItemDTO;
+use App\DTOs\Core\Create\CreateItemDTO;
 use App\DTOs\Core\Update\UpdateItemDTO;
 
 class ItemService

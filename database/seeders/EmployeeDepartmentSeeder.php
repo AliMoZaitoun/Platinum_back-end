@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Department;
-use App\Models\Employee;
-use App\Models\EmployeeDepartment;
-use App\Models\User;
 use App\Enums\UserRole;
+use App\Models\Core\Department;
+use App\Models\Core\Employee;
+use App\Models\Core\EmployeeDepartment;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class EmployeeDepartmentSeeder extends Seeder

@@ -10,9 +10,6 @@ services:
       - ./:/var/www
     networks:
       - const-network
-    dns:
-      - 8.8.8.8
-      - 8.8.4.4
   db:
     image: postgres:16-alpine
     container_name: platinum-db
@@ -20,6 +17,7 @@ services:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
       - const-db-data:/var/lib/postgresql/data
     networks:
@@ -37,19 +35,29 @@ services:
     networks:
       - const-network
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: platinum-phpmyadmin
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: platinum-pgadmin
     restart: unless-stopped
-    depends_on:
-      - db
     environment:
-      PMA_HOST: db
-      PMA_PORT: 3306
-
-      UPLOAD_LIMIT: 64M
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
     ports:
-      - "8081:80"
+      - "8082:80"
+    networks:
+      - const-network
+
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: password
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
     networks:
       - const-network
 
@@ -60,3 +68,4 @@ networks:
 
 volumes:
   const-db-data:
+  minio_data:

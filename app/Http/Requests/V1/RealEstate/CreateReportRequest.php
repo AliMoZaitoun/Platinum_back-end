@@ -17,6 +17,7 @@ class CreateReportRequest extends FormRequest
         return [
             'uuid'                  => 'required|uuid|unique:construction_reports,uuid',
             'project_id'            => 'required|exists:projects,id',
+            'building_id'           => 'nullable|exists:buildings,id',
             'engineer_id'           => 'required|exists:engineers,id',
             'phase'                 => 'required|in:excavation,foundation,structural,finishing,electrical,plumbing',
             'completion_percentage' => 'required|numeric|min:0|max:100',

@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers\V1;
 
-use App\DTOs\Role\CreateRoleDTO;
-use App\DTOs\Role\RoleDTO;
+use App\DTOs\Role\Create\CreateRoleDTO;
 use App\DTOs\Role\Update\UpdateRoleDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\CreateRoleRequest;
@@ -32,13 +31,13 @@ class RoleController extends Controller
         return $this->successResponse($role, __('messages.common.stored'));
     }
 
-    public function show($id)
+    public function show(int $id)
     {
         $role = $this->roleService->show($id);
         return $this->successResponse($role);
     }
 
-    public function showByName($role_name)
+    public function showByName(string $role_name)
     {
         $role = $this->roleService->showByName($role_name);
         return $this->successResponse($role);
@@ -63,7 +62,7 @@ class RoleController extends Controller
         return $this->successResponse($role);
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $this->roleService->destroy($id);
         return $this->successResponse([], __('messages.common.deleted'));

@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\DAO\RoleDAO;
-use App\DTOs\Role\CreateRoleDTO;
+use App\DTOs\Role\Create\CreateRoleDTO;
 use App\DTOs\Role\Update\UpdateRoleDTO;
 
 class RoleService
@@ -22,12 +22,12 @@ class RoleService
         return $this->roleDAO->store($roleDTO);
     }
 
-    public function show($id)
+    public function show(int $id)
     {
         return $this->roleDAO->show($id);
     }
 
-    public function showByName($role_name)
+    public function showByName(string $role_name)
     {
         return $this->roleDAO->showByName($role_name);
     }
@@ -51,7 +51,7 @@ class RoleService
         return $role;
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         return $this->roleDAO->destroy($id);
     }

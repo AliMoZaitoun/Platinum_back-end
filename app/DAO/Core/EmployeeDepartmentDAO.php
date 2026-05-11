@@ -2,10 +2,10 @@
 
 namespace App\DAO\Core;
 
-use App\DTOs\Core\AssignEmployeeDepartmentDTO;
+use App\DTOs\Core\Create\AssignEmployeeDepartmentDTO;
 use App\DTOs\Core\Update\UpdateEmployeeDepartmentDTO;
 use App\Exceptions\NotFoundException;
-use App\Models\EmployeeDepartment;
+use App\Models\Core\EmployeeDepartment;
 
 class EmployeeDepartmentDAO
 {

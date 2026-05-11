@@ -3,9 +3,9 @@
 namespace App\DAO\Sales;
 
 use App\DTOs\Sales\Create\CreateAppointmentDTO;
-use App\DTOs\Sales\Create\UpdateAppointmentDTO;
+use App\DTOs\Sales\Update\UpdateAppointmentDTO;
 use App\Exceptions\NotFoundException;
-use App\Models\Appointment;
+use App\Models\Sales\Appointment;
 
 class AppointmentDAO
 {

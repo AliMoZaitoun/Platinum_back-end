@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DTOs\Sales\Create;
+namespace App\DTOs\Sales\Update;
 
 class UpdateAppointmentDTO
 {

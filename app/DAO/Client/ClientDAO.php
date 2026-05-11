@@ -2,10 +2,10 @@
 
 namespace App\DAO\Client;
 
-use App\DTOs\User\Update\UpdateClientDTO;
-use App\DTOs\User\CreateClientDTO;
+use App\DTOs\Client\Update\UpdateClientDTO;
+use App\DTOs\Client\Create\CreateClientDTO;
 use App\Exceptions\NotFoundException;
-use App\Models\Client;
+use App\Models\Client\Client;
 
 class ClientDAO
 {
@@ -21,17 +21,17 @@ class ClientDAO
         return $client;
     }
 
-    public function show($id)
+    public function show(int $id)
     {
         return Client::find($id) ?? throw new NotFoundException("Client");
     }
 
-    public function update($client, UpdateClientDTO $clientDTO)
+    public function update(Client $client, UpdateClientDTO $clientDTO)
     {
         return $client->update($clientDTO->toArray());
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $client = $this->show($id);
         return $client->user->delete();

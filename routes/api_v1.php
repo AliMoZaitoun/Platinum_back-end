@@ -1,27 +1,27 @@
 <?php
 
-use App\Http\Controllers\V1\Marketing\AdvertisementController;
-use App\Http\Controllers\V1\RealEstate\LocationController;
-use App\Http\Controllers\V1\Core\EmployeeDepartmentController;
-use App\Http\Controllers\V1\Core\SolutionController;
 use App\Http\Controllers\V1\AuthController;
 use App\Http\Controllers\V1\Client\ClientController;
 use App\Http\Controllers\V1\Client\FavoriteController;
 use App\Http\Controllers\V1\Core\DepartmentController;
-use App\Http\Controllers\V1\EmployeeController;
-use App\Http\Controllers\V1\EngineerController;
+use App\Http\Controllers\V1\Core\EmployeeController;
+use App\Http\Controllers\V1\Core\EmployeeDepartmentController;
 use App\Http\Controllers\V1\Core\ItemController;
+use App\Http\Controllers\V1\Core\WarehouseController;
+use App\Http\Controllers\V1\Engineer\ConstructionReportController;
+use App\Http\Controllers\V1\Engineer\EngineerProjectController;
+use App\Http\Controllers\V1\Engineer\EngineerController;
+use App\Http\Controllers\V1\Marketing\AdvertisementController;
 use App\Http\Controllers\V1\OtpController;
 use App\Http\Controllers\V1\RealEstate\BuildingController;
+use App\Http\Controllers\V1\RealEstate\LocationController;
 use App\Http\Controllers\V1\RealEstate\ProjectController;
+use App\Http\Controllers\V1\RealEstate\SolutionController;
 use App\Http\Controllers\V1\RealEstate\UnitController;
 use App\Http\Controllers\V1\RoleController;
 use App\Http\Controllers\V1\Sales\AppointmentController;
-use App\Http\Controllers\V1\Sales\OrderController;
-use App\Http\Controllers\V1\Core\WarehouseController;
-use App\Http\Controllers\V1\RealEstate\ConstructionReportController;
-use App\Http\Controllers\V1\RealEstate\EngineerProjectController;
 use App\Http\Controllers\V1\Sales\AvailabilitySlotController;
+use App\Http\Controllers\V1\Sales\OrderController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 

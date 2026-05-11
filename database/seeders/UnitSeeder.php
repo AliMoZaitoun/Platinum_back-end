@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Unit;
-use App\Models\Building;
+use App\Models\RealEstate\Unit;
+use App\Models\RealEstate\Building;
 use Illuminate\Database\Seeder;
 
 class UnitSeeder extends Seeder

@@ -4,10 +4,8 @@ namespace App\Http\Controllers\V1\Client;
 
 use App\DTOs\Client\Create\CreateFavoriteDTO;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateFavoriteRequest;
 use App\Services\Client\FavoriteService;
 use App\Traits\ResponseTrait;
-use Illuminate\Http\Request;
 
 class FavoriteController extends Controller
 {

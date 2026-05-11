@@ -9,7 +9,13 @@ use Illuminate\Support\Str;
 
 class FileManagerService
 {
-    protected $disk = "uploads";
+    protected $disk;
+
+    public function __construct()
+    {
+        $this->disk = config('filesystems.default', 's3');
+    }
+
     public function storeFile($model, array|UploadedFile $files, $folderPath, $relationName = 'attachments', ?callable $typeResolver = null)
     {
         $files = is_array($files) ? $files : [$files];
@@ -49,7 +55,7 @@ class FileManagerService
     {
         $mime = $file->getMimeType();
         if (str_contains($mime, 'image')) return 'image';
-        if (str_contains($mime, 'video')) return 'image';
-        return 'file';
+        if (str_contains($mime, 'video')) return 'video';
+        return 'document';
     }
 }

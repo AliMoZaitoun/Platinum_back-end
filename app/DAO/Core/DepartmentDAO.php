@@ -5,7 +5,7 @@ namespace App\DAO\Core;
 use App\DTOs\Core\CreateDepartmentDTO;
 use App\DTOs\Core\Update\UpdateDepartmentDTO;
 use App\Exceptions\NotFoundException;
-use App\Models\Department;
+use App\Models\Core\Department;
 
 class DepartmentDAO
 {

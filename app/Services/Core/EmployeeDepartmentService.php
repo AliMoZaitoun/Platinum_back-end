@@ -2,10 +2,10 @@
 
 namespace App\Services\Core;
 
+use App\DAO\Core\EmployeeDAO;
 use App\DAO\Core\EmployeeDepartmentDAO;
 use App\DAO\RoleDAO;
-use App\DAO\User\EmployeeDAO;
-use App\DTOs\Core\AssignEmployeeDepartmentDTO;
+use App\DTOs\Core\Create\AssignEmployeeDepartmentDTO;
 use App\DTOs\Core\Update\UpdateEmployeeDepartmentDTO;
 use App\Services\TransactionService;
 

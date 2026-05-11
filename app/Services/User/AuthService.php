@@ -3,7 +3,7 @@
 namespace App\Services\User;
 
 use App\DAO\RefreshTokenDAO;
-use App\DAO\User\UserDAO;
+use App\DAO\UserDAO;
 use App\Exceptions\InvalidCredentialException;
 use App\Services\OtpService;
 use Exception;

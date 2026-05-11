@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Project;
-use App\Models\Location;
+use App\Models\RealEstate\Location;
+use App\Models\RealEstate\Project;
 use Illuminate\Database\Seeder;
 
 use function Symfony\Component\Clock\now;

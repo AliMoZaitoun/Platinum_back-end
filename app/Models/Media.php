@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
     'original_name',
     'type',
     'custom_properties',
-    'user_created_at'
+    'recorded_at'
 ])]
 
 class Media extends Model

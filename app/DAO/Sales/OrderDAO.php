@@ -5,7 +5,7 @@ namespace App\DAO\Sales;
 use App\DTOs\Sales\Create\CreateOrderDTO;
 use App\DTOs\Sales\Update\UpdateOrderDTO;
 use App\Exceptions\NotFoundException;
-use App\Models\Order;
+use App\Models\Sales\Order;
 
 class OrderDAO
 {

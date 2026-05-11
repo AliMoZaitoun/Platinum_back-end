@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Building;
-use App\Models\Project;
+use App\Models\RealEstate\Building;
+use App\Models\RealEstate\Project;
 use Illuminate\Database\Seeder;
 
 class BuildingSeeder extends Seeder

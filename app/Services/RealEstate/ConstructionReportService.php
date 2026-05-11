@@ -2,8 +2,8 @@
 
 namespace App\Services\RealEstate;
 
-use App\DAO\RealEstate\ConstructionReportDAO;
-use App\DTOs\RealEstate\Create\CreateReportDTO;
+use App\DAO\Engineer\ConstructionReportDAO;
+use App\DTOs\Engineer\Create\CreateReportDTO;
 use App\Services\FileManagerService;
 use App\Services\TransactionService;
 
@@ -37,7 +37,7 @@ class ConstructionReportService
         });
     }
 
-    public function attachImagesByUuid(string $reportUuid, $attachments)
+    public function attachImagesByUuid(string $reportUuid, array $attachments)
     {
         $report = $this->dao->findByUuid($reportUuid);
 

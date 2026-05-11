@@ -2,10 +2,10 @@
 
 namespace App\DAO\Core;
 
-use App\DTOs\Core\CreateItemDTO;
+use App\DTOs\Core\Create\CreateItemDTO;
 use App\DTOs\Core\Update\UpdateItemDTO;
 use App\Exceptions\NotFoundException;
-use App\Models\Item;
+use App\Models\Core\Item;
 
 class ItemDAO
 {
@@ -20,7 +20,7 @@ class ItemDAO
         return Item::create($itemDTO->toArray());
     }
 
-    public function getItemsByWarehouseID($warehouse_id)
+    public function getItemsByWarehouseID(int $warehouse_id)
     {
         return Item::where('warehouse_id', $warehouse_id)->get();
     }

@@ -21,11 +21,10 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
-
 EXPOSE 8080
 
 COPY docker/start.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+USER www-data
 CMD ["/bin/sh", "/entrypoint.sh"]

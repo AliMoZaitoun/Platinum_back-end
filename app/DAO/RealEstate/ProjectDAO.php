@@ -5,7 +5,7 @@ namespace App\DAO\RealEstate;
 use App\DTOs\RealEstate\Create\CreateProjectDTO;
 use App\DTOs\RealEstate\Update\UpdateProjectDTO;
 use App\Exceptions\NotFoundException;
-use App\Models\Project;
+use App\Models\RealEstate\Project;
 
 class ProjectDAO
 {

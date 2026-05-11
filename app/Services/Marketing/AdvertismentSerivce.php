@@ -26,7 +26,7 @@ class AdvertismentSerivce
         return $this->adDAO->store($dto);
     }
 
-    public function show($id)
+    public function show(int $id)
     {
         return $this->adDAO->show($id);
     }
@@ -36,7 +36,7 @@ class AdvertismentSerivce
         return $this->adDAO->update($id, $dto);
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         return $this->adDAO->destroy($id);
     }

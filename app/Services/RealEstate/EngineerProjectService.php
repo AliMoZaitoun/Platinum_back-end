@@ -2,11 +2,10 @@
 
 namespace App\Services\RealEstate;
 
-use App\DAO\RealEstate\EngineerProjectDAO;
-use App\DTOs\RealEstate\Create\AssignEngProDTO;
-use App\DTOs\RealEstate\Create\UpdateEngProDTO;
+use App\DAO\Engineer\EngineerProjectDAO;
+use App\DTOs\Engineer\Create\AssignEngProDTO;
+use App\DTOs\Engineer\Update\UpdateEngProDTO;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\UnauthorizedException;
 
 class EngineerProjectService
 {
@@ -35,6 +34,7 @@ class EngineerProjectService
         $eng = $user->engineer;
         return $this->engProjects($eng->id);
     }
+
     public function engProjects(int $id)
     {
         return $this->engineerProjectDAO->engProjects($id);

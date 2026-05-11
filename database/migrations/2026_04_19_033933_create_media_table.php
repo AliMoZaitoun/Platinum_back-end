@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('path');
             $table->string('original_name');
             $table->enum('type', ['image', 'video', '360_panorama', 'document']);
-            $table->json('custom_properties');
+            $table->json('custom_properties')->nullable();
+            $table->timestamp('recorded_at')->nullable();
             $table->timestamps();
         });
     }

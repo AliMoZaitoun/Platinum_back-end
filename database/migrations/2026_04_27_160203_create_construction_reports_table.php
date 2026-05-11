@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->uuid()->unique();
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
+            $table->foreignId('building_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('engineer_id')->constrained()->onDelete('cascade');
 
             $table->enum('phase', [

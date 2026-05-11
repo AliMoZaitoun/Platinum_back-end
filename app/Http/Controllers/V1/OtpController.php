@@ -11,7 +11,7 @@ class OtpController extends Controller
         private OtpService $otpService
     ) {}
 
-    public function resendCode($userId)
+    public function resendCode(int $userId)
     {
         $otpCode = $this->otpService->resendCode($userId);
         return response()->json(['message' => 'OTP resent successfully', 'otp_code' => $otpCode]);

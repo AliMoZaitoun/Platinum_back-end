@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\V1\Client;
 
-use App\DTOs\User\CreateClientDTO;
-use App\DTOs\User\CreateUserDTO;
-use App\DTOs\User\Update\UpdateClientDTO;
+use App\DTOs\Client\Create\CreateClientDTO;
+use App\DTOs\User\Create\CreateUserDTO;
+use App\DTOs\Client\Update\UpdateClientDTO;
 use App\DTOs\User\Update\UpdateUserDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Client\ClientRequest;
-use App\Http\Resources\V1\ClientDetailResource;
-use App\Models\Client;
+use App\Models\Client\Client;
 use App\Services\AIService;
-use App\Services\User\ClientService;
+use App\Services\Client\ClientService;
 use App\Traits\ProvidesUserResource;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
@@ -43,10 +42,10 @@ class ClientController extends Controller
         return $this->successResponse($user, __('messages.auth.otp_sent'), 201);
     }
 
-    public function show($id)
+    public function show(int $id)
     {
         $client = $this->clientService->show($id);
-        $user = $this->resolveUserResource($client);
+        $user = $this->resolveUserResource($client->user);
         return $this->successResponse($user, __('messages.common.success'), 200);
     }
 
@@ -61,7 +60,7 @@ class ClientController extends Controller
         return $this->successResponse($data, __('messages.common.updated'));
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $this->clientService->destroy($id);
         return $this->successResponse([], __('messages.common.deleted'));

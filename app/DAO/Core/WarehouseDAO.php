@@ -2,10 +2,10 @@
 
 namespace App\DAO\Core;
 
-use App\DTOs\Core\CreateWarehouseDTO;
+use App\DTOs\Core\Create\CreateWarehouseDTO;
 use App\DTOs\Core\Update\UpdateWarehouseDTO;
 use App\Exceptions\NotFoundException;
-use App\Models\Warehouse;
+use App\Models\Core\Warehouse;
 
 class WarehouseDAO
 {

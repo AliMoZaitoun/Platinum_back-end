@@ -4,7 +4,7 @@ namespace App\Http\Controllers\V1\Sales;
 
 use App\DAO\Sales\AppointmentService;
 use App\DTOs\Sales\Create\CreateAppointmentDTO;
-use App\DTOs\Sales\Create\UpdateAppointmentDTO;
+use App\DTOs\Sales\Update\UpdateAppointmentDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Sales\CreateAppointmentRequest;
 use App\Traits\ResponseTrait;

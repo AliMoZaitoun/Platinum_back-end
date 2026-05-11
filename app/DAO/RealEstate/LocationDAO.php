@@ -5,7 +5,7 @@ namespace App\DAO\RealEstate;
 use App\DTOs\RealEstate\Create\CreateLocationDTO;
 use App\DTOs\RealEstate\Update\UpdateLocationDTO;
 use App\Exceptions\NotFoundException;
-use App\Models\Location;
+use App\Models\RealEstate\Location;
 
 class LocationDAO
 {

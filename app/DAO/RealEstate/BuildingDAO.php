@@ -5,7 +5,7 @@ namespace App\DAO\RealEstate;
 use App\DTOs\RealEstate\Create\CreateBuildingDTO;
 use App\DTOs\RealEstate\Update\UpdateBuildingDTO;
 use App\Exceptions\NotFoundException;
-use App\Models\Building;
+use App\Models\RealEstate\Building;
 
 class BuildingDAO
 {
