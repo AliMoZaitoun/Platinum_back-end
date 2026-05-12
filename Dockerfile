@@ -1,4 +1,4 @@
-FROM dunglas/frankenphp:1-php8.3-alpine
+FROM php:8.5-fpm-alpine
 
 RUN apk add --no-cache \
     git \
