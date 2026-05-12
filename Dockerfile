@@ -23,6 +23,10 @@ RUN composer install --no-dev --optimize-autoloader
 
 EXPOSE 8080
 
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+
+RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+
 COPY docker/start.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
