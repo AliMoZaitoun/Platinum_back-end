@@ -33,7 +33,7 @@ class ProjectDAO
         return $project;
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $project = $this->show($id);
         return $project->delete();

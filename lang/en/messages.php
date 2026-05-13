@@ -34,4 +34,7 @@ return [
         'no_results' => 'No results found.',
     ],
 
+    'sentences' => [
+        "wrong_start_date" => "The start date must be after or equal to the project start date: :date"
+    ]
 ];

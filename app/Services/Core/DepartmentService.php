@@ -4,8 +4,8 @@ namespace App\Services\Core;
 
 use App\DAO\Core\DepartmentDAO;
 use App\DAO\Core\EmployeeDepartmentDAO;
-use App\DTOs\Core\AssignEmployeeDepartmentDTO;
-use App\DTOs\Core\CreateDepartmentDTO;
+use App\DTOs\Core\Create\AssignEmployeeDepartmentDTO;
+use App\DTOs\Core\Create\CreateDepartmentDTO;
 use App\DTOs\Core\Update\UpdateDepartmentDTO;
 
 class DepartmentService
@@ -25,7 +25,7 @@ class DepartmentService
         return $this->departmentDAO->store($departmentDTO);
     }
 
-    public function show($id)
+    public function show(int $id)
     {
         return $this->departmentDAO->show($id);
     }

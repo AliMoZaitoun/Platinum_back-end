@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-DB_HOST=${DB_HOST:-127.0.0.1}
+DB_HOST=${DB_HOST:-platinum-db}
 DB_PORT=${DB_PORT:-5432}
 
 echo "Checking connection to $DB_HOST on port $DB_PORT..."
@@ -21,4 +21,4 @@ php artisan view:cache
 
 php artisan migrate --force
 
-php artisan serve --host=0.0.0.0 --port=$PORT
+php-fpm

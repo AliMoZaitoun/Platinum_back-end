@@ -6,14 +6,14 @@ use App\Models\RefreshToken;
 
 class RefreshTokenDAO
 {
-    public function findByToken($token)
+    public function findByToken(string $token)
     {
         return RefreshToken::where('token', $token)
             ->where('expires_at', '>', now())
             ->first();
     }
 
-    public function store($user_id, $token, $device_name)
+    public function store(int $user_id, string $token, $device_name)
     {
         return RefreshToken::create([
             'user_id' => $user_id,
@@ -23,7 +23,7 @@ class RefreshTokenDAO
         ]);
     }
 
-    public function update($storedToken, $new_refresh_token)
+    public function update(RefreshToken $storedToken, string $new_refresh_token)
     {
         $storedToken->update([
             'token' => $new_refresh_token,
@@ -31,7 +31,7 @@ class RefreshTokenDAO
         ]);
     }
 
-    public function delete($user_id, $device_name)
+    public function delete(int $user_id, $device_name)
     {
         RefreshToken::where('user_id', $user_id)
             ->where('device_name', $device_name)

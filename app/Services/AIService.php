@@ -38,12 +38,18 @@ class AIService
         return json_decode($cleanJson, true);
     }
 
-    public function listModels()
+    public function generateDesign(string $imagePath, string $style)
     {
-        $response = $this->client->models()->list();
-        return $response;
-        foreach ($response->models as $model) {
-            dump($model->name);
-        }
+        $response = Http::withToken(config('services.ai.token'))
+            ->post('https://api.replicate.com/v1/predictions', [
+                'version' => '...',
+                'input' => [
+                    'image' => $imagePath,
+                    'prompt' => "A professional interior design of a living room in $style style, high quality, 4k",
+                    'structure_analysis' => 'canny'
+                ]
+            ]);
+
+        return $response->json()['output_url'];
     }
 }

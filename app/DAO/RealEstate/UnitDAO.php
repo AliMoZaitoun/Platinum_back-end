@@ -9,7 +9,14 @@ use App\Models\RealEstate\Unit;
 
 class UnitDAO
 {
-    public function index(int $building_id, array $relations = [])
+    public function index(array $relations = [])
+    {
+        $defaultRelation = ['building.project'];
+        $allRelations = array_merge($defaultRelation, $relations);
+        return Unit::with($allRelations)->get();
+    }
+
+    public function byBuilding(int $building_id, array $relations = [])
     {
         $defaultRelation = ['building.project'];
         $allRelations = array_merge($defaultRelation, $relations);

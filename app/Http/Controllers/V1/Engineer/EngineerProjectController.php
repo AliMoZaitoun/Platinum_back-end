@@ -10,6 +10,7 @@ use App\Http\Resources\V1\Core\EngineerProjectResource;
 use App\Services\RealEstate\EngineerProjectService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class EngineerProjectController extends Controller
 {
@@ -44,12 +45,15 @@ class EngineerProjectController extends Controller
 
     public function engProjects(int $engineer_id)
     {
+        Gate::authorize('view');
         $projects = $this->engProService->engProjects($engineer_id);
         return $this->successCollection($projects, EngineerProjectResource::class);
     }
 
     public function proEngineers(int $project_id)
     {
+        Gate::authorize('view');
+
         $engineers = $this->engProService->proEngineers($project_id);
         return $this->successCollection($engineers, EngineerProjectResource::class);
     }

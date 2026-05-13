@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\V1\Core;
 
-use App\DTOs\Core\CreateItemDTO;
+use App\DTOs\Core\Create\CreateItemDTO;
 use App\DTOs\Core\Update\UpdateItemDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Core\CreateItemRequest;
@@ -32,7 +32,7 @@ class ItemController extends Controller
         return $this->successResponse($item, __('messages.common.stored'), 201);
     }
 
-    public function getItemsByWarehouseID($warehouse_id)
+    public function getItemsByWarehouseID(int $warehouse_id)
     {
         $items = $this->itemService->getItemsByWarehouseID($warehouse_id);
         return $this->successResponse($items);

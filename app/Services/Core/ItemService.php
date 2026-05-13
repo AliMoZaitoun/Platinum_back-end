@@ -22,7 +22,7 @@ class ItemService
         return $this->itemDAO->store($itemDTO);
     }
 
-    public function show($id)
+    public function show(int $id)
     {
         return $this->itemDAO->show($id);
     }

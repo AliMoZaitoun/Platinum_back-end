@@ -59,7 +59,7 @@ class AuthController extends Controller
 
     public function refreshToken(RefreshTokenRequest $request)
     {
-        $newTokens = $this->authService->refreshToken($request->input('refresh_token'));
-        return $this->successResponse($newTokens, code: 201);
+        $data['tokens'] = $this->authService->refreshToken($request->input('refresh_token'));
+        return $this->successResponse($data, code: 201);
     }
 }

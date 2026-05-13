@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('verifyEmail', [AuthController::class, 'verifyEmail']);
 Route::post('login', [AuthController::class, 'login']);
 Route::post('changePassword', [AuthController::class, 'changePassword'])->middleware('auth:sanctum');
+Route::post('refreshToken', [AuthController::class, 'refreshToken'])->middleware('auth:sanctum');
 Route::post('forgotPassword', [AuthController::class, 'forgotPassword']);
 Route::post('resetPassword', [AuthController::class, 'resetPassword']);
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
@@ -76,8 +77,7 @@ Route::prefix('engineer-project')->middleware('auth:sanctum')->group(function ()
 
     Route::get('/myProjects', [EngineerProjectController::class, 'myProjects']);
 
-    Route::get('engProjects/{engineer_id}', [EngineerProjectController::class, 'engProjects'])
-        ->middleware('permission:read.engineer');
+    Route::get('engProjects/{engineer_id}', [EngineerProjectController::class, 'engProjects']);
 
 
     Route::get('proEngineers/{project_id}', [EngineerProjectController::class, 'proEngineers']);
@@ -251,11 +251,14 @@ Route::prefix('project')->middleware('auth:sanctum')->group(function () {
 
 // Building
 Route::prefix('building')->middleware('auth:sanctum')->group(function () {
+    Route::get('', [BuildingController::class, 'index']);
+
+    Route::get('byProject/{project_id}', [BuildingController::class, 'byProject']);
+
     Route::post('/', [BuildingController::class, 'store']);
 
     Route::put('{id}', [BuildingController::class, 'update']);
 
-    Route::get('ofProject/{project_id}', [BuildingController::class, 'index']);
 
     Route::get('{id}', [BuildingController::class, 'show']);
 
@@ -264,11 +267,13 @@ Route::prefix('building')->middleware('auth:sanctum')->group(function () {
 
 // Unit
 Route::prefix('unit')->middleware('auth:sanctum')->group(function () {
+    Route::get('', [UnitController::class, 'index']);
+
+    Route::get('byBuilding/{building_id}', [UnitController::class, 'byBuilding']);
+
     Route::post('/', [UnitController::class, 'store']);
 
     Route::put('{id}', [UnitController::class, 'update']);
-
-    Route::get('ofBuilding/{building_id}', [UnitController::class, 'index']);
 
     Route::get('search', [UnitController::class, 'search']);
 

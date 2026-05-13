@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('refresh_tokens', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('device_name')->nullable();
             $table->string('token')->unique();
             $table->timestamp('expires_at')->nullable();
             $table->timestamps();

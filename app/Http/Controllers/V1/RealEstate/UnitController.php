@@ -11,10 +11,6 @@ use App\Services\RealEstate\UnitService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 
-/**
- * @method void authorize(mixed $ability, mixed|array $arguments = [])
- */
-
 class UnitController extends Controller
 {
     use ResponseTrait;
@@ -22,16 +18,20 @@ class UnitController extends Controller
         private UnitService $unitService
     ) {}
 
-    public function index(int $building_id)
+    public function index()
     {
-        $this->authorize('view');
-        $units = $this->unitService->index($building_id, []);
+        $units = $this->unitService->index();
+        return $this->successCollection($units, UnitResource::class);
+    }
+
+    public function byBuilding(int $building_id)
+    {
+        $units = $this->unitService->byBuilding($building_id, []);
         return $this->successCollection($units, UnitResource::class);
     }
 
     public function store(CreateUnitRequest $request)
     {
-        $this->authorize('create');
         $unitDTO = CreateUnitDTO::fromRequest($request->validated());
         $unit = $this->unitService->store($unitDTO);
         return $this->useResource($unit, UnitResource::class, __('messages.common.stored'), 201);
@@ -39,7 +39,6 @@ class UnitController extends Controller
 
     public function show(int $id)
     {
-        $this->authorize('view');
         $unit = $this->unitService->show($id);
         return $this->useResource($unit, UnitResource::class);
     }
@@ -52,7 +51,6 @@ class UnitController extends Controller
 
     public function update(int $id, Request $request)
     {
-        $this->authorize('update');
         $unitDTO = UpdateUnitDTO::fromRequest($request->all());
         $unit = $this->unitService->update($id, $unitDTO);
         return $this->useResource($unit, UnitResource::class, __('messages.common.updated'));
@@ -60,7 +58,6 @@ class UnitController extends Controller
 
     public function destroy(int $id)
     {
-        $this->authorize('destroy');
         $this->unitService->destroy($id);
         return $this->successResponse([], __('messages.common.deleted'));
     }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\V1\Core;
 
-use App\DTOs\Core\CreateWarehouseDTO;
+use App\DTOs\Core\Create\CreateWarehouseDTO;
 use App\DTOs\Core\Update\UpdateWarehouseDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Core\CreateWarehouseRequest;

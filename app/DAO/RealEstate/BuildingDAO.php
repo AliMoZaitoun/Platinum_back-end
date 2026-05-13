@@ -9,7 +9,14 @@ use App\Models\RealEstate\Building;
 
 class BuildingDAO
 {
-    public function index(int $project_id, array $relations = [])
+    public function index(array $relations = [])
+    {
+        $defaultRelation = ['project'];
+        $allRelations = array_merge($defaultRelation, $relations);
+        return Building::with($allRelations)->get();
+    }
+
+    public function byProject(int $project_id, array $relations = [])
     {
         $defaultRelation = ['project'];
         $allRelations = array_merge($defaultRelation, $relations);
@@ -33,7 +40,7 @@ class BuildingDAO
         return $building;
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $building = $this->show($id);
         return $building->delete();

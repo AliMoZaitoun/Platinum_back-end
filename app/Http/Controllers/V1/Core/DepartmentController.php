@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\V1\Core;
 
-use App\DTOs\Core\CreateDepartmentDTO;
+use App\DTOs\Core\Create\CreateDepartmentDTO;
 use App\DTOs\Core\Update\UpdateDepartmentDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Core\CreateDepartmentRequest;

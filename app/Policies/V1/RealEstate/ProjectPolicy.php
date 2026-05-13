@@ -2,7 +2,7 @@
 
 namespace App\Policies\V1\RealEstate;
 
-use App\Models\Project;
+use App\Models\RealEstate\Project;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 

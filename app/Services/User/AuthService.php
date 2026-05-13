@@ -29,14 +29,28 @@ class AuthService
         if (!Auth::attempt($credentials)) throw new InvalidCredentialException();
 
         $user = Auth::user();
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $access_token = $user->createToken('auth_token', ['*']);
+        $refresh_token = Str::random(64);
+        $access_token->accessToken->update(['expires_at' => now()->addMinutes(15)]);
+
+        $this->refreshTokenDAO->delete($user->id, request()->userAgent());
+
+        $hashedToken = hash('sha256', $refresh_token);
+
+        $this->refreshTokenDAO->store($user->id, $hashedToken, request()->userAgent());
+
+        $tokens = [
+            'access_token' => $access_token->plainTextToken,
+            'refresh_token' => $refresh_token,
+        ];
+
         $permissions = $user->roles
             ->flatMap(fn($role) => $role->permissions->pluck('name'))
             ->unique()
             ->values()
             ->toArray();
 
-        return ['user' => $user, 'token' => $token, 'permissions' => $permissions];
+        return ['user' => $user, 'token' => $tokens, 'permissions' => $permissions];
     }
 
     public function logout()
