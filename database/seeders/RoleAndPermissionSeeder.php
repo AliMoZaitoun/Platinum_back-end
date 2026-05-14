@@ -55,7 +55,8 @@ class RoleAndPermissionSeeder extends Seeder
             'read.project',
             'read.building',
             'create.report',
-            'read.report'
+            'read.report',
+            'read.engineer'
         ]);
 
         // Client

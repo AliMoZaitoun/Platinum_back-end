@@ -13,7 +13,7 @@ class AvailabilitySlotDAO
 {
     public function index()
     {
-        return AvailabilitySlot::with('engineer')->get();
+        return AvailabilitySlot::with('employee')->get();
     }
 
     public function store(CreateAvailabilitySlotDTO $dto)
@@ -33,13 +33,14 @@ class AvailabilitySlotDAO
 
     public function show(int $id)
     {
-        return AvailabilitySlot::where('id', $id)->with('engineer')->get() ?? throw new NotFoundException("Appointment");
+        return AvailabilitySlot::where('id', $id)->with('employee')->get() ?? throw new NotFoundException("Appointment");
     }
 
     public function update(int $id, UpdateAvailabilitySlotDTO $appointmentDTO)
     {
         $appointment = $this->show($id);
-        return $appointment->update($appointmentDTO->toArray());
+        $appointment->update($appointmentDTO->toArray());
+        return $appointment;
     }
 
     public function destroy(int $id)
