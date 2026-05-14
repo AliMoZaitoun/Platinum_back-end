@@ -3,13 +3,15 @@
 namespace App\Services;
 
 use App\DAO\OtpCodeDAO;
+use App\DAO\UserDAO;
 use App\Exceptions\OtpCodeExpiredException;
 
 class OtpService
 {
 
     public function __construct(
-        private OtpCodeDAO $otpCodeDAO
+        private OtpCodeDAO $otpCodeDAO,
+        private UserDAO $userDAO
     ) {}
 
     public function generateCode()
@@ -17,14 +19,14 @@ class OtpService
         return rand(100000, 999999);
     }
 
-    public function createCode($userId)
+    public function createCode(int $userId)
     {
         $code = $this->generateCode();
         $this->otpCodeDAO->store($userId, $code);
         return $code;
     }
 
-    public function verifyCode($userId, $code)
+    public function verifyCode(int $userId, $code)
     {
         $code = $this->otpCodeDAO->findValidCode($userId, $code);
         if (!$code)
@@ -34,9 +36,10 @@ class OtpService
         return true;
     }
 
-    public function resendCode($userId)
+    public function resendCode(string $email)
     {
-        $this->otpCodeDAO->deleteCodes($userId);
-        return $this->createCode($userId);
+        $user = $this->userDAO->findByEmail($email);
+        $this->otpCodeDAO->deleteCodes($user->id);
+        return $this->createCode($user->id);
     }
 }

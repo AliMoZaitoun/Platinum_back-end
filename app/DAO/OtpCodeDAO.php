@@ -23,7 +23,7 @@ class OtpCodeDAO
             ->first();
     }
 
-    public function deleteCodes($userId)
+    public function deleteCodes(int $userId)
     {
         OtpCode::where('user_id', $userId)->delete();
     }

@@ -39,7 +39,7 @@ Route::post('gemini/{id}', [ClientController::class, 'generatePlan']);
 Route::get('listModels', [ClientController::class, 'listModels']);
 
 // OTP
-Route::post('resendCode/{userId}', [OtpController::class, 'resendCode']);
+Route::post('resendCode', [OtpController::class, 'resendCode']);
 
 // Client
 Route::prefix('client')->group(function () {
