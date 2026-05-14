@@ -6,6 +6,7 @@ use App\DTOs\Core\Create\CreateWarehouseDTO;
 use App\DTOs\Core\Update\UpdateWarehouseDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Core\CreateWarehouseRequest;
+use App\Http\Resources\V1\Core\WarehouseResource;
 use App\Services\Core\WarehouseService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ class WarehouseController extends Controller
     public function index()
     {
         $warehouses = $this->warehousesService->index();
-        return $this->successResponse($warehouses);
+        return $this->successCollection($warehouses, WarehouseResource::class);
     }
 
     public function store(CreateWarehouseRequest $request)
@@ -28,20 +29,20 @@ class WarehouseController extends Controller
         $warehouseDTO = CreateWarehouseDTO::fromRequest($request->validated());
         $warehouse = $this->warehousesService->store($warehouseDTO);
 
-        return $this->successResponse($warehouse, __('messages.common.stored'), 201);
+        return $this->useResource($warehouse, WarehouseResource::class, __('messages.common.stored'), 201);
     }
 
     public function show(int $id)
     {
         $warehouse = $this->warehousesService->show($id);
-        return $this->successResponse($warehouse);
+        return $this->useResource($warehouse, WarehouseResource::class);
     }
 
     public function update(int $id, Request $request)
     {
         $warehouseDTO = UpdateWarehouseDTO::fromRequest($request->all());
         $warehouse = $this->warehousesService->update($id, $warehouseDTO);
-        return $this->successResponse($warehouse, __('messages.common.updated'));
+        return $this->useResource($warehouse, WarehouseResource::class, __('messages.common.updated'));
     }
 
     public function destroy(int $id)

@@ -12,7 +12,7 @@ class ItemDAO
 
     public function index()
     {
-        return Item::all();
+        return Item::with('warehouse')->get();
     }
 
     public function store(CreateItemDTO $itemDTO)
@@ -27,7 +27,7 @@ class ItemDAO
 
     public function show(int $id)
     {
-        return Item::find($id) ?? throw new NotFoundException("Item");
+        return Item::where('id', $id)->with('warehouse')->get() ?? throw new NotFoundException("Item");
     }
 
     public function update(int $id, UpdateItemDTO $itemDTO)

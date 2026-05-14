@@ -12,7 +12,7 @@ class DepartmentDAO
 
     public function index()
     {
-        return Department::all();
+        return Department::with(['employees', 'employees.employee'])->get();
     }
 
     public function store(CreateDepartmentDTO $departmentDTO)
@@ -22,7 +22,7 @@ class DepartmentDAO
 
     public function show(int $id)
     {
-        return Department::find($id) ?? throw new NotFoundException("Department");
+        return Department::where('id', $id)->with('employees')->get() ?? throw new NotFoundException("Department");
     }
 
     public function update(int $id, UpdateDepartmentDTO $departmentDTO)

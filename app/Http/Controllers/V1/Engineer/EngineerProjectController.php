@@ -46,6 +46,7 @@ class EngineerProjectController extends Controller
     public function engProjects(int $engineer_id)
     {
         Gate::authorize('view');
+
         $projects = $this->engProService->engProjects($engineer_id);
         return $this->successCollection($projects, EngineerProjectResource::class);
     }

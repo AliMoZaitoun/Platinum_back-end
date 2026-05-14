@@ -11,7 +11,7 @@ class WarehouseDAO
 {
     public function index()
     {
-        return Warehouse::all();
+        return Warehouse::with(['items'])->get();
     }
 
     public function store(CreateWarehouseDTO $warehouseDTO)
@@ -21,13 +21,14 @@ class WarehouseDAO
 
     public function show(int $id)
     {
-        return Warehouse::find($id) ?? throw new NotFoundException('Warehouse');
+        return Warehouse::where('id', $id)->with(['items'])->get() ?? throw new NotFoundException('Warehouse');
     }
 
     public function update(int $id, UpdateWarehouseDTO $warehouseDTO)
     {
         $warehouse = $this->show($id);
-        return $warehouse->update($warehouseDTO->toArray());
+        $warehouse->update($warehouseDTO->toArray());
+        return $warehouse;
     }
 
     public function destroy(int $id)
