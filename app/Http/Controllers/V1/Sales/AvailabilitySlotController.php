@@ -28,7 +28,7 @@ class AvailabilitySlotController extends Controller
     {
         $avaSlotDTO = CreateAvailabilitySlotDTO::fromRequest($request->validated());
         $avaSlot = $this->avaSlotService->store($avaSlotDTO);
-        return $this->useResource($avaSlot, AvailableSlotResource::class, __('messages.common.stored'), 201);
+        return $this->successResponse([], __('messages.common.stored'), 201);
     }
 
     public function show(int $id)

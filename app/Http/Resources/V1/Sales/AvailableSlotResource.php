@@ -15,7 +15,8 @@ class AvailableSlotResource extends JsonResource
             'start_time'    => $this->start_time,
             'status'        => $this->status,
             'batch_id'      => $this->batch_id,
-            'employee'      => new EmployeeDetailResource($this->whenLoaded('employee'))
+            'employee'      => new EmployeeDetailResource($this->whenLoaded('employee')),
+            'created_at'    => $this->created_at->format('Y-m-d h:i A'),
         ];
     }
 }
