@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Core;
+namespace App\Services\RealEstate;
 
 use App\DAO\RealEstate\SolutionDAO;
 use App\DTOs\RealEstate\Create\CreateSolutionDTO;

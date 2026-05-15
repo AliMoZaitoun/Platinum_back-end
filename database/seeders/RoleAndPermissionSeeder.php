@@ -30,7 +30,8 @@ class RoleAndPermissionSeeder extends Seeder
             'availableSlot',
             'advertisment',
             'location',
-            'report'
+            'report',
+            'attendance'
         ];
 
         $actions = ['read', 'create', 'update', 'archive', 'restore', 'delete'];
@@ -56,7 +57,8 @@ class RoleAndPermissionSeeder extends Seeder
             'read.building',
             'create.report',
             'read.report',
-            'read.engineer'
+            'read.engineer',
+            'create.attendance'
         ]);
 
         // Client
@@ -112,7 +114,9 @@ class RoleAndPermissionSeeder extends Seeder
             'create.availableSlot',
             'read.availableSlot',
             'update.availableSlot',
-            'delete.availableSlot'
+            'delete.availableSlot',
+            'read.engineer',
+            'read.attendance'
         ]);
 
         $customer_service = Role::firstOrCreate(['name' => 'customer_service_staff']);

@@ -12,12 +12,12 @@ use Illuminate\Database\Eloquent\Model;
     'project_id',
     'check_in',
     'check_out',
+    'check_in_lat',
     'check_in_lng',
-    'check_out_lag',
+    'check_out_lat',
     'check_out_lng',
-    'status',
     'device_id',
-    'user_created_at'
+    'recorded_at'
 ])]
 
 class Attendance extends Model

@@ -31,7 +31,7 @@ class AuthService
         $user = Auth::user();
         $access_token = $user->createToken('auth_token', ['*']);
         $refresh_token = Str::random(64);
-        $access_token->accessToken->update(['expires_at' => now()->addMinutes(15)]);
+        $access_token->accessToken->update(['expires_at' => now()->addWeeks(7)]);
 
         $this->refreshTokenDAO->delete($user->id, request()->userAgent());
 

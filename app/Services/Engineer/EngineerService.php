@@ -54,7 +54,7 @@ class EngineerService
             $user = $engineer->user;
             $this->userDAO->update($user, $userDTO);
             $this->engineerDAO->update($engineer, $engineerDTO);
-            return $user;
+            return $engineer;
         });
     }
 

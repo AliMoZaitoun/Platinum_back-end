@@ -18,18 +18,17 @@ return new class extends Migration
             $table->foreignId('engineer_id')->constrained()->onDelete('cascade');
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
 
-            $table->timestamp('check_in')->nullable();
+            $table->timestamp('check_in');
             $table->timestamp('check_out')->nullable();
 
-            $table->decimal('check_in_lat', 10, 8)->nullable();
-            $table->decimal('check_in_lng', 11, 8)->nullable();
+            $table->decimal('check_in_lat', 10, 8);
+            $table->decimal('check_in_lng', 11, 8);
             $table->decimal('check_out_lat', 10, 8)->nullable();
             $table->decimal('check_out_lng', 11, 8)->nullable();
 
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->string('device_id')->nullable();
 
-            $table->timestamp('user_timestamp')->nullable();
+            $table->timestamp('recorded_at')->nullable();
 
             $table->index(['engineer_id', 'project_id']);
             $table->index('status');

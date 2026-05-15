@@ -35,6 +35,9 @@ return [
     ],
 
     'sentences' => [
-        "wrong_start_date" => "The start date must be after or equal to the project start date: :date"
+        'wrong_start_date' => 'The start date must be after or equal to the project start date: :date',
+
+        'device_mismatch' => 'Access denied. This account is linked to another device.',
+        'out_of_geofence' => 'You are outside the project geographical boundary. Distance: :distance meters.',
     ]
 ];

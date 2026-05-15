@@ -56,6 +56,14 @@ class Handler
             return $this->errorResponse($e->getMessage(), $e->getCode() ?: 403);
         });
 
+        $exceptions->render(function (OutOfGeofenceException $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode() ?: 403);
+        });
+
+        $exceptions->render(function (DeviceMismatchException $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode() ?: 403);
+        });
+
         // $exceptions->render(function (QueryException $e) {
         //     return $this->errorResponse($e, $e->getCode() ?: 403);
         // });

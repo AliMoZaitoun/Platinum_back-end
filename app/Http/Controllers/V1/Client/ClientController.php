@@ -89,9 +89,4 @@ class ClientController extends Controller
             'suggestion' => $suggestion
         ]);
     }
-
-    public function listModels(AIService $service)
-    {
-        return $service->listModels();
-    }
 }

@@ -12,14 +12,14 @@ trait ProvidesUserResource
 {
     public function resolveUserResource(User $user)
     {
-        if ($user->role === 'engineer') {
+        if ($user->type === 'engineer') {
             $user->loadMissing('engineer');
-        } elseif ($user->role === 'employee') {
+        } elseif ($user->type === 'employee') {
             $user->loadMissing('employee');
-        } elseif ($user->role === 'client') {
+        } elseif ($user->type === 'client') {
             $user->loadMissing('client');
         }
-        return match ($user->role) {
+        return match ($user->type) {
             'engineer' => new EngineerDetailResource($user),
             'employee' => new EmployeeDetailResource($user),
             'client'   => new ClientDetailResource($user),

@@ -8,6 +8,7 @@ use App\Http\Controllers\V1\Core\EmployeeController;
 use App\Http\Controllers\V1\Core\EmployeeDepartmentController;
 use App\Http\Controllers\V1\Core\ItemController;
 use App\Http\Controllers\V1\Core\WarehouseController;
+use App\Http\Controllers\V1\Engineer\AttendanceController;
 use App\Http\Controllers\V1\Engineer\ConstructionReportController;
 use App\Http\Controllers\V1\Engineer\EngineerProjectController;
 use App\Http\Controllers\V1\Engineer\EngineerController;
@@ -392,6 +393,23 @@ Route::prefix('construction-report')->middleware('auth:sanctum')->group(function
 
 
     Route::post('/{uuid}/attach-images', [ConstructionReportController::class, 'uploadImages']);
+});
+
+Route::prefix('attendance')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [AttendanceController::class, 'index'])
+        ->middleware(['permission:read.attendance']);
+
+    Route::post('/', [AttendanceController::class, 'store'])
+        ->middleware(['permission:create.attendance']);
+
+    Route::get('{id}', [AttendanceController::class, 'show'])
+        ->middleware(['permission:read.attendance']);
+
+    Route::put('{id}', [AttendanceController::class, 'update'])
+        ->middleware(['permission:update.attendance']);
+
+    Route::delete('{id}', [AttendanceController::class, 'destroy'])
+        ->middleware(['permission:delete.attendance']);
 });
 
 Route::get('/run-seeder', function () {

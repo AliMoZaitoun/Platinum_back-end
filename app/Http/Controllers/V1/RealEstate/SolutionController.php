@@ -6,8 +6,8 @@ use App\DTOs\RealEstate\Create\CreateSolutionDTO;
 use App\DTOs\RealEstate\Update\UpdateSolutionDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\CreateSolutionRequest;
-use App\Http\Resources\V1\Core\SolutionResource;
-use App\Services\Core\SolutionService;
+use App\Http\Resources\V1\RealEstate\SolutionResource;
+use App\Services\RealEstate\SolutionService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 

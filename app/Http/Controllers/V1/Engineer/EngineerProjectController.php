@@ -7,7 +7,7 @@ use App\DTOs\Engineer\Update\UpdateEngProDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\RealEstate\AssignEngineerProjectRequest;
 use App\Http\Resources\V1\Core\EngineerProjectResource;
-use App\Services\RealEstate\EngineerProjectService;
+use App\Services\Engineer\EngineerProjectService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;

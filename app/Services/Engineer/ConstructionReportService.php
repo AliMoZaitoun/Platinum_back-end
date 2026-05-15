@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\RealEstate;
+namespace App\Services\Engineer;
 
 use App\DAO\Engineer\ConstructionReportDAO;
 use App\DTOs\Engineer\Create\CreateReportDTO;
