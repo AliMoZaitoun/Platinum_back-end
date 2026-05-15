@@ -27,7 +27,6 @@ class AttendanceController extends Controller
     public function storeCheckIn(CheckInAttRequest $request)
     {
         $dto = CheckInDTO::fromRequest($request->validated());
-        $dto->device_id = $request->userAgent();
 
         $attendance = $this->attendanceService->storeCheckIn($dto);
         return $this->useResource($attendance, AttendanceResource::class, __('messages.common.stored'), 201);
@@ -36,10 +35,9 @@ class AttendanceController extends Controller
     public function storeCheckOut(CheckOutAttRequest $request)
     {
         $dto = CheckOutDTO::fromRequest($request->validated());
-        $dto->device_id = $request->userAgent();
 
         $attendance = $this->attendanceService->storeCheckOut($dto);
-        return $this->useResource($attendance, AttendanceResource::class, __('messages.common.updated'), 201);
+        return $this->useResource($attendance, AttendanceResource::class, __('messages.common.updated'));
     }
 
     public function show(int $id)

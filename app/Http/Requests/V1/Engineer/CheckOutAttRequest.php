@@ -19,7 +19,8 @@ class CheckOutAttRequest extends FormRequest
             'project_id'         => 'required|integer|exists:projects,id',
             'check_out_lat'      => 'required|numeric|between:-90,90',
             'check_out_lng'      => 'required|numeric|between:-180,180',
-            'checked_out_at'     => 'required|date|date_format:Y-m-d H:i:s'
+            'checked_out_at'     => 'required|date|date_format:Y-m-d H:i:s',
+            'device_id'          => 'required|string|max:255',
         ];
     }
 }

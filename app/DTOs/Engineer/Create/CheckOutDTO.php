@@ -10,7 +10,7 @@ class CheckOutDTO
         public ?int $engineer_id,
         public string $check_out_lat,
         public string $check_out_lng,
-        public ?string $device_id,
+        public string $device_id,
         public string $checked_out_at
     ) {}
 
@@ -22,7 +22,7 @@ class CheckOutDTO
             engineer_id: $request['engineer_id'] ?? null,
             check_out_lat: $request['check_out_lat'],
             check_out_lng: $request['check_out_lng'],
-            device_id: $request['device_id'] ?? null,
+            device_id: $request['device_id'],
             checked_out_at: $request['checked_out_at']
         );
     }

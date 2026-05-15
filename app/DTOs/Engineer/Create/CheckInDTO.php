@@ -10,7 +10,7 @@ class CheckInDTO
         public ?int $engineer_id,
         public string $check_in_lat,
         public string $check_in_lng,
-        public ?string $device_id,
+        public string $device_id,
         public string $checked_in_at
     ) {}
 
@@ -22,7 +22,7 @@ class CheckInDTO
             engineer_id: $request['engineer_id'] ?? null,
             check_in_lat: $request['check_in_lat'],
             check_in_lng: $request['check_in_lng'],
-            device_id: $request['device_id'] ?? null,
+            device_id: $request['device_id'],
             checked_in_at: $request['checked_in_at']
         );
     }

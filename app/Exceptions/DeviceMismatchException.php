@@ -8,7 +8,7 @@ use Throwable;
 class DeviceMismatchException extends Exception
 {
     public function __construct(
-        $messageKey = "sentences.device_mismatch",
+        $messageKey = "messages.sentences.device_mismatch",
         $code = 403,
         Throwable $previous = null
     ) {

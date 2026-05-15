@@ -20,6 +20,7 @@ class CheckInAttRequest extends FormRequest
             'check_in_lat'  => 'required|numeric|between:-90,90',
             'check_in_lng'  => 'required|numeric|between:-180,180',
             'checked_in_at' => 'required|date|date_format:Y-m-d H:i:s',
+            'device_id'     => 'required|string|max:255',
         ];
     }
 }
