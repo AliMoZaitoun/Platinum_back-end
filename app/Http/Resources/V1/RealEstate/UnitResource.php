@@ -13,6 +13,7 @@ class UnitResource extends JsonResource
             'id'           => $this->id,
             'building_id'  => $this->building_id,
             'unit_number'  => $this->unit_number,
+            'description'     => $this->description,
             'type'         => $this->type,
             'floor'        => $this->floor,
             'area'         => $this->area,

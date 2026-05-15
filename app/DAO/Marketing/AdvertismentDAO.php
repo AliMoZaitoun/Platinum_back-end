@@ -11,7 +11,12 @@ class AdvertismentDAO
 {
     public function index()
     {
-        return Advertisement::all();
+        return Advertisement::latest()->get();
+    }
+
+    public function byStatus(int $status)
+    {
+        return Advertisement::where('status', $status)->get();
     }
 
     public function store(CreateAdDTO $adDTO)

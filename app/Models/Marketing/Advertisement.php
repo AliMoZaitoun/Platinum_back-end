@@ -6,7 +6,7 @@ use App\Models\Core\Employee;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['title', 'description', 'status', 'duration', 'created_by'])]
+#[Fillable(['title', 'description', 'status', 'duration', 'created_by', 'end_date'])]
 class Advertisement extends Model
 {
     public function created_by()

@@ -5,16 +5,25 @@ namespace App\Services\RealEstate;
 use App\DAO\RealEstate\SolutionDAO;
 use App\DTOs\RealEstate\Create\CreateSolutionDTO;
 use App\DTOs\RealEstate\Update\UpdateSolutionDTO;
+use App\Services\TranslationService;
 
 class SolutionService
 {
     public function __construct(
-        private SolutionDAO $solutionDAO
+        private SolutionDAO $solutionDAO,
+        private TranslationService $translationService
     ) {}
 
-    public function store(CreateSolutionDTO $SolutionDTO)
+    public function store(CreateSolutionDTO $dto)
     {
-        return $this->solutionDAO->store($SolutionDTO);
+        $data = $dto->toArray();
+        $data['name'] = $this->translationService->translateAll($dto->name);
+
+        if ($dto->description) {
+            $data['description'] = $this->translationService->translateAll($dto->description);
+        }
+
+        return $this->solutionDAO->store($data);
     }
 
     public function index()

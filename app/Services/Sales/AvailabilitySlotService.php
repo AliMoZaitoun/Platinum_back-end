@@ -17,10 +17,7 @@ class AvailabilitySlotService
 
     public function index()
     {
-        $avaSlots = $this->avaSlotDAO->index();
-        if (sizeof($avaSlots) <= 0)
-            throw new NotFoundException("AvailableSlot");
-        return $avaSlots;
+        return $this->avaSlotDAO->index();
     }
 
     public function store(CreateAvailabilitySlotDTO $avSlotDTO)

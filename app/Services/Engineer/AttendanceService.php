@@ -4,11 +4,15 @@ namespace App\Services\Engineer;
 
 use App\DAO\Engineer\AttendanceDAO;
 use App\DAO\RealEstate\ProjectDAO;
+use App\DTOs\Engineer\Create\CheckInDTO;
+use App\DTOs\Engineer\Create\CheckOutDTO;
 use App\DTOs\Engineer\Create\MakeAttendanceDTO;
 use App\DTOs\Engineer\Update\UpdateAttendanceDTO;
 use App\Exceptions\DeviceMismatchException;
 use App\Exceptions\OutOfGeofenceException;
+use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class AttendanceService
 {
@@ -22,17 +26,49 @@ class AttendanceService
         return $this->attendanceDAO->index();
     }
 
-    public function store(MakeAttendanceDTO $dto)
+    public function storeCheckIn(CheckInDTO $dto)
     {
         $project = $this->projectDAO->show($dto->project_id);
-        $this->checkIn($project, $dto->check_in_lat, $dto->check_in_lng);
+
+        $this->verifyGeofence($project, $dto->check_in_lat, $dto->check_in_lng);
+
+        $user = Auth::user();
+        $dto->engineer_id = $user->engineer->id;
+
         $lastAttendance = $this->attendanceDAO->getLastAttendanceOfEngineer($dto->engineer_id);
 
         if ($lastAttendance && $lastAttendance->device_id !== $dto->device_id) {
             throw new DeviceMismatchException();
         }
+        return $this->attendanceDAO->storeCheckIn($dto);
+    }
 
-        return $this->attendanceDAO->store($dto);
+    public function storeCheckOut(CheckOutDTO $dto)
+    {
+        $project = $this->projectDAO->show($dto->project_id);
+        $this->verifyGeofence($project, $dto->check_out_lat, $dto->check_out_lng);
+
+        $attendance = $this->attendanceDAO->findByUuid($dto->uuid);
+        $dto->engineer_id = $attendance->engineer_id;
+
+        if ($attendance && $attendance->device_id !== $dto->device_id) {
+            throw new DeviceMismatchException();
+        }
+
+        $updatedAttendance = $this->attendanceDAO->storeCheckOut($dto);
+
+        if ($updatedAttendance->checked_in_at && $updatedAttendance->checked_out_at) {
+            $checkInTime = Carbon::parse($updatedAttendance->checked_in_at);
+            $checkOutTime = Carbon::parse($updatedAttendance->checked_out_at);
+
+            $totalMinutes = $checkInTime->diffInMinutes($checkOutTime);
+            $totalHours = round($totalMinutes / 60, 2);
+
+            $updatedAttendance->update([
+                'total_hours' => $totalHours
+            ]);
+        }
+        return $updatedAttendance;
     }
 
     public function show(int $id)
@@ -45,6 +81,8 @@ class AttendanceService
         return $this->attendanceDAO->destroy($id);
     }
 
+
+    # Haversine Formula
     private function calculateDistance($lat1, $lon1, $lat2, $lon2): float
     {
         $earthRadius = 6371000;
@@ -61,18 +99,17 @@ class AttendanceService
         return $earthRadius * $c;
     }
 
-    private function checkIn($project, $check_in_lat, $check_in_lng)
+    private function verifyGeofence($project, $lat, $lng): void
     {
         $distance = $this->calculateDistance(
-            $check_in_lat,
-            $check_in_lng,
-            $project['latitude'],
-            $project['longitude']
+            (float) $lat,
+            (float) $lng,
+            (float) $project->latitude,
+            (float) $project->longitude
         );
 
         if ($distance > $project->radius_meters) {
             throw new OutOfGeofenceException(round($distance));
         }
-        return true;
     }
 }

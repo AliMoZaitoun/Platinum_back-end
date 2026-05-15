@@ -5,12 +5,14 @@ namespace App\Services\RealEstate;
 use App\DAO\RealEstate\UnitDAO;
 use App\DTOs\RealEstate\Create\CreateUnitDTO;
 use App\DTOs\RealEstate\Update\UpdateUnitDTO;
+use App\Services\TranslationService;
 use InvalidArgumentException;
 
 class UnitService
 {
     public function __construct(
-        private UnitDAO $unitDAO
+        private UnitDAO $unitDAO,
+        private TranslationService $translationService
     ) {}
 
     public function index(array $relations = [])
@@ -23,9 +25,15 @@ class UnitService
         return $this->unitDAO->byBuilding($building_id, $relations);
     }
 
-    public function store(CreateUnitDTO $unitDTO)
+    public function store(CreateUnitDTO $dto)
     {
-        return $this->unitDAO->store($unitDTO);
+        $data = $dto->toArray();
+
+        if ($dto->description) {
+            $data['description'] = $this->translationService->translateAll($dto->description);
+        }
+
+        return $this->unitDAO->store($data);
     }
 
     public function show(int $id)

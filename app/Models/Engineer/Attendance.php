@@ -10,14 +10,14 @@ use Illuminate\Database\Eloquent\Model;
     'uuid',
     'engineer_id',
     'project_id',
-    'check_in',
-    'check_out',
     'check_in_lat',
     'check_in_lng',
     'check_out_lat',
     'check_out_lng',
     'device_id',
-    'recorded_at'
+    'checked_in_at',
+    'checked_out_at',
+    'total_hours'
 ])]
 
 class Attendance extends Model

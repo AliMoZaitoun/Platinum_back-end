@@ -9,7 +9,7 @@ class OutOfGeofenceException extends Exception
 {
     public function __construct(
         int $distance,
-        $messageKey = "sentences.out_of_geofence",
+        $messageKey = "messages.sentences.out_of_geofence",
         $code = 422,
         Throwable $previous = null
     ) {

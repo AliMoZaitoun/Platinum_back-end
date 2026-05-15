@@ -20,6 +20,9 @@ return new class extends Migration
             $table->decimal('area');
             $table->enum('type', ['social', 'vip']);
             $table->decimal('price', 15, 2)->unsigned();
+
+            $table->json('description')->nullable();
+
             $table->enum('status', ['available', 'reserved', 'sold', 'maintenance']);
             $table->index(['building_id', 'price', 'type'], 'idx_units_search_basic');
             $table->index(['rooms_count', 'area'], 'idx_units_specs');

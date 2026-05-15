@@ -2,6 +2,8 @@
 
 namespace App\DAO\Engineer;
 
+use App\DTOs\Engineer\Create\CheckInDTO;
+use App\DTOs\Engineer\Create\CheckOutDTO;
 use App\DTOs\Engineer\Create\MakeAttendanceDTO;
 use App\Exceptions\NotFoundException;
 use App\Models\Engineer\Attendance;
@@ -13,7 +15,15 @@ class AttendanceDAO
         return Attendance::with(['project', 'engineer'])->get();
     }
 
-    public function store(MakeAttendanceDTO $dto)
+    public function storeCheckIn(CheckInDTO $dto)
+    {
+        return Attendance::updateOrCreate(
+            ['uuid' => $dto->uuid],
+            $dto->toArray()
+        );
+    }
+
+    public function storeCheckOut(CheckOutDTO $dto)
     {
         return Attendance::updateOrCreate(
             ['uuid' => $dto->uuid],
@@ -33,7 +43,7 @@ class AttendanceDAO
 
     public function findByUuid(string $uuid)
     {
-        return Attendance::where('uuid', $uuid)->with(['project', 'engineer'])->get()
+        return Attendance::where('uuid', $uuid)->first()
             ?? throw new NotFoundException("Attendance");
     }
 

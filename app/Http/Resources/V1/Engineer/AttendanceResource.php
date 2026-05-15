@@ -16,16 +16,16 @@ class AttendanceResource extends JsonResource
             'uuid' => $this->uuid,
             'engineer_id' => new EngineerDetailResource($this->whenLoaded('engineer')),
             'project_id' => new ProjectResource($this->whenLoaded('project')),
-            'check_in' => $this->check_in ? Carbon::parse($this->check_in)->format('Y-m-d H:i:s') : null,
-            'check_out' => $this->check_out ? Carbon::parse($this->check_out)->format('Y-m-d H:i:s') : null,
-            'status' => $this->status,
-            'recorded_at' => $this->recorded_at ? Carbon::parse($this->recorded_at)->format('Y-m-d') : null,
-            'is_currently_active' => is_null($this->check_out),
+            'checked_in_at' => $this->checked_in_at ? Carbon::parse($this->checked_in_at)->format('Y-m-d H:i:s') : null,
+            'checked_out_at' => $this->checked_out_at ? Carbon::parse($this->checked_out_at)->format('Y-m-d H:i:s') : null,
+            'is_currently_active' => is_null($this->checked_out_at),
             'location' => [
+                'check_in_lat' => $this->check_in_lat,
                 'check_in_lng' => $this->check_in_lng,
                 'check_out_lat' => $this->check_out_lat,
                 'check_out_lng' => $this->check_out_lng,
-            ]
+            ],
+            'total_hours' => $this->total_hours
         ];
     }
 }

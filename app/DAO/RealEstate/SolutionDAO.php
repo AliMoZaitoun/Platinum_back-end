@@ -14,9 +14,9 @@ class SolutionDAO
         return Solution::all();
     }
 
-    public function store(CreateSolutionDTO $solutionDTO)
+    public function store(array $data)
     {
-        return Solution::create($solutionDTO->toArray());
+        return Solution::create($data);
     }
 
     public function show(int $id)

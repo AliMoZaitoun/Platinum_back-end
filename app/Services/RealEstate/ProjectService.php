@@ -5,11 +5,13 @@ namespace App\Services\RealEstate;
 use App\DAO\RealEstate\ProjectDAO;
 use App\DTOs\RealEstate\Create\CreateProjectDTO;
 use App\DTOs\RealEstate\Update\UpdateProjectDTO;
+use App\Services\TranslationService;
 
 class ProjectService
 {
     public function __construct(
-        private ProjectDAO $projectDAO
+        private ProjectDAO $projectDAO,
+        private TranslationService $translationService
     ) {}
 
     public function index(array $relations = [])
@@ -17,9 +19,15 @@ class ProjectService
         return $this->projectDAO->index($relations);
     }
 
-    public function store(CreateProjectDTO $projectDTO)
+    public function store(CreateProjectDTO $dto)
     {
-        return $this->projectDAO->store($projectDTO);
+        $data = $dto->toArray();
+        $data['name'] = $this->translationService->translateAll($dto->name);
+
+        if ($dto->description) {
+            $data['description'] = $this->translationService->translateAll($dto->description);
+        }
+        return $this->projectDAO->store($data);
     }
 
     public function show(int $id)
@@ -32,7 +40,7 @@ class ProjectService
         return $this->projectDAO->update($id, $projectDTO);
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         return $this->projectDAO->destroy($id);
     }

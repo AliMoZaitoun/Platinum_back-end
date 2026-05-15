@@ -23,9 +23,9 @@ class BuildingDAO
         return Building::with($allRelations)->where('project_id', $project_id)->get();
     }
 
-    public function store(CreateBuildingDTO $buildingDTO)
+    public function store(array $data)
     {
-        return Building::create($buildingDTO->toArray());
+        return Building::create($data);
     }
 
     public function show(int $id)

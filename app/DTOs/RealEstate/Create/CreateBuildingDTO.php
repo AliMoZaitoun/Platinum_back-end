@@ -9,7 +9,8 @@ class CreateBuildingDTO
         public ?int $location_id,
         public string $building_number,
         public int $floors_count,
-        public string $status
+        public string $status,
+        public ?string $description
     ) {}
 
     public static function fromRequest(array $request)
@@ -19,7 +20,8 @@ class CreateBuildingDTO
             location_id: $request['location_id'] ?? null,
             building_number: $request['building_number'],
             floors_count: $request['floors_count'],
-            status: $request['status']
+            status: $request['status'],
+            description: $request['description']
         );
     }
 
@@ -30,7 +32,8 @@ class CreateBuildingDTO
             'location_id'  => $this->location_id,
             'building_number'  => $this->building_number,
             'floors_count'  => $this->floors_count,
-            'status' => $this->status
+            'status' => $this->status,
+            'description' => $this->description
         ], fn($value) => !is_null($value));
     }
 }

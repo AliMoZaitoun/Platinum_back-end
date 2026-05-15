@@ -16,9 +16,9 @@ class ProjectDAO
         return Project::with($allRelations)->get();
     }
 
-    public function store(CreateProjectDTO $projectDTO)
+    public function store(array $data)
     {
-        return Project::create($projectDTO->toArray());
+        return Project::create($data);
     }
 
     public function show(int $id)

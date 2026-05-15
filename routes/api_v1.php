@@ -399,7 +399,10 @@ Route::prefix('attendance')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [AttendanceController::class, 'index'])
         ->middleware(['permission:read.attendance']);
 
-    Route::post('/', [AttendanceController::class, 'store'])
+    Route::post('/check-in', [AttendanceController::class, 'storeCheckIn'])
+        ->middleware(['permission:create.attendance']);
+
+    Route::post('/check-out', [AttendanceController::class, 'storeCheckOut'])
         ->middleware(['permission:create.attendance']);
 
     Route::get('{id}', [AttendanceController::class, 'show'])

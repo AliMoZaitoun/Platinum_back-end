@@ -16,8 +16,9 @@ return new class extends Migration
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
             $table->foreignId('location_id')->nullable()->constrained()->onDelete('restrict');
             $table->string('building_number');
+            $table->json('description')->nullable();
             $table->integer('floors_count');
-            $table->enum('status', ['completed', 'in_progress', 'stopped']);
+            $table->enum('status', ['planned', 'in_progress', 'stopped', 'completed']);
             $table->softDeletes();
             $table->timestamps();
         });

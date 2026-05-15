@@ -5,11 +5,13 @@ namespace App\Services\RealEstate;
 use App\DAO\RealEstate\BuildingDAO;
 use App\DTOs\RealEstate\Create\CreateBuildingDTO;
 use App\DTOs\RealEstate\Update\UpdateBuildingDTO;
+use App\Services\TranslationService;
 
 class BuildingService
 {
     public function __construct(
-        private BuildingDAO $buildingDAO
+        private BuildingDAO $buildingDAO,
+        private TranslationService $translationService
     ) {}
 
     public function index(array $relations = [])
@@ -22,9 +24,15 @@ class BuildingService
         return $this->buildingDAO->byProject($project_id, $relations);
     }
 
-    public function store(CreateBuildingDTO $buildingDTO)
+    public function store(CreateBuildingDTO $dto)
     {
-        return $this->buildingDAO->store($buildingDTO);
+        $data = $dto->toArray();
+
+        if ($dto->description) {
+            $data['description'] = $this->translationService->translateAll($dto->description);
+        }
+
+        return $this->buildingDAO->store($data);
     }
 
     public function show(int $id)

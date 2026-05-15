@@ -23,9 +23,9 @@ class UnitDAO
         return Unit::with($allRelations)->where('building_id', $building_id)->get();
     }
 
-    public function store(CreateUnitDTO $UnitDTO)
+    public function store(array $data)
     {
-        return Unit::create($UnitDTO->toArray());
+        return Unit::create($data);
     }
 
     public function show(int $id)

@@ -15,12 +15,12 @@ class EngineerProjectPolicy
 
     public function view(User $user, EngineerProject $engineerProject): bool
     {
-        return false;
+        return $user->hasPermissionTo('read.engineer', 'web');
     }
 
     public function create(User $user): bool
     {
-        return $user->can('create.engineer');
+        return $user->hasPermissionTo('create.engineer', 'web');
     }
 
     public function update(User $user, EngineerProject $engineerProject): bool

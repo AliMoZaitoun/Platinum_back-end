@@ -21,6 +21,14 @@ class AdvertismentSerivce
         return $ads;
     }
 
+    public function byStatus(int $status)
+    {
+        $ads = $this->adDAO->byStatus($status);
+        if (sizeof($ads) <= 0)
+            throw new NoResultsException();
+        return $ads;
+    }
+
     public function store(CreateAdDTO $dto)
     {
         return $this->adDAO->store($dto);

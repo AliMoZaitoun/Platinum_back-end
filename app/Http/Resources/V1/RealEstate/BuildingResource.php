@@ -13,6 +13,7 @@ class BuildingResource extends JsonResource
             'id'              => $this->id,
             'project_id'      => $this->project_id,
             'building_number' => $this->building_number,
+            'description'     => $this->description,
             'floors_count'    => $this->floors_count,
             'location_id'     => $this->location_id,
             'status'          => $this->status,

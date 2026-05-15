@@ -11,7 +11,8 @@ class CreateUnitDTO
         public float $area,
         public string $type,
         public float $price,
-        public string $status
+        public string $status,
+        public ?string $description
     ) {}
 
     public static function fromRequest(array $request)
@@ -23,7 +24,8 @@ class CreateUnitDTO
             area: $request['area'],
             type: $request['type'],
             price: $request['price'],
-            status: $request['status']
+            status: $request['status'],
+            description: $request['description']
         );
     }
 
@@ -36,7 +38,8 @@ class CreateUnitDTO
             'area'         => $this->area,
             'type'         => $this->type,
             'price'        => $this->price,
-            'status'       => $this->status
+            'status'       => $this->status,
+            'description'  => $this->description
         ], fn($value) => !is_null($value));
     }
 }

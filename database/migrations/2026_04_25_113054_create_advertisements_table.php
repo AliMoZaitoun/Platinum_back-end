@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->enum('status', ['enabled', 'disabled']);
-            $table->date('duration');
+            $table->boolean('status')->default(0);
+            $table->integer('duration');
+            $table->date('end_date')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
