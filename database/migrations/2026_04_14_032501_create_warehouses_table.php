@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('warehouses', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('location');
+            $table->foreignId('location_id')->constrained()->onDelete('restrict');
+            $table->string('address');
             $table->softDeletes();
             $table->timestamps();
         });

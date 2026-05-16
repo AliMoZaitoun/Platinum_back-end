@@ -16,7 +16,8 @@ class CreateWarehouseRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'location' => 'required|string'
+            'location_id' => 'required|integer|exists:locations,id',
+            'address'     => 'required|string',
         ];
     }
 }

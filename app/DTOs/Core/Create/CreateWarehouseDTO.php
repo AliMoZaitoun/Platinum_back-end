@@ -5,17 +5,17 @@ namespace App\DTOs\Core\Create;
 class CreateWarehouseDTO
 {
     public function __construct(
-        public ?int $id,
         public string $name,
-        public string $location
+        public int $location_id,
+        public string $address,
     ) {}
 
     public static function fromRequest(array $request)
     {
         return new self(
-            id: null,
             name: $request['name'],
-            location: $request['location']
+            location_id: $request['location_id'],
+            address: $request['address'],
         );
     }
 
@@ -23,7 +23,8 @@ class CreateWarehouseDTO
     {
         return [
             'name'      => $this->name,
-            'location'  => $this->location
+            'location_id'  => $this->location_id,
+            'address'      => $this->address,
         ];
     }
 }

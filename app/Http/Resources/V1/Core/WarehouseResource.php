@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\V1\Core;
 
+use App\Http\Resources\V1\RealEstate\LocationResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -12,8 +13,8 @@ class WarehouseResource extends JsonResource
         return [
             'id'            => $this->id,
             'name'          => $this->name,
-            'description'   => $this->description,
-
+            'location'      => new LocationResource($this->location),
+            'address'       => $this->address,
             'items'         => ItemResource::collection($this->whenLoaded('items'))
         ];
     }
