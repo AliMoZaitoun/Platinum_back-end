@@ -28,7 +28,7 @@ return new class extends Migration
             $table->timestamp('checked_in_at');
             $table->timestamp('checked_out_at')->nullable();
 
-            $table->integer('total_hours')->default(0);
+            $table->decimal('total_hours', 5, 2)->nullable();
 
             $table->index(['engineer_id', 'project_id']);
 

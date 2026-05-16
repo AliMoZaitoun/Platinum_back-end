@@ -382,6 +382,9 @@ Route::prefix('construction-report')->middleware('auth:sanctum')->group(function
     Route::get('/', [ConstructionReportController::class, 'index'])
         ->middleware(['permission:read.report']);
 
+    Route::get('/myReports/{project_id?}', [ConstructionReportController::class, 'myReports'])
+        ->middleware(['permission:read.report']);
+
     Route::post('/', [ConstructionReportController::class, 'store'])
         ->middleware(['permission:create.report']);
 

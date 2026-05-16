@@ -24,8 +24,8 @@ return new class extends Migration
                 'plumbing'       // السباكة
             ]);
 
-            $table->integer('completion_percentage')->unsigned();
-            $table->integer('daily_progress')->unsigned();
+            $table->decimal('completion_percentage')->unsigned();
+            $table->decimal('daily_progress')->unsigned();
             $table->enum('status', ['on_track', 'delayed', 'blocked'])->default('on_track');
             $table->integer('manpower_count')->unsigned()->default(0);
             $table->integer('issues_count')->unsigned()->default(0);

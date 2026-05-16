@@ -36,6 +36,13 @@ class ConstructionReportController extends Controller
         return $this->useResource($report, ConstructionReportResource::class);
     }
 
+    public function myReports(?int $project_id = null)
+    {
+        $reports = $this->service->myReports($project_id);
+
+        return $this->successCollection($reports, ConstructionReportResource::class);
+    }
+
     public function destroy(int $id)
     {
         $this->service->destroy($id);

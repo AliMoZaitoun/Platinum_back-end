@@ -23,12 +23,24 @@ class ConstructionReportDAO
 
     public function show(int $id)
     {
-        return ConstructionReport::where('id', $id)->with(['project', 'engineer'])->get() ?? throw new NotFoundException("Report");
+        return ConstructionReport::where('id', $id)->with(['project', 'engineer'])->first() ?? throw new NotFoundException("Report");
+    }
+
+    public function engReports(int $engineer_id, ?int $project_id = null)
+    {
+        $reports = ConstructionReport::where('engineer_id', $engineer_id)
+            ->with(['project', 'engineer'])
+            ->when($project_id, function ($query, $projectId) {
+                return $query->where('project_id', $projectId);
+            })
+            ->get();
+
+        return $reports;
     }
 
     public function findByUuid(string $uuid)
     {
-        return ConstructionReport::where('uuid', $uuid)->with(['project', 'engineer'])->get()
+        return ConstructionReport::where('uuid', $uuid)->with(['project', 'engineer'])->first()
             ?? throw new NotFoundException("Report");
     }
 

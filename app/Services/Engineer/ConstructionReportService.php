@@ -6,6 +6,7 @@ use App\DAO\Engineer\ConstructionReportDAO;
 use App\DTOs\Engineer\Create\CreateReportDTO;
 use App\Services\FileManagerService;
 use App\Services\TransactionService;
+use Illuminate\Support\Facades\Auth;
 
 class ConstructionReportService
 {
@@ -52,6 +53,14 @@ class ConstructionReportService
     public function show(int $id)
     {
         return $this->dao->show($id);
+    }
+
+    public function myReports(?int $project_id = null)
+    {
+        $user = Auth::user();
+        $engineer = $user->engineer;
+
+        return $this->dao->engReports($engineer->id, $project_id);
     }
 
     public function findByUuid(string $uuid)

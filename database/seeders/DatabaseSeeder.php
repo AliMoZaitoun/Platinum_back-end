@@ -29,7 +29,8 @@ class DatabaseSeeder extends Seeder
             ProjectSeeder::class,
             BuildingSeeder::class,
             UnitSeeder::class,
-            ClientSeeder::class
+            ClientSeeder::class,
+            EngineerSystemSeeder::class
         ]);
     }
 }
