@@ -15,6 +15,7 @@ class WarehouseResource extends JsonResource
             'name'          => $this->name,
             'location'      => new LocationResource($this->location),
             'address'       => $this->address,
+            'description'   => $this->description,
             'items'         => ItemResource::collection($this->whenLoaded('items'))
         ];
     }
