@@ -18,6 +18,7 @@ class CreateWarehouseRequest extends FormRequest
             'name' => 'required|string',
             'location_id' => 'required|integer|exists:locations,id',
             'address'     => 'required|string',
+            'description' => 'nullable|string',
         ];
     }
 }
