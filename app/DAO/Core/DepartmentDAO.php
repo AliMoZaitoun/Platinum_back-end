@@ -22,7 +22,7 @@ class DepartmentDAO
 
     public function show(int $id)
     {
-        return Department::where('id', $id)->with('employees')->get() ?? throw new NotFoundException("Department");
+        return Department::where('id', $id)->with('employees')->first() ?? throw new NotFoundException("Department");
     }
 
     public function update(int $id, UpdateDepartmentDTO $departmentDTO)

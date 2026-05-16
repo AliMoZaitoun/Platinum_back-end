@@ -27,7 +27,7 @@ class ItemDAO
 
     public function show(int $id)
     {
-        return Item::where('id', $id)->with('warehouse')->get() ?? throw new NotFoundException("Item");
+        return Item::where('id', $id)->with('warehouse')->first() ?? throw new NotFoundException("Item");
     }
 
     public function update(int $id, UpdateItemDTO $itemDTO)

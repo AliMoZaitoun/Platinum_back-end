@@ -33,7 +33,7 @@ class AttendanceDAO
 
     public function show(int $id)
     {
-        return Attendance::where('id', $id)->with(['project', 'engineer'])->get() ?? throw new NotFoundException("Attendance");
+        return Attendance::where('id', $id)->with(['project', 'engineer'])->first() ?? throw new NotFoundException("Attendance");
     }
 
     public function getLastAttendanceOfEngineer(int $engineerId)
