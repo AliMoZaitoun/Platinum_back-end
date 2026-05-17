@@ -7,7 +7,7 @@ use App\Models\Engineer\Engineer;
 use App\Models\Engineer\EngineerProject;
 use App\Models\Engineer\Attendance;
 use App\Models\RealEstate\Project;
-use App\Models\Engineer\ConstructionReport; // عدل مسار الموديل حسب مجلداتك
+use App\Models\Engineer\ConstructionReport;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -18,13 +18,40 @@ class EngineerSystemSeeder extends Seeder
 {
     public function run(): void
     {
-        Storage::disk('public')->makeDirectory('reports');
-        $dummyFilePath = 'reports/dummy_blueprint_report.pdf';
+        // 💡 تحديد اسم الديسك ليكون S3 (Supabase) عشان الفحص بالسيرفر
+        $disk = 's3';
 
-        if (!Storage::disk('public')->exists($dummyFilePath)) {
-            Storage::disk('public')->put($dummyFilePath, '%PDF-1.5 ... Dummy Engineering Report Content ...');
+        // 1. توليد ورفع ملف PDF وهمي للـ S3 مباشرة
+        $dummyFilePath = 'reports/dummy_blueprint_report_' . Str::random(5) . '.pdf';
+        $pdfContent = '%PDF-1.5 ... Dummy Engineering Report Content ...';
+
+        try {
+            Storage::disk($disk)->put($dummyFilePath, $pdfContent, 'public');
+            $this->command->info("🎉 Success: Dummy PDF uploaded to Supabase Storage at: {$dummyFilePath}");
+        } catch (\Exception $e) {
+            $this->command->error("❌ Failed to upload PDF to Supabase: " . $e->getMessage());
         }
 
+        // 2. توليد ورفع صورة وهمية (صورة حقيقية عبارة عن مربع ملون) للـ S3
+        $dummyImagePath = 'buildings/dummy_building_' . Str::random(5) . '.png';
+
+        // صناعة صورة بالـ GD Library المفعّلة عندك بالـ Dockerfile
+        ob_start();
+        $im = imagecreatetruecolor(200, 200);
+        $text_color = imagecolorallocate($im, 255, 255, 255);
+        imagestring($im, 5, 50, 90, "Test Image", $text_color);
+        imagepng($im);
+        $imageContent = ob_get_clean();
+        imagedestroy($im);
+
+        try {
+            Storage::disk($disk)->put($dummyImagePath, $imageContent, 'public');
+            $this->command->info("🎉 Success: Dummy Image uploaded to Supabase Storage at: {$dummyImagePath}");
+        } catch (\Exception $e) {
+            $this->command->error("❌ Failed to upload Image to Supabase: " . $e->getMessage());
+        }
+
+        // بقية كود الـ Seeder لبناء البيانات بالداتابيز
         $projects = Project::all();
         if ($projects->isEmpty()) {
             $this->command->warn('Please seed Projects first to link engineers properly!');
@@ -34,9 +61,9 @@ class EngineerSystemSeeder extends Seeder
         $engineersData = [
             [
                 'user' => [
-                    'first_name' => 'Ali',
-                    'last_name' => 'Zaitoun',
-                    'email' => 'ali.zaitoun@eng.com',
+                    'first_name' => 'Tommy',
+                    'last_name' => 'Shelby',
+                    'email' => 'ts@eng.com',
                     'phone' => '+963911111111',
                     'address' => 'Damascus, Syria',
                     'gender' => 'male',
@@ -45,42 +72,8 @@ class EngineerSystemSeeder extends Seeder
                     'email_verified_at' => now(),
                 ],
                 'profile' => [
-                    'specialization' => 'Software Engineer / IoT Systems',
+                    'specialization' => 'Civial Engineering',
                     'experience_years' => 4,
-                ]
-            ],
-            [
-                'user' => [
-                    'first_name' => 'Ahmad',
-                    'last_name' => 'Al-Saeed',
-                    'email' => 'ahmad.saeed@eng.com',
-                    'phone' => '+963922222222',
-                    'address' => 'Mazzeh, Damascus',
-                    'gender' => 'male',
-                    'type' => 'engineer',
-                    'password' => Hash::make('password'),
-                    'email_verified_at' => now(),
-                ],
-                'profile' => [
-                    'specialization' => 'Civil Engineering / Site Manager',
-                    'experience_years' => 7,
-                ]
-            ],
-            [
-                'user' => [
-                    'first_name' => 'Rania',
-                    'last_name' => 'Homsi',
-                    'email' => 'rania.homsi@eng.com',
-                    'phone' => '+963933333333',
-                    'address' => 'Malki, Damascus',
-                    'gender' => 'female',
-                    'type' => 'engineer',
-                    'password' => Hash::make('password'),
-                    'email_verified_at' => now(),
-                ],
-                'profile' => [
-                    'specialization' => 'Architectural Design',
-                    'experience_years' => 5,
                 ]
             ]
         ];
@@ -134,14 +127,15 @@ class EngineerSystemSeeder extends Seeder
                 'description'           => 'Completed concrete pouring for Block A foundation.',
             ]);
 
+            // ربط الـ Media بالمسار السحابي الجديد المرفوع
             $report->media()->create([
                 'uuid'          => (string) Str::uuid(),
-                'path'          => $dummyFilePath,
-                'original_name' => 'site_blueprint_v1.pdf',
-                'type'          => 'document',
+                'path'          => $dummyImagePath, // هلق صار يقرأ المسار السحابي
+                'original_name' => 'site_blueprint_v1.png',
+                'type'          => 'image',
                 'recorded_at'   => Carbon::now()->format('Y-m-d H:i:s'),
                 'custom_properties' => json_encode([
-                    'file_size' => '1.2MB',
+                    'file_size' => '12KB',
                     'uploaded_by' => 'System Seeder'
                 ]),
             ]);
