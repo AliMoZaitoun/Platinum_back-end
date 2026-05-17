@@ -11,6 +11,10 @@ class DepartmentSeeder extends Seeder
     {
         $departments = [
             [
+                'name'        => 'Engineering & Project Management',
+                'description' => 'Manages structural design, architectural planning, site supervision, project scheduling, and quality control for all construction projects.',
+            ],
+            [
                 'name'        => 'Customer Service',
                 'description' => 'Oversees day-to-day operations of managed properties including tenant relations, maintenance coordination, and rent collection.',
             ],

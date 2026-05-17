@@ -67,6 +67,7 @@ class RoleAndPermissionSeeder extends Seeder
             'read.solution',
             'read.unit',
             'read.building',
+            'read.project',
             'create.favorite',
             'read.favorite',
             'delete.favorite',
@@ -116,7 +117,8 @@ class RoleAndPermissionSeeder extends Seeder
             'update.availableSlot',
             'delete.availableSlot',
             'read.engineer',
-            'read.attendance'
+            'read.attendance',
+            'read.project',
         ]);
 
         $customer_service = Role::firstOrCreate(['name' => 'customer_service_staff']);
@@ -129,7 +131,12 @@ class RoleAndPermissionSeeder extends Seeder
             'read.appointment',
             'update.appointment',
             'delete.appointment',
+
+            'create.client',
+            'read.client',
+            'delete.client'
         ]);
+
 
         $finance = Role::firstOrCreate(['name' => 'finance_staff']);
         $finance->syncPermissions([
@@ -137,6 +144,20 @@ class RoleAndPermissionSeeder extends Seeder
             'read.availableSlot',
             'update.availableSlot',
             'delete.availableSlot'
+        ]);
+
+        $engineering = Role::firstOrCreate(['name' => 'engineering_staff']);
+        $engineering->syncPermissions([
+            'create.engineer',
+            'read.engineer',
+            'update.engineer',
+            'delete.engineer',
+
+            'read.project',
+
+            'read.report',
+            'update.report',
+            'delete.report'
         ]);
     }
 }

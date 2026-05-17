@@ -21,7 +21,7 @@ class BuildingResource extends JsonResource
             'project'         => new ProjectResource($this->whenLoaded('project')),
             'units'           => UnitResource::collection($this->whenLoaded('units')),
 
-            'attachments'   => MediaResouce::collection($this->whenLoaded('attachments')),
+            'attachments'     => MediaResouce::collection($this->attachments),
         ];
     }
 }

@@ -16,7 +16,7 @@ class EmployeeDepartmentSeeder extends Seeder
         $assignments = [
             'sophie.vdberg@realestate.com'  => ['Finance & Accounting', 'manager', UserRole::FINANCE_STAFF],
             'pieter.visser@realestate.com'  => ['Finance & Accounting', 'staff', UserRole::FINANCE_STAFF],
-            'james.okafor@realestate.com'   => ['Customer Service', 'staff', UserRole::CUSTOMER_SERVICE_STAFF],
+            'james.okafor@realestate.com'   => ['Engineering & Project Management', 'staff', UserRole::ENGINEERING_STAFF],
             'fatima.elamin@realestate.com'  => ['Customer Service', 'supervisor', UserRole::CUSTOMER_SERVICE_STAFF],
             'lars.hendriks@realestate.com'  => ['Customer Service', 'staff', UserRole::CUSTOMER_SERVICE_STAFF],
             'nina.smits@realestate.com'     => ['Marketing & Communications', 'manager', UserRole::MARKETING_STAFF],
