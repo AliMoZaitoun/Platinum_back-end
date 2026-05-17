@@ -18,7 +18,9 @@ class MediaResouce extends JsonResource
             'original_name' => $this->original_name,
             'mediable_id'   => $this->mediable_id,
             'mediable_type' => $this->mediable_type,
-            'url'           => Storage::disk('s3')->temporaryUrl($this->path, now()->addMinutes(30)),
+
+            'url'           => Storage::disk('s3')->url($this->path),
+
             'path'          => $this->path,
             'type'          => $this->type,
             'extension'     => pathinfo($path, PATHINFO_EXTENSION),
