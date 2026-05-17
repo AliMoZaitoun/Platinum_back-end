@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1\Client;
 
 use App\DTOs\Client\Create\CreateFavoriteDTO;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\RealEstate\FavoriteResource;
 use App\Services\Client\FavoriteService;
 use App\Traits\ResponseTrait;
 
@@ -17,7 +18,7 @@ class FavoriteController extends Controller
     public function index()
     {
         $favorites = $this->favoriteService->index();
-        return $this->successResponse($favorites);
+        return $this->successCollection($favorites, FavoriteResource::class);
     }
 
     public function store(int $unit_id)
@@ -25,13 +26,13 @@ class FavoriteController extends Controller
         $favoriteDTO = new CreateFavoriteDTO(null, $unit_id);
         $favorite = $this->favoriteService->store($favoriteDTO);
 
-        return $this->successResponse($favorite, __('messages.common.stored'), 201);
+        return $this->useResource($favorite, FavoriteResource::class, __('messages.common.stored'), 201);
     }
 
     public function show(int $id)
     {
         $favorite = $this->favoriteService->show($id);
-        return $this->successResponse($favorite);
+        return $this->useResource($favorite, FavoriteResource::class);
     }
 
     public function destroy(int $id)

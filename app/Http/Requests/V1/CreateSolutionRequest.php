@@ -17,7 +17,11 @@ class CreateSolutionRequest extends FormRequest
         return [
             'name'  => 'required|string',
             'description' => 'nullable|string',
-            'price' => 'required|decimal:0,3'
+            'price' => 'required|decimal:0,3',
+            'attachments'                     => ['nullable', 'array'],
+            'attachments.*.file'              => ['required', 'file', 'mimes:jpg,jpeg,png,pdf,docx,xlsx,zip,txt', 'max:10240'],
+            'attachments.*.type'              => ['nullable', 'string', 'in:360_panorama'],
+            'attachments.*.custom_properties' => ['nullable', 'array'],
         ];
     }
 }

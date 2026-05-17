@@ -35,7 +35,7 @@ class BuildingController extends Controller
     public function store(CreateBuildingRequest $request)
     {
         $buildingDTO = CreateBuildingDTO::fromRequest($request->validated());
-        $building = $this->buildingService->store($buildingDTO);
+        $building = $this->buildingService->store($buildingDTO, $request->file('attachments'));
         return $this->useResource($building, BuildingResource::class, __('messages.common.stored'), 201);
     }
 

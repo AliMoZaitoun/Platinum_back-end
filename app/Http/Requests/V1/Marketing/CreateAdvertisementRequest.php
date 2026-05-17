@@ -9,11 +9,20 @@ class CreateAdvertisementRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     public function rules(): array
     {
-        return [];
+        return [
+            'title'         => ['required', 'string', 'max:255'],
+            'description'   => ['required', 'string'],
+            'starts_at'     => ['nullable', 'date', 'date_format:Y-m-d H:i:s'],
+            'duration_days' => ['required', 'integer', 'min:1'],
+            'status'        => ['nullable', 'boolean'],
+            'created_by'    => ['nullable'],
+            'attachments'   => 'nullable|array',
+            'attachments.*' => 'file|mimes:jpg,jpeg,png,pdf,docx,xlsx,zip,txt|max:10240',
+        ];
     }
 }

@@ -270,6 +270,8 @@ Route::prefix('building')->middleware('auth:sanctum')->group(function () {
 Route::prefix('unit')->middleware('auth:sanctum')->group(function () {
     Route::get('', [UnitController::class, 'index']);
 
+    Route::get('readForClient', [UnitController::class, 'readForClient']);
+
     Route::get('byBuilding/{building_id}', [UnitController::class, 'byBuilding']);
 
     Route::post('/', [UnitController::class, 'store']);
@@ -363,6 +365,9 @@ Route::prefix('appointment')->middleware('auth:sanctum')->group(function () {
 // Advertisment
 Route::prefix('advertisment')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [AdvertisementController::class, 'index'])
+        ->middleware(['permission:create.advertisment']);
+
+    Route::get('getActiveAdvertisements', [AdvertisementController::class, 'getActiveAdvertisements'])
         ->middleware(['permission:read.advertisment']);
 
     Route::post('/', [AdvertisementController::class, 'store'])

@@ -21,7 +21,11 @@ class CreateUnitRequest extends FormRequest
             'area'  => 'required|decimal:0,3',
             'type' => 'required|in:social,vip',
             'price' => 'required|numeric|min:0|max:999999999999.99',
-            'status' => 'required|in:available,reserved,sold,maintenance'
+            'status' => 'required|in:available,reserved,sold,maintenance',
+            'attachments'                     => ['nullable', 'array'],
+            'attachments.*.file'              => ['required', 'file', 'mimes:jpg,jpeg,png,pdf,docx,xlsx,zip,txt', 'max:10240'],
+            'attachments.*.type'              => ['nullable', 'string', 'in:360_panorama'],
+            'attachments.*.custom_properties' => ['nullable', 'array'],
         ];
     }
 }

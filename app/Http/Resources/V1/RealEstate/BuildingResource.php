@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\V1\RealEstate;
 
+use App\Http\Resources\V1\MediaResouce;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -19,6 +20,8 @@ class BuildingResource extends JsonResource
             'status'          => $this->status,
             'project'         => new ProjectResource($this->whenLoaded('project')),
             'units'           => UnitResource::collection($this->whenLoaded('units')),
+
+            'attachments'   => MediaResouce::collection($this->whenLoaded('attachments')),
         ];
     }
 }

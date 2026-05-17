@@ -25,7 +25,7 @@ class CreateUnitDTO
             type: $request['type'],
             price: $request['price'],
             status: $request['status'],
-            description: $request['description']
+            description: $request['description'] ?? null
         );
     }
 

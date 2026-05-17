@@ -6,6 +6,7 @@ use App\DTOs\RealEstate\Create\CreateUnitDTO;
 use App\DTOs\RealEstate\Update\UpdateUnitDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\RealEstate\CreateUnitRequest;
+use App\Http\Resources\V1\RealEstate\ClientUnitResource;
 use App\Http\Resources\V1\RealEstate\UnitResource;
 use App\Services\RealEstate\UnitService;
 use App\Traits\ResponseTrait;
@@ -22,6 +23,12 @@ class UnitController extends Controller
     {
         $units = $this->unitService->index();
         return $this->successCollection($units, UnitResource::class);
+    }
+
+    public function readForClient()
+    {
+        $units = $this->unitService->index();
+        return $this->successCollection($units, ClientUnitResource::class);
     }
 
     public function byBuilding(int $building_id)

@@ -18,6 +18,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Media extends Model
 {
+
+    protected function casts(): array
+    {
+        return [
+            'custom_properties' => 'array',
+            'recorded_at'       => 'datetime',
+        ];
+    }
+
     public function mediable()
     {
         return $this->morphTo();

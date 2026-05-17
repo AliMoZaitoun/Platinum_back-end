@@ -9,14 +9,15 @@ use App\Models\Marketing\Advertisement;
 
 class AdvertismentDAO
 {
+
     public function index()
     {
         return Advertisement::latest()->get();
     }
 
-    public function byStatus(int $status)
+    public function getActiveAdvertisements()
     {
-        return Advertisement::where('status', $status)->get();
+        return Advertisement::active()->with('attachments')->get();
     }
 
     public function store(CreateAdDTO $adDTO)

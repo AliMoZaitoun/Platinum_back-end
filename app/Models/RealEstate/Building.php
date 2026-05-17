@@ -2,6 +2,7 @@
 
 namespace App\Models\RealEstate;
 
+use App\Models\Media;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
@@ -32,5 +33,10 @@ class Building extends Model
     public function getLocationAttribute($value)
     {
         return $value ?? $this->project->location;
+    }
+
+    public function attachments()
+    {
+        return $this->morphMany(Media::class, 'mediable');
     }
 }

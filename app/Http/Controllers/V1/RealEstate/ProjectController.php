@@ -27,7 +27,7 @@ class ProjectController extends Controller
     public function store(CreateProjectRequest $request)
     {
         $projectDTO = CreateProjectDTO::fromRequest($request->validated());
-        $project = $this->projectService->store($projectDTO);
+        $project = $this->projectService->store($projectDTO, $request->file('attachments'));
         return $this->useResource($project, ProjectResource::class, __('messages.common.stored'), 201);
     }
 

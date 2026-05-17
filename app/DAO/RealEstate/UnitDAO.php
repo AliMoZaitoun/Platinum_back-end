@@ -11,7 +11,7 @@ class UnitDAO
 {
     public function index(array $relations = [])
     {
-        $defaultRelation = ['building.project'];
+        $defaultRelation = ['building.project', 'attachments'];
         $allRelations = array_merge($defaultRelation, $relations);
         return Unit::with($allRelations)->get();
     }

@@ -5,6 +5,8 @@ namespace App\Services\RealEstate;
 use App\DAO\RealEstate\UnitDAO;
 use App\DTOs\RealEstate\Create\CreateUnitDTO;
 use App\DTOs\RealEstate\Update\UpdateUnitDTO;
+use App\Services\FileManagerService;
+use App\Services\Transaction;
 use App\Services\TranslationService;
 use InvalidArgumentException;
 
@@ -12,7 +14,9 @@ class UnitService
 {
     public function __construct(
         private UnitDAO $unitDAO,
-        private TranslationService $translationService
+        private TranslationService $translationService,
+        private Transaction $transaction,
+        private FileManagerService $fileManager
     ) {}
 
     public function index(array $relations = [])
@@ -25,15 +29,27 @@ class UnitService
         return $this->unitDAO->byBuilding($building_id, $relations);
     }
 
-    public function store(CreateUnitDTO $dto)
+    public function store(CreateUnitDTO $dto, $attachments = null)
     {
-        $data = $dto->toArray();
+        return $this->transaction->execute(function () use ($dto, $attachments) {
+            $data = $dto->toArray();
 
-        if ($dto->description) {
-            $data['description'] = $this->translationService->translateAll($dto->description);
-        }
+            if ($dto->description) {
+                $data['description'] = $this->translationService->translateAll($dto->description);
+            }
 
-        return $this->unitDAO->store($data);
+            $unit = $this->unitDAO->store($data);
+
+            if ($attachments) {
+                $this->fileManager->storeFile(
+                    model: $unit,
+                    files: $attachments,
+                    folderPath: "units",
+                    relationName: 'attachments'
+                );
+            }
+            return $unit;
+        });
     }
 
     public function show(int $id)

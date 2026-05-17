@@ -6,7 +6,9 @@ use App\DTOs\Marketing\Create\CreateAdDTO;
 use App\DTOs\Marketing\Update\UpdateAdDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Marketing\CreateAdvertisementRequest;
+use App\Http\Resources\V1\Marketing\AdminAdvertisementResource;
 use App\Http\Resources\V1\Marketing\AdvertismentResource;
+use App\Http\Resources\V1\Marketing\ClientAdvertisementResource;
 use App\Services\Marketing\AdvertismentSerivce;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
@@ -21,21 +23,21 @@ class AdvertisementController extends Controller
     public function index()
     {
         $ads = $this->adService->index();
-        return $this->successCollection($ads, AdvertismentResource::class);
+        return $this->successCollection($ads, AdminAdvertisementResource::class);
     }
 
-    public function byStatus(int $status)
+    public function getActiveAdvertisements()
     {
-        $ads = $this->adService->byStatus($status);
-        return $this->successCollection($ads, AdvertismentResource::class);
+        $ads = $this->adService->getActiveAdvertisements();
+        return $this->successCollection($ads, ClientAdvertisementResource::class);
     }
 
     public function store(CreateAdvertisementRequest $request)
     {
         $dto = CreateAdDTO::fromRequest($request->validated());
 
-        $ad = $this->adService->store($dto);
-        return $this->successResponse($ad, __('messages.common.stored'));
+        $ad = $this->adService->store($dto, $request->file('attachments'));
+        return $this->useResource($ad, AdminAdvertisementResource::class, __('messages.common.stored'), 201);
     }
 
     public function show(int $id)
@@ -43,7 +45,6 @@ class AdvertisementController extends Controller
         $ad = $this->adService->show($id);
         return $this->successResponse($ad);
     }
-
 
     public function update(int $id, Request $request)
     {

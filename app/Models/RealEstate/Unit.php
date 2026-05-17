@@ -2,6 +2,7 @@
 
 namespace App\Models\RealEstate;
 
+use App\Models\Media;
 use App\Models\Sales\Order;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
@@ -34,5 +35,10 @@ class Unit extends Model
     public function getLocationAttribute($value)
     {
         return $value ?? $this->building->location;
+    }
+
+    public function attachments()
+    {
+        return $this->morphMany(Media::class, 'mediable');
     }
 }

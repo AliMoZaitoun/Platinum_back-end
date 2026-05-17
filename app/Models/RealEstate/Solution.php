@@ -2,6 +2,7 @@
 
 namespace App\Models\RealEstate;
 
+use App\Models\Media;
 use App\Models\Sales\Order;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
@@ -24,5 +25,10 @@ class Solution extends Model
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function attachments()
+    {
+        return $this->morphMany(Media::class, 'mediable');
     }
 }

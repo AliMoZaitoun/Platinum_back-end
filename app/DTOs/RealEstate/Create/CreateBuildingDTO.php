@@ -21,7 +21,7 @@ class CreateBuildingDTO
             building_number: $request['building_number'],
             floors_count: $request['floors_count'],
             status: $request['status'],
-            description: $request['description']
+            description: $request['description'] ?? null
         );
     }
 

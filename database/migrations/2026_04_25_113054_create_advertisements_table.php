@@ -15,10 +15,17 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->boolean('status')->default(0);
-            $table->integer('duration');
-            $table->date('end_date')->nullable();
+
+            $table->timestamp('starts_at')->nullable();
+            $table->timestamp('ends_at')->nullable();
+            $table->integer('duration_days')->unsigned();
+
+            $table->boolean('status')->default(1);
+
             $table->softDeletes();
+            $table->index(['starts_at', 'ends_at', 'status']);
+
+            $table->foreignId('created_by')->nullable()->constrained('employees');
             $table->timestamps();
         });
     }

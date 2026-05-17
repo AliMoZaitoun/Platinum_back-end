@@ -28,8 +28,10 @@ class CreateReportRequest extends FormRequest
             'issues_count'          => 'required|integer',
             'description'           => 'nullable|string',
             'recorded_at'           => 'nullable|date',
-            'attachments'           => 'nullable|array',
-            'attachments.*'         => 'file|mimes:jpg,jpeg,png,pdf,docx,xlsx,zip,txt|max:10240',
+            'attachments'                     => ['nullable', 'array'],
+            'attachments.*.file'              => ['required', 'file', 'mimes:jpg,jpeg,png,pdf,docx,xlsx,zip,txt', 'max:10240'],
+            'attachments.*.type'              => ['nullable', 'string', 'in:360_panorama'],
+            'attachments.*.custom_properties' => ['nullable', 'array'],
         ];
     }
 }

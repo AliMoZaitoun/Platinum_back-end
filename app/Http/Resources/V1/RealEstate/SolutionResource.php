@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\V1\RealEstate;
 
+use App\Http\Resources\V1\MediaResouce;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,6 +17,8 @@ class SolutionResource extends JsonResource
             'price'         => (float) $this->price,
             'created_at'    => $this->created_at->format('Y-m-d H:i'),
             'created_from'  => $this->created_at->diffForHumans(),
+
+            'attachments' => MediaResouce::collection($this->attachments)
         ];
     }
 }

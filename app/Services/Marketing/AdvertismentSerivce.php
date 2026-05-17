@@ -6,46 +6,59 @@ use App\DAO\Marketing\AdvertismentDAO;
 use App\DTOs\Marketing\Create\CreateAdDTO;
 use App\DTOs\Marketing\Update\UpdateAdDTO;
 use App\Exceptions\NoResultsException;
+use App\Services\FileManagerService;
+use App\Services\TransactionService;
+use Illuminate\Support\Facades\Auth;
 
 class AdvertismentSerivce
 {
     public function __construct(
-        private AdvertismentDAO $adDAO
+        private AdvertismentDAO $dao,
+        private FileManagerService $fileManager,
+        private TransactionService $transaction
     ) {}
 
     public function index()
     {
-        $ads = $this->adDAO->index();
-        if (sizeof($ads) <= 0)
-            throw new NoResultsException();
-        return $ads;
+        return $this->dao->index();
     }
 
-    public function byStatus(int $status)
+    public function getActiveAdvertisements()
     {
-        $ads = $this->adDAO->byStatus($status);
-        if (sizeof($ads) <= 0)
-            throw new NoResultsException();
-        return $ads;
+        return $this->dao->getActiveAdvertisements();
     }
 
-    public function store(CreateAdDTO $dto)
+    public function store(CreateAdDTO $dto, $attachments = null)
     {
-        return $this->adDAO->store($dto);
+        return $this->transaction->execute(function () use ($dto, $attachments) {
+            $user = Auth::user();
+            $dto->created_by = $user->engineer->id ?? 1;
+            $advertisment = $this->dao->store($dto);
+
+            if ($attachments) {
+                $this->fileManager->storeFile(
+                    model: $advertisment,
+                    files: $attachments,
+                    folderPath: "advertisments",
+                    relationName: 'attachments'
+                );
+            }
+            return $advertisment;
+        });
     }
 
     public function show(int $id)
     {
-        return $this->adDAO->show($id);
+        return $this->dao->show($id);
     }
 
     public function update(int $id, UpdateAdDTO $dto)
     {
-        return $this->adDAO->update($id, $dto);
+        return $this->dao->update($id, $dto);
     }
 
     public function destroy(int $id)
     {
-        return $this->adDAO->destroy($id);
+        return $this->dao->destroy($id);
     }
 }

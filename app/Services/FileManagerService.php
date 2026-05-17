@@ -21,16 +21,31 @@ class FileManagerService
         $files = is_array($files) ? $files : [$files];
         $storedRecords = [];
 
-        foreach ($files as $file) {
+        foreach ($files as $fileData) {
+            $file = $fileData instanceof UploadedFile ? $fileData : ($fileData['file'] ?? null);
+
+            if (!$file instanceof UploadedFile) {
+                continue;
+            }
+
+            $passedType = is_array($fileData) ? ($fileData['type'] ?? null) : null;
+            $customProps = is_array($fileData) ? ($fileData['custom_properties'] ?? []) : [];
+
             $fileName = Str::uuid() . '.' . $file->getClientOriginalExtension();
 
             $path = $file->storeAs($folderPath, $fileName, $this->disk);
 
+            $customProps['extension'] = $file->getClientOriginalExtension();
+            $customProps['file_size'] = $file->getSize();
+
+            $finalType = $passedType ?: ($typeResolver ? $typeResolver($file) : $this->detectFileType($file));
+
             $storedRecords[] = $model->{$relationName}()->create([
-                'uuid' => Str::uuid(),
-                'path' => $path,
-                'original_name' => $file->getClientOriginalName(),
-                'type' => $typeResolver ? $typeResolver($file) : $this->detectFileType($file)
+                'uuid'              => (string) Str::uuid(),
+                'path'              => $path,
+                'original_name'     => $file->getClientOriginalName(),
+                'type'              => $finalType,
+                'custom_properties' => $customProps,
             ]);
         }
 
@@ -51,8 +66,12 @@ class FileManagerService
         return $fileRecord->delete();
     }
 
-    public function detectFileType($file)
+    public function detectFileType($file, $passedType = null)
     {
+        if ($passedType === '360_panorama') {
+            return '360_panorama';
+        }
+
         $mime = $file->getMimeType();
         if (str_contains($mime, 'image')) return 'image';
         if (str_contains($mime, 'video')) return 'video';

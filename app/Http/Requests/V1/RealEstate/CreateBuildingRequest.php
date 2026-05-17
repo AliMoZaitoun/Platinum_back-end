@@ -19,7 +19,11 @@ class CreateBuildingRequest extends FormRequest
             'building_number' => 'required|string',
             'location_id' => 'nullable|integer|exists:locations,id',
             'floors_count' => 'required|integer',
-            'status' => 'required'
+            'status' => 'required',
+            'attachments'                     => ['nullable', 'array'],
+            'attachments.*.file'              => ['required', 'file', 'mimes:jpg,jpeg,png,pdf,docx,xlsx,zip,txt', 'max:10240'],
+            'attachments.*.type'              => ['nullable', 'string', 'in:360_panorama'],
+            'attachments.*.custom_properties' => ['nullable', 'array'],
         ];
     }
 }

@@ -10,7 +10,7 @@ class FavoriteDAO
 {
     public function index(int $client_id)
     {
-        return Favorite::where('client_id', $client_id)->get();
+        return Favorite::where('client_id', $client_id)->with(['unit', 'client'])->get();
     }
 
     public function store(CreateFavoriteDTO $favoriteDTO)
