@@ -33,7 +33,13 @@ class FileManagerService
 
             $fileName = Str::uuid() . '.' . $file->getClientOriginalExtension();
 
-            $path = $file->storeAs($folderPath, $fileName, $this->disk);
+            $path = $folderPath . '/' . $fileName;
+
+            Storage::disk($this->disk)->put(
+                $path,
+                file_get_contents($file->getRealPath()),
+                'public'
+            );
 
             $customProps['extension'] = $file->getClientOriginalExtension();
             $customProps['file_size'] = $file->getSize();
