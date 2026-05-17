@@ -3,6 +3,7 @@ FROM php:8.5-fpm-alpine
 RUN apk add --no-cache \
     git \
     curl \
+    ca-certificates \
     libpng-dev \
     oniguruma-dev \
     libxml2-dev \
@@ -19,7 +20,8 @@ WORKDIR /var/www
 
 COPY . .
 
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader && \
+    php artisan config:clear || true
 
 EXPOSE 8080
 
