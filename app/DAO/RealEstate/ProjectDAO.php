@@ -11,7 +11,7 @@ class ProjectDAO
 {
     public function index(array $relations = [])
     {
-        $defaultRelations = ['location'];
+        $defaultRelations = ['location', 'attachments'];
         $allRelations = array_merge($defaultRelations, $relations);
         return Project::with($allRelations)->get();
     }

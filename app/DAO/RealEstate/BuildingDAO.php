@@ -11,7 +11,7 @@ class BuildingDAO
 {
     public function index(array $relations = [])
     {
-        $defaultRelation = ['project'];
+        $defaultRelation = ['project', 'attachments'];
         $allRelations = array_merge($defaultRelation, $relations);
         return Building::with($allRelations)->get();
     }
