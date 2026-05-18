@@ -37,13 +37,28 @@ trait ResponseTrait
 
     public function successCollection($collection, $resourceClass, $messageKey = "messages.common.success", $code = 200)
     {
+        $resource = $resourceClass::collection($collection);
+
+        if ($collection instanceof \Illuminate\Contracts\Pagination\LengthAwarePaginator) {
+
+            $paginatedData = $resource->response()->getData(true);
+
+            return response()->json([
+                'status'  => true,
+                'message' => $collection->isEmpty() ? __('messages.system.no_results') : __($messageKey),
+
+                'data'    => $paginatedData['data'],
+                'links'   => $paginatedData['links'] ?? null,
+                'meta'    => $paginatedData['meta'] ?? null,
+            ], $code);
+        }
+
         return $this->successResponse(
-            $resourceClass::collection($collection),
+            $resource,
             $collection->isEmpty() ? __('messages.system.no_results') : __($messageKey),
             $code
         );
     }
-
     public function useResource($item, $resourceClass, $messageKey = "messages.common.success", $code = 200)
     {
         return $this->successResponse(

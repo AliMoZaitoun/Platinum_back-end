@@ -2,6 +2,7 @@
 
 namespace App\Models\RealEstate;
 
+use App\Models\Engineer\Attendance;
 use App\Models\Engineer\EngineerProject;
 use App\Models\Engineer\ProjectEngineerAllocation;
 use App\Models\Media;
@@ -40,6 +41,11 @@ class Project extends Model
     public function engineers()
     {
         return $this->hasMany(ProjectEngineerAllocation::class);
+    }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
     }
 
     public function attachments()

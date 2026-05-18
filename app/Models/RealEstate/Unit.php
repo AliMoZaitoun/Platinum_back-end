@@ -2,6 +2,7 @@
 
 namespace App\Models\RealEstate;
 
+use App\Models\Client\Favorite;
 use App\Models\Media;
 use App\Models\Sales\Order;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -32,13 +33,13 @@ class Unit extends Model
         return $this->hasMany(Order::class);
     }
 
-    public function getLocationAttribute($value)
-    {
-        return $value ?? $this->building->location;
-    }
-
     public function attachments()
     {
         return $this->morphMany(Media::class, 'mediable');
+    }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
     }
 }

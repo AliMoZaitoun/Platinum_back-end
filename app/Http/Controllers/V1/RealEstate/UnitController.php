@@ -18,9 +18,9 @@ class UnitController extends Controller
         private UnitService $unitService
     ) {}
 
-    public function index()
+    public function index(int $perPage = 15)
     {
-        $units = $this->unitService->index();
+        $units = $this->unitService->getAllForAdmin($perPage);
         return $this->successCollection($units, UnitResource::class);
     }
 

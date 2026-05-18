@@ -2,6 +2,7 @@
 
 namespace App\Models\Engineer;
 
+use App\Models\RealEstate\Building;
 use App\Models\RealEstate\Project;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
     'uuid',
     'engineer_id',
     'project_id',
+    'building_id',
     'check_in_lat',
     'check_in_lng',
     'check_out_lat',
@@ -25,6 +27,11 @@ class Attendance extends Model
     public function project()
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function building()
+    {
+        return $this->belongsTo(Building::class);
     }
 
     public function engineer()

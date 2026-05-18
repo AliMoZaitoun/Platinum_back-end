@@ -34,7 +34,7 @@ class ClientUnitResource extends JsonResource
 
             'created_at'   => $this->created_at->format('Y-m-d H:i'),
 
-            'is_favoirte'   => $isFavorite,
+            'is_favorite'   => $isFavorite,
             'attachments'   => MediaResouce::collection($this->whenLoaded('attachments'))
         ];
     }

@@ -2,6 +2,7 @@
 
 namespace App\Models\RealEstate;
 
+use App\Models\Engineer\Attendance;
 use App\Models\Media;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
@@ -31,6 +32,11 @@ class Building extends Model
     public function units()
     {
         return $this->hasMany(Unit::class);
+    }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
     }
 
     public function attachments()

@@ -290,6 +290,8 @@ Route::prefix('unit')->middleware('auth:sanctum')->group(function () {
 Route::prefix('client')->middleware('auth:sanctum')->group(function () {
     Route::get('unit/read', [ClientUnitController::class, 'index']);
 
+    Route::get('unit/read/getWithoutPag', [ClientUnitController::class, 'getWithoutPag']);
+
     Route::get('unit/byBuilding/{building_id}', [ClientUnitController::class, 'byBuilding']);
 
     Route::get('unit/search', [ClientUnitController::class, 'search']);

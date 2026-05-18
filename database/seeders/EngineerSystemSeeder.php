@@ -19,10 +19,8 @@ class EngineerSystemSeeder extends Seeder
 {
     public function run(): void
     {
-        // 💡 تحديد اسم الديسك ليكون S3 (Supabase) عشان الفحص بالسيرفر
         $disk = 's3';
 
-        // 1. توليد ورفع ملف PDF وهمي للـ S3 مباشرة
         $dummyFilePath = 'reports/dummy_blueprint_report_' . Str::random(5) . '.pdf';
         $pdfContent = '%PDF-1.5 ... Dummy Engineering Report Content ...';
 
@@ -33,7 +31,6 @@ class EngineerSystemSeeder extends Seeder
             $this->command->error("❌ Failed to upload PDF to Supabase: " . $e->getMessage());
         }
 
-        // 2. توليد ورفع صورة وهمية للـ S3
         $dummyImagePath = 'buildings/dummy_building_' . Str::random(5) . '.png';
 
         ob_start();
@@ -51,15 +48,12 @@ class EngineerSystemSeeder extends Seeder
             $this->command->error("❌ Failed to upload Image to Supabase: " . $e->getMessage());
         }
 
-        // بقية كود الـ Seeder لبناء البيانات بالداتابيز
-        // 💡 سحب المشاريع مع الأبنية التابعة لها للتأكد من ربط الداتا
         $projects = Project::with('buildings')->get();
         if ($projects->isEmpty()) {
             $this->command->warn('Please seed Projects and Buildings first to link engineers properly!');
             return;
         }
 
-        // عينة مهندس من الطراز الرفيع لـ "Tommy Shelby"
         $engineersData = [
             [
                 'user' => [
@@ -90,26 +84,21 @@ class EngineerSystemSeeder extends Seeder
             ]);
             $user->assignRole('engineer');
 
-            // اختيار مشروع عشوائي للفحص
             $project = $projects->random();
             $buildings = $project->buildings;
 
-            // 💡 منطق الـ Allocation الجديد:
-            // إذا كان المشروع يحتوي على أبنية، نقوم بتعيين المهندس على كافة الأبنية (تجسيداً لمنطق السيرفيس)
             if ($buildings->isNotEmpty()) {
                 foreach ($buildings as $building) {
                     ProjectEngineerAllocation::create([
                         'engineer_id' => $engineer->id,
                         'project_id'  => $project->id,
-                        'building_id' => $building->id, // 👈 الربط بالبناء
+                        'building_id' => $building->id,
                         'start_date'  => Carbon::now()->subMonths(2)->format('Y-m-d'),
                         'end_date'    => Carbon::now()->addMonths(6)->format('Y-m-d'),
                     ]);
                 }
-                // نأخذ معرّف أول بناء لعرضه في تقارير الحضور والتقدم كعينة
                 $targetBuildingId = $buildings->first()->id;
             } else {
-                // حالة احتياطية إذا كان المشروع فارغاً من الأبنية (بناءً على الـ nullable بالميجريشن)
                 ProjectEngineerAllocation::create([
                     'engineer_id' => $engineer->id,
                     'project_id'  => $project->id,
@@ -120,12 +109,11 @@ class EngineerSystemSeeder extends Seeder
                 $targetBuildingId = null;
             }
 
-            // توليد بيانات الحضور (Attendance)
             Attendance::create([
                 'uuid' => (string) Str::uuid(),
                 'engineer_id' => $engineer->id,
                 'project_id' => $project->id,
-                'building_id' => $targetBuildingId, // 👈 تمرير البناء المستهدف لتكامل البيانات
+                'building_id' => $targetBuildingId,
                 'check_in_lat' => (string) ($project->latitude + 0.0001),
                 'check_in_lng' => (string) ($project->longitude + 0.0001),
                 'check_out_lat' => (string) ($project->latitude - 0.0001),
@@ -136,11 +124,10 @@ class EngineerSystemSeeder extends Seeder
                 'total_hours' => 8.5,
             ]);
 
-            // توليد تقرير الإنجاز (Construction Report) ليتوافق مع البناء
             $report = ConstructionReport::create([
                 'uuid'                  => (string) Str::uuid(),
                 'project_id'            => $project->id,
-                'building_id'           => $targetBuildingId, // 👈 ربط التقرير بالبناء الفعلي
+                'building_id'           => $targetBuildingId,
                 'engineer_id'           => $engineer->id,
                 'phase'                 => 'foundation',
                 'completion_percentage' => 45.50,
@@ -153,7 +140,6 @@ class EngineerSystemSeeder extends Seeder
                 'description'           => 'Completed concrete pouring for Block A foundation.',
             ]);
 
-            // ربط الـ Media بالمسار السحابي
             $report->media()->create([
                 'uuid'          => (string) Str::uuid(),
                 'path'          => $dummyImagePath,

@@ -22,11 +22,49 @@ class BuildingSeeder extends Seeder
         $project1 = $projects->first();
         $project2 = $projects->last();
 
+        // 💡 قمنا بإضافة الإحداثيات والـ radius لكل بناء في مصفوفة البيانات
         $buildingsData = [
-            ['project_id' => $project1->id, 'number' => 'A-1', 'floors' => 10, 'status' => 'in_progress', 'desc' => ['ar' => 'المبنى الرئيسي السكني.', 'en' => 'The main residential building.']],
-            ['project_id' => $project1->id, 'number' => 'A-2', 'floors' => 12, 'status' => 'completed', 'desc' => ['ar' => 'المبنى الثاني جاهز للتسليم.', 'en' => 'The second building ready for handover.']],
-            ['project_id' => $project1->id, 'number' => 'B-1', 'floors' => 8, 'status' => 'planned', 'desc' => null],
-            ['project_id' => $project2->id, 'number' => 'C-Commercial', 'floors' => 5, 'status' => 'in_progress', 'desc' => ['ar' => 'المبنى التجاري.', 'en' => 'The commercial building.']]
+            [
+                'project_id' => $project1->id,
+                'number' => 'A-1',
+                'floors' => 10,
+                'status' => 'in_progress',
+                'latitude' => $project1->latitude + 0.0002, // قريب من مركز المشروع 1
+                'longitude' => $project1->longitude + 0.0002,
+                'radius' => 80, // نصف قطر مخصص للحضور داخل البناء
+                'desc' => ['ar' => 'المبنى الرئيسي السكني.', 'en' => 'The main residential building.']
+            ],
+            [
+                'project_id' => $project1->id,
+                'number' => 'A-2',
+                'floors' => 12,
+                'status' => 'completed',
+                'latitude' => $project1->latitude - 0.0003, // قريب أيضاً
+                'longitude' => $project1->longitude - 0.0001,
+                'radius' => 80,
+                'desc' => ['ar' => 'المبنى الثاني جاهز للتسليم.', 'en' => 'The second building ready for handover.']
+            ],
+            [
+                'project_id' => $project1->id,
+                'number' => 'B-1',
+                'floors' => 8,
+                'status' => 'planned',
+                'latitude' => $project1->latitude + 0.0005,
+                'longitude' => $project1->longitude - 0.0004,
+                'radius' => 100,
+                'desc' => null
+            ],
+            // 💡 مشروع 2 (يمثل حالة أبنية بأماكن مختلفة متباعدة عن مركز المشروع الأصلي)
+            [
+                'project_id' => $project2->id,
+                'number' => 'C-Commercial',
+                'floors' => 5,
+                'status' => 'in_progress',
+                'latitude' => $project2->latitude + 0.0150, // متباعد ومنفصل جغرافياً
+                'longitude' => $project2->longitude + 0.0250,
+                'radius' => 120, // نطاق مسموح أوسع للموقع التجاري
+                'desc' => ['ar' => 'المبنى التجاري.', 'en' => 'The commercial building.']
+            ]
         ];
 
         foreach ($buildingsData as $bData) {
@@ -36,7 +74,11 @@ class BuildingSeeder extends Seeder
                 'building_number' => $bData['number'],
                 'floors_count'    => $bData['floors'],
                 'status'          => $bData['status'],
-                'description'     => $bData['desc']
+                'description'     => $bData['desc'],
+                // 💡 تخزين الحقول الجديدة في الداتابيز
+                'latitude'        => $bData['latitude'],
+                'longitude'       => $bData['longitude'],
+                'radius_meters'   => $bData['radius'],
             ]);
 
             // رفع صورة واجهة لكل مبنى قيد الإنشاء أو جاهز
@@ -65,5 +107,6 @@ class BuildingSeeder extends Seeder
                 }
             }
         }
+        $this->command->info('🎉 Buildings with Geo-coordinates seeded successfully!');
     }
 }

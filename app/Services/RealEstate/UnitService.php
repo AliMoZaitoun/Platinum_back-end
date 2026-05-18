@@ -19,9 +19,20 @@ class UnitService
         private FileManagerService $fileManager
     ) {}
 
-    public function index(array $relations = [])
+    # For testing just
+    public function getWithoutPag()
     {
-        return $this->unitDAO->index($relations);
+        return $this->unitDAO->getWithoutPag();
+    }
+
+    public function getUnitsForClient(int $perPage = 15)
+    {
+        return $this->unitDAO->getUnitsForClient($perPage);
+    }
+
+    public function getAllForAdmin(int $perPage = 15)
+    {
+        return $this->unitDAO->getAllForAdmin($perPage);
     }
 
     public function byBuilding(int $building_id, array $relations = [])
