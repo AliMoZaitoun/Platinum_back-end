@@ -35,13 +35,13 @@ class ClientService
             $user = $this->userDAO->store($userDTO);
             $clientDTO->user_id = $user->id;
 
-            $this->clientDAO->store($clientDTO);
+            $client = $this->clientDAO->store($clientDTO);
 
             $code = $this->otpService->createCode($user->id);
             // event(new OTPEvent($code, $user->email));
 
             // For Testing
-            return ['user' => $user, 'otp' => $code];
+            return ['client' => $client, 'otp' => $code];
         });
     }
 
@@ -57,7 +57,7 @@ class ClientService
             $user = $client->user;
             $this->userDAO->update($user, $userDTO);
             $this->clientDAO->update($client, $clientDTO);
-            return $user;
+            return $client;
         });
     }
 

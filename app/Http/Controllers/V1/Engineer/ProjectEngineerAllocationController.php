@@ -2,21 +2,20 @@
 
 namespace App\Http\Controllers\V1\Engineer;
 
-use App\DTOs\Engineer\Create\AssignEngProDTO;
+use App\DTOs\Engineer\Create\AssignEngineerAllocationDTO;
 use App\DTOs\Engineer\Update\UpdateEngProDTO;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\V1\RealEstate\AssignEngineerProjectRequest;
+use App\Http\Requests\V1\RealEstate\StoreProjectEngineerAllocationRequest;
 use App\Http\Resources\V1\Core\EngineerProjectResource;
-use App\Services\Engineer\EngineerProjectService;
+use App\Services\Engineer\ProjectEngineerAllocationService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
-class EngineerProjectController extends Controller
+class ProjectEngineerAllocationController extends Controller
 {
     use ResponseTrait;
 
-    public function __construct(private EngineerProjectService $engProService) {}
+    public function __construct(private ProjectEngineerAllocationService $engProService) {}
 
     public function index()
     {
@@ -24,9 +23,9 @@ class EngineerProjectController extends Controller
         return $this->successCollection($engPros, EngineerProjectResource::class);
     }
 
-    public function store(AssignEngineerProjectRequest $request)
+    public function store(StoreProjectEngineerAllocationRequest $request)
     {
-        $dto = AssignEngProDTO::fromRequest($request->validated());
+        $dto = AssignEngineerAllocationDTO::fromRequest($request->validated());
         $projectEng = $this->engProService->store($dto);
         return $this->useResource($projectEng, EngineerProjectResource::class, __('messages.common.stored'), 201);
     }

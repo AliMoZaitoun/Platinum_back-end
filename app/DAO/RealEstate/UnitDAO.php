@@ -30,7 +30,7 @@ class UnitDAO
 
     public function show(int $id)
     {
-        return Unit::find($id) ?? throw new NotFoundException("Unit");
+        return Unit::where('id', $id)->with(['attachments'])->first() ?? throw new NotFoundException("Unit");
     }
 
     protected function getBaseSearchQuery()

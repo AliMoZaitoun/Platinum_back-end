@@ -21,6 +21,7 @@ class UnitResource extends JsonResource
             'rooms_count'  => $this->rooms_count,
             'price'        => (float) $this->price,
             'status'       => $this->status,
+            'location'     => new LocationResource($this->getLocationAttribute),
             'building'     => new BuildingResource($this->whenLoaded('building')),
 
             'created_at'   => $this->created_at->format('Y-m-d H:i'),

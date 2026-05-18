@@ -48,7 +48,7 @@ trait ResponseTrait
     {
         return $this->successResponse(
             new $resourceClass($item),
-            $messageKey,
+            __($messageKey),
             $code
         );
     }

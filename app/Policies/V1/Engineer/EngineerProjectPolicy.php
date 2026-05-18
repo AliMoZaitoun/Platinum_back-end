@@ -2,7 +2,7 @@
 
 namespace App\Policies\V1\Engineer;
 
-use App\Models\Engineer\EngineerProject;
+use App\Models\Engineer\ProjectEngineerAllocation;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
@@ -13,7 +13,7 @@ class EngineerProjectPolicy
         return false;
     }
 
-    public function view(User $user, EngineerProject $engineerProject): bool
+    public function view(User $user, ProjectEngineerAllocation $ProjectEngineerAllocation): bool
     {
         return $user->hasPermissionTo('read.engineer', 'web');
     }
@@ -23,22 +23,22 @@ class EngineerProjectPolicy
         return $user->hasPermissionTo('create.engineer', 'web');
     }
 
-    public function update(User $user, EngineerProject $engineerProject): bool
+    public function update(User $user, ProjectEngineerAllocation $ProjectEngineerAllocation): bool
     {
         return false;
     }
 
-    public function delete(User $user, EngineerProject $engineerProject): bool
+    public function delete(User $user, ProjectEngineerAllocation $ProjectEngineerAllocation): bool
     {
         return false;
     }
 
-    public function restore(User $user, EngineerProject $engineerProject): bool
+    public function restore(User $user, ProjectEngineerAllocation $ProjectEngineerAllocation): bool
     {
         return false;
     }
 
-    public function forceDelete(User $user, EngineerProject $engineerProject): bool
+    public function forceDelete(User $user, ProjectEngineerAllocation $ProjectEngineerAllocation): bool
     {
         return false;
     }

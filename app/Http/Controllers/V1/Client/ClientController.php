@@ -8,6 +8,7 @@ use App\DTOs\Client\Update\UpdateClientDTO;
 use App\DTOs\User\Update\UpdateUserDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Client\ClientRequest;
+use App\Http\Resources\V1\ClientDetailResource;
 use App\Models\Client\Client;
 use App\Services\AIService;
 use App\Services\Client\ClientService;
@@ -35,18 +36,15 @@ class ClientController extends Controller
 
         $clientDTO = CreateClientDTO::fromRequest($clientRequest->validated());
 
-        $user = $this->clientService->store($userDTO, $clientDTO);
+        $data = $this->clientService->store($userDTO, $clientDTO);
 
-        $user['user'] = $this->resolveUserResource($user['user']);
-
-        return $this->successResponse($user, __('messages.auth.otp_sent'), 201);
+        return $this->useResource($data['client'], ClientDetailResource::class, __('messages.auth.otp_sent'), 201);
     }
 
     public function show(int $id)
     {
         $client = $this->clientService->show($id);
-        $user = $this->resolveUserResource($client->user);
-        return $this->successResponse($user, __('messages.common.success'), 200);
+        return $this->useResource($client, ClientDetailResource::class);
     }
 
     public function update(int $id, Request $request)
@@ -55,9 +53,9 @@ class ClientController extends Controller
 
         $clientDTO = UpdateClientDTO::fromRequest($request->all());
 
-        $user = $this->clientService->update($id, $userDTO, $clientDTO);
-        $data['user'] = $this->resolveUserResource($user);
-        return $this->successResponse($data, __('messages.common.updated'));
+        $client = $this->clientService->update($id, $userDTO, $clientDTO);
+
+        return $this->useResource($client, ClientDetailResource::class, __('messages.common.updated'));
     }
 
     public function destroy(int $id)

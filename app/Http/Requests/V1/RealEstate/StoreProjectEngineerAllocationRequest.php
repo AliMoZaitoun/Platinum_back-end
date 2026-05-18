@@ -7,7 +7,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Override;
 
-class AssignEngineerProjectRequest extends FormRequest
+class StoreProjectEngineerAllocationRequest extends FormRequest
 {
     public function __construct(
         private ProjectDAO $project_dao

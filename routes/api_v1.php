@@ -3,6 +3,7 @@
 use App\Http\Controllers\V1\AuthController;
 use App\Http\Controllers\V1\Client\ClientController;
 use App\Http\Controllers\V1\Client\FavoriteController;
+use App\Http\Controllers\V1\Client\UnitController as ClientUnitController;
 use App\Http\Controllers\V1\Core\DepartmentController;
 use App\Http\Controllers\V1\Core\EmployeeController;
 use App\Http\Controllers\V1\Core\EmployeeDepartmentController;
@@ -10,7 +11,7 @@ use App\Http\Controllers\V1\Core\ItemController;
 use App\Http\Controllers\V1\Core\WarehouseController;
 use App\Http\Controllers\V1\Engineer\AttendanceController;
 use App\Http\Controllers\V1\Engineer\ConstructionReportController;
-use App\Http\Controllers\V1\Engineer\EngineerProjectController;
+use App\Http\Controllers\V1\Engineer\ProjectEngineerAllocationController;
 use App\Http\Controllers\V1\Engineer\EngineerController;
 use App\Http\Controllers\V1\Marketing\AdvertisementController;
 use App\Http\Controllers\V1\OtpController;
@@ -51,6 +52,9 @@ Route::prefix('client')->group(function () {
             ->middleware(['permission:read.client']);
 
         Route::get('{id}', [ClientController::class, 'show']);
+
+        Route::get('profile/{id}', [ClientController::class, 'show']);
+
         Route::put('{id}', [ClientController::class, 'update']);
         Route::delete('{id}', [ClientController::class, 'destroy']);
     });
@@ -68,23 +72,23 @@ Route::prefix('engineer')->middleware('auth:sanctum')->group(function () {
     Route::delete('{id}', [EngineerController::class, 'destroy']);
 });
 
-Route::prefix('engineer-project')->middleware('auth:sanctum')->group(function () {
+Route::prefix('project-engineer')->middleware('auth:sanctum')->group(function () {
 
-    Route::post('assign', [EngineerProjectController::class, 'store'])
+    Route::post('allocate', [ProjectEngineerAllocationController::class, 'store'])
         ->middleware('permission:create.engineer');
 
-    Route::get('/', [EngineerProjectController::class, 'index'])
+    Route::get('/', [ProjectEngineerAllocationController::class, 'index'])
         ->middleware('permission:read.engineer');
 
-    Route::get('/myProjects', [EngineerProjectController::class, 'myProjects']);
+    Route::get('/myProjects', [ProjectEngineerAllocationController::class, 'myProjects']);
 
-    Route::get('engProjects/{engineer_id}', [EngineerProjectController::class, 'engProjects']);
+    Route::get('engProjects/{engineer_id}', [ProjectEngineerAllocationController::class, 'engProjects']);
 
 
-    Route::get('proEngineers/{project_id}', [EngineerProjectController::class, 'proEngineers']);
+    Route::get('proEngineers/{project_id}', [ProjectEngineerAllocationController::class, 'proEngineers']);
 
-    Route::put('{id}', [EngineerProjectController::class, 'update']);
-    Route::delete('{id}', [EngineerProjectController::class, 'destroy']);
+    Route::put('{id}', [ProjectEngineerAllocationController::class, 'update']);
+    Route::delete('{id}', [ProjectEngineerAllocationController::class, 'destroy']);
 });
 
 // Employee
@@ -270,8 +274,6 @@ Route::prefix('building')->middleware('auth:sanctum')->group(function () {
 Route::prefix('unit')->middleware('auth:sanctum')->group(function () {
     Route::get('', [UnitController::class, 'index']);
 
-    Route::get('readForClient', [UnitController::class, 'readForClient']);
-
     Route::get('byBuilding/{building_id}', [UnitController::class, 'byBuilding']);
 
     Route::post('/', [UnitController::class, 'store']);
@@ -283,6 +285,16 @@ Route::prefix('unit')->middleware('auth:sanctum')->group(function () {
     Route::get('{id}', [UnitController::class, 'show']);
 
     Route::delete('{id}', [UnitController::class, 'destroy']);
+});
+
+Route::prefix('client')->middleware('auth:sanctum')->group(function () {
+    Route::get('unit/read', [ClientUnitController::class, 'index']);
+
+    Route::get('unit/byBuilding/{building_id}', [ClientUnitController::class, 'byBuilding']);
+
+    Route::get('unit/search', [ClientUnitController::class, 'search']);
+
+    Route::get('unit/{id}', [ClientUnitController::class, 'show']);
 });
 
 // Favorite

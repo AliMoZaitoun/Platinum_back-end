@@ -23,12 +23,12 @@ class OrderDAO
 
     public function show(int $id)
     {
-        return Order::where('id', $id)->with(['unit', 'client', 'solution'])->get() ?? throw new NotFoundException("Order");
+        return Order::where('id', $id)->with(['unit', 'client', 'solution', 'unit.attachments', 'solution.attachments'])->first() ?? throw new NotFoundException("Order");
     }
 
     public function ordersByClient(int $client_id)
     {
-        return Order::where('client_id', $client_id)->with(['unit', 'client', 'solution'])->get();
+        return Order::where('client_id', $client_id)->with(['unit', 'client', 'solution', 'unit.attachments', 'solution.attachments'])->get();
     }
 
     public function update(int $id, UpdateOrderDTO $orderDTO)

@@ -6,46 +6,80 @@ use App\Models\RealEstate\Location;
 use App\Models\RealEstate\Project;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProjectSeeder extends Seeder
 {
     public function run()
     {
         $districts = Location::where('type', 'district')->get();
+        $disk = 's3';
 
-        Project::create([
-            'name' => [
-                'ar' => 'برج الياسمين السكني',
-                'en' => 'Al-Yasmin Residential Tower'
+        $projectsData = [
+            [
+                'name' => ['ar' => 'برج الياسمين السكني', 'en' => 'Al-Yasmin Residential Tower'],
+                'description' => ['ar' => 'مشروع سكني فاخر في قلب العاصمة مع إطلالة جبلية.', 'en' => 'Luxury residential project in the heart of the capital with a mountain view.'],
+                'latitude' => 33.51310000,
+                'longitude' => 36.24650000,
+                'status' => 'in_progress',
+                'start_date' => '2024-12-08',
+                'end_date' => Carbon::now()
             ],
-            'description' => [
-                'ar' => 'مشروع سكني فاخر في قلب العاصمة مع إطلالة جبلية.',
-                'en' => 'Luxury residential project in the heart of the capital with a mountain view.'
-            ],
-            'location_id'   => $districts->first()->id,
-            'latitude'      => 33.51310000,
-            'longitude'     => 36.24650000,
-            'radius_meters' => 500,
-            'status'        => 'in_progress',
-            'start_date'    => '2024-12-08',
-            'end_date'      => Carbon::now()
-        ]);
+            [
+                'name' => ['ar' => 'مجمع ديار الشام', 'en' => 'Diyar Al-Sham Complex'],
+                'description' => ['ar' => 'مجمع سكني تجاري متكامل الخدمات.', 'en' => 'An integrated residential and commercial complex with full services.'],
+                'latitude' => 33.52800000,
+                'longitude' => 36.21000000,
+                'status' => 'stopped',
+                'start_date' => Carbon::now(),
+                'end_date' => null
+            ]
+        ];
 
-        Project::create([
-            'name' => [
-                'ar' => 'مجمع ديار الشام',
-                'en' => 'Diyar Al-Sham Complex'
-            ],
-            'description' => [
-                'ar' => 'مجمع سكني تجاري متكامل الخدمات.',
-                'en' => 'An integrated residential and commercial complex with full services.'
-            ],
-            'location_id'   => $districts->last()->id,
-            'latitude'      => 33.52800000,
-            'longitude'     => 36.21000000,
-            'radius_meters' => 500,
-            'status'        => 'stopped',
-            'start_date'    => Carbon::now()
-        ]);
+        foreach ($projectsData as $index => $data) {
+            $project = Project::create([
+                'name'          => $data['name'],
+                'description'   => $data['description'],
+                'location_id'   => $index === 0 ? $districts->first()->id : $districts->last()->id,
+                'latitude'      => $data['latitude'],
+                'longitude'     => $data['longitude'],
+                'radius_meters' => 500,
+                'status'        => $data['status'],
+                'start_date'    => $data['start_date'],
+                'end_date'      => $data['end_date']
+            ]);
+
+            // توليد صورة وهمية للمشروع وضخها للـ S3
+            $imagePath = 'projects/project_' . Str::random(5) . '.png';
+            $imageContent = $this->generateDummyImage("Project: " . $data['name']['en']);
+
+            try {
+                Storage::disk($disk)->put($imagePath, $imageContent, 'public');
+                $project->attachments()->create([
+                    'uuid'          => (string) Str::uuid(),
+                    'path'          => $imagePath,
+                    'original_name' => 'project_master_plan.png',
+                    'type'          => 'image',
+                    'recorded_at'   => now(),
+                ]);
+            } catch (\Exception $e) {
+                $this->command->error("Failed uploading project image: " . $e->getMessage());
+            }
+        }
+    }
+
+    private function generateDummyImage($text)
+    {
+        ob_start();
+        $im = imagecreatetruecolor(400, 250);
+        $bg = imagecolorallocate($im, 41, 128, 185); // Blue
+        imagefill($im, 0, 0, $bg);
+        $text_color = imagecolorallocate($im, 255, 255, 255);
+        imagestring($im, 5, 20, 110, $text, $text_color);
+        imagepng($im);
+        $content = ob_get_clean();
+        imagedestroy($im);
+        return $content;
     }
 }

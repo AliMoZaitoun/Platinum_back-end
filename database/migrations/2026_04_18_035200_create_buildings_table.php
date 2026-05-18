@@ -16,6 +16,9 @@ return new class extends Migration
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
             $table->foreignId('location_id')->nullable()->constrained()->onDelete('restrict');
             $table->string('building_number');
+            $table->decimal('latitude', 10, 8)->index()->nullable();
+            $table->decimal('longitude', 11, 8)->index()->nullable();
+            $table->integer('radius_meters')->default(50);
             $table->json('description')->nullable();
             $table->integer('floors_count');
             $table->enum('status', ['planned', 'in_progress', 'stopped', 'completed']);

@@ -7,6 +7,7 @@ use App\DTOs\Sales\Update\UpdateOrderDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Sales\CreateOrderRequest;
 use App\Http\Resources\V1\OrderResource;
+use App\Http\Resources\V1\Sales\ClientOrderResource;
 use App\Services\Sales\OrderService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
@@ -28,13 +29,13 @@ class OrderController extends Controller
     {
         $orderDTO = CreateOrderDTO::fromRequest($request->validated());
         $order = $this->orderService->store($orderDTO);
-        return $this->successResponse($order, __('messages.common.stored'), 201);
+        return $this->useResource($order, ClientOrderResource::class, __('messages.common.stored'), 201);
     }
 
     public function show(int $id)
     {
         $order = $this->orderService->show($id);
-        return $this->successResponse($order);
+        return $this->useResource($order, OrderResource::class);
     }
 
     public function ordersByClient(int $client_id)
@@ -46,7 +47,7 @@ class OrderController extends Controller
     public function myOrders()
     {
         $orders = $this->orderService->myOrders();
-        return $this->successCollection($orders, OrderResource::class);
+        return $this->successCollection($orders, ClientOrderResource::class);
     }
 
     public function update(int $id, Request $request)

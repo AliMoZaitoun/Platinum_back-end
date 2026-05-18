@@ -2,11 +2,12 @@
 
 namespace App\DTOs\Engineer\Create;
 
-class AssignEngProDTO
+class AssignEngineerAllocationDTO
 {
     public function __construct(
         public int $engineer_id,
         public int $project_id,
+        public ?int $building_id,
         public string $start_date,
         public ?string $end_date
     ) {}
@@ -15,6 +16,7 @@ class AssignEngProDTO
     {
         return new self(
             project_id: $request['project_id'],
+            building_id: $request['building_id'] ?? null,
             engineer_id: $request['engineer_id'],
             start_date: $request['start_date'],
             end_date: $request['end_date'] ?? null
@@ -25,6 +27,7 @@ class AssignEngProDTO
     {
         return array_filter([
             'project_id'  => $this->project_id,
+            'building_id'  => $this->building_id,
             'engineer_id'  => $this->engineer_id,
             'start_date'  => $this->start_date,
             'end_date' => $this->end_date

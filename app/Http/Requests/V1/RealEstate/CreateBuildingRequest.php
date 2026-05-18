@@ -15,11 +15,14 @@ class CreateBuildingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'project_id' => 'required|exists:projects,id',
-            'building_number' => 'required|string',
-            'location_id' => 'nullable|integer|exists:locations,id',
-            'floors_count' => 'required|integer',
-            'status' => 'required',
+            'project_id'                      => 'required|exists:projects,id',
+            'building_number'                 => 'required|string',
+            'latitude'                        => 'required|numeric|between:-90,90',
+            'longitude'                       => 'required|numeric|between:-180,180',
+            'radius_meters'                   => 'nullable|integer',
+            'location_id'                     => 'nullable|integer|exists:locations,id',
+            'floors_count'                    => 'required|integer',
+            'status'                          => 'required',
             'attachments'                     => ['nullable', 'array'],
             'attachments.*.file'              => ['required', 'file', 'mimes:jpg,jpeg,png,pdf,docx,xlsx,zip,txt', 'max:10240'],
             'attachments.*.type'              => ['nullable', 'string', 'in:360_panorama'],
