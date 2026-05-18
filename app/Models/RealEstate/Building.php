@@ -17,6 +17,9 @@ class Building extends Model
     {
         return [
             'description' => 'array',
+            'latitude' => 'float',
+            'longitude' => 'float',
+            'radius_meters' => 'integer'
         ];
     }
 
@@ -28,11 +31,6 @@ class Building extends Model
     public function units()
     {
         return $this->hasMany(Unit::class);
-    }
-
-    public function getLocationAttribute($value)
-    {
-        return $value ?? $this->project->location;
     }
 
     public function attachments()

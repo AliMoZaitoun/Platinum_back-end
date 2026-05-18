@@ -17,6 +17,6 @@ class Engineer extends Model
 
     public function projects()
     {
-        return $this->hasMany(EngineerProject::class);
+        return $this->hasMany(ProjectEngineerAllocation::class);
     }
 }

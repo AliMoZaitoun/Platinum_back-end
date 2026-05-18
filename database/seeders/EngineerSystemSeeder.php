@@ -4,7 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Engineer\Engineer;
-use App\Models\Engineer\EngineerProject;
+// 💡 تم تعديل اسم الموديل هنا
+use App\Models\Engineer\ProjectEngineerAllocation;
 use App\Models\Engineer\Attendance;
 use App\Models\RealEstate\Project;
 use App\Models\Engineer\ConstructionReport;
@@ -32,10 +33,9 @@ class EngineerSystemSeeder extends Seeder
             $this->command->error("❌ Failed to upload PDF to Supabase: " . $e->getMessage());
         }
 
-        // 2. توليد ورفع صورة وهمية (صورة حقيقية عبارة عن مربع ملون) للـ S3
+        // 2. توليد ورفع صورة وهمية للـ S3
         $dummyImagePath = 'buildings/dummy_building_' . Str::random(5) . '.png';
 
-        // صناعة صورة بالـ GD Library المفعّلة عندك بالـ Dockerfile
         ob_start();
         $im = imagecreatetruecolor(200, 200);
         $text_color = imagecolorallocate($im, 255, 255, 255);
@@ -52,12 +52,14 @@ class EngineerSystemSeeder extends Seeder
         }
 
         // بقية كود الـ Seeder لبناء البيانات بالداتابيز
-        $projects = Project::all();
+        // 💡 سحب المشاريع مع الأبنية التابعة لها للتأكد من ربط الداتا
+        $projects = Project::with('buildings')->get();
         if ($projects->isEmpty()) {
-            $this->command->warn('Please seed Projects first to link engineers properly!');
+            $this->command->warn('Please seed Projects and Buildings first to link engineers properly!');
             return;
         }
 
+        // عينة مهندس من الطراز الرفيع لـ "Tommy Shelby"
         $engineersData = [
             [
                 'user' => [
@@ -72,7 +74,7 @@ class EngineerSystemSeeder extends Seeder
                     'email_verified_at' => now(),
                 ],
                 'profile' => [
-                    'specialization' => 'Civial Engineering',
+                    'specialization' => 'Civil Engineering',
                     'experience_years' => 4,
                 ]
             ]
@@ -88,19 +90,42 @@ class EngineerSystemSeeder extends Seeder
             ]);
             $user->assignRole('engineer');
 
+            // اختيار مشروع عشوائي للفحص
             $project = $projects->random();
+            $buildings = $project->buildings;
 
-            EngineerProject::create([
-                'engineer_id' => $engineer->id,
-                'project_id' => $project->id,
-                'start_date' => Carbon::now()->subMonths(2)->format('Y-m-d'),
-                'end_date' => Carbon::now()->addMonths(6)->format('Y-m-d'),
-            ]);
+            // 💡 منطق الـ Allocation الجديد:
+            // إذا كان المشروع يحتوي على أبنية، نقوم بتعيين المهندس على كافة الأبنية (تجسيداً لمنطق السيرفيس)
+            if ($buildings->isNotEmpty()) {
+                foreach ($buildings as $building) {
+                    ProjectEngineerAllocation::create([
+                        'engineer_id' => $engineer->id,
+                        'project_id'  => $project->id,
+                        'building_id' => $building->id, // 👈 الربط بالبناء
+                        'start_date'  => Carbon::now()->subMonths(2)->format('Y-m-d'),
+                        'end_date'    => Carbon::now()->addMonths(6)->format('Y-m-d'),
+                    ]);
+                }
+                // نأخذ معرّف أول بناء لعرضه في تقارير الحضور والتقدم كعينة
+                $targetBuildingId = $buildings->first()->id;
+            } else {
+                // حالة احتياطية إذا كان المشروع فارغاً من الأبنية (بناءً على الـ nullable بالميجريشن)
+                ProjectEngineerAllocation::create([
+                    'engineer_id' => $engineer->id,
+                    'project_id'  => $project->id,
+                    'building_id' => null,
+                    'start_date'  => Carbon::now()->subMonths(2)->format('Y-m-d'),
+                    'end_date'    => Carbon::now()->addMonths(6)->format('Y-m-d'),
+                ]);
+                $targetBuildingId = null;
+            }
 
+            // توليد بيانات الحضور (Attendance)
             Attendance::create([
                 'uuid' => (string) Str::uuid(),
                 'engineer_id' => $engineer->id,
                 'project_id' => $project->id,
+                'building_id' => $targetBuildingId, // 👈 تمرير البناء المستهدف لتكامل البيانات
                 'check_in_lat' => (string) ($project->latitude + 0.0001),
                 'check_in_lng' => (string) ($project->longitude + 0.0001),
                 'check_out_lat' => (string) ($project->latitude - 0.0001),
@@ -111,10 +136,11 @@ class EngineerSystemSeeder extends Seeder
                 'total_hours' => 8.5,
             ]);
 
+            // توليد تقرير الإنجاز (Construction Report) ليتوافق مع البناء
             $report = ConstructionReport::create([
                 'uuid'                  => (string) Str::uuid(),
                 'project_id'            => $project->id,
-                'building_id'           => null,
+                'building_id'           => $targetBuildingId, // 👈 ربط التقرير بالبناء الفعلي
                 'engineer_id'           => $engineer->id,
                 'phase'                 => 'foundation',
                 'completion_percentage' => 45.50,
@@ -127,10 +153,10 @@ class EngineerSystemSeeder extends Seeder
                 'description'           => 'Completed concrete pouring for Block A foundation.',
             ]);
 
-            // ربط الـ Media بالمسار السحابي الجديد المرفوع
+            // ربط الـ Media بالمسار السحابي
             $report->media()->create([
                 'uuid'          => (string) Str::uuid(),
-                'path'          => $dummyImagePath, // هلق صار يقرأ المسار السحابي
+                'path'          => $dummyImagePath,
                 'original_name' => 'site_blueprint_v1.png',
                 'type'          => 'image',
                 'recorded_at'   => Carbon::now()->format('Y-m-d H:i:s'),
@@ -141,6 +167,6 @@ class EngineerSystemSeeder extends Seeder
             ]);
         }
 
-        $this->command->info('Engineers, Project Allocations, Attendances, and Progress Reports with Dummy Files seeded successfully!');
+        $this->command->info('🎉 Project Engineer Allocations, Attendances, and Progress Reports seeded successfully!');
     }
 }

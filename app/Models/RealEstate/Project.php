@@ -3,6 +3,7 @@
 namespace App\Models\RealEstate;
 
 use App\Models\Engineer\EngineerProject;
+use App\Models\Engineer\ProjectEngineerAllocation;
 use App\Models\Media;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
@@ -38,7 +39,7 @@ class Project extends Model
 
     public function engineers()
     {
-        return $this->hasMany(EngineerProject::class);
+        return $this->hasMany(ProjectEngineerAllocation::class);
     }
 
     public function attachments()
