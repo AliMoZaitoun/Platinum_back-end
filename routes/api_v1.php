@@ -55,9 +55,11 @@ Route::prefix('client')->group(function () {
 
         Route::get('read/{id}', [ClientController::class, 'show']);
 
-        Route::get('profile', [ClientController::class, 'profile'])->middleware('is_client');
+        Route::middleware('is_client')->group(function () {
+            Route::get('profile', [ClientController::class, 'profile']);
+            Route::put('', [ClientController::class, 'update']);
+        });
 
-        Route::put('{id}', [ClientController::class, 'update']);
         Route::delete('{id}', [ClientController::class, 'destroy']);
     });
 });
