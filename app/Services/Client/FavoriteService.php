@@ -35,8 +35,8 @@ class FavoriteService
         return $this->favoriteDAO->show($id);
     }
 
-    public function destroy(int $id)
+    public function destroy(int $unit_id)
     {
-        return $this->favoriteDAO->destroy($id);
+        return $this->favoriteDAO->destroy($unit_id);
     }
 }

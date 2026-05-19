@@ -305,7 +305,7 @@ Route::prefix('favorite')->middleware(['auth:sanctum', 'is_client'])->group(func
     Route::get('my', [FavoriteController::class, 'index']);
     Route::post('{unit_id}', [FavoriteController::class, 'store']);
     Route::get('{id}', [FavoriteController::class, 'show']);
-    Route::delete('{id}', [FavoriteController::class, 'destroy']);
+    Route::delete('{unit_id}', [FavoriteController::class, 'destroy']);
 });
 
 // Order

@@ -30,9 +30,14 @@ class FavoriteDAO
         return Favorite::find($id) ?? throw new NotFoundException("Favorite");
     }
 
-    public function destroy(int $id)
+    public function showByUnitId(int $unit_id)
     {
-        $Favorite = $this->show($id);
+        return Favorite::where('unit_id', $unit_id)->first() ?? throw new NotFoundException("Favorite");
+    }
+
+    public function destroy(int $unit_id)
+    {
+        $Favorite = $this->showByUnitId($unit_id);
         return $Favorite->delete();
     }
 }

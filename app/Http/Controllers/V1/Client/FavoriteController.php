@@ -42,9 +42,9 @@ class FavoriteController extends Controller
         return $this->useResource($favorite, FavoriteResource::class);
     }
 
-    public function destroy(int $id)
+    public function destroy(int $unit_id)
     {
-        $this->favoriteService->destroy($id);
+        $this->favoriteService->destroy($unit_id);
         return $this->successResponse([], __('messages.common.deleted'));
     }
 }
