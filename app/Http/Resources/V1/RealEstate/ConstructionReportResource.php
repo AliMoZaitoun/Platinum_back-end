@@ -3,7 +3,7 @@
 namespace App\Http\Resources\V1\RealEstate;
 
 use App\Http\Resources\V1\EngineerDetailResource;
-use App\Http\Resources\V1\MediaResouce;
+use App\Http\Resources\V1\MediaResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -32,7 +32,7 @@ class ConstructionReportResource extends JsonResource
                 'engineer' => new EngineerDetailResource($this->whenLoaded('engineer')),
             ],
 
-            'media' => MediaResouce::collection($this->media),
+            'attachments' => MediaResource::collection($this->attachments),
 
             'timestamps' => [
                 'recorded_at' => $this->recorded_at,

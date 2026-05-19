@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('latitude', 10, 8)->index()->nullable();
             $table->decimal('longitude', 11, 8)->index()->nullable();
             $table->integer('radius_meters')->default(50);
-            $table->enum('status', ['completed', 'in_progress', 'stopped']);
+            $table->enum('status', ['planned', 'completed', 'in_progress', 'stopped']);
             $table->date('start_date');
             $table->date('end_date')->nullable();
             $table->softDeletes();

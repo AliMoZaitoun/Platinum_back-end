@@ -66,7 +66,7 @@ class FileManagerService
         return $storedRecords;
     }
 
-    public function deleteFile($model, $fileId, $relationName = 'media')
+    public function deleteFile($model, $fileId, $relationName = 'attachments')
     {
         $fileRecord = $model->{$relationName}()->find($fileId);
         if (!$fileRecord) {

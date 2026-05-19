@@ -27,7 +27,7 @@ return [
     |
     | Here you may specify the number of minutes that you wish the session
     | to be allowed to remain idle before it expires. If you want them
-    | to expire immediately when the browser is closed then you may
+    | to expire imattachmentstely when the browser is closed then you may
     | indicate that via the expire_on_close configuration option.
     |
     */
@@ -129,7 +129,7 @@ return [
 
     'cookie' => env(
         'SESSION_COOKIE',
-        Str::slug((string) env('APP_NAME', 'laravel')).'-session'
+        Str::slug((string) env('APP_NAME', 'laravel')) . '-session'
     ),
 
     /*

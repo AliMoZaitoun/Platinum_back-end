@@ -140,7 +140,7 @@ class EngineerSystemSeeder extends Seeder
                 'description'           => 'Completed concrete pouring for Block A foundation.',
             ]);
 
-            $report->media()->create([
+            $report->attachments()->create([
                 'uuid'          => (string) Str::uuid(),
                 'path'          => $dummyImagePath,
                 'original_name' => 'site_blueprint_v1.png',

@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources\V1\Marketing;
 
-use App\Http\Resources\V1\MediaResouce;
+use App\Http\Resources\V1\MediaResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -19,7 +19,7 @@ class AdminAdvertisementResource extends JsonResource
             'ends_at'       => $this->ends_at?->format('Y-m-d H:i:s'),
             'duration_days' => $this->duration_days,
 
-            'attachments'   => MediaResouce::collection($this->attachments),
+            'attachments'   => MediaResource::collection($this->attachments),
 
             'created_by'    => $this?->created_by,
             'created_at'    => $this->created_at?->format('Y-m-d H:i:s'),

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('advertisements', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('description');
+            $table->json('title');
+            $table->json('description');
 
             $table->timestamp('starts_at')->nullable();
             $table->timestamp('ends_at')->nullable();

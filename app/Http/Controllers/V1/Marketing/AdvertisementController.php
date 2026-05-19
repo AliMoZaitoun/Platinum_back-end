@@ -34,7 +34,10 @@ class AdvertisementController extends Controller
 
     public function store(CreateAdvertisementRequest $request)
     {
-        $dto = CreateAdDTO::fromRequest($request->validated());
+        $dto = CreateAdDTO::fromRequest(
+            $request->validated(),
+            $request->user()->employee->id ?? $request->user()->id
+        );
 
         $ad = $this->adService->store($dto, $request->file('attachments'));
         return $this->useResource($ad, AdminAdvertisementResource::class, __('messages.common.stored'), 201);

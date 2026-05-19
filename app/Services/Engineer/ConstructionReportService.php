@@ -31,7 +31,7 @@ class ConstructionReportService
                     model: $report,
                     files: $attachments,
                     folderPath: "projects/{$report->project_id}/reports",
-                    relationName: 'media'
+                    relationName: 'attachments'
                 );
             }
             return $report;
@@ -46,7 +46,7 @@ class ConstructionReportService
             model: $report,
             files: $attachments,
             folderPath: "projects/{$report->project_id}/reports",
-            relationName: 'media'
+            relationName: 'attachments'
         );
     }
 

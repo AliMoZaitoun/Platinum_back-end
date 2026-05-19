@@ -20,9 +20,9 @@ class AdvertismentDAO
         return Advertisement::active()->with('attachments')->get();
     }
 
-    public function store(CreateAdDTO $adDTO)
+    public function store(array $data)
     {
-        return Advertisement::create($adDTO->toArray());
+        return Advertisement::create($data);
     }
 
     public function show(int $id)

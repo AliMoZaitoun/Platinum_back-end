@@ -14,6 +14,11 @@ class ProjectSeeder extends Seeder
     public function run()
     {
         $districts = Location::where('type', 'district')->get();
+        if ($districts->isEmpty()) {
+            $this->command->error('يرجى التأكد من وجود بيانات في جدول Locations أولاً!');
+            return;
+        }
+
         $disk = 's3';
 
         $projectsData = [
@@ -34,23 +39,34 @@ class ProjectSeeder extends Seeder
                 'status' => 'stopped',
                 'start_date' => Carbon::now(),
                 'end_date' => null
+            ],
+            [
+                'name' => ['ar' => 'واحة دمشق الذكية', 'en' => 'Damascus Smart Oasis'],
+                'description' => ['ar' => 'مشروع سكني يعتمد على تقنيات الطاقة البديلة والذكاء الاصطناعي.', 'en' => 'A residential project relying on alternative energy and AI technologies.'],
+                'latitude' => 33.50120000,
+                'longitude' => 36.29110000,
+                'status' => 'planned',
+                'start_date' => Carbon::now()->addMonths(2),
+                'end_date' => null
             ]
         ];
 
         foreach ($projectsData as $index => $data) {
+            // توزيع المشاريع على المناطق الموجودة بالتناوب
+            $locationId = $districts[$index % $districts->count()]->id;
+
             $project = Project::create([
                 'name'          => $data['name'],
                 'description'   => $data['description'],
-                'location_id'   => $index === 0 ? $districts->first()->id : $districts->last()->id,
+                'location_id'   => $locationId,
                 'latitude'      => $data['latitude'],
                 'longitude'     => $data['longitude'],
-                'radius_meters' => 500,
+                'radius_meters' => 600,
                 'status'        => $data['status'],
                 'start_date'    => $data['start_date'],
                 'end_date'      => $data['end_date']
             ]);
 
-            // توليد صورة وهمية للمشروع وضخها للـ S3
             $imagePath = 'projects/project_' . Str::random(5) . '.png';
             $imageContent = $this->generateDummyImage("Project: " . $data['name']['en']);
 
@@ -67,13 +83,14 @@ class ProjectSeeder extends Seeder
                 $this->command->error("Failed uploading project image: " . $e->getMessage());
             }
         }
+        $this->command->info('🎉 Projects seeded successfully!');
     }
 
     private function generateDummyImage($text)
     {
         ob_start();
         $im = imagecreatetruecolor(400, 250);
-        $bg = imagecolorallocate($im, 41, 128, 185); // Blue
+        $bg = imagecolorallocate($im, 41, 128, 185);
         imagefill($im, 0, 0, $bg);
         $text_color = imagecolorallocate($im, 255, 255, 255);
         imagestring($im, 5, 20, 110, $text, $text_color);

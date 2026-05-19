@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources\V1\RealEstate;
 
-use App\Http\Resources\V1\MediaResouce;
+use App\Http\Resources\V1\MediaResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -25,7 +25,7 @@ class UnitResource extends JsonResource
             'building'     => new BuildingResource($this->whenLoaded('building')),
 
             'created_at'   => $this->created_at->format('Y-m-d H:i'),
-            'attachments'   => MediaResouce::collection($this->whenLoaded('attachments')),
+            'attachments'   => MediaResource::collection($this->whenLoaded('attachments')),
         ];
     }
 }

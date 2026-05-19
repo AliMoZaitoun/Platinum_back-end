@@ -41,7 +41,7 @@ class ConstructionReport extends Model
         return $this->belongsTo(Engineer::class);
     }
 
-    public function media()
+    public function attachments()
     {
         return $this->morphMany(Media::class, 'mediable');
     }

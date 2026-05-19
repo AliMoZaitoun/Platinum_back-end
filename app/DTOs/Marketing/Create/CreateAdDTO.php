@@ -13,10 +13,10 @@ class CreateAdDTO
         public Carbon $ends_at,
         public int $duration_days,
         public bool $status,
-        public ?int $created_by
+        public int $created_by
     ) {}
 
-    public static function fromRequest(array $data): self
+    public static function fromRequest(array $data, int $created_by): self
     {
         $startsAt = isset($data['starts_at']) ? Carbon::parse($data['starts_at']) : now();
         $durationDays = (int) ($data['duration_days'] ?? 7);
@@ -29,7 +29,7 @@ class CreateAdDTO
             ends_at: $endsAt,
             duration_days: $durationDays,
             status: (bool) ($data['status'] ?? true),
-            created_by: $data['created_by'] ?? null
+            created_by: $created_by
         );
     }
 

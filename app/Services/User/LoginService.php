@@ -35,13 +35,19 @@ class LoginService
         $hashedToken = hash('sha256', $plainRefreshToken);
         $this->refreshTokenDAO->store($user->id, $hashedToken, $userAgent);
 
+        $permissions = $user->roles
+            ->flatMap(fn($role) => $role->permissions->pluck('name'))
+            ->unique()
+            ->values()
+            ->toArray();
+
         return [
             'user'          => $user,
             'tokens'        => [
                 'access_token'  => $accessTokenResult->plainTextToken,
                 'refresh_token' => $plainRefreshToken,
             ],
-            'permissions'   => $user->permissions
+            'permissions'   => $permissions
         ];
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources\V1\RealEstate;
 
-use App\Http\Resources\V1\MediaResouce;
+use App\Http\Resources\V1\MediaResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -26,7 +26,7 @@ class ProjectResource extends JsonResource
             'end_date'       => $this?->end_date,
             'created_at'     => $this->created_at->format('Y-m-d h:i A'),
 
-            'attachments'   => MediaResouce::collection($this->whenLoaded('attachments')),
+            'attachments'   => MediaResource::collection($this->whenLoaded('attachments')),
         ];
     }
 }

@@ -20,7 +20,7 @@ class DepartmentSeeder extends Seeder
             ],
             [
                 'name'        => 'Marketing & Communications',
-                'description' => 'Handles property listings, advertising campaigns, social media presence, open house coordination, and brand management.',
+                'description' => 'Handles property listings, advertising campaigns, social attachments presence, open house coordination, and brand management.',
             ],
             [
                 'name'        => 'Finance & Accounting',

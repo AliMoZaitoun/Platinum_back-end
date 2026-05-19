@@ -44,7 +44,7 @@ class User extends Authenticatable
         );
     }
 
-    protected function permissions(): Attribute
+    protected function permissions_list(): Attribute
     {
         return Attribute::make(
             get: fn() => $this->roles

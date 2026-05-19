@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources\V1\RealEstate;
 
-use App\Http\Resources\V1\MediaResouce;
+use App\Http\Resources\V1\MediaResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
@@ -35,7 +35,7 @@ class ClientUnitResource extends JsonResource
             'created_at'   => $this->created_at->format('Y-m-d H:i'),
 
             'is_favorite'   => $isFavorite,
-            'attachments'   => MediaResouce::collection($this->whenLoaded('attachments'))
+            'attachments'   => MediaResource::collection($this->whenLoaded('attachments'))
         ];
     }
 }

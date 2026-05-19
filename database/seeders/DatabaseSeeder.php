@@ -25,12 +25,13 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             EmployeeSeeder::class,
             EmployeeDepartmentSeeder::class,
+            AdvertisementSeeder::class,
             SolutionSeeder::class,
             ProjectSeeder::class,
             BuildingSeeder::class,
             UnitSeeder::class,
             ClientSeeder::class,
-            EngineerSystemSeeder::class
+            EngineerSystemSeeder::class,
         ]);
     }
 }

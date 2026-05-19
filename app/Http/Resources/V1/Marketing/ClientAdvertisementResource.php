@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources\V1\Marketing;
 
-use App\Http\Resources\V1\MediaResouce;
+use App\Http\Resources\V1\MediaResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -25,7 +25,7 @@ class ClientAdvertisementResource extends JsonResource
 
             'is_active'     => $isCurrentlyActive,
 
-            'attachments'   => MediaResouce::collection($this->whenLoaded('attachments')),
+            'attachments'   => MediaResource::collection($this->whenLoaded('attachments')),
         ];
     }
 }

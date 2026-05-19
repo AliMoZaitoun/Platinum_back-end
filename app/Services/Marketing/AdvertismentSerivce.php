@@ -8,6 +8,7 @@ use App\DTOs\Marketing\Update\UpdateAdDTO;
 use App\Exceptions\NoResultsException;
 use App\Services\FileManagerService;
 use App\Services\TransactionService;
+use App\Services\TranslationService;
 use Illuminate\Support\Facades\Auth;
 
 class AdvertismentSerivce
@@ -15,7 +16,8 @@ class AdvertismentSerivce
     public function __construct(
         private AdvertismentDAO $dao,
         private FileManagerService $fileManager,
-        private TransactionService $transaction
+        private TransactionService $transaction,
+        private TranslationService $translationService
     ) {}
 
     public function index()
@@ -31,9 +33,12 @@ class AdvertismentSerivce
     public function store(CreateAdDTO $dto, $attachments = null)
     {
         return $this->transaction->execute(function () use ($dto, $attachments) {
-            $user = Auth::user();
-            $dto->created_by = $user->engineer->id ?? 1;
-            $advertisment = $this->dao->store($dto);
+            $data = $dto->toArray();
+            $data['title'] = $this->translationService->translateAll($dto->title);
+
+            $data['description'] = $this->translationService->translateAll($dto->description);
+
+            $advertisment = $this->dao->store($data);
 
             if ($attachments) {
                 $this->fileManager->storeFile(
