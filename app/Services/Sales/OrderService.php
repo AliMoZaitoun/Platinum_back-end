@@ -5,6 +5,7 @@ namespace App\Services\Sales;
 use App\DAO\Sales\OrderDAO;
 use App\DTOs\Sales\Create\CreateOrderDTO;
 use App\DTOs\Sales\Update\UpdateOrderDTO;
+use App\Exceptions\V1\Order\OrderAlreadySubmittedException;
 use Illuminate\Support\Facades\Auth;
 
 class OrderService
@@ -18,11 +19,15 @@ class OrderService
         return $this->orderDAO->index($relations);
     }
 
-    public function store(CreateOrderDTO $orderDTO)
+    public function store(CreateOrderDTO $dto)
     {
-        $user = Auth::user();
-        $orderDTO->client_id = $user->client->id;
-        return $this->orderDAO->store($orderDTO);
+        $exists = $this->orderDAO->exists($dto->client_id, $dto->unit_id, $dto->solution_id);
+
+        if ($exists) {
+            throw new OrderAlreadySubmittedException();
+        }
+
+        return $this->orderDAO->store($dto);
     }
 
     public function show(int $id)
@@ -30,15 +35,9 @@ class OrderService
         return $this->orderDAO->show($id);
     }
 
-    public function ordersByClient(int $client_id)
+    public function getClientOrders(int $client_id)
     {
-        return $this->orderDAO->ordersByClient($client_id);
-    }
-
-    public function myOrders()
-    {
-        $user = Auth::user();
-        return $this->orderDAO->ordersByClient($user->client->id);
+        return $this->orderDAO->getClientOrders($client_id);
     }
 
     public function update(int $id, UpdateOrderDTO $orderDTO)

@@ -25,4 +25,9 @@ class Client extends Model
     {
         return $this->hasMany(Order::class);
     }
+
+    public function media()
+    {
+        return $this->morphMany(Client::class, 'mediable');
+    }
 }

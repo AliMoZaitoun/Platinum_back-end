@@ -11,6 +11,7 @@ use App\DTOs\User\Create\CreateUserDTO;
 use App\Exceptions\NotFoundException;
 use App\Services\OtpService;
 use App\Services\Transaction;
+use Illuminate\Support\Facades\Auth;
 
 class ClientService
 {
@@ -48,6 +49,12 @@ class ClientService
     public function show(int $id)
     {
         return $this->clientDAO->show($id);
+    }
+
+    public function profile()
+    {
+        $user = Auth::user();
+        return $this->clientDAO->show($user->client->id);
     }
 
     public function update(int $id, UpdateUserDTO $userDTO, UpdateClientDTO $clientDTO)

@@ -9,11 +9,11 @@ class CreateFavoriteDTO
         public int $unit_id,
     ) {}
 
-    public static function fromRequest(array $request)
+    public static function fromValues(int $unit_id, int $clientId)
     {
         return new self(
-            client_id: $request['client_id'],
-            unit_id: $request['unit_id']
+            client_id: $clientId,
+            unit_id: $unit_id
         );
     }
 

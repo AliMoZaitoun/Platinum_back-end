@@ -38,12 +38,23 @@ class ClientController extends Controller
 
         $data = $this->clientService->store($userDTO, $clientDTO);
 
-        return $this->useResource($data['client'], ClientDetailResource::class, __('messages.auth.otp_sent'), 201);
+        # For Testing
+        $data['client'] = $this->resolveUserResource($data['client']->user);
+
+        return $this->successResponse($data, __('messages.auth.otp_sent'), 201);
+
+        // return $this->useResource($data, ClientDetailResource::class, __('messages.auth.otp_sent'), 201);
     }
 
     public function show(int $id)
     {
         $client = $this->clientService->show($id);
+        return $this->useResource($client, ClientDetailResource::class);
+    }
+
+    public function profile()
+    {
+        $client = $this->clientService->profile();
         return $this->useResource($client, ClientDetailResource::class);
     }
 

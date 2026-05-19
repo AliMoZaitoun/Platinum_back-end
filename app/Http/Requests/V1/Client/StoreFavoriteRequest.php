@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\V1;
+namespace App\Http\Requests\V1\Client;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class StoreFavoriteRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -15,8 +15,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'login'     => 'required|string',
-            'password'  => 'required|min:8'
+            'unit_id'   => 'required|integer|unique|exists:units,id'
         ];
     }
 }

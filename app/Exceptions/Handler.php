@@ -2,6 +2,10 @@
 
 namespace App\Exceptions;
 
+use App\Exceptions\V1\EmailAlreadyVerifiedException;
+use App\Exceptions\V1\InvalidPasswordException;
+use App\Exceptions\V1\InvalidRefreshTokenException;
+use App\Exceptions\V1\Order\OrderAlreadySubmittedException;
 use App\Traits\ResponseTrait;
 use Exception;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -48,7 +52,7 @@ class Handler
             return $this->errorResponse($e->getMessage(), $e->getCode() ?: 401);
         });
 
-        $exceptions->render(function (OtpCodeExpiredException $e) {
+        $exceptions->render(function (OtpCodeInvalidException $e) {
             return $this->errorResponse($e->getMessage(), $e->getCode() ?: 403);
         });
 
@@ -64,9 +68,26 @@ class Handler
             return $this->errorResponse($e->getMessage(), $e->getCode() ?: 403);
         });
 
-        // $exceptions->render(function (QueryException $e) {
-        //     return $this->errorResponse($e, $e->getCode() ?: 403);
-        // });
+        $exceptions->render(function (UnitAlreadyFavoritedException $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode() ?: 422);
+        });
+
+        $exceptions->render(function (OrderAlreadySubmittedException $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode() ?: 422);
+        });
+
+        $exceptions->render(function (InvalidPasswordException $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode() ?: 422);
+        });
+
+        $exceptions->render(function (InvalidRefreshTokenException $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode() ?: 401);
+        });
+
+        $exceptions->render(function (EmailAlreadyVerifiedException $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode() ?: 400);
+        });
+
 
         // $exceptions->render(function (Exception $e) {
         //     return $this->errorResponse($e->getMessage(), $e->getCode() ?: 403);

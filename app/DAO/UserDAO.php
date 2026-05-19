@@ -20,6 +20,11 @@ class UserDAO
         return User::find($id) ?? throw new NotFoundException("User");
     }
 
+    public function findByField(string $type, string $value)
+    {
+        return User::where($type, $value)->first() ?? throw new NotFoundException("User");
+    }
+
     public function update(User $user, UpdateUserDTO $userDTO)
     {
         return $user->update($userDTO->toArray());

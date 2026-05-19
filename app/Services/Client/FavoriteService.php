@@ -4,6 +4,7 @@ namespace App\Services\Client;
 
 use App\DAO\Client\FavoriteDAO;
 use App\DTOs\Client\Create\CreateFavoriteDTO;
+use App\Exceptions\UnitAlreadyFavoritedException;
 use Illuminate\Support\Facades\Auth;
 
 class FavoriteService
@@ -18,19 +19,23 @@ class FavoriteService
         return $this->favoriteDAO->index($client->id);
     }
 
-    public function store(CreateFavoriteDTO $favoriteDTO)
+    public function store(CreateFavoriteDTO $dto)
     {
-        $client = Auth::user()->client;
-        $favoriteDTO->client_id = $client->id;
-        return $this->favoriteDAO->store($favoriteDTO);
+        $exists = $this->favoriteDAO->exists($dto->client_id, $dto->unit_id);
+
+        if ($exists) {
+            throw new UnitAlreadyFavoritedException();
+        }
+
+        return $this->favoriteDAO->store($dto);
     }
 
-    public function show($id)
+    public function show(int $id)
     {
         return $this->favoriteDAO->show($id);
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         return $this->favoriteDAO->destroy($id);
     }

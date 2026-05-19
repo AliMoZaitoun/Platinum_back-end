@@ -4,9 +4,12 @@ namespace App\Http\Controllers\V1\Client;
 
 use App\DTOs\Client\Create\CreateFavoriteDTO;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\Client\StoreFavoriteRequest;
 use App\Http\Resources\V1\RealEstate\FavoriteResource;
 use App\Services\Client\FavoriteService;
 use App\Traits\ResponseTrait;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FavoriteController extends Controller
 {
@@ -21,9 +24,13 @@ class FavoriteController extends Controller
         return $this->successCollection($favorites, FavoriteResource::class);
     }
 
-    public function store(int $unit_id)
+    public function store(Request $request, int $unit_id)
     {
-        $favoriteDTO = new CreateFavoriteDTO(null, $unit_id);
+        $favoriteDTO = CreateFavoriteDTO::fromValues(
+            $unit_id,
+            $request->user()->client->id
+        );
+
         $favorite = $this->favoriteService->store($favoriteDTO);
 
         return $this->useResource($favorite, FavoriteResource::class, __('messages.common.stored'), 201);

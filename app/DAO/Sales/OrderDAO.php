@@ -26,7 +26,19 @@ class OrderDAO
         return Order::where('id', $id)->with(['unit', 'client', 'solution', 'unit.attachments', 'solution.attachments'])->first() ?? throw new NotFoundException("Order");
     }
 
-    public function ordersByClient(int $client_id)
+    public function exists(int $client_id, ?int $unit_id, ?int $solution_id)
+    {
+        return Order::where('client_id', $client_id)
+            ->when($unit_id, function ($query, $unit_id) {
+                return $query->where('unit_id', $unit_id);
+            })
+            ->when($solution_id, function ($query, $solution_id) {
+                return $query->where('solution_id', $solution_id);
+            })
+            ->exists();
+    }
+
+    public function getClientOrders(int $client_id)
     {
         return Order::where('client_id', $client_id)->with(['unit', 'client', 'solution', 'unit.attachments', 'solution.attachments'])->get();
     }

@@ -1,6 +1,8 @@
 <?php
 
-use App\Http\Controllers\V1\AuthController;
+use App\Http\Controllers\V1\Auth\LoginController;
+use App\Http\Controllers\V1\Auth\PasswordManagementController;
+use App\Http\Controllers\V1\Auth\VerificationController;
 use App\Http\Controllers\V1\Client\ClientController;
 use App\Http\Controllers\V1\Client\FavoriteController;
 use App\Http\Controllers\V1\Client\UnitController as ClientUnitController;
@@ -28,13 +30,13 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 // Auth
-Route::post('verifyEmail', [AuthController::class, 'verifyEmail']);
-Route::post('login', [AuthController::class, 'login']);
-Route::post('changePassword', [AuthController::class, 'changePassword'])->middleware('auth:sanctum');
-Route::post('refreshToken', [AuthController::class, 'refreshToken'])->middleware('auth:sanctum');
-Route::post('forgotPassword', [AuthController::class, 'forgotPassword']);
-Route::post('resetPassword', [AuthController::class, 'resetPassword']);
-Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('verifyEmail', [VerificationController::class, 'verifyEmail']);
+Route::post('login', [LoginController::class, 'login']);
+Route::post('changePassword', [PasswordManagementController::class, 'changePassword'])->middleware('auth:sanctum');
+Route::post('refreshToken', [LoginController::class, 'refreshToken'])->middleware('auth:sanctum');
+Route::post('forgotPassword', [PasswordManagementController::class, 'forgotPassword']);
+Route::post('resetPassword', [PasswordManagementController::class, 'resetPassword']);
+Route::post('logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
 
 // Test
 Route::post('gemini/{id}', [ClientController::class, 'generatePlan']);
@@ -51,9 +53,9 @@ Route::prefix('client')->group(function () {
         Route::get('/', [ClientController::class, 'index'])
             ->middleware(['permission:read.client']);
 
-        Route::get('{id}', [ClientController::class, 'show']);
+        Route::get('read/{id}', [ClientController::class, 'show']);
 
-        Route::get('profile/{id}', [ClientController::class, 'show']);
+        Route::get('profile', [ClientController::class, 'profile'])->middleware('is_client');
 
         Route::put('{id}', [ClientController::class, 'update']);
         Route::delete('{id}', [ClientController::class, 'destroy']);
@@ -242,7 +244,7 @@ Route::prefix('location')->middleware('auth:sanctum')->group(function () {
 });
 
 // Project
-Route::prefix('project')->middleware('auth:sanctum')->group(function () {
+Route::prefix('project')->middleware(['auth:sanctum', 'is_staff'])->group(function () {
     Route::post('/', [ProjectController::class, 'store']);
 
     Route::put('{id}', [ProjectController::class, 'update']);
@@ -255,7 +257,7 @@ Route::prefix('project')->middleware('auth:sanctum')->group(function () {
 });
 
 // Building
-Route::prefix('building')->middleware('auth:sanctum')->group(function () {
+Route::prefix('building')->middleware(['auth:sanctum', 'is_staff'])->group(function () {
     Route::get('', [BuildingController::class, 'index']);
 
     Route::get('byProject/{project_id}', [BuildingController::class, 'byProject']);
@@ -264,14 +266,13 @@ Route::prefix('building')->middleware('auth:sanctum')->group(function () {
 
     Route::put('{id}', [BuildingController::class, 'update']);
 
-
     Route::get('{id}', [BuildingController::class, 'show']);
 
     Route::delete('{id}', [BuildingController::class, 'destroy']);
 });
 
 // Unit
-Route::prefix('unit')->middleware('auth:sanctum')->group(function () {
+Route::prefix('unit')->middleware(['auth:sanctum', 'is_staff'])->group(function () {
     Route::get('', [UnitController::class, 'index']);
 
     Route::get('byBuilding/{building_id}', [UnitController::class, 'byBuilding']);
@@ -287,7 +288,7 @@ Route::prefix('unit')->middleware('auth:sanctum')->group(function () {
     Route::delete('{id}', [UnitController::class, 'destroy']);
 });
 
-Route::prefix('client')->middleware('auth:sanctum')->group(function () {
+Route::prefix('client')->middleware(['auth:sanctum', 'is_client'])->group(function () {
     Route::get('unit/read', [ClientUnitController::class, 'index']);
 
     Route::get('unit/read/getWithoutPag', [ClientUnitController::class, 'getWithoutPag']);
@@ -300,38 +301,35 @@ Route::prefix('client')->middleware('auth:sanctum')->group(function () {
 });
 
 // Favorite
-Route::prefix('favorite')->middleware('auth:sanctum')->group(function () {
-    Route::get('my', [FavoriteController::class, 'index'])
-        ->middleware(['permission:read.favorite']);
-
-    Route::post('{unit_id}', [FavoriteController::class, 'store'])
-        ->middleware(['permission:create.favorite']);
-
-    Route::get('{id}', [FavoriteController::class, 'show'])
-        ->middleware(['permission:read.favorite']);
-
-    Route::delete('{id}', [FavoriteController::class, 'destroy'])
-        ->middleware(['permission:delete.favorite']);
+Route::prefix('favorite')->middleware(['auth:sanctum', 'is_client'])->group(function () {
+    Route::get('my', [FavoriteController::class, 'index']);
+    Route::post('{unit_id}', [FavoriteController::class, 'store']);
+    Route::get('{id}', [FavoriteController::class, 'show']);
+    Route::delete('{id}', [FavoriteController::class, 'destroy']);
 });
 
 // Order
 Route::prefix('order')->middleware('auth:sanctum')->group(function () {
-    Route::get('/', [OrderController::class, 'index'])
-        ->middleware(['permission:read.order']);
+    Route::middleware('is_staff')->group(function () {
+        Route::get('/', [OrderController::class, 'index'])
+            ->middleware(['permission:read.order']);
 
-    Route::get('ordersByClient/{client_id}', [OrderController::class, 'ordersByClient'])
-        ->middleware(['permission:read.order']);
+        Route::get('getClientOrders/{client_id}', [OrderController::class, 'getClientOrders'])
+            ->middleware(['permission:read.order']);
 
-    Route::get('myOrders', [OrderController::class, 'myOrders']);
+        Route::put('{id}', [OrderController::class, 'update'])
+            ->middleware(['permission:update.order']);
+    });
 
-    Route::post('/', [OrderController::class, 'store'])
-        ->middleware(['permission:create.order']);
+    Route::middleware('is_client')->group(function () {
+        Route::get('myOrders', [OrderController::class, 'myOrders']);
+
+        Route::post('/', [OrderController::class, 'store'])
+            ->middleware(['permission:create.order']);
+    });
 
     Route::get('{id}', [OrderController::class, 'show'])
         ->middleware(['permission:read.order']);
-
-    Route::put('{id}', [OrderController::class, 'update'])
-        ->middleware(['permission:update.order']);
 
     Route::delete('{id}', [OrderController::class, 'destroy'])
         ->middleware(['permission:delete.order']);

@@ -4,7 +4,8 @@ namespace App\Services;
 
 use App\DAO\OtpCodeDAO;
 use App\DAO\UserDAO;
-use App\Exceptions\OtpCodeExpiredException;
+use App\Exceptions\OtpCodeInvalidException;
+use App\Exceptions\V1\EmailAlreadyVerifiedException;
 
 class OtpService
 {
@@ -30,7 +31,7 @@ class OtpService
     {
         $code = $this->otpCodeDAO->findValidCode($userId, $code);
         if (!$code)
-            throw new OtpCodeExpiredException();
+            throw new OtpCodeInvalidException();
 
         $this->otpCodeDAO->deleteCodes($userId);
         return true;
@@ -39,6 +40,9 @@ class OtpService
     public function resendCode(string $email)
     {
         $user = $this->userDAO->findByEmail($email);
+        if ($user->email_verified_at) {
+            throw new EmailAlreadyVerifiedException();
+        }
         $this->otpCodeDAO->deleteCodes($user->id);
         return $this->createCode($user->id);
     }

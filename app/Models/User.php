@@ -44,6 +44,17 @@ class User extends Authenticatable
         );
     }
 
+    protected function permissions(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->roles
+                ->flatMap(fn($role) => $role->permissions->pluck('name'))
+                ->unique()
+                ->values()
+                ->toArray()
+        );
+    }
+
     public function client()
     {
         return $this->hasOne(Client::class);

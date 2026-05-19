@@ -10,12 +10,19 @@ class FavoriteDAO
 {
     public function index(int $client_id)
     {
-        return Favorite::where('client_id', $client_id)->with(['unit', 'client'])->get();
+        return Favorite::where('client_id', $client_id)->with(['unit', 'unit.attachments'])->get();
     }
 
     public function store(CreateFavoriteDTO $favoriteDTO)
     {
         return Favorite::create($favoriteDTO->toArray());
+    }
+
+    public function exists(int $client_id, int $unit_id): bool
+    {
+        return Favorite::where('client_id', $client_id)
+            ->where('unit_id', $unit_id)
+            ->exists();
     }
 
     public function show(int $id)

@@ -11,6 +11,7 @@ use App\Http\Resources\V1\Sales\ClientOrderResource;
 use App\Services\Sales\OrderService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -27,7 +28,11 @@ class OrderController extends Controller
 
     public function store(CreateOrderRequest $request)
     {
-        $orderDTO = CreateOrderDTO::fromRequest($request->validated());
+        $orderDTO = CreateOrderDTO::fromRequest(
+            $request->validated(),
+            $request->user()->client->id
+        );
+
         $order = $this->orderService->store($orderDTO);
         return $this->useResource($order, ClientOrderResource::class, __('messages.common.stored'), 201);
     }
@@ -38,15 +43,16 @@ class OrderController extends Controller
         return $this->useResource($order, OrderResource::class);
     }
 
-    public function ordersByClient(int $client_id)
+    public function getClientOrders(int $client_id)
     {
-        $orders = $this->orderService->ordersByClient($client_id);
+        $orders = $this->orderService->getClientOrders($client_id);
         return $this->successCollection($orders, OrderResource::class);
     }
 
     public function myOrders()
     {
-        $orders = $this->orderService->myOrders();
+        $clientId = Auth::user()->client->id;
+        $orders = $this->orderService->getClientOrders($clientId);
         return $this->successCollection($orders, ClientOrderResource::class);
     }
 

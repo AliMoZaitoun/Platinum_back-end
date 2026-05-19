@@ -20,12 +20,16 @@ return [
 
         'password_changed' => 'Password changed successfully.',
         'email_verified' => 'Email verified successfully.',
+        'already_verified' => 'Email already verified!.',
+
 
         'inactive' => 'Your account is not activated yet. Please check your email or enter the OTP.',
         'otp_sent' => 'OTP has been sent to your email.',
         'otp_failed' => 'Failed to send OTP. Please try again.',
         'otp_verified' => 'OTP verified successfully.',
         'otp_invalid' => 'Invalid or expired OTP.',
+
+        'invalid_refresh_token' => 'Session expired. Please log in again.',
     ],
 
     'system' => [
@@ -39,5 +43,13 @@ return [
 
         'device_mismatch' => 'Access denied. This account is linked to another device.',
         'out_of_geofence' => 'You are outside the project geographical boundary. Distance: :distance meters.',
-    ]
+    ],
+
+    'favorites' => [
+        'already_exists' => 'This unit is already in your favorites.',
+    ],
+
+    'orders' => [
+        'already_submitted' => 'You have already submitted an order for this unit or service.',
+    ],
 ];

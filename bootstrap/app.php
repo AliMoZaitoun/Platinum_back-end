@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\V1\CheckIsClient;
+use App\Http\Middleware\V1\CheckIsStaff;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -24,6 +26,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'role'               => RoleMiddleware::class,
             'permission'         => PermissionMiddleware::class,
             'role_or_permission' => RoleOrPermissionMiddleware::class,
+            'is_staff'           => CheckIsStaff::class,
+            'is_client'          => CheckIsClient::class
         ]);
         $middleware->append(\App\Http\Middleware\SetLocale::class);
     })
