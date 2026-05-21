@@ -34,7 +34,8 @@ class ProjectEngineerAllocationDAO
 
     public function engProjects(int $enginner_id)
     {
-        return ProjectEngineerAllocation::where('engineer_id', $enginner_id)->with(['project', 'project.location', 'project.buildings'])->get();
+        $relations = ['building', 'building.location'];
+        return ProjectEngineerAllocation::where('engineer_id', $enginner_id)->with($relations)->get();
     }
 
     public function proEngineers(int $project_id)

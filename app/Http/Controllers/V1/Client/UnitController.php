@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\V1\Client;
 
+use App\DTOs\RealEstate\Other\SearchUnitDTO;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\RealEstate\SearchUnitRequest;
 use App\Http\Resources\V1\RealEstate\ClientUnitResource;
 use App\Services\RealEstate\UnitService;
 use App\Traits\ResponseTrait;
@@ -39,9 +41,10 @@ class UnitController extends Controller
         return $this->useResource($unit, ClientUnitResource::class);
     }
 
-    public function search(Request $request)
+    public function search(SearchUnitRequest $request)
     {
-        $units = $this->unitService->search($request->all());
+        $dto = SearchUnitDTO::fromRequest($request->validated());
+        $units = $this->unitService->search($dto);
         return $this->successCollection($units, ClientUnitResource::class);
     }
 }

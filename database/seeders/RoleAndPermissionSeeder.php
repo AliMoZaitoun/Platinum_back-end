@@ -57,7 +57,6 @@ class RoleAndPermissionSeeder extends Seeder
             'read.building',
             'create.report',
             'read.report',
-            'read.engineer',
             'create.attendance'
         ]);
 

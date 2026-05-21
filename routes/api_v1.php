@@ -21,7 +21,7 @@ use App\Http\Controllers\V1\RealEstate\BuildingController;
 use App\Http\Controllers\V1\RealEstate\LocationController;
 use App\Http\Controllers\V1\RealEstate\ProjectController;
 use App\Http\Controllers\V1\RealEstate\SolutionController;
-use App\Http\Controllers\V1\RealEstate\UnitController;
+use App\Http\Controllers\V1\RealEstate\UnitController as AdminUnitController;
 use App\Http\Controllers\V1\RoleController;
 use App\Http\Controllers\V1\Sales\AppointmentController;
 use App\Http\Controllers\V1\Sales\AvailabilitySlotController;
@@ -275,19 +275,19 @@ Route::prefix('building')->middleware(['auth:sanctum', 'is_staff'])->group(funct
 
 // Unit
 Route::prefix('unit')->middleware(['auth:sanctum', 'is_staff'])->group(function () {
-    Route::get('', [UnitController::class, 'index']);
+    Route::get('', [AdminUnitController::class, 'index']);
 
-    Route::get('byBuilding/{building_id}', [UnitController::class, 'byBuilding']);
+    Route::get('byBuilding/{building_id}', [AdminUnitController::class, 'byBuilding']);
 
-    Route::post('/', [UnitController::class, 'store']);
+    Route::post('/', [AdminUnitController::class, 'store']);
 
-    Route::put('{id}', [UnitController::class, 'update']);
+    Route::put('{id}', [AdminUnitController::class, 'update']);
 
-    Route::get('search', [UnitController::class, 'search']);
+    Route::get('search', [AdminUnitController::class, 'search']);
 
-    Route::get('{id}', [UnitController::class, 'show']);
+    Route::get('{id}', [AdminUnitController::class, 'show']);
 
-    Route::delete('{id}', [UnitController::class, 'destroy']);
+    Route::delete('{id}', [AdminUnitController::class, 'destroy']);
 });
 
 Route::prefix('client')->middleware(['auth:sanctum', 'is_client'])->group(function () {
@@ -297,7 +297,7 @@ Route::prefix('client')->middleware(['auth:sanctum', 'is_client'])->group(functi
 
     Route::get('unit/byBuilding/{building_id}', [ClientUnitController::class, 'byBuilding']);
 
-    Route::get('unit/search', [ClientUnitController::class, 'search']);
+    Route::post('unit/search', [ClientUnitController::class, 'search']);
 
     Route::get('unit/{id}', [ClientUnitController::class, 'show']);
 });
@@ -324,7 +324,8 @@ Route::prefix('order')->middleware('auth:sanctum')->group(function () {
     });
 
     Route::middleware('is_client')->group(function () {
-        Route::get('myOrders', [OrderController::class, 'myOrders']);
+        Route::get('myUnitOrders', [OrderController::class, 'myUnitOrders']);
+        Route::get('mySolutionOrders', [OrderController::class, 'mySolutionOrders']);
 
         Route::post('/', [OrderController::class, 'store'])
             ->middleware(['permission:create.order']);

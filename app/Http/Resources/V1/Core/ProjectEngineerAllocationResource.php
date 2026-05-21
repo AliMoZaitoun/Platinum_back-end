@@ -18,8 +18,8 @@ class ProjectEngineerAllocationResource extends JsonResource
             'building'    => new BuildingResource($this->whenLoaded('building')),
             'engineer'    => new EngineerDetailResource($this->whenLoaded('engineer')),
             'start_date'  => $this->start_date,
-            'end_date'    => $this->end_date,
-            'created_at'  => $this->created_at?->format('Y-m-d h:i A'),
+            'end_date'    => $this?->end_date,
+            'created_at'  => $this->created_at->format('Y-m-d h:i A'),
         ];
     }
 }

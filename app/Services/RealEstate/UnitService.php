@@ -4,6 +4,7 @@ namespace App\Services\RealEstate;
 
 use App\DAO\RealEstate\UnitDAO;
 use App\DTOs\RealEstate\Create\CreateUnitDTO;
+use App\DTOs\RealEstate\Other\SearchUnitDTO;
 use App\DTOs\RealEstate\Update\UpdateUnitDTO;
 use App\Services\FileManagerService;
 use App\Services\Transaction;
@@ -68,14 +69,13 @@ class UnitService
         return $this->unitDAO->show($id);
     }
 
-    public function search(array $data)
+    public function search(SearchUnitDTO $dto)
     {
-        if (isset($data['price_min']) && $data['price_min'] < 0) {
-            throw new InvalidArgumentException("السعر لا يمكن أن يكون سالباً");
+        if (isset($dto->price_min) && $dto->price_min < 0) {
+            throw new InvalidArgumentException(__('messages.unit.invalid_price'));
         }
-        $filters = collect($data)->only(['location_id', 'price_min', 'price_max', 'type', 'rooms_count'])->toArray();
 
-        return $this->unitDAO->search($filters);
+        return $this->unitDAO->search($dto->toArray());
     }
 
     public function update(int $id, UpdateUnitDTO $unitDTO)
@@ -83,7 +83,7 @@ class UnitService
         return $this->unitDAO->update($id, $unitDTO);
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         return $this->unitDAO->destroy($id);
     }

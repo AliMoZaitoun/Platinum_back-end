@@ -35,9 +35,14 @@ class OrderService
         return $this->orderDAO->show($id);
     }
 
-    public function getClientOrders(int $client_id)
+    public function getClientUnitOrders(int $client_id)
     {
-        return $this->orderDAO->getClientOrders($client_id);
+        return $this->orderDAO->getClientUnitOrders($client_id);
+    }
+
+    public function getClientSolutionOrders(int $client_id)
+    {
+        return $this->orderDAO->getClientSolutionOrders($client_id);
     }
 
     public function update(int $id, UpdateOrderDTO $orderDTO)

@@ -43,18 +43,32 @@ class OrderController extends Controller
         return $this->useResource($order, OrderResource::class);
     }
 
-    public function getClientOrders(int $client_id)
+    public function getClientUnitOrders(int $client_id)
     {
-        $orders = $this->orderService->getClientOrders($client_id);
+        $orders = $this->orderService->getClientUnitOrders($client_id);
         return $this->successCollection($orders, OrderResource::class);
     }
 
-    public function myOrders()
+    public function getClientResourcOrders(int $client_id)
+    {
+        $orders = $this->orderService->getClientUnitOrders($client_id);
+        return $this->successCollection($orders, OrderResource::class);
+    }
+
+    public function myUnitOrders()
     {
         $clientId = Auth::user()->client->id;
-        $orders = $this->orderService->getClientOrders($clientId);
+        $orders = $this->orderService->getClientUnitOrders($clientId);
         return $this->successCollection($orders, ClientOrderResource::class);
     }
+
+    public function mySolutionOrders()
+    {
+        $clientId = Auth::user()->client->id;
+        $orders = $this->orderService->getClientSolutionOrders($clientId);
+        return $this->successCollection($orders, ClientOrderResource::class);
+    }
+
 
     public function update(int $id, Request $request)
     {

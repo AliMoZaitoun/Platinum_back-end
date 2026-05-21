@@ -44,7 +44,7 @@ trait ResponseTrait
             $paginatedData = $resource->response()->getData(true);
 
             return response()->json([
-                'status'  => true,
+                'status'  => __('messages.common.success'),
                 'message' => $collection->isEmpty() ? __('messages.system.no_results') : __($messageKey),
 
                 'data'    => $paginatedData['data'],

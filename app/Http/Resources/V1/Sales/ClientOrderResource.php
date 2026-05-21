@@ -4,6 +4,7 @@ namespace App\Http\Resources\V1\Sales;
 
 use App\Http\Resources\V1\ClientDetailResource;
 use App\Http\Resources\V1\RealEstate\ClientUnitResource;
+use App\Http\Resources\V1\RealEstate\SolutionResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -15,6 +16,7 @@ class ClientOrderResource extends JsonResource
             'id'           => $this->id,
             'client'       => new ClientDetailResource($this->whenLoaded('client')),
             'unit'         => new ClientUnitResource($this->whenLoaded('unit')),
+            'solution'     => new SolutionResource($this->whenLoaded('solution')),
             'status'       => $this->status,
             'created_at'   => $this->created_at->format('Y-m-d h:i A'),
             'updated_at'   => $this->updated_at->format('Y-m-d h:i A'),

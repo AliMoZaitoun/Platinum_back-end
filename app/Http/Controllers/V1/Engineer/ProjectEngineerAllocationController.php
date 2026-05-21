@@ -26,8 +26,8 @@ class ProjectEngineerAllocationController extends Controller
     public function store(StoreProjectEngineerAllocationRequest $request)
     {
         $dto = AssignEngineerAllocationDTO::fromRequest($request->validated());
-        $projectEng = $this->engProService->store($dto);
-        return $this->useResource($projectEng, ProjectEngineerAllocationResource::class, __('messages.common.stored'), 201);
+        $this->engProService->store($dto);
+        return $this->successResponse([], __('messages.common.stored'), 201);
     }
 
     public function show(int $id)

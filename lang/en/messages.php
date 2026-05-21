@@ -52,4 +52,8 @@ return [
     'orders' => [
         'already_submitted' => 'You have already submitted an order for this unit or service.',
     ],
+
+    'unit' => [
+        'invalid_price' => 'Price couldn\'t be negative'
+    ]
 ];

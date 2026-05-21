@@ -72,27 +72,39 @@ class UnitDAO
     {
         $query = $this->getBaseSearchQuery();
 
-        if (!empty($filters['location_id'])) {
-            $query->where('projects.location_id', $filters['location_id']);
-        }
+        $query->when(isset($filters['location_id']), function ($q) use ($filters) {
+            $q->where('projects.location_id', $filters['location_id']);
+        });
 
-        if (!empty($filters['price_min'])) {
-            $query->where('units.price', '>=', $filters['price_min']);
-        }
+        $query->when(isset($filters['price_min']), function ($q) use ($filters) {
+            $q->where('units.price', '>=', $filters['price_min']);
+        });
 
-        if (!empty($filters['price_max'])) {
-            $query->where('units.price', '<=', $filters['price_max']);
-        }
+        $query->when(isset($filters['price_max']), function ($q) use ($filters) {
+            $q->where('units.price', '<=', $filters['price_max']);
+        });
 
-        if (isset($filters['rooms_count']) && $filters['rooms_count'] !== '') {
-            $query->where('units.rooms_count', $filters['rooms_count']);
-        }
+        $query->when(isset($filters['rooms_count']), function ($q) use ($filters) {
+            $q->where('units.rooms_count', $filters['rooms_count']);
+        });
 
-        if (!empty($filters['type'])) {
-            $query->where('units.type', $filters['type']);
-        }
+        $query->when(isset($filters['type']), function ($q) use ($filters) {
+            $q->where('units.type', $filters['type']);
+        });
 
-        return $query->with(['building.project.location'])
+        $query->when(isset($filters['floor']), function ($q) use ($filters) {
+            $q->where('units.floor', $filters['floor']);
+        });
+
+        $query->when(isset($filters['area_min']), function ($q) use ($filters) {
+            $q->where('units.area', '>=', $filters['area_min']);
+        });
+
+        $query->when(isset($filters['area_max']), function ($q) use ($filters) {
+            $q->where('units.area', '<=', $filters['area_max']);
+        });
+
+        return $query->with(['building.location'])
             ->paginate(12);
     }
 
@@ -103,7 +115,7 @@ class UnitDAO
         return $unit;
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $unit = $this->show($id);
         return $unit->delete();

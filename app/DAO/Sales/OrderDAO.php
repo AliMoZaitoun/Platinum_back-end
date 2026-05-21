@@ -38,9 +38,18 @@ class OrderDAO
             ->exists();
     }
 
-    public function getClientOrders(int $client_id)
+    public function getClientUnitOrders(int $client_id)
     {
-        return Order::where('client_id', $client_id)->with(['unit', 'client', 'solution', 'unit.attachments', 'solution.attachments'])->get();
+        return Order::where('client_id', $client_id)
+            ->whereNotNull('unit_id')
+            ->with(['unit', 'unit.attachments'])->get();
+    }
+
+    public function getClientSolutionOrders(int $client_id)
+    {
+        return Order::where('client_id', $client_id)
+            ->whereNotNull('solution_id')
+            ->with(['solution', 'solution.attachments'])->get();
     }
 
     public function update(int $id, UpdateOrderDTO $orderDTO)

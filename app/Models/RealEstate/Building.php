@@ -43,4 +43,9 @@ class Building extends Model
     {
         return $this->morphMany(Media::class, 'mediable');
     }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
+    }
 }

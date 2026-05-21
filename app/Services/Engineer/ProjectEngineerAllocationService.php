@@ -22,7 +22,7 @@ class ProjectEngineerAllocationService
 
     public function store(AssignEngineerAllocationDTO $dto)
     {
-        if ($dto->building_id) {
+        if ($dto?->building_id) {
             $allocations = [
                 [
                     'engineer_id' => $dto->engineer_id,
