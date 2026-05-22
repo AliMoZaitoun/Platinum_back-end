@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('warehouses', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('description')->nullable();
+            $table->json('name');
+            $table->json('description')->nullable();
             $table->foreignId('location_id')->constrained()->onDelete('restrict');
             $table->string('address');
             $table->softDeletes();

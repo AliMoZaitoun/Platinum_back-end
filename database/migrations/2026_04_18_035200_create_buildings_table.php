@@ -22,6 +22,10 @@ return new class extends Migration
             $table->json('description')->nullable();
             $table->integer('floors_count');
             $table->enum('status', ['planned', 'in_progress', 'stopped', 'completed']);
+
+            $table->date('start_date');
+            $table->date('end_date')->nullable();
+
             $table->softDeletes();
             $table->timestamps();
         });

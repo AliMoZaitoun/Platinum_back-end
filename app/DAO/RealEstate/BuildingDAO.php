@@ -9,18 +9,27 @@ use App\Models\RealEstate\Building;
 
 class BuildingDAO
 {
-    public function index(array $relations = [])
+    public function index(array $relations = [], int $perPage = 15)
     {
         $defaultRelation = ['project', 'attachments'];
         $allRelations = array_merge($defaultRelation, $relations);
-        return Building::with($allRelations)->get();
+
+        return Building::query()
+            ->with($allRelations)
+            ->latest()
+            ->paginate($perPage);
     }
 
-    public function byProject(int $project_id, array $relations = [])
+    public function byProject(int $project_id, array $relations = [], int $perPage = 15)
     {
         $defaultRelation = ['project'];
         $allRelations = array_merge($defaultRelation, $relations);
-        return Building::with($allRelations)->where('project_id', $project_id)->get();
+
+        return Building::query()
+            ->with($allRelations)
+            ->where('project_id', $project_id)
+            ->latest()
+            ->paginate($perPage);
     }
 
     public function store(array $data)

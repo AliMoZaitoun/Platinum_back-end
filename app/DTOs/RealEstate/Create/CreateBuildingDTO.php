@@ -13,6 +13,7 @@ class CreateBuildingDTO
         public int $radius_meters,
         public int $floors_count,
         public string $status,
+        public string $start_date,
         public ?string $description
     ) {}
 
@@ -27,6 +28,7 @@ class CreateBuildingDTO
             radius_meters: $request['radius_meters'],
             floors_count: $request['floors_count'],
             status: $request['status'],
+            start_date: $request['start_date'],
             description: $request['description'] ?? null
         );
     }
@@ -34,15 +36,16 @@ class CreateBuildingDTO
     public function toArray()
     {
         return array_filter([
-            'project_id'  => $this->project_id,
-            'location_id'  => $this->location_id,
-            'building_number'  => $this->building_number,
-            'latitude'      => $this->latitude,
-            'longitude'     => $this->longitude,
-            'radius_meters' => $this->radius_meters,
-            'floors_count'  => $this->floors_count,
-            'status' => $this->status,
-            'description' => $this->description
+            'project_id'        => $this->project_id,
+            'location_id'       => $this->location_id,
+            'building_number'   => $this->building_number,
+            'latitude'          => $this->latitude,
+            'longitude'         => $this->longitude,
+            'radius_meters'     => $this->radius_meters,
+            'floors_count'      => $this->floors_count,
+            'status'            => $this->status,
+            'start_date'        => $this->start_date,
+            'description'       => $this->description
         ], fn($value) => !is_null($value));
     }
 }

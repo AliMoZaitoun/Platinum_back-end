@@ -9,11 +9,14 @@ use App\Models\RealEstate\Project;
 
 class ProjectDAO
 {
-    public function index(array $relations = [])
+    public function index(array $relations = [], int $perPage = 15)
     {
         $defaultRelations = ['location', 'attachments'];
         $allRelations = array_merge($defaultRelations, $relations);
-        return Project::with($allRelations)->get();
+        return Project::query()
+            ->with($allRelations)
+            ->latest()
+            ->paginate($perPage);
     }
 
     public function store(array $data)

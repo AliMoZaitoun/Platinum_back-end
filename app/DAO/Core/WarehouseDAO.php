@@ -2,7 +2,6 @@
 
 namespace App\DAO\Core;
 
-use App\DTOs\Core\Create\CreateWarehouseDTO;
 use App\DTOs\Core\Update\UpdateWarehouseDTO;
 use App\Exceptions\NotFoundException;
 use App\Models\Core\Warehouse;
@@ -14,9 +13,9 @@ class WarehouseDAO
         return Warehouse::with(['items'])->get();
     }
 
-    public function store(CreateWarehouseDTO $warehouseDTO)
+    public function store(array $data)
     {
-        return Warehouse::create($warehouseDTO->toArray());
+        return Warehouse::create($data);
     }
 
     public function show(int $id)

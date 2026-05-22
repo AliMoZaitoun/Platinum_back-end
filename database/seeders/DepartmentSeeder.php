@@ -11,29 +11,61 @@ class DepartmentSeeder extends Seeder
     {
         $departments = [
             [
-                'name'        => 'Engineering & Project Management',
-                'description' => 'Manages structural design, architectural planning, site supervision, project scheduling, and quality control for all construction projects.',
+                'name'        => [
+                    'en' => 'Engineering & Project Management',
+                    'ar' => 'الهندسة وإدارة المشاريع'
+                ],
+                'description' => [
+                    'en' => 'Manages structural design, architectural planning, site supervision, project scheduling, and quality control for all construction projects.',
+                    'ar' => 'إدارة التصميم الإنشائي، التخطيط المعماري، الإشراف الميداني، جدولة المشاريع، وضبط الجودة لجميع مشاريع البناء.'
+                ],
             ],
             [
-                'name'        => 'Customer Service',
-                'description' => 'Oversees day-to-day operations of managed properties including tenant relations, maintenance coordination, and rent collection.',
+                'name'        => [
+                    'en' => 'Customer Service',
+                    'ar' => 'خدمة العملاء'
+                ],
+                'description' => [
+                    'en' => 'Oversees day-to-day operations of managed properties including tenant relations, maintenance coordination, and rent collection.',
+                    'ar' => 'الإشراف على العمليات اليومية للعقارات المدارة، بما في ذلك العلاقات مع المستأجرين، تنسيق الصيانة، وتحصيل الإيجارات.'
+                ],
             ],
             [
-                'name'        => 'Marketing & Communications',
-                'description' => 'Handles property listings, advertising campaigns, social attachments presence, open house coordination, and brand management.',
+                'name'        => [
+                    'en' => 'Marketing & Communications',
+                    'ar' => 'التسويق والاتصال'
+                ],
+                'description' => [
+                    'en' => 'Handles property listings, advertising campaigns, social attachments presence, open house coordination, and brand management.',
+                    'ar' => 'إدارة قوائم العقارات، الحملات الإعلانية، التواجد على منصات التواصل، تنسيق المعاينات المفتوحة، وإدارة الهوية التجارية.'
+                ],
             ],
             [
-                'name'        => 'Finance & Accounting',
-                'description' => 'Manages financial reporting, invoicing, payroll, budgeting, and compliance with financial regulations.',
+                'name'        => [
+                    'en' => 'Finance & Accounting',
+                    'ar' => 'المالية والمحاسبة'
+                ],
+                'description' => [
+                    'en' => 'Manages financial reporting, invoicing, payroll, budgeting, and compliance with financial regulations.',
+                    'ar' => 'إدارة التقارير المالية، الفواتير، رواتب الموظفين، إعداد الموازنات، والامتثال للأنظمة واللوائح المالية.'
+                ],
             ],
             [
-                'name'        => 'Legal & Contracts',
-                'description' => 'Drafts and reviews property contracts, lease agreements, title deeds, and ensures regulatory and legal compliance.',
+                'name'        => [
+                    'en' => 'Legal & Contracts',
+                    'ar' => 'الشؤون القانونية والعقود'
+                ],
+                'description' => [
+                    'en' => 'Drafts and reviews property contracts, lease agreements, title deeds, and ensures regulatory and legal compliance.',
+                    'ar' => 'صياغة ومراجعة عقود العقارات، اتفاقيات الإيجار، صكوك الملكية، وضمان الامتثال القانوني والتشريعي.'
+                ],
             ]
         ];
 
         foreach ($departments as $department) {
             Department::create($department);
         }
+
+        $this->command->info('🎉 Departments seeded successfully with translatable JSON fields!');
     }
 }

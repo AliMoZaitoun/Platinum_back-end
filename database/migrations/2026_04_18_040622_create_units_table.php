@@ -24,10 +24,16 @@ return new class extends Migration
             $table->json('description')->nullable();
 
             $table->enum('status', ['available', 'reserved', 'sold', 'maintenance']);
+
             $table->index(['building_id', 'price', 'type'], 'idx_units_search_basic');
             $table->index(['rooms_count', 'area'], 'idx_units_specs');
             $table->index('price', 'idx_search_price');
+
             $table->unique(['building_id', 'unit_number']);
+
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+
             $table->softDeletes();
             $table->timestamps();
         });

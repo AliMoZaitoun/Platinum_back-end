@@ -6,7 +6,8 @@ use App\DTOs\Engineer\Create\AssignEngineerAllocationDTO;
 use App\DTOs\Engineer\Update\UpdateEngProDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\RealEstate\StoreProjectEngineerAllocationRequest;
-use App\Http\Resources\V1\Core\ProjectEngineerAllocationResource;
+use App\Http\Resources\V1\Engineer\ProjectEngineerAllocationResource;
+use App\Http\Resources\V1\Core\ProjectEngineerAllocationResourceForAdmin;
 use App\Services\Engineer\ProjectEngineerAllocationService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
@@ -15,59 +16,66 @@ class ProjectEngineerAllocationController extends Controller
 {
     use ResponseTrait;
 
-    public function __construct(private ProjectEngineerAllocationService $engProService) {}
+    public function __construct(private ProjectEngineerAllocationService $allocationService) {}
 
     public function index()
     {
-        $engPros = $this->engProService->index();
+        $engPros = $this->allocationService->index();
         return $this->successCollection($engPros, ProjectEngineerAllocationResource::class);
     }
 
     public function store(StoreProjectEngineerAllocationRequest $request)
     {
         $dto = AssignEngineerAllocationDTO::fromRequest($request->validated());
-        $this->engProService->store($dto);
+        $this->allocationService->store($dto);
         return $this->successResponse([], __('messages.common.stored'), 201);
     }
 
     public function show(int $id)
     {
-        $projectEng = $this->engProService->show($id);
+        $projectEng = $this->allocationService->show($id);
         return $this->useResource($projectEng, ProjectEngineerAllocationResource::class);
     }
 
-    public function myProjects()
+    public function myLocations()
     {
-        $projects = $this->engProService->myProjects();
-        return $this->successCollection($projects, ProjectEngineerAllocationResource::class);
+        $engineer = request()->user()->engineer;
+        $allocations = $this->allocationService->engineerAllocations($engineer->id);
+
+        return $this->successCollection($allocations, ProjectEngineerAllocationResource::class);
     }
 
-    public function engProjects(int $engineer_id)
+    public function engineerAllocations(int $engineer_id)
     {
-        // Gate::authorize('view');
+        $allocations = $this->allocationService->engineerAllocations($engineer_id);
 
-        $projects = $this->engProService->engProjects($engineer_id);
-        return $this->successCollection($projects, ProjectEngineerAllocationResource::class);
+        return $this->successCollection($allocations, ProjectEngineerAllocationResource::class);
     }
 
-    public function proEngineers(int $project_id)
+    public function getEngineersAllocatedToProject(int $project_id)
     {
-        // Gate::authorize('view');
+        $engineers = $this->allocationService->getEngineersAllocatedToProject($project_id);
 
-        $engineers = $this->engProService->proEngineers($project_id);
-        return $this->successCollection($engineers, ProjectEngineerAllocationResource::class);
+        return $this->successCollection($engineers, ProjectEngineerAllocationResourceForAdmin::class);
+    }
+
+    public function getEngineersAllocatedToBuilding(int $building_id)
+    {
+        $engineers = $this->allocationService->getEngineersAllocatedToBuilding($building_id);
+
+        return $this->successCollection($engineers, ProjectEngineerAllocationResourceForAdmin::class);
     }
 
     public function update(int $id, Request $request)
     {
         $dto = UpdateEngProDTO::fromRequest($request->all());
-        $location = $this->engProService->update($id, $dto);
+        $location = $this->allocationService->update($id, $dto);
         return $this->useResource($location, ProjectEngineerAllocationResource::class, __('messages.common.updated'), 200);
     }
 
     public function destroy(int $id)
     {
-        $this->engProService->destroy($id);
+        $this->allocationService->destroy($id);
         return $this->successResponse([], __('messages.common.deleted'), 200);
     }
 }

@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Exceptions;
+namespace App\Exceptions\V1\Engineer\Attendance;
 
 use Exception;
 use Throwable;
 
-class OutOfGeofenceException extends Exception
+class OutsideGeofenceException extends Exception
 {
     public function __construct(
         int $distance,
-        $messageKey = "messages.sentences.out_of_geofence",
-        $code = 422,
+        string $messageKey = "messages.attendance.outside_geofence",
+        int $code = 422,
         Throwable $previous = null
     ) {
         $message = __($messageKey, ['distance' => $distance]);

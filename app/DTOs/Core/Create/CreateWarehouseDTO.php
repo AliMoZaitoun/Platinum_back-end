@@ -7,7 +7,7 @@ class CreateWarehouseDTO
     public function __construct(
         public string $name,
         public int $location_id,
-        public string $description,
+        public ?string $description,
         public string $address,
     ) {}
 
@@ -17,16 +17,16 @@ class CreateWarehouseDTO
             name: $request['name'],
             location_id: $request['location_id'],
             address: $request['address'],
-            description: $request['description'],
+            description: $request['description'] ?? null,
         );
     }
 
     public function toArray(): array
     {
         return [
-            'name'      => $this->name,
-            'location_id'  => $this->location_id,
-            'address'      => $this->address,
+            'name'             => $this->name,
+            'location_id'      => $this->location_id,
+            'address'          => $this->address,
             'description'      => $this->description,
         ];
     }

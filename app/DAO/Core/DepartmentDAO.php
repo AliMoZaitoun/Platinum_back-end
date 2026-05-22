@@ -15,9 +15,9 @@ class DepartmentDAO
         return Department::with(['employees', 'employees.employee'])->get();
     }
 
-    public function store(CreateDepartmentDTO $departmentDTO)
+    public function store(array $data)
     {
-        return Department::create($departmentDTO->toArray());
+        return Department::create($data);
     }
 
     public function show(int $id)

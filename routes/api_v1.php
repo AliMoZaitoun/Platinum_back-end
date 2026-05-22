@@ -84,12 +84,12 @@ Route::prefix('project-engineer')->middleware('auth:sanctum')->group(function ()
     Route::get('/', [ProjectEngineerAllocationController::class, 'index'])
         ->middleware('permission:read.engineer');
 
-    Route::get('/myProjects', [ProjectEngineerAllocationController::class, 'myProjects']);
+    Route::get('/myLocations', [ProjectEngineerAllocationController::class, 'myLocations'])->middleware('is_engineer');
 
-    Route::get('engProjects/{engineer_id}', [ProjectEngineerAllocationController::class, 'engProjects']);
+    Route::get('allocatedLocations/{engineer_id}', [ProjectEngineerAllocationController::class, 'engineerAllocations']);
 
-
-    Route::get('proEngineers/{project_id}', [ProjectEngineerAllocationController::class, 'proEngineers']);
+    Route::get('engineersAllocatedToProject/{project_id}', [ProjectEngineerAllocationController::class, 'getEngineersAllocatedToProject']);
+    Route::get('engineersAllocatedToBuilding/{building_id}', [ProjectEngineerAllocationController::class, 'getEngineersAllocatedToBuilding']);
 
     Route::put('{id}', [ProjectEngineerAllocationController::class, 'update']);
     Route::delete('{id}', [ProjectEngineerAllocationController::class, 'destroy']);
@@ -403,10 +403,10 @@ Route::prefix('construction-report')->middleware('auth:sanctum')->group(function
         ->middleware(['permission:read.report']);
 
     Route::get('/myReports/{project_id?}', [ConstructionReportController::class, 'myReports'])
-        ->middleware(['permission:read.report']);
+        ->middleware(['permission:read.report', 'is_engineer']);
 
     Route::post('/', [ConstructionReportController::class, 'store'])
-        ->middleware(['permission:create.report']);
+        ->middleware(['permission:create.report', 'is_engineer']);
 
     Route::get('/{id}', [ConstructionReportController::class, 'show'])
         ->middleware(['permission:read.report']);
@@ -414,8 +414,7 @@ Route::prefix('construction-report')->middleware('auth:sanctum')->group(function
     Route::delete('/{id}', [ConstructionReportController::class, 'destroy'])
         ->middleware(['permission:delete.report']);
 
-
-    Route::post('/{uuid}/attach-images', [ConstructionReportController::class, 'uploadImages']);
+    Route::post('/{uuid}/attach-images', [ConstructionReportController::class, 'uploadImages'])->middleware('is_engineer');
 });
 
 Route::prefix('attendance')->middleware('auth:sanctum')->group(function () {
@@ -423,10 +422,10 @@ Route::prefix('attendance')->middleware('auth:sanctum')->group(function () {
         ->middleware(['permission:read.attendance']);
 
     Route::post('/check-in', [AttendanceController::class, 'storeCheckIn'])
-        ->middleware(['permission:create.attendance']);
+        ->middleware(['permission:create.attendance', 'is_engineer']);
 
     Route::post('/check-out', [AttendanceController::class, 'storeCheckOut'])
-        ->middleware(['permission:create.attendance']);
+        ->middleware(['permission:create.attendance', 'is_engineer']);
 
     Route::get('{id}', [AttendanceController::class, 'show'])
         ->middleware(['permission:read.attendance']);

@@ -99,7 +99,6 @@ class UnitSeeder extends Seeder
                             'recorded_at'   => now(),
                         ]);
                     } catch (\Exception $e) {
-                        // تخطي طباعة أخطاء الرفع لتسريع العملية بالتيرمينال
                     }
                 }
             }

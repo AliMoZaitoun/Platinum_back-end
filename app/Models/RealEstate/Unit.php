@@ -9,7 +9,20 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
-#[Fillable(['building_id', 'unit_number', 'description', 'type', 'floor', 'area', 'rooms_count', 'price', 'status'])]
+#[Fillable([
+    'building_id',
+    'unit_number',
+    'description',
+    'type',
+    'floor',
+    'area',
+    'rooms_count',
+    'price',
+    'status',
+    'start_date',
+    'end_date'
+])]
+
 class Unit extends Model
 {
     use HasTranslations;

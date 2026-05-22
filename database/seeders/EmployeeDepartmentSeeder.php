@@ -27,10 +27,17 @@ class EmployeeDepartmentSeeder extends Seeder
 
         foreach ($assignments as $email => [$deptName, $position, $spatieRole]) {
             $user       = User::where('email', $email)->first();
-            $employee   = Employee::where('user_id', $user->id)->first();
-            $department = Department::where('name', $deptName)->first();
 
-            if ($user && $employee && $department) {
+            if (!$user) {
+                $this->command->warn("المستخدم صاحب الإيميل {$email} غير موجود، تخطي...");
+                continue;
+            }
+
+            $employee   = Employee::where('user_id', $user->id)->first();
+
+            $department = Department::where('name->en', $deptName)->first();
+
+            if ($employee && $department) {
                 EmployeeDepartment::create([
                     'employee_id'   => $employee->id,
                     'department_id' => $department->id,
@@ -40,9 +47,17 @@ class EmployeeDepartmentSeeder extends Seeder
                 ]);
 
                 $user->assignRole('employee');
-
                 $user->assignRole($spatieRole->value);
+            } else {
+                if (!$employee) {
+                    $this->command->error("لم يتم العثور على سجل موظف للمستخدم: {$email}");
+                }
+                if (!$department) {
+                    $this->command->error("لم يتم العثور على القسم: {$deptName} بداخل حقول الـ JSON");
+                }
             }
         }
+
+        $this->command->info('🎉 Employee department assignments completed smoothly!');
     }
 }

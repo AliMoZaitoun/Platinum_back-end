@@ -9,17 +9,12 @@ use App\Models\Engineer\ProjectEngineerAllocation;
 
 class ProjectEngineerAllocationDAO
 {
-    public function index(array $relations = [])
+    public function index(array $relations = [], int $perPage = 15)
     {
-        $defaultRelations = ['project', 'engineer', 'project.location'];
+        $defaultRelations = ['project', 'engineer', 'project.location', 'building', 'building.location'];
         $allRelations = array_merge($defaultRelations, $relations);
 
-        return ProjectEngineerAllocation::with($allRelations)->get();
-    }
-
-    public function storeMultiple(array $data)
-    {
-        return ProjectEngineerAllocation::insert($data);
+        return ProjectEngineerAllocation::with($allRelations)->paginate($perPage);
     }
 
     public function store(AssignEngineerAllocationDTO $dto)
@@ -32,15 +27,37 @@ class ProjectEngineerAllocationDAO
         return ProjectEngineerAllocation::find($id) ?? throw new NotFoundException("Engineer Project");
     }
 
-    public function engProjects(int $enginner_id)
+    public function getProjectsAllocatedToEngineer(int $engineer_id)
     {
-        $relations = ['building', 'building.location'];
-        return ProjectEngineerAllocation::where('engineer_id', $enginner_id)->with($relations)->get();
+        $relations = ['project', 'project.location', 'project.buildings'];
+        return ProjectEngineerAllocation::where('engineer_id', $engineer_id)
+            ->WhereNull('building_id')
+            ->with($relations)->get();
     }
 
-    public function proEngineers(int $project_id)
+    public function getBuildingsAllocatedToEngineer(int $engineer_id)
     {
-        return ProjectEngineerAllocation::where('project_id', $project_id)->with('engineer')->get();
+        $relations = ['building', 'building.location', 'project'];
+
+        return ProjectEngineerAllocation::where('engineer_id', $engineer_id)
+            ->whereNotNull('building_id')
+            ->with($relations)
+            ->get();
+    }
+
+    public function getEngineersAllocatedToProject(int $project_id)
+    {
+        return ProjectEngineerAllocation::where('project_id', $project_id)
+            ->whereNull('building_id')
+            ->with('engineer')
+            ->get();
+    }
+
+    public function getEngineersAllocatedToBuilding(int $building_id)
+    {
+        return ProjectEngineerAllocation::where('building_id', $building_id)
+            ->with('engineer')
+            ->get();
     }
 
     public function update(int $id, UpdateEngProDTO $dto)
@@ -52,7 +69,6 @@ class ProjectEngineerAllocationDAO
 
     public function destroy(int $id)
     {
-        $engPro = $this->show($id);
-        return $engPro->delete();
+        return $this->show($id)->delete();
     }
 }

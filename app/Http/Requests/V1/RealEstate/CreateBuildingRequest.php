@@ -23,6 +23,7 @@ class CreateBuildingRequest extends FormRequest
             'location_id'                     => 'nullable|integer|exists:locations,id',
             'floors_count'                    => 'required|integer',
             'status'                          => 'required',
+            'start_date'                      => 'required|date',
             'attachments'                     => ['nullable', 'array'],
             'attachments.*.file'              => ['required', 'file', 'mimes:jpg,jpeg,png,pdf,docx,xlsx,zip,txt', 'max:10240'],
             'attachments.*.type'              => ['nullable', 'string', 'in:360_panorama'],

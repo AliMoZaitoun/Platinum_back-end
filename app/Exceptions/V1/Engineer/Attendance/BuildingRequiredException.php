@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Exceptions;
+namespace App\Exceptions\V1\Engineer\Attendance;
 
 use Exception;
 use Throwable;
 
-class DeviceMismatchException extends Exception
+class BuildingRequiredException extends Exception
 {
     public function __construct(
-        $messageKey = "messages.sentences.device_mismatch",
-        $code = 403,
+        string $messageKey = "messages.attendance.building_required",
+        int $code = 422,
         Throwable $previous = null
     ) {
         $message = __($messageKey);

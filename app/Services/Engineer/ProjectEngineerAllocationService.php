@@ -3,16 +3,13 @@
 namespace App\Services\Engineer;
 
 use App\DAO\Engineer\ProjectEngineerAllocationDAO;
-use App\DAO\RealEstate\ProjectDAO;
 use App\DTOs\Engineer\Create\AssignEngineerAllocationDTO;
 use App\DTOs\Engineer\Update\UpdateEngProDTO;
-use Illuminate\Support\Facades\Auth;
 
 class ProjectEngineerAllocationService
 {
     public function __construct(
-        private ProjectEngineerAllocationDAO $allocationDAO,
-        private ProjectDAO $projectDAO
+        private ProjectEngineerAllocationDAO $allocationDAO
     ) {}
 
     public function index(array $relations = [])
@@ -22,38 +19,7 @@ class ProjectEngineerAllocationService
 
     public function store(AssignEngineerAllocationDTO $dto)
     {
-        if ($dto?->building_id) {
-            $allocations = [
-                [
-                    'engineer_id' => $dto->engineer_id,
-                    'project_id'  => $dto->project_id,
-                    'building_id' => $dto->building_id,
-                    'start_date'  => $dto->start_date,
-                    'created_at'  => now(),
-                    'updated_at'  => now(),
-                ]
-            ];
-        } else {
-            $project = $this->projectDAO->show($dto->project_id);
-            $buildingIds = $project->buildings()->pluck('id');
-
-            if ($buildingIds->isEmpty()) {
-                throw new \Exception("المشروع لا يحتوي على أبنية لتخصيص المهندس بها.");
-            }
-
-            $allocations = $buildingIds->map(function ($buildingId) use ($dto) {
-                return [
-                    'engineer_id' => $dto->engineer_id,
-                    'project_id'  => $dto->project_id,
-                    'building_id' => $buildingId,
-                    'start_date'  => $dto->start_date,
-                    'created_at'  => now(),
-                    'updated_at'  => now(),
-                ];
-            })->toArray();
-        }
-
-        return $this->allocationDAO->storeMultiple($allocations);
+        return $this->allocationDAO->store($dto);
     }
 
     public function show(int $id)
@@ -61,22 +27,27 @@ class ProjectEngineerAllocationService
         return $this->allocationDAO->show($id);
     }
 
-    public function myProjects()
+    public function engineerAllocations(int $engineerId)
     {
-        $user = Auth::user();
-        $eng = $user->engineer;
-        return $this->engProjects($eng->id);
+        $projectAllocations = $this->allocationDAO->getProjectsAllocatedToEngineer($engineerId);
+
+        $buildingAllocations = $this->allocationDAO->getBuildingsAllocatedToEngineer($engineerId);
+
+        return $projectAllocations->concat($buildingAllocations)
+            ->sortByDesc('created_at')
+            ->values();
     }
 
-    public function engProjects(int $id)
+    public function getEngineersAllocatedToProject(int $project_id)
     {
-        return $this->allocationDAO->engProjects($id);
+        return $this->allocationDAO->getEngineersAllocatedToProject($project_id);
     }
 
-    public function proEngineers(int $project_id)
+    public function getEngineersAllocatedToBuilding(int $building_id)
     {
-        return $this->allocationDAO->proEngineers($project_id);
+        return $this->allocationDAO->getEngineersAllocatedToBuilding($building_id);
     }
+
 
     public function update(int $id, UpdateEngProDTO $dto)
     {
