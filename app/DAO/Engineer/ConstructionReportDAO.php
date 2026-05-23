@@ -8,9 +8,12 @@ use App\Models\Engineer\ConstructionReport;
 
 class ConstructionReportDAO
 {
-    public function index()
+    public function index(int $perPage = 15)
     {
-        return ConstructionReport::latest('report_date')->with(['project', 'engineer'])->get();
+        return ConstructionReport::query()
+            ->with(['project', 'engineer'])
+            ->latest('report_date')
+            ->paginate($perPage);
     }
 
     public function store(CreateReportDTO $dto)

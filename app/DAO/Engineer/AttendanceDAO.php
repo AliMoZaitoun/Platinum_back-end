@@ -7,6 +7,7 @@ use App\DTOs\Engineer\Create\CheckOutDTO;
 use App\DTOs\Engineer\Create\MakeAttendanceDTO;
 use App\Exceptions\NotFoundException;
 use App\Models\Engineer\Attendance;
+use Carbon\Carbon;
 
 class AttendanceDAO
 {
@@ -29,6 +30,15 @@ class AttendanceDAO
             ['uuid' => $dto->uuid],
             $dto->toArray()
         );
+    }
+
+    public function hasAttendance(int $engineer_id, int $building_id, $report_date)
+    {
+        return Attendance::where('engineer_id', $engineer_id)
+            ->where('building_id', $building_id)
+            ->whereDate('checked_in_at', Carbon::parse($report_date)->toDateString())
+            ->whereNull('checked_out_at')
+            ->exists();
     }
 
     public function show(int $id)

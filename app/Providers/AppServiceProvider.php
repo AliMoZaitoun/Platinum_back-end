@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Engineer\ConstructionReport;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,11 +15,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(\App\Services\TransactionService::class, \App\Services\Transaction::class);
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
-        //
+        ConstructionReport::observe(\App\Observers\V1\ConstructionReportObserver::class);
     }
 }

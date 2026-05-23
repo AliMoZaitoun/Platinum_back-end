@@ -2,8 +2,10 @@
 
 namespace App\Services\Engineer;
 
+use App\DAO\Engineer\AttendanceDAO;
 use App\DAO\Engineer\ConstructionReportDAO;
 use App\DTOs\Engineer\Create\CreateReportDTO;
+use App\Exceptions\V1\Engineer\Report\EngineerNotCheckedInException;
 use App\Services\FileManagerService;
 use App\Services\TransactionService;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +14,7 @@ class ConstructionReportService
 {
     public function __construct(
         private ConstructionReportDAO $dao,
+        private AttendanceDAO $attendanceDAO,
         private FileManagerService $fileManager,
         private TransactionService $transaction
     ) {}
@@ -24,6 +27,11 @@ class ConstructionReportService
     public function store(CreateReportDTO $dto, $attachments = null)
     {
         return $this->transaction->execute(function () use ($dto, $attachments) {
+            $hasAttendance = $this->attendanceDAO->hasAttendance($dto->engineer_id, $dto->building_id, $dto->report_date);
+
+            if (!$hasAttendance)
+                throw new EngineerNotCheckedInException();
+
             $report = $this->dao->store($dto);
 
             if ($attachments) {

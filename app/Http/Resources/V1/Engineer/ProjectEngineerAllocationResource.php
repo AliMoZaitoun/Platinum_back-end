@@ -14,25 +14,27 @@ class ProjectEngineerAllocationResource extends JsonResource
     {
         $isProjectWide = is_null($this->building_id);
 
-        $target = $isProjectWide ? $this->project : ($this->building ?? $this->project);
-
         return [
-            'id'             => $this->id,
+            'id' => $this->id,
             'allocation_type' => $isProjectWide ? 'project_wide' : 'specific_building',
 
-            'target_id'      => $isProjectWide ? $this->project_id : $this->building_id,
-            'target_name'    => $target?->name,
-            'latitude'       => (float) ($target?->latitude ?? $target?->latitude),
-            'longitude'      => (float) ($target?->longitude ?? $target?->longitude),
-            'allowed_radius' => (int) ($target?->radius_meters ?? ($isProjectWide ? 150 : 40)),
+            'project_id' => $this->project_id,
+            'building_id' => $this->building_id,
 
-            'start_date'     => $this->start_date,
-            'end_date'       => $this->end_date,
-            'created_at'     => $this->created_at?->format('Y-m-d h:i A'),
+            'project_name' => $this->project?->name,
+            'building_number' => $this->building?->building_number,
 
-            'project'        => new ProjectResource($this->whenLoaded('project')),
-            'building'       => new BuildingResource($this->whenLoaded('building')),
-            'engineer'       => new EngineerDetailResource($this->whenLoaded('engineer')),
+            'latitude' => (float) ($this->building_id ? $this->building?->latitude : $this->project?->latitude),
+            'longitude' => (float) ($this->building_id ? $this->building?->longitude : $this->project?->longitude),
+            'allowed_radius' => (int) ($this->building_id ? $this->building?->radius_meters : $this->project?->radius_meters),
+
+            'start_date' => $this->start_date,
+            'end_date' => $this->end_date,
+            'created_at' => $this->created_at?->format('Y-m-d h:i A'),
+
+            'project' => new ProjectResource($this->whenLoaded('project')),
+
+            'building' => new BuildingResource($this->whenLoaded('building')),
         ];
     }
 }
