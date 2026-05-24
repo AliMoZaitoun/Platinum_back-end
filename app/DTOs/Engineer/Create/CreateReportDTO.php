@@ -7,7 +7,7 @@ class CreateReportDTO
     public function __construct(
         public string $uuid,
         public int $project_id,
-        public int $building_id,
+        public ?int $building_id,
         public int $engineer_id,
         public string $phase,
         public int $completion_percentage,
