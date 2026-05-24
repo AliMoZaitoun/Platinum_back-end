@@ -3,6 +3,7 @@
 namespace App\Exceptions\V1\Engineer\Attendance;
 
 use Exception;
+use Throwable;
 
 class InvalidCheckOutTimeException extends Exception
 {

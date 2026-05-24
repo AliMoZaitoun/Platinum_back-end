@@ -29,19 +29,37 @@ class ProjectEngineerAllocationDAO
 
     public function getProjectsAllocatedToEngineer(int $engineer_id)
     {
-        $relations = ['project', 'project.location', 'project.buildings'];
         return ProjectEngineerAllocation::where('engineer_id', $engineer_id)
-            ->WhereNull('building_id')
-            ->with($relations)->get();
+            ->whereNull('building_id')
+            ->whereHas('project', function ($query) {
+                $query->where('status', 'in_progress');
+            })
+            ->with([
+                'project',
+                'project.location',
+                'project.buildings' => function ($query) {
+                    $query->where('status', 'in_progress');
+                },
+                'project.buildings.attachments'
+            ])
+            ->get();
     }
 
     public function getBuildingsAllocatedToEngineer(int $engineer_id)
     {
-        $relations = ['building', 'building.location', 'project'];
-
         return ProjectEngineerAllocation::where('engineer_id', $engineer_id)
             ->whereNotNull('building_id')
-            ->with($relations)
+            ->whereHas('building', function ($query) {
+                $query->where('status', 'in_progress');
+            })
+            ->whereHas('project', function ($query) {
+                $query->where('status', 'in_prgress');
+            })
+            ->with([
+                'building',
+                'building.location',
+                'project'
+            ])
             ->get();
     }
 

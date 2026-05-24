@@ -13,15 +13,8 @@ class AdvertisementSeeder extends Seeder
 {
     public function run(): void
     {
-        // تأمين موظف موجود في جدول الـ employees عشان الـ Foreign Key
         $employeeId = DB::table('employees')->value('id');
 
-        if (!$employeeId) {
-            $this->command->error('تنبيه: لم يتم العثور على أي موظف في جدول employees، يرجى تشغيل EmployeeSeeder أولاً!');
-            return;
-        }
-
-        // مصفوفة البيانات المترجمة (عربي وإنجليزي) للـ Title والـ Description
         $translations = [
             [
                 'title' => [
@@ -67,36 +60,30 @@ class AdvertisementSeeder extends Seeder
 
         for ($i = 1; $i <= 30; $i++) {
 
-            // اختيار مصفوفة ترجمة عشوائية
             $data = $translations[array_rand($translations)];
 
-            // هندسة التواريخ ديناميكياً
             $startsAt = Carbon::now()->addDays(rand(-5, 10));
             $endsAt = (clone $startsAt)->addDays(rand(10, 45));
             $durationDays = $startsAt->diffInDays($endsAt);
 
-            // 1. إنشاء الإعلان باللغتين
             $advertisement = Advertisement::create([
                 'title'         => [
                     'ar' => $data['title']['ar'] . " #{$i}",
                     'en' => $data['title']['en'] . " #{$i}"
                 ],
-                'description'   => $data['description'], // مصفوفة عربي وإنجليزي جاهزة
+                'description'   => $data['description'],
                 'starts_at'     => $startsAt,
                 'ends_at'       => $endsAt,
                 'duration_days' => $durationDays,
-                'status'        => rand(0, 1), // 1 نشط، 0 غير نشط
+                'status'        => rand(0, 1),
                 'created_by'    => $employeeId,
             ]);
 
-            // 2. ربط الـ attachments (الصور الدمي)
-            // 2. ربط الـ attachments (الصور الدمي) لكل إعلان بناءً على الـ Morph الجديد
             $numberOfImages = rand(1, 2);
             for ($j = 1; $j <= $numberOfImages; $j++) {
 
                 $imagePath = 'advertisements/ad_' . Str::random(5) . '.png';
 
-                // توليد الصورة الدمي باستخدام GD library ليتم رفعها حقيقياً لـ S3 كملف
                 ob_start();
                 $im = imagecreatetruecolor(400, 250);
                 $bg = imagecolorallocate($im, 41, 128, 185);
@@ -107,19 +94,17 @@ class AdvertisementSeeder extends Seeder
                 imagedestroy($im);
 
                 try {
-                    // الرفع على الـ S3 (بما أن جدول الميديا يتوقع مسار حقيقي للملف)
                     Storage::disk('s3')->put($imagePath, $imgContent, 'public');
 
                     $advertisement->attachments()->create([
                         'uuid'              => (string) Str::uuid(),
                         'path'              => $imagePath,
                         'original_name'     => "advertisement_banner_{$j}.png",
-                        'type'              => 'image', // مطابق للـ Enum
+                        'type'              => 'image',
                         'custom_properties' => null,
                         'recorded_at'       => now(),
                     ]);
                 } catch (\Exception $e) {
-                    // تخطي أخطاء الرفع
                 }
             }
         }
