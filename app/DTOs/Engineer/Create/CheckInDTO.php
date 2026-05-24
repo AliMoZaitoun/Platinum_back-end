@@ -44,8 +44,6 @@ class CheckInDTO
             'check_in_lng'          => $this->check_in_lng,
             'device_id'             => $this->device_id,
             'checked_in_at'         => $this->checked_in_at,
-            'is_mock'               => $this->is_mock,
-            'gps_accuracy'          => $this->gps_accuracy,
         ], fn($value) => !is_null($value));
     }
 }

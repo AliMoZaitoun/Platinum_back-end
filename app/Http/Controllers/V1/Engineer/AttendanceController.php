@@ -10,6 +10,7 @@ use App\Http\Requests\V1\Engineer\CheckOutAttRequest;
 use App\Http\Resources\V1\Engineer\AttendanceResource;
 use App\Services\Engineer\AttendanceService;
 use App\Traits\ResponseTrait;
+use Illuminate\Support\Facades\Auth;
 
 class AttendanceController extends Controller
 {
@@ -35,6 +36,9 @@ class AttendanceController extends Controller
     public function storeCheckOut(CheckOutAttRequest $request)
     {
         $dto = CheckOutDTO::fromRequest($request->validated());
+
+        $engineer = request()->user()->engineer;
+        $dto->engineer_id = $engineer->id;
 
         $attendance = $this->attendanceService->storeCheckOut($dto);
         return $this->useResource($attendance, AttendanceResource::class, __('messages.common.updated'));

@@ -15,6 +15,7 @@ use App\Exceptions\V1\Engineer\Attendance\BuildingProjectMismatchException;
 use App\Exceptions\V1\Engineer\Attendance\DeviceMismatchException;
 use App\Exceptions\V1\Engineer\Attendance\BuildingRequiredException;
 use App\Exceptions\V1\Engineer\Attendance\FutureAttendanceTimeException;
+use App\Exceptions\V1\Engineer\Attendance\InvalidCheckOutTimeException;
 use App\Exceptions\V1\Engineer\Attendance\NotCheckedInYetException;
 use App\Exceptions\V1\Engineer\Attendance\LowGpsAccuracyException;
 use App\Exceptions\V1\Engineer\Attendance\MockLocationDetectedException;
@@ -45,13 +46,7 @@ class AttendanceService
         $user = Auth::user();
         $dto->engineer_id = $user->engineer->id;
 
-        if (!empty($dto->is_mock) || $dto->is_mock === true) {
-            throw new MockLocationDetectedException();
-        }
-
-        if (isset($dto->gps_accuracy) && $dto->gps_accuracy > self::MAX_GPS_ACCURACY_ALLOWED) {
-            throw new LowGpsAccuracyException((int)$dto->gps_accuracy, self::MAX_GPS_ACCURACY_ALLOWED);
-        }
+        $this->validateGpsSignal($dto->is_mock, $dto->gps_accuracy);
 
         $lastAttendance = $this->attendanceDAO->getLastAttendanceOfEngineer($dto->engineer_id);
 
@@ -122,39 +117,41 @@ class AttendanceService
 
     public function storeCheckOut(CheckOutDTO $dto)
     {
-        $attendance = $this->attendanceDAO->findByUuid($dto->uuid);
+        $attendance = $this->attendanceDAO->findActiveAttendance($dto->engineer_id);
 
         if (!$attendance) {
             throw new NotCheckedInYetException();
         }
 
-        $dto->engineer_id = $attendance->engineer_id;
+        $this->validateGpsSignal($dto->is_mock, $dto->gps_accuracy);
+
+        $dto->id = $attendance->id;
 
         if ($attendance->device_id !== $dto->device_id) {
             throw new DeviceMismatchException();
         }
 
+        $checkInTime = Carbon::parse($attendance->checked_in_at);
+        $checkOutTime = Carbon::parse($dto->checked_out_at);
+
+        if ($checkOutTime->lt($checkInTime)) {
+            throw new InvalidCheckOutTimeException();
+        }
+
         if ($attendance->building_id) {
             $building = $this->buildingDAO->show($attendance->building_id);
-            $this->verifyGeofence($building->lat, $building->lng, $dto->check_out_lat, $dto->check_out_lng, $building->radius_meters);
+            $this->verifyGeofence($building->latitude, $building->longitude, $dto->check_out_lat, $dto->check_out_lng, $building->radius_meters);
         } else {
-            $project = $this->projectDAO->show($dto->project_id);
-            $this->verifyGeofence($project->lat, $project->lng, $dto->check_out_lat, $dto->check_out_lng, $project->radius_meters);
+            $project = $this->projectDAO->show($attendance->project_id);
+            $this->verifyGeofence($project->latitude, $project->longitude, $dto->check_out_lat, $dto->check_out_lng, $project->radius_meters);
         }
+
+
+        $totalMinutes = $checkInTime->diffInMinutes($checkOutTime);
+        $dto->total_hours = round($totalMinutes / 60, 2);
 
         $updatedAttendance = $this->attendanceDAO->storeCheckOut($dto);
 
-        if ($updatedAttendance->checked_in_at && $updatedAttendance->checked_out_at) {
-            $checkInTime = Carbon::parse($updatedAttendance->checked_in_at);
-            $checkOutTime = Carbon::parse($updatedAttendance->checked_out_at);
-
-            $totalMinutes = $checkInTime->diffInMinutes($checkOutTime);
-            $totalHours = round($totalMinutes / 60, 2);
-
-            $updatedAttendance->update([
-                'total_hours' => $totalHours
-            ]);
-        }
         return $updatedAttendance;
     }
 
@@ -197,6 +194,17 @@ class AttendanceService
 
         if ($distance > $radius_meters) {
             throw new OutsideGeofenceException((int) round($distance));
+        }
+    }
+
+    private function validateGpsSignal(bool $isMock, float $accuracy): void
+    {
+        if ($isMock) {
+            throw new MockLocationDetectedException();
+        }
+
+        if ($accuracy > 50) {
+            throw new LowGpsAccuracyException($accuracy, self::MAX_GPS_ACCURACY_ALLOWED);
         }
     }
 }

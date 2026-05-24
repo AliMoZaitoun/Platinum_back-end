@@ -26,10 +26,9 @@ class AttendanceDAO
 
     public function storeCheckOut(CheckOutDTO $dto)
     {
-        return Attendance::updateOrCreate(
-            ['uuid' => $dto->uuid],
-            $dto->toArray()
-        );
+        Attendance::where('id', $dto->id)->update($dto->toArray());
+
+        return $this->show($dto->id);
     }
 
     public function hasAttendance(int $engineer_id, int $building_id, $report_date)
@@ -44,6 +43,14 @@ class AttendanceDAO
     public function show(int $id)
     {
         return Attendance::where('id', $id)->with(['project', 'engineer'])->first() ?? throw new NotFoundException("Attendance");
+    }
+
+    public function findActiveAttendance(int $engineerId)
+    {
+        return Attendance::where('engineer_id', $engineerId)
+            ->whereNull('checked_out_at')
+            ->latest()
+            ->first();
     }
 
     public function getLastAttendanceOfEngineer(int $engineerId)

@@ -17,7 +17,7 @@ return new class extends Migration
 
             $table->foreignId('engineer_id')->constrained()->onDelete('cascade');
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
-            $table->foreignId('building_id')->constrained()->onDelete('cascade');
+            $table->foreignId('building_id')->nullable()->constrained()->onDelete('cascade');
 
             $table->decimal('check_in_lat', 10, 8);
             $table->decimal('check_in_lng', 11, 8);

@@ -74,5 +74,6 @@ return [
         'before_project_start'      => 'Cannot record attendance because the project has not officially started yet (Project start date: :date).',
         'future_time_detected'      => 'Attendance rejected! Please set your phone time and date to automatic (Future time detected).',
         'offline_sync_expired'      => 'Sorry, this attendance cannot be synced because it is too old and exceeded the maximum allowed offline period of :days days.',
+        'invalid_checkout_time'     => 'Invalid operation. Check-out time cannot be before check-in time.',
     ],
 ];
