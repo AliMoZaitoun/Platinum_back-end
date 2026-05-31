@@ -2,8 +2,11 @@
 
 namespace App\Models\Client;
 
+use App\Models\RealEstate\Unit;
 use App\Models\Sales\Order;
+use App\Models\Sales\UnitOwnership;
 use App\Models\User;
+use App\Models\V1\Sales\Complaint;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 
@@ -29,5 +32,27 @@ class Client extends Model
     public function attachments()
     {
         return $this->morphMany(Client::class, 'mediable');
+    }
+
+    public function ownerships()
+    {
+        return $this->hasMany(UnitOwnership::class, 'client_id');
+    }
+
+    public function units()
+    {
+        return $this->hasManyThrough(
+            Unit::class,
+            UnitOwnership::class,
+            'client_id',
+            'id',
+            'id',
+            'unit_id'
+        );
+    }
+
+    public function complaints()
+    {
+        return $this->hasMany(Complaint::class);
     }
 }

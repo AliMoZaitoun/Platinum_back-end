@@ -26,9 +26,12 @@ return new class extends Migration
 
             $table->decimal('completion_percentage')->unsigned();
             $table->decimal('daily_progress')->unsigned();
+
             $table->enum('status', ['on_track', 'delayed', 'blocked'])->default('on_track');
+
             $table->integer('manpower_count')->unsigned()->default(0);
             $table->integer('issues_count')->unsigned()->default(0);
+
             $table->text('description')->nullable();
             $table->timestamp('report_date');
 

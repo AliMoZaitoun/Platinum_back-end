@@ -25,7 +25,10 @@ use App\Http\Controllers\V1\RealEstate\UnitController as AdminUnitController;
 use App\Http\Controllers\V1\RoleController;
 use App\Http\Controllers\V1\Sales\AppointmentController;
 use App\Http\Controllers\V1\Sales\AvailabilitySlotController;
+use App\Http\Controllers\V1\Sales\ComplaintController;
+use App\Http\Controllers\V1\Sales\ComplaintTypeController;
 use App\Http\Controllers\V1\Sales\OrderController;
+use App\Http\Controllers\V1\Sales\UnitOwnershipController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -288,6 +291,21 @@ Route::prefix('unit')->middleware(['auth:sanctum', 'is_staff'])->group(function 
     Route::get('{id}', [AdminUnitController::class, 'show']);
 
     Route::delete('{id}', [AdminUnitController::class, 'destroy']);
+
+
+    Route::prefix('sold')->group(function () {
+
+        Route::get('unitOwnership', [UnitOwnershipController::class, 'index']);
+
+        Route::get('clientUnits/{client_id}', [UnitOwnershipController::class, 'clientUnits']);
+
+        Route::get('unitClient/{unit_id}', [UnitOwnershipController::class, 'clientUnits']);
+
+        Route::put('update/{unit_id}', [UnitOwnershipController::class, 'update']);
+
+        Route::delete('retrieve/{unit_id}', [UnitOwnershipController::class, 'destroy']);
+    });
+    Route::post('sale/{unit_id}', [UnitOwnershipController::class, 'store']);
 });
 
 Route::prefix('client')->middleware(['auth:sanctum', 'is_client'])->group(function () {
@@ -300,6 +318,25 @@ Route::prefix('client')->middleware(['auth:sanctum', 'is_client'])->group(functi
     Route::post('unit/search', [ClientUnitController::class, 'search']);
 
     Route::get('unit/{id}', [ClientUnitController::class, 'show']);
+
+    Route::get('myUnits', [UnitOwnershipController::class, 'myUnits']);
+});
+
+Route::prefix('complaint')->middleware(['auth:sanctum'])->group(function () {
+    Route::get('', [ComplaintController::class, 'index']);
+
+    Route::post('', [ComplaintController::class, 'store']);
+
+    Route::put('', [ComplaintController::class, 'update']);
+
+    Route::delete('{id}', [ComplaintController::class, 'destory']);
+
+
+    Route::get('type', [ComplaintTypeController::class, 'index']);
+
+    Route::post('type', [ComplaintTypeController::class, 'store']);
+
+    Route::delete('type/{id}', [ComplaintTypeController::class, 'destory']);
 });
 
 // Favorite

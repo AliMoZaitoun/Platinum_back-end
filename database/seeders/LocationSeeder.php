@@ -23,6 +23,13 @@ class LocationSeeder extends Seeder
             'parent_id' => $syria->id,
         ]);
 
+        // 2. المدن
+        $al_qunaitra = Location::create([
+            'name' => ['ar' => 'القنيطرة', 'en' => 'Al Qunaitra'],
+            'type' => 'city',
+            'parent_id' => $syria->id,
+        ]);
+
         // 3. الأحياء
         $districts = [
             ['ar' => 'المزة', 'en' => 'Al-Mazza'],

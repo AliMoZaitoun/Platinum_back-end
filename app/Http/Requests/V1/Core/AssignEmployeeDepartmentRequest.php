@@ -17,9 +17,10 @@ class AssignEmployeeDepartmentRequest extends FormRequest
         return [
             'employee_id' => 'required|integer|exists:employees,id',
             'department_id' => 'required|integer|exists:departments,id',
+            'role_id' => 'required|integer|exists:roles,id',
             'position' => 'required|string|in:manager,supervisor,staff',
             'from_date' => 'required|date',
-            'to_date' => 'nullable|date'
+            'to_date' => 'nullable|date',
         ];
     }
 }

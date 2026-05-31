@@ -7,9 +7,10 @@ class AssignEngineerAllocationDTO
     public function __construct(
         public int $engineer_id,
         public int $project_id,
+        public ?int $role_id,
         public ?int $building_id,
         public string $start_date,
-        public ?string $end_date
+        public ?string $end_date,
     ) {}
 
     public static function fromRequest(array $request)
@@ -17,6 +18,7 @@ class AssignEngineerAllocationDTO
         return new self(
             project_id: $request['project_id'],
             building_id: $request['building_id'] ?? null,
+            role_id: $request['role_id'] ?? null,
             engineer_id: $request['engineer_id'],
             start_date: $request['start_date'],
             end_date: $request['end_date'] ?? null
@@ -28,6 +30,7 @@ class AssignEngineerAllocationDTO
         return array_filter([
             'project_id'  => $this->project_id,
             'building_id'  => $this->building_id,
+            'role_id'  => $this->role_id,
             'engineer_id'  => $this->engineer_id,
             'start_date'  => $this->start_date,
             'end_date' => $this->end_date

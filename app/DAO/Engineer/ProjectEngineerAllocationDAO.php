@@ -49,11 +49,11 @@ class ProjectEngineerAllocationDAO
     {
         return ProjectEngineerAllocation::where('engineer_id', $engineer_id)
             ->whereNotNull('building_id')
-            ->whereHas('building', function ($query) {
-                $query->where('status', 'in_progress');
-            })
             ->whereHas('project', function ($query) {
                 $query->where('status', 'in_prgress');
+            })
+            ->whereHas('building', function ($query) {
+                $query->where('status', 'in_progress');
             })
             ->with([
                 'building',
