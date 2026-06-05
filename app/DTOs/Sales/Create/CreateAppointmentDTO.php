@@ -2,35 +2,45 @@
 
 namespace App\DTOs\Sales\Create;
 
+use App\Http\Requests\V1\Sales\CreateAppointmentRequest;
+
 class CreateAppointmentDTO
 {
     public function __construct(
-        public int $order_id,
-        public int $av_slot_id,
-        public int $client_id,
-        public int $created_by,
-        public string $status
+        public int $orderId,
+        public int $clientId,
+        public int $createdById,
+        public string $createdByType,
+        public int $avSlotId,
+        public string $status = 'pending'
     ) {}
 
-    public static function fromRequest(array $request)
+    public static function fromRequest(CreateAppointmentRequest $request): self
     {
+        $user = $request->user();
+
+        $clientId = $user->type === 'client'
+            ? $user->client->id
+            : (int) $request->input('client_id');
+
         return new self(
-            order_id: $request['order_id'],
-            av_slot_id: $request['av_slot_id'],
-            client_id: $request['client_id'],
-            created_by: $request['created_by'],
-            status: $request['status']
+            orderId: (int) $request->input('order_id'),
+            clientId: $clientId,
+            createdById: $user->id,
+            createdByType: get_class($user),
+            avSlotId: (int) $request->input('av_slot_id')
         );
     }
 
     public function toArray(): array
     {
         return array_filter([
-            'order_id'    => $this->order_id,
-            'av_slot_id' => $this->av_slot_id,
-            'client_id'  => $this->client_id,
-            'created_by'  => $this->created_by,
-            'status'     => $this->status
+            'order_id'        => $this->orderId,
+            'client_id'       => $this->clientId,
+            'created_by_id'   => $this->createdById,
+            'created_by_type' => $this->createdByType,
+            'av_slot_id'      => $this->avSlotId,
+            'status'          => $this->status,
         ], fn($value) => !is_null($value));
     }
 }

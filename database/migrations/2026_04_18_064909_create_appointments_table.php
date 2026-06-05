@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained()->cascadeOnDelete();
             $table->foreignId('client_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('created_by')->constrained()->on('engineers')->cascadeOnDelete();
+            $table->morphs('created_by');
             $table->foreignId('av_slot_id')->constrained()->on('availability_slots')->cascadeOnDelete();
             $table->enum('status', ['pending', 'done', 'cancelled']);
             $table->softDeletes();

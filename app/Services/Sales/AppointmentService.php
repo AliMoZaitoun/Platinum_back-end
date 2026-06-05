@@ -1,7 +1,8 @@
 <?php
 
-namespace App\DAO\Sales;
+namespace App\Services\Sales;
 
+use App\DAO\Sales\AppointmentDAO;
 use App\DTOs\Sales\Create\CreateAppointmentDTO;
 use App\DTOs\Sales\Update\UpdateAppointmentDTO;
 use App\Exceptions\NotFoundException;

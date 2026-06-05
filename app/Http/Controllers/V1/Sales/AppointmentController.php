@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\V1\Sales;
 
-use App\DAO\Sales\AppointmentService;
 use App\DTOs\Sales\Create\CreateAppointmentDTO;
 use App\DTOs\Sales\Update\UpdateAppointmentDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Sales\CreateAppointmentRequest;
+use App\Services\Sales\AppointmentService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 
@@ -25,8 +25,8 @@ class AppointmentController extends Controller
 
     public function store(CreateAppointmentRequest $request)
     {
-        $appointmentDTO = CreateAppointmentDTO::fromRequest($request->validated());
-        $appointment = $this->appointmentService->store($appointmentDTO);
+        $dto = CreateAppointmentDTO::fromRequest($request);
+        $appointment = $this->appointmentService->store($dto);
         return $this->successResponse($appointment, __('messages.common.stored'), 201);
     }
 

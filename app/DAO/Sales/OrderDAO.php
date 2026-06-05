@@ -9,11 +9,14 @@ use App\Models\Sales\Order;
 
 class OrderDAO
 {
-    public function index(array $relations = [])
+    public function index(array $relations = [], int $perPage = 15)
     {
         $defaultRelation = ['unit', 'client', 'solution'];
         $allRelations = array_merge($defaultRelation, $relations);
-        return Order::with($allRelations)->get();
+        return Order::query()
+            ->with($allRelations)
+            ->latest()
+            ->paginate($perPage);
     }
 
     public function store(CreateOrderDTO $orderDTO)
@@ -38,18 +41,25 @@ class OrderDAO
             ->exists();
     }
 
-    public function getClientUnitOrders(int $client_id)
+    public function getClientUnitOrders(int $client_id, int $perPage = 15)
     {
-        return Order::where('client_id', $client_id)
+        return Order::query()
+            ->where('client_id', $client_id)
             ->whereNotNull('unit_id')
-            ->with(['unit', 'unit.attachments'])->get();
+            ->with(['unit', 'unit.attachments'])
+            ->latest()
+            ->paginate($perPage);
     }
 
-    public function getClientSolutionOrders(int $client_id)
+    public function getClientSolutionOrders(int $client_id, int $perPage = 15)
     {
-        return Order::where('client_id', $client_id)
+
+        return Order::query()
+            ->where('client_id', $client_id)
             ->whereNotNull('solution_id')
-            ->with(['solution', 'solution.attachments'])->get();
+            ->with(['solution', 'solution.attachments'])
+            ->latest()
+            ->paginate($perPage);
     }
 
     public function update(int $id, UpdateOrderDTO $orderDTO)

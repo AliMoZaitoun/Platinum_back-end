@@ -353,8 +353,12 @@ Route::prefix('order')->middleware('auth:sanctum')->group(function () {
         Route::get('/', [OrderController::class, 'index'])
             ->middleware(['permission:read.order']);
 
-        Route::get('getClientOrders/{client_id}', [OrderController::class, 'getClientOrders'])
+        Route::get('getClientUnitOrders/{client_id}', [OrderController::class, 'getClientUnitOrders'])
             ->middleware(['permission:read.order']);
+
+        Route::get('getClientSolutionOrders/{client_id}', [OrderController::class, 'getClientSolutionOrders'])
+            ->middleware(['permission:read.order']);
+
 
         Route::put('{id}', [OrderController::class, 'update'])
             ->middleware(['permission:update.order']);

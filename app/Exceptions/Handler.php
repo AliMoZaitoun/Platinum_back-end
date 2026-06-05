@@ -18,6 +18,7 @@ use App\Exceptions\V1\Engineer\Attendance\LowGpsAccuracyException;
 use App\Exceptions\V1\Engineer\Attendance\MockLocationDetectedException;
 use App\Exceptions\V1\Engineer\Attendance\OfflineSyncExpiredException;
 use App\Exceptions\V1\Engineer\Attendance\ShiftTimeoutException;
+use App\Exceptions\V1\Engineer\Report\EngineerNotCheckedInException;
 use App\Exceptions\V1\ProjectHasNoBuildingsException;
 use App\Traits\ResponseTrait;
 use Exception;
@@ -141,6 +142,10 @@ class Handler
         });
 
         $exceptions->render(function (InvalidCheckOutTimeException $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode() ?: 422);
+        });
+
+        $exceptions->render(function (EngineerNotCheckedInException $e) {
             return $this->errorResponse($e->getMessage(), $e->getCode() ?: 422);
         });
     }

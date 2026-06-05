@@ -49,9 +49,9 @@ class OrderController extends Controller
         return $this->successCollection($orders, OrderResource::class);
     }
 
-    public function getClientResourcOrders(int $client_id)
+    public function getClientSolutionOrders(int $client_id)
     {
-        $orders = $this->orderService->getClientUnitOrders($client_id);
+        $orders = $this->orderService->getClientSolutionOrders($client_id);
         return $this->successCollection($orders, OrderResource::class);
     }
 

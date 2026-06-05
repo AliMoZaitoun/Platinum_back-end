@@ -31,9 +31,6 @@ class ProjectEngineerAllocationDAO
     {
         return ProjectEngineerAllocation::where('engineer_id', $engineer_id)
             ->whereNull('building_id')
-            ->whereHas('project', function ($query) {
-                $query->where('status', 'in_progress');
-            })
             ->with([
                 'project',
                 'project.location',
@@ -49,12 +46,6 @@ class ProjectEngineerAllocationDAO
     {
         return ProjectEngineerAllocation::where('engineer_id', $engineer_id)
             ->whereNotNull('building_id')
-            ->whereHas('project', function ($query) {
-                $query->where('status', 'in_prgress');
-            })
-            ->whereHas('building', function ($query) {
-                $query->where('status', 'in_progress');
-            })
             ->with([
                 'building',
                 'building.location',
