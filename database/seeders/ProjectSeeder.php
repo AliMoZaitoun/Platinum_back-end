@@ -61,7 +61,7 @@ class ProjectSeeder extends Seeder
                 'location_id'   => $locationId,
                 'latitude'      => $data['latitude'],
                 'longitude'     => $data['longitude'],
-                'radius_meters' => 600,
+                'radius_meters' => 250,
                 'status'        => $data['status'],
                 'start_date'    => $data['start_date'],
                 'end_date'      => $data['end_date']

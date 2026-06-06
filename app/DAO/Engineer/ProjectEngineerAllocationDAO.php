@@ -34,9 +34,7 @@ class ProjectEngineerAllocationDAO
             ->with([
                 'project',
                 'project.location',
-                'project.buildings' => function ($query) {
-                    $query->where('status', 'in_progress');
-                },
+                'project.buildings',
                 'project.buildings.attachments'
             ])
             ->get();
