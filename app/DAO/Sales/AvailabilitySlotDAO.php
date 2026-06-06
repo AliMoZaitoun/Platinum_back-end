@@ -16,6 +16,19 @@ class AvailabilitySlotDAO
         return AvailabilitySlot::with('employee')->get();
     }
 
+    public function getAvailableSlots()
+    {
+        return AvailabilitySlot
+            ::where(function ($query) {
+                $query->where('start_time', '>', now()->format('Y-m-d'))
+                    ->orWhere(function ($q) {
+                        $q->where('date', now()->format('Y-m-d'))
+                            ->where('start_time', '>', now()->format('H:i:s'));
+                    });
+            })
+            ->get();
+    }
+
     public function store(CreateAvailabilitySlotDTO $dto)
     {
         $data = [];

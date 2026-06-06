@@ -14,8 +14,8 @@ class AvailabilitySlot extends Model
         return $this->belongsTo(Employee::class);
     }
 
-    public function appointment()
+    public function appointments()
     {
-        return $this->belongsTo(Appointment::class);
+        return $this->hasMany(Appointment::class, 'av_slot_id');
     }
 }

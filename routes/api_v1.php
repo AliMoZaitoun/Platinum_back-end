@@ -325,18 +325,24 @@ Route::prefix('client')->middleware(['auth:sanctum', 'is_client'])->group(functi
 Route::prefix('complaint')->middleware(['auth:sanctum'])->group(function () {
     Route::get('', [ComplaintController::class, 'index']);
 
+    Route::get('client/myComplaints', [ComplaintController::class, 'myComplaints']);
+
+    Route::get('clientComplaints/{client_id}', [ComplaintController::class, 'clientComplaints']);
+
     Route::post('', [ComplaintController::class, 'store']);
 
-    Route::put('', [ComplaintController::class, 'update']);
+    Route::put('{id}', [ComplaintController::class, 'update']);
 
-    Route::delete('{id}', [ComplaintController::class, 'destory']);
+    Route::put('updateStatus/{id}', [ComplaintController::class, 'updateStatus']);
+
+    Route::delete('{id}', [ComplaintController::class, 'destroy']);
 
 
-    Route::get('type', [ComplaintTypeController::class, 'index']);
+    Route::get('type/read', [ComplaintTypeController::class, 'index']);
 
-    Route::post('type', [ComplaintTypeController::class, 'store']);
+    Route::post('type/create', [ComplaintTypeController::class, 'store']);
 
-    Route::delete('type/{id}', [ComplaintTypeController::class, 'destory']);
+    Route::delete('type/delete/{id}', [ComplaintTypeController::class, 'destroy']);
 });
 
 // Favorite
@@ -402,20 +408,20 @@ Route::prefix('appointment')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [AppointmentController::class, 'index'])
         ->middleware(['permission:read.appointment']);
 
-    Route::post('/', [AppointmentController::class, 'store'])
-        ->middleware(['permission:create.appointment']);
+    Route::post('/', [AppointmentController::class, 'store']);
+    // ->middleware(['permission:create.appointment']);
 
     Route::get('{id}', [AppointmentController::class, 'show'])
         ->middleware(['permission:read.appointment']);
 
-    Route::put('{id}', [AppointmentController::class, 'update'])
+    Route::put('cancel/{id}', [AppointmentController::class, 'cancelAppointment'])
         ->middleware(['permission:update.appointment']);
 
-    Route::delete('{id}', [AppointmentController::class, 'destroy'])
-        ->middleware(['permission:delete.appointment']);
+    Route::put('markAsDone/{id}', [AppointmentController::class, 'markAsDone'])
+        ->middleware(['permission:update.appointment']);
 
-    Route::get('myAppointments', [AppointmentController::class, 'myAppointments']);
-    Route::post('askChangeTime/{id}', [AppointmentController::class, 'askChangeTime']);
+    Route::get('client/myAppointments', [AppointmentController::class, 'myAppointments']);
+    // Route::post('askChangeTime/{id}', [AppointmentController::class, 'askChangeTime']);
 });
 
 // Advertisment

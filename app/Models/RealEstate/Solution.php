@@ -6,12 +6,14 @@ use App\Models\Media;
 use App\Models\Sales\Order;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Translatable\HasTranslations;
 
 #[Fillable(['name', 'description', 'price'])]
 class Solution extends Model
 {
-    use HasTranslations;
+    use HasTranslations, SoftDeletes;
+
     public $translatable = ['name', 'description'];
 
     protected function casts(): array

@@ -74,6 +74,8 @@ class RoleAndPermissionSeeder extends Seeder
             'create.order',
             'read.advertisment',
             'read.location',
+            'create.appointment',
+            'read.appointment',
         ]);
 
         $marketing_staff = Role::firstOrCreate(['name' => 'marketing_staff']);
@@ -118,6 +120,8 @@ class RoleAndPermissionSeeder extends Seeder
             'read.engineer',
             'read.attendance',
             'read.project',
+            'create.appointment',
+            'read.appointment',
         ]);
 
         $customer_service = Role::firstOrCreate(['name' => 'customer_service_staff']);

@@ -5,11 +5,12 @@ namespace App\Models\RealEstate;
 use App\Models\Client\Client;
 use App\Models\Client\Favorite;
 use App\Models\Media;
+use App\Models\Sales\Complaint;
 use App\Models\Sales\Order;
 use App\Models\Sales\UnitOwnership;
-use App\Models\V1\Sales\Complaint;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Translatable\HasTranslations;
 
 #[Fillable([
@@ -28,7 +29,7 @@ use Spatie\Translatable\HasTranslations;
 
 class Unit extends Model
 {
-    use HasTranslations;
+    use HasTranslations, SoftDeletes;
 
     public $translatable = ['description'];
 

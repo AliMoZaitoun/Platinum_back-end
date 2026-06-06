@@ -20,6 +20,7 @@ use App\Exceptions\V1\Engineer\Attendance\OfflineSyncExpiredException;
 use App\Exceptions\V1\Engineer\Attendance\ShiftTimeoutException;
 use App\Exceptions\V1\Engineer\Report\EngineerNotCheckedInException;
 use App\Exceptions\V1\ProjectHasNoBuildingsException;
+use App\Exceptions\V1\Sales\CompleteFutureAppointmentException;
 use App\Traits\ResponseTrait;
 use Exception;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -146,6 +147,10 @@ class Handler
         });
 
         $exceptions->render(function (EngineerNotCheckedInException $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode() ?: 422);
+        });
+
+        $exceptions->render(function (CompleteFutureAppointmentException $e) {
             return $this->errorResponse($e->getMessage(), $e->getCode() ?: 422);
         });
     }

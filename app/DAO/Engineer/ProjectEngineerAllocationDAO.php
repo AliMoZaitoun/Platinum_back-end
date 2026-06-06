@@ -24,7 +24,7 @@ class ProjectEngineerAllocationDAO
 
     public function show(int $id)
     {
-        return ProjectEngineerAllocation::find($id) ?? throw new NotFoundException("Engineer Project");
+        return ProjectEngineerAllocation::find($id) ?? throw new NotFoundException("Engineer-Project");
     }
 
     public function getProjectsAllocatedToEngineer(int $engineer_id)

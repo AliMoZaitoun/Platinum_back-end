@@ -24,34 +24,28 @@ class ComplaintDAO
         return Complaint::create($dto->toArray());
     }
 
-    public function show(int $unit_id)
-    {
-        return Complaint::where('unit_id', $unit_id)->first() ?? throw new NotFoundException("Complaint");
-    }
-
-    public function clientUnits(int $client_id)
+    public function clientComplaints(int $client_id)
     {
         return Complaint::where('client_id', $client_id)
-            ->with(['unit', 'attachments'])
+            ->with(['type', 'attachments'])
             ->get();
     }
 
-    public function unitClient(int $unit_id)
+    public function show(int $id)
     {
-        return Complaint::where('unit_id', $unit_id)
-            ->with(['unit', 'attachments'])
-            ->get();
+        return Complaint::where('id', $id)->first() ?? throw new NotFoundException("Complaint");
     }
 
     public function update(int $id, UpdateComplaintDTO $dto)
     {
-        $unitOs = $this->show($id);
-        return $unitOs->update($dto->toArray());
+        $comp = $this->show($id);
+        $comp->update($dto->toArray());
+        return $comp;
     }
 
-    public function destroy(int $unit_id)
+    public function destroy(int $id)
     {
-        $unitOs = $this->show($unit_id);
-        return $unitOs->delete();
+        $comp = $this->show($id);
+        return $comp->delete();
     }
 }

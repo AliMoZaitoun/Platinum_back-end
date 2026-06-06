@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\V1\Sales;
 
-use App\DAO\Sales\ComplaintTypeService;
 use App\DTOs\Sales\Create\CreateComplaintTypeDTO;
-use App\DTOs\Sales\Update\UpdateComplaintTypeDTO;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\V1\Sales\Create\CreateComplaintRequest;
-use App\Http\Resources\V1\Resourcs\ComplaintResource;
+use App\Http\Requests\V1\Sales\CreateComplaintTypeRequest;
+use App\Http\Resources\V1\Sales\ComplaintTypeResource;
+use App\Services\Sales\ComplaintTypeService;
 use App\Traits\ResponseTrait;
-use Illuminate\Http\Request;
 
 class ComplaintTypeController extends Controller
 {
@@ -23,10 +21,10 @@ class ComplaintTypeController extends Controller
     {
         $complaints = $this->service->index();
 
-        return $this->successCollection($complaints, ComplaintResource::class);
+        return $this->successCollection($complaints, ComplaintTypeResource::class);
     }
 
-    public function store(Request $request)
+    public function store(CreateComplaintTypeRequest $request)
     {
         $user = $request->user();
         $dto = CreateComplaintTypeDTO::fromRequest($user->id, $request->validated());

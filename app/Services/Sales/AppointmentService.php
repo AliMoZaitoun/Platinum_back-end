@@ -6,47 +6,56 @@ use App\DAO\Sales\AppointmentDAO;
 use App\DTOs\Sales\Create\CreateAppointmentDTO;
 use App\DTOs\Sales\Update\UpdateAppointmentDTO;
 use App\Exceptions\NotFoundException;
+use App\Exceptions\V1\Sales\CompleteFutureAppointmentException;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class AppointmentService
 {
     public function __construct(
-        private AppointmentDAO $appointmentDAO
+        private AppointmentDAO $dao
     ) {}
 
     public function index()
     {
-        $appointments = $this->appointmentDAO->index();
-        if (sizeof($appointments) <= 0)
-            throw new NotFoundException("Appointments");
-        return $appointments;
+        return $this->dao->index();
     }
 
     public function store(CreateAppointmentDTO $appointmentDTO)
     {
-        return $this->appointmentDAO->store($appointmentDTO);
+        return $this->dao->store($appointmentDTO);
     }
 
     public function show(int $id)
     {
-        return $this->appointmentDAO->show($id);
+        return $this->dao->show($id);
     }
 
-    public function myAppointments()
+    public function myAppointments(int $client_id)
     {
-        $user = Auth::user();
-        if (!$user->client)
-            throw new NotFoundException("Client");
-        return $this->appointmentDAO->showByClient($user->client->id);
+        return $this->dao->showByClient($client_id);
     }
 
     public function update(int $id, UpdateAppointmentDTO $appointmentDTO)
     {
-        return $this->appointmentDAO->update($id, $appointmentDTO);
+        return $this->dao->update($id, $appointmentDTO);
     }
 
-    public function destroy(int $id)
+    public function cancelAppointment(int $id)
     {
-        return $this->appointmentDAO->destroy($id);
+        return $this->dao->cancelAppointment($id);
+    }
+
+    public function markAsDone(int $id)
+    {
+        $appointment = $this->dao->show($id);
+
+        $appointmentDateTime = Carbon::parse($appointment->slot->date . ' ' . $appointment->slot->start_time);
+
+        if ($appointmentDateTime->isFuture()) {
+            throw new CompleteFutureAppointmentException();
+        }
+
+        return $this->dao->markAsDone($id);
     }
 }

@@ -15,7 +15,7 @@ class CreateComplaintDTO
         public ?string $status,
     ) {}
 
-    public static function fromRequest(int $client_id, int $user_id, array $request)
+    public static function fromRequest(int $user_id, int $client_id, array $request)
     {
         return new self(
             client_id: $client_id,

@@ -7,7 +7,7 @@ use App\Models\Engineer\Engineer;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['order_id', 'av_slot_id', 'client_id', 'created_by', 'status'])]
+#[Fillable(['order_id', 'av_slot_id', 'client_id', 'created_by_id', 'created_by_type', 'status'])]
 class Appointment extends Model
 {
     public function order()
@@ -20,13 +20,13 @@ class Appointment extends Model
         return $this->belongsTo(Client::class);
     }
 
-    public function createdBy()
+    public function slot()
     {
-        return $this->belongsTo(Engineer::class, 'created_by');
+        return $this->belongsTo(AvailabilitySlot::class, 'av_slot_id');
     }
 
-    public function av_slots()
+    public function createdBy()
     {
-        return $this->hasMany(AvailabilitySlot::class, 'av_slot_id');
+        return $this->morphTo();
     }
 }

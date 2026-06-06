@@ -9,9 +9,11 @@ use App\Models\Sales\Appointment;
 
 class AppointmentDAO
 {
-    public function index()
+    public function index(int $per_page = 15)
     {
-        return Appointment::all();
+        return Appointment::query()
+            ->with(['order', 'client', 'slot', 'createdBy'])
+            ->paginate($per_page);
     }
 
     public function store(CreateAppointmentDTO $appoinmentDTO)
@@ -35,9 +37,19 @@ class AppointmentDAO
         return $appointment->update($appointmentDTO->toArray());
     }
 
-    public function destroy(int $id)
+    public function cancelAppointment(int $id)
     {
-        $appointment = $this->show($id);
-        return $appointment->delete();
+        $app = $this->show($id);
+
+        $app->update(['status' => 'cancelled']);
+
+        $app->slot->update(['status' => 'available']);
+    }
+
+    public function markAsDone(int $id)
+    {
+        $app = $this->show($id);
+
+        $app->update(['status' => 'done']);
     }
 }

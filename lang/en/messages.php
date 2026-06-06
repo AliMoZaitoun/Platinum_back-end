@@ -76,4 +76,12 @@ return [
         'offline_sync_expired'      => 'Sorry, this attendance cannot be synced because it is too old and exceeded the maximum allowed offline period of :days days.',
         'invalid_checkout_time'     => 'Invalid operation. Check-out time cannot be before check-in time.',
     ],
+
+    'appointment' => [
+        'done'      => 'The appointment has been finished sucessfully.',
+        'booked'    => 'The appointment has been booked sucessfully.',
+        'cancelled' => 'The appointment has been cancelled sucessfully.',
+
+        'cannot_complete_future_appointment' => 'You cannot compoete a future appointment!',
+    ],
 ];

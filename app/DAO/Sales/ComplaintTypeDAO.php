@@ -14,9 +14,9 @@ class ComplaintTypeDAO
         return ComplaintType::all();
     }
 
-    public function store(CreateComplaintTypeDTO $dto)
+    public function store(array $data)
     {
-        return ComplaintType::create($dto->toArray());
+        return ComplaintType::create($data);
     }
 
     public function show(int $id)
@@ -26,13 +26,12 @@ class ComplaintTypeDAO
 
     public function update(int $id, UpdateComplaintTypeDTO $dto)
     {
-        $unitOs = $this->show($id);
-        return $unitOs->update($dto->toArray());
+        $type = $this->show($id);
+        return $type->update($dto->toArray());
     }
 
     public function destroy(int $id)
     {
-        $unitOs = $this->show($id);
-        return $unitOs->delete();
+        return $this->show($id)->delete();
     }
 }

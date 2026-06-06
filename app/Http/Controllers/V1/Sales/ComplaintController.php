@@ -7,7 +7,8 @@ use App\DTOs\Sales\Update\UpdateComplaintDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Sales\Create\CreateComplaintRequest;
 use App\Http\Requests\V1\Sales\Update\UpdateComplaintRequest;
-use App\Http\Resources\V1\Resourcs\ComplaintResource;
+use App\Http\Requests\V1\Sales\Update\UpdateStatusOfComplaintRequest;
+use App\Http\Resources\V1\ComplaintResource;
 use App\Services\Sales\ComplaintService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
@@ -23,6 +24,21 @@ class ComplaintController extends Controller
     public function index()
     {
         $complaints = $this->service->index();
+
+        return $this->successCollection($complaints, ComplaintResource::class);
+    }
+
+    public function myComplaints()
+    {
+        $client = request()->user()->client;
+        $complaints = $this->service->clientComplaints($client->id);
+
+        return $this->successCollection($complaints, ComplaintResource::class);
+    }
+
+    public function clientComplaints(int $client_id)
+    {
+        $complaints = $this->service->clientComplaints($client_id);
 
         return $this->successCollection($complaints, ComplaintResource::class);
     }
@@ -46,7 +62,7 @@ class ComplaintController extends Controller
         return $this->useResource($complaint, ComplaintResource::class);
     }
 
-    public function updateStatus(int $id, UpdateComplaintRequest $request)
+    public function updateStatus(int $id, UpdateStatusOfComplaintRequest $request)
     {
         $dto = UpdateComplaintDTO::fromRequest($request->validated());
         $complaint = $this->service->update($id, $dto);

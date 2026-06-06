@@ -16,7 +16,7 @@ class ComplaintService
         private ComplaintDAO $dao,
         private Transaction $transaction,
         private FileManagerService $fileManager,
-        private ComplaintTypeDAO $complaint_type_dao
+        private ComplaintTypeService $complaint_type_service
     ) {}
 
     public function index()
@@ -24,14 +24,18 @@ class ComplaintService
         return $this->dao->index();
     }
 
+    public function clientComplaints(int $client_id)
+    {
+        return $this->dao->clientComplaints($client_id);
+    }
+
     public function store(CreateComplaintDTO $dto, $attachments = null)
     {
         return $this->transaction->execute(function () use ($dto, $attachments) {
 
             if ($dto->new_type && !$dto->complaint_type_id) {
-
-                $typeDTO = CreateComplaintTypeDTO::fromRequest($dto->user_id, $dto->new_type);
-                $complaintType = $this->complaint_type_dao->store($typeDTO);
+                $typeDTO = CreateComplaintTypeDTO::fromRequest($dto->user_id, $dto->toArray());
+                $complaintType = $this->complaint_type_service->store($typeDTO);
                 $dto->complaint_type_id = $complaintType->id;
             }
 

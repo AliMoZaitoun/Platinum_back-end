@@ -9,10 +9,10 @@ class CreateComplaintTypeDTO
         public int $created_by
     ) {}
 
-    public static function fromRequest(int $created_by, string $title)
+    public static function fromRequest(int $created_by, array $data)
     {
         return new self(
-            title: $title,
+            title: $data['title'],
             created_by: $created_by
         );
     }

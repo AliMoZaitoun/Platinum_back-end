@@ -23,7 +23,7 @@ class Complaint extends Model
 
     public function type()
     {
-        return $this->belongsTo(ComplaintType::class);
+        return $this->belongsTo(ComplaintType::class, 'complaint_type_id');
     }
 
     public function attachments()

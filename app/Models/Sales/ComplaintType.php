@@ -5,12 +5,13 @@ namespace App\Models\Sales;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Translatable\HasTranslations;
 
 #[Fillable(['title', 'created_by'])]
 class ComplaintType extends Model
 {
-    use HasTranslations;
+    use HasTranslations, SoftDeletes;
 
     protected function casts(): array
     {
@@ -26,6 +27,6 @@ class ComplaintType extends Model
 
     public function complaints()
     {
-        return $this->hasMany(Complaint::class);
+        return $this->hasMany(Complaint::class, 'complaint_type_id');
     }
 }

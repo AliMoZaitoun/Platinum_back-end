@@ -8,12 +8,13 @@ use App\Models\Engineer\ProjectEngineerAllocation;
 use App\Models\Media;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Translatable\HasTranslations;
 
 #[Fillable(['name', 'description', 'location_id', 'latitude', 'longitude', 'radius_meters', 'status', 'start_date', 'end_date'])]
 class Project extends Model
 {
-    use HasTranslations;
+    use HasTranslations, SoftDeletes;
 
     public $translatable = ['name', 'description'];
 
