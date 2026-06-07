@@ -26,8 +26,9 @@ class ClientDAO
         return Client::where('id', $id)->first() ?? throw new NotFoundException("Client");
     }
 
-    public function update(Client $client, UpdateClientDTO $clientDTO)
+    public function update(int $id, UpdateClientDTO $clientDTO)
     {
+        $client = $this->show($id);
         return $client->update($clientDTO->toArray());
     }
 

@@ -45,15 +45,17 @@ class EngineerController extends Controller
         return $this->useResource($engineer, EngineerDetailResource::class);
     }
 
-    public function update(int $id, Request $request)
+    public function update(Request $request)
     {
         $userDTO = UpdateUserDTO::fromRequest($request->all());
 
         $engineerDTO = UpdateEngineerDTO::fromRequest($request->all());
 
-        $engineer = $this->engineerService->update($id, $userDTO, $engineerDTO);
+        $engineer = $request->user()->engineer;
+        $engineer = $this->engineerService->update($engineer->id, $userDTO, $engineerDTO);
 
-        return $this->useResource($engineer, EngineerDetailResource::class, __('messages.common.updated'));
+        $data['user'] = $this->resolveUserResource($engineer->user);
+        return $this->successResponse($data, __('messages.common.updated'));
     }
 
     public function destroy(int $id)

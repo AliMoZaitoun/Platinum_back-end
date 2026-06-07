@@ -61,9 +61,9 @@ class ClientService
     {
         return $this->transaction->execute(function () use ($id, $userDTO, $clientDTO) {
             $client = $this->show($id);
-            $user = $client->user;
-            $this->userDAO->update($user, $userDTO);
-            $this->clientDAO->update($client, $clientDTO);
+            $this->userDAO->update($client->user->id, $userDTO);
+            $this->clientDAO->update($id, $clientDTO);
+            $client->refresh();
             return $client;
         });
     }

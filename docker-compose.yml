@@ -4,6 +4,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: platinum-app
+    ports:
+      - "7070:7070"
     restart: unless-stopped
     working_dir: /var/www
     volumes:

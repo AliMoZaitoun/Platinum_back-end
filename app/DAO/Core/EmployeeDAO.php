@@ -27,9 +27,11 @@ class EmployeeDAO
         return Employee::find($id) ?? throw new NotFoundException("Employee");
     }
 
-    public function update(Employee $employee, UpdateEmployeeDTO $employeeDTO)
+    public function update(int $id, UpdateEmployeeDTO $employeeDTO)
     {
+        $employee = $this->show($id);
         $employee->update($employeeDTO->toArray());
+        return $employee;
     }
 
     public function destroy(int $id)

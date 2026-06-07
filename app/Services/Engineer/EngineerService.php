@@ -51,9 +51,9 @@ class EngineerService
     {
         return $this->transaction->execute(function () use ($id, $userDTO, $engineerDTO) {
             $engineer = $this->show($id);
-            $user = $engineer->user;
-            $this->userDAO->update($user, $userDTO);
-            $this->engineerDAO->update($engineer, $engineerDTO);
+            $this->userDAO->update($engineer->user->id, $userDTO);
+            $this->engineerDAO->update($id, $engineerDTO);
+            $engineer->refresh();
             return $engineer;
         });
     }

@@ -80,14 +80,11 @@ class ClientController extends Controller
     {
         $client = Client::findOrFail($id);
 
-        // 1. استدعاء الخدمة
-        // لنفرض أننا نمرر المساحة وعدد الغرف من الداتابيز أو الريكويست
         $suggestion = $aiService->suggestLayout(
             $request->input('area'),
             $request->input('rooms_count')
         );
 
-        // 2. حفظ النتيجة في المودل
         $client->update([
             'ai_layout_suggestion' => $suggestion,
             'last_ai_prompt' => "Area: {$request->area}, Rooms: {$request->rooms_count}"

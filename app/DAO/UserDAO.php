@@ -25,8 +25,9 @@ class UserDAO
         return User::where($type, $value)->first() ?? throw new NotFoundException("User");
     }
 
-    public function update(User $user, UpdateUserDTO $userDTO)
+    public function update(int $id, UpdateUserDTO $userDTO)
     {
+        $user = $this->findById($id);
         return $user->update($userDTO->toArray());
     }
 

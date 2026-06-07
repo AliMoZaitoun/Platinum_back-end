@@ -27,8 +27,9 @@ class EngineerDAO
         return Engineer::find($id) ?? throw new NotFoundException("Engineer");
     }
 
-    public function update(Engineer $engineer, UpdateEngineerDTO $engineerDTO)
+    public function update(int $id, UpdateEngineerDTO $engineerDTO)
     {
+        $engineer = $this->show($id);
         return $engineer->update($engineerDTO->toArray());
     }
 

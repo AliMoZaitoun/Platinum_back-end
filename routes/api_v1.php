@@ -3,6 +3,7 @@
 use App\Http\Controllers\V1\Auth\LoginController;
 use App\Http\Controllers\V1\Auth\PasswordManagementController;
 use App\Http\Controllers\V1\Auth\VerificationController;
+use App\Http\Controllers\V1\ChatController;
 use App\Http\Controllers\V1\Client\ClientController;
 use App\Http\Controllers\V1\Client\FavoriteController;
 use App\Http\Controllers\V1\Client\UnitController as ClientUnitController;
@@ -75,7 +76,7 @@ Route::prefix('engineer')->middleware('auth:sanctum')->group(function () {
     Route::post('/', [EngineerController::class, 'store']);
     Route::get('{id}', [EngineerController::class, 'show']);
 
-    Route::put('{id}', [EngineerController::class, 'update']);
+    Route::put('', [EngineerController::class, 'update']);
     Route::delete('{id}', [EngineerController::class, 'destroy']);
 });
 
@@ -484,6 +485,8 @@ Route::prefix('attendance')->middleware('auth:sanctum')->group(function () {
     Route::delete('{id}', [AttendanceController::class, 'destroy'])
         ->middleware(['permission:delete.attendance']);
 });
+
+Route::post('chat/messages', [ChatController::class, 'store'])->middleware('auth:sanctum');
 
 Route::get('/run-seeder', function () {
     Artisan::call('migrate:fresh', [

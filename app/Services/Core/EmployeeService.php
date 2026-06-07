@@ -72,10 +72,10 @@ class EmployeeService
     {
         return $this->transaction->execute(function () use ($id, $userDTO, $employeeDTO) {
             $employee = $this->show($id);
-            $user = $employee->user;
-            $this->userDAO->update($user, $userDTO);
-            $this->employeeDAO->update($employee, $employeeDTO);
-            return $user;
+            $this->userDAO->update($employee->user->id, $userDTO);
+            $this->employeeDAO->update($id, $employeeDTO);
+            $employee->refresh();
+            return $employee;
         });
     }
 
