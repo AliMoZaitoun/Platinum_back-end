@@ -2,12 +2,27 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\DB;
+use App\DAO\MessageDAO;
+use App\Events\V1\MessageSent;
 
-class Transaction implements TransactionService
+class MessageService
 {
-    public function execute(callable $callback): mixed
+    public function __construct(
+        private MessageDAO $messageDAO
+    ) {}
+
+    public function sendMessage(array $data, int $senderId, string $senderType)
     {
-        return DB::transaction(fn() => $callback());
+        $data['sender_id']   = $senderId;
+        $data['sender_type'] = $senderType;
+
+        $message = $this->messageDAO->create($data);
+
+        return $message;
+    }
+
+    public function getRoomMessagesArchive(int $chatRoomId, int $perPage = 20)
+    {
+        return $this->messageDAO->getMessagesByRoomId($chatRoomId, $perPage);
     }
 }

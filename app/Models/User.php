@@ -69,4 +69,16 @@ class User extends Authenticatable
     {
         return $this->hasOne(Engineer::class);
     }
+
+    public function sender(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->type === 'employee' ? $this->employee : $this->client,
+        );
+    }
+
+    public function isEmployee(): bool
+    {
+        return $this->type === 'employee';
+    }
 }

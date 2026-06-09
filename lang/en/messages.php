@@ -84,4 +84,9 @@ return [
 
         'cannot_complete_future_appointment' => 'You cannot compoete a future appointment!',
     ],
+
+    'chat' => [
+        'room_not_found' => 'The requested chat room was not found in the system.',
+        'unauthorized_access' => 'You are not authorized to access this chat room.',
+    ],
 ];

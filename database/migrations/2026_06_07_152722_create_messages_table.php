@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('chat_room_id')->constrained('chat_rooms')->cascadeOnDelete();
             $table->morphs('sender');
-            $table->text('message_text');
+            $table->text('content');
             $table->boolean('is_read')->default(false);
             $table->timestamps();
         });

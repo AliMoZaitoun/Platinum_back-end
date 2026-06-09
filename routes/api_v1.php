@@ -31,6 +31,7 @@ use App\Http\Controllers\V1\Sales\ComplaintTypeController;
 use App\Http\Controllers\V1\Sales\OrderController;
 use App\Http\Controllers\V1\Sales\UnitOwnershipController;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
 // Auth
@@ -486,7 +487,22 @@ Route::prefix('attendance')->middleware('auth:sanctum')->group(function () {
         ->middleware(['permission:delete.attendance']);
 });
 
-Route::post('chat/messages', [ChatController::class, 'store'])->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::prefix('chat')->group(function () {
+        Route::get('/rooms', [ChatController::class, 'index']);
+        Route::post('/rooms', [ChatController::class, 'createRoom'])->middleware('is_client');
+
+        Route::post('/message', [ChatController::class, 'store']);
+        Route::get('/rooms/{roomId}/messages', [ChatController::class, 'getMessages']);
+
+        Route::middleware('is_staff')->group(function () {
+            Route::get('/unassigned', [ChatController::class, 'unassignedRooms']);
+            Route::post('/rooms/{roomId}/claim', [ChatController::class, 'claim']);
+        });
+    });
+
+    Broadcast::routes(['middleware' => ['auth:sanctum']]);
+});
 
 Route::get('/run-seeder', function () {
     Artisan::call('migrate:fresh', [

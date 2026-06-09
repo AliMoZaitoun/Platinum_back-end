@@ -83,4 +83,9 @@ return [
 
         'cannot_complete_future_appointment' => 'لا يمكنك إتمام موعد لم يحن وقته!',
     ],
+
+    'chat' => [
+        'room_not_found' => 'غرفة الشات المطلوبة غير موجودة في السيستم.',
+        'unauthorized_access' => 'غير مصرح لك بالدخول إلى هذه الغرفة.',
+    ],
 ];

@@ -26,4 +26,9 @@ class ChatRoom extends Model
     {
         return $this->belongsTo(Employee::class, 'employee_id');
     }
+
+    public function latestMessage()
+    {
+        return $this->hasOne(Message::class)->latestOfMany();
+    }
 }

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('client_id')->constrained('clients')->cascadeOnDelete()->cascadeOnDelete();
             $table->foreignId('employee_id')->nullable()->constrained('employees');
 
-            $table->enum('status', ['open', 'closed'])->default('open');
+            $table->enum('status', ['open', 'closed', 'active'])->default('open');
             $table->timestamps();
         });
     }
