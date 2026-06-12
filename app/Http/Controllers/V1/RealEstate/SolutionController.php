@@ -30,7 +30,7 @@ class SolutionController extends Controller
     {
         $solutionDTO = CreateSolutionDTO::fromRequest($request->validated());
 
-        $solution = $this->solutionService->store($solutionDTO, $request->files('attachments'));
+        $solution = $this->solutionService->store($solutionDTO, $request->file('attachments'));
         return $this->useResource($solution, SolutionResource::class, __('messages.common.stored'), 201);
     }
 
