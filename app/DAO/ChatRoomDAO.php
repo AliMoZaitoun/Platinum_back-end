@@ -19,7 +19,9 @@ class ChatRoomDAO
 
     public function findActiveRoomByClient(int $client_id)
     {
-        return ChatRoom::where('client_id', $client_id)->where('status', 'open')->first();
+        return ChatRoom::where('client_id', $client_id)
+            ->whereIn('status', ['open', 'active'])
+            ->first();
     }
 
     public function getClientRooms(int $client_id, int $perPage = 15)
