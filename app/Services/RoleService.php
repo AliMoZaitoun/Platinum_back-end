@@ -37,12 +37,22 @@ class RoleService
         return $this->roleDAO->update($id, $roleDTO);
     }
 
+    public function assignUserRoles(int $user_id, array $roles)
+    {
+        return $this->roleDAO->assignUserRoles($user_id, $roles);
+    }
+
+    public function removeUserRoles(int $user_id, array $roles)
+    {
+        return $this->roleDAO->removeUserRoles($user_id, $roles);
+    }
+
     public function selectPermission(int $id, array $permissions)
     {
         return $this->roleDAO->selectPermissions($id, $permissions);
     }
 
-    public function removePermission(int $id, array $permissions)
+    public function removePermission(int $id, $permissions)
     {
         $role = $this->roleDAO->show($id);
         foreach ($permissions as $per) {

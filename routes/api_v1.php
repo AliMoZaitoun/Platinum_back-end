@@ -159,18 +159,27 @@ Route::prefix('role')->middleware('auth:sanctum')->group(function () {
     Route::put('{id}', [RoleController::class, 'update'])
         ->middleware(['permission:update.role']);
 
+    Route::post('assignRoles/{user_id}', [RoleController::class, 'assign'])
+        ->middleware(['permission:create.role']);
+
+    Route::post('invokeRole/{user_id}', [RoleController::class, 'invoke'])
+        ->middleware(['permission:delete.role']);
+
+    # Search for role by id or name #
     Route::get('{id}', [RoleController::class, 'show'])
         ->middleware(['permission:read.role']);
 
     Route::get('name/{role_name}', [RoleController::class, 'showByName'])
         ->middleware(['permission:read.role']);
 
-    Route::post('selectPermission/{id}', [RoleController::class, 'selectPermission'])
+    # Manage Permissions for a role #
+    Route::post('selectPermission/{role_id}', [RoleController::class, 'selectPermission'])
         ->middleware(['permission:update.role']);
 
-    Route::post('removePermission/{id}', [RoleController::class, 'removePermission'])
+    Route::post('removePermission/{role_id}', [RoleController::class, 'removePermission'])
         ->middleware(['permission:update.role']);
 
+    # Delete a role #
     Route::delete('{id}', [RoleController::class, 'destroy'])
         ->middleware(['permission:delete.role']);
 });
@@ -510,4 +519,9 @@ Route::get('/run-seeder', function () {
         '--force' => true,
     ]);
     return 'Database has been refreshed and seeded!';
+});
+
+
+Route::get('/queue', function () {
+    Artisan::call('queue:work');
 });

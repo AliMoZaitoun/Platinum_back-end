@@ -10,6 +10,10 @@ use Spatie\Permission\Models\Role;
 
 class RoleDAO
 {
+    public function __construct(
+        private UserDAO $userDAO
+    ) {}
+
     public function index()
     {
         return Role::all();
@@ -20,7 +24,7 @@ class RoleDAO
         return Role::create($roleDTO->toArray());
     }
 
-    public function show(int $id, $guardName = null)
+    public function show(int $id, $guardName = 'web')
     {
         return Role::findById($id, $guardName) ?? throw new NotFoundException('Role');
     }
@@ -30,14 +34,19 @@ class RoleDAO
         return Role::findByName($role_name) ?? throw new NotFoundException('Role');
     }
 
-    public function syncUserRoles(User $user, array $roles)
+    public function assignUserRoles(int $user_id, array $roles)
     {
-        return $user->syncRoles($roles);
+        $user = $this->userDAO->findById($user_id);
+        return $user->assignRole($roles);
     }
 
-    public function assignRoleToUser(User $user, string $role)
+    public function removeUserRoles(int $user_id, array $roles)
     {
-        return $user->assignRole($role);
+        $user = $this->userDAO->findById($user_id);
+        foreach ($roles as $role) {
+            $user->removeRole($role);
+        }
+        return $user;
     }
 
     public function update(int $id, UpdateRoleDTO $roleDTO)
@@ -52,8 +61,9 @@ class RoleDAO
         return $role->syncPermissions($permissions);
     }
 
-    public function removePermission(Role $role, string $permission)
+    public function removePermission(int $id, string $permission)
     {
+        $role = $this->show($id);
         return $role->revokePermissionTo($permission);
     }
 

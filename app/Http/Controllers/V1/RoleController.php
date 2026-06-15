@@ -5,7 +5,9 @@ namespace App\Http\Controllers\V1;
 use App\DTOs\Role\Create\CreateRoleDTO;
 use App\DTOs\Role\Update\UpdateRoleDTO;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\V1\CreateRoleRequest;
+use App\Http\Requests\V1\Role\AssignRoleToUserRequest;
+use App\Http\Requests\V1\Role\CreateRoleRequest;
+use App\Http\Resources\V1\Core\RoleResource;
 use App\Services\RoleService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
@@ -20,7 +22,7 @@ class RoleController extends Controller
     public function index()
     {
         $roles = $this->roleService->index();
-        return $this->successResponse($roles);
+        return $this->successCollection($roles, RoleResource::class);
     }
 
     public function store(CreateRoleRequest $request)
@@ -34,7 +36,7 @@ class RoleController extends Controller
     public function show(int $id)
     {
         $role = $this->roleService->show($id);
-        return $this->successResponse($role);
+        return $this->useResource($role, RoleResource::class);
     }
 
     public function showByName(string $role_name)
@@ -43,6 +45,14 @@ class RoleController extends Controller
         return $this->successResponse($role);
     }
 
+    public function assign(int $user_id, AssignRoleToUserRequest $request)
+    {
+        $this->roleService->assignUserRoles($user_id, $request->validated());
+        return $this->successResponse([]);
+    }
+
+    public function invoke(int $user_id, Request $request) {}
+
     public function update(int $id, Request $request)
     {
         $roleDTO = UpdateRoleDTO::fromRequest($request->all());
@@ -50,15 +60,15 @@ class RoleController extends Controller
         return $this->successResponse($role, __('messages.common.updated'));
     }
 
-    public function selectPermission(int $id, Request $request)
+    public function selectPermission(int $role_id, Request $request)
     {
-        $role = $this->roleService->selectPermission($id, $request->input('permissions'));
+        $role = $this->roleService->selectPermission($role_id, $request->input('permissions'));
         return $this->successResponse($role);
     }
 
-    public function removePermission(int $id, Request $request)
+    public function removePermission(int $role_id, Request $request)
     {
-        $role = $this->roleService->removePermission($id, $request->input('permissions'));
+        $role = $this->roleService->removePermission($role_id, $request->input('permissions'));
         return $this->successResponse($role);
     }
 
