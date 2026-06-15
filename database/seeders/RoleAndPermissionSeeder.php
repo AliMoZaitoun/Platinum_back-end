@@ -122,6 +122,9 @@ class RoleAndPermissionSeeder extends Seeder
             'read.project',
             'create.appointment',
             'read.appointment',
+
+            'read.client',
+            'read.unit'
         ]);
 
         $customer_service = Role::firstOrCreate(['name' => 'customer_service_staff']);

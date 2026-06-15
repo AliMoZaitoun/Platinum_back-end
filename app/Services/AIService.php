@@ -18,7 +18,7 @@ class AIService
     public function suggestLayout($area, $rooms)
     {
 
-        $modelName = 'gemini-2.5-flash';
+        $modelName = 'gemini-2.5-pro';
 
         $prompt = "أنت مهندس معماري. أعطني تقسيماً لشقة مساحتها {$area} م2 بـ {$rooms} غرف. 
                الرد يجب أن يكون بصيغة JSON فقط كالتالي:

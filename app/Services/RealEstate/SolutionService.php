@@ -34,7 +34,7 @@ class SolutionService
                 $this->fileManager->storeFile(
                     model: $solution,
                     files: $attachments,
-                    folderPath: "solutions",
+                    folderPath: "Solutions",
                     relationName: 'attachments'
                 );
             }
