@@ -5,7 +5,7 @@ namespace App\Http\Requests\V1\Role;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class AssignRoleToUserRequest extends FormRequest
+class ManagerRoleRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -15,8 +15,8 @@ class AssignRoleToUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'roles' => 'required|array',
-            'roles.*'  => 'exists:roles,id'
+            'permissions' => 'required|array',
+            'permissions.*' => 'exists:permissions,id',
         ];
     }
 }

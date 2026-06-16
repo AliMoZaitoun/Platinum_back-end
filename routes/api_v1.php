@@ -161,11 +161,8 @@ Route::prefix('role')->middleware('auth:sanctum')->group(function () {
     Route::put('{id}', [RoleController::class, 'update'])
         ->middleware(['permission:update.role']);
 
-    Route::post('assignRoles/{user_id}', [RoleController::class, 'assignRole'])
+    Route::post('assignRoles/{user_id}', [RoleController::class, 'assignRoles'])
         ->middleware(['permission:create.role']);
-
-    Route::post('revokeRoles/{user_id}', [RoleController::class, 'revokeRole'])
-        ->middleware(['permission:delete.role']);
 
     # Search for role by id or name #
     Route::get('{id}', [RoleController::class, 'show'])
@@ -176,9 +173,6 @@ Route::prefix('role')->middleware('auth:sanctum')->group(function () {
 
     # Manage Permissions for a role #
     Route::post('selectPermission/{role_id}', [RoleController::class, 'selectPermission'])
-        ->middleware(['permission:update.role']);
-
-    Route::post('removePermission/{role_id}', [RoleController::class, 'removePermission'])
         ->middleware(['permission:update.role']);
 
     # Delete a role #

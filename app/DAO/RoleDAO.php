@@ -37,7 +37,7 @@ class RoleDAO
     public function assignUserRoles(int $user_id, array $roles)
     {
         $user = $this->userDAO->findById($user_id);
-        return $user->assignRole($roles);
+        return $user->syncRoles($roles);
     }
 
     public function removeUserRoles(int $user_id, array $roles)
@@ -59,12 +59,6 @@ class RoleDAO
     {
         $role = $this->show($id);
         return $role->syncPermissions($permissions);
-    }
-
-    public function removePermission(int $id, string $permission)
-    {
-        $role = $this->show($id);
-        return $role->revokePermissionTo($permission);
     }
 
     public function destroy(int $id)

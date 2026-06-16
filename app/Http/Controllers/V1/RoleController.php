@@ -7,6 +7,7 @@ use App\DTOs\Role\Update\UpdateRoleDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Role\AssignRoleToUserRequest;
 use App\Http\Requests\V1\Role\CreateRoleRequest;
+use App\Http\Requests\V1\Role\ManagerRoleRequest;
 use App\Http\Resources\V1\Core\RoleResource;
 use App\Services\RoleService;
 use App\Traits\ResponseTrait;
@@ -45,15 +46,9 @@ class RoleController extends Controller
         return $this->successResponse($role);
     }
 
-    public function assignRole(int $user_id, AssignRoleToUserRequest $request)
+    public function assignRoles(int $user_id, AssignRoleToUserRequest $request)
     {
         $this->roleService->assignUserRoles($user_id, $request->validated());
-        return $this->successResponse([]);
-    }
-
-    public function invoke(int $user_id, AssignRoleToUserRequest $request)
-    {
-        $this->roleService->removeUserRoles($user_id, $request->validated());
         return $this->successResponse([]);
     }
 
@@ -64,15 +59,9 @@ class RoleController extends Controller
         return $this->successResponse($role, __('messages.common.updated'));
     }
 
-    public function selectPermission(int $role_id, Request $request)
+    public function selectPermission(int $role_id, ManagerRoleRequest $request)
     {
-        $role = $this->roleService->selectPermission($role_id, $request->input('permissions'));
-        return $this->successResponse($role);
-    }
-
-    public function removePermission(int $role_id, Request $request)
-    {
-        $role = $this->roleService->removePermission($role_id, $request->input('permissions'));
+        $role = $this->roleService->selectPermission($role_id, $request->validated());
         return $this->successResponse($role);
     }
 
