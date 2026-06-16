@@ -18,6 +18,7 @@ use App\Http\Controllers\V1\Engineer\ProjectEngineerAllocationController;
 use App\Http\Controllers\V1\Engineer\EngineerController;
 use App\Http\Controllers\V1\Marketing\AdvertisementController;
 use App\Http\Controllers\V1\OtpController;
+use App\Http\Controllers\V1\PermissionController;
 use App\Http\Controllers\V1\RealEstate\BuildingController;
 use App\Http\Controllers\V1\RealEstate\LocationController;
 use App\Http\Controllers\V1\RealEstate\ProjectController;
@@ -33,6 +34,7 @@ use App\Http\Controllers\V1\Sales\UnitOwnershipController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Models\Permission;
 
 // Auth
 Route::post('verifyEmail', [VerificationController::class, 'verifyEmail']);
@@ -159,10 +161,10 @@ Route::prefix('role')->middleware('auth:sanctum')->group(function () {
     Route::put('{id}', [RoleController::class, 'update'])
         ->middleware(['permission:update.role']);
 
-    Route::post('assignRoles/{user_id}', [RoleController::class, 'assign'])
+    Route::post('assignRoles/{user_id}', [RoleController::class, 'assignRole'])
         ->middleware(['permission:create.role']);
 
-    Route::post('invokeRole/{user_id}', [RoleController::class, 'invoke'])
+    Route::post('revokeRoles/{user_id}', [RoleController::class, 'revokeRole'])
         ->middleware(['permission:delete.role']);
 
     # Search for role by id or name #
@@ -182,6 +184,10 @@ Route::prefix('role')->middleware('auth:sanctum')->group(function () {
     # Delete a role #
     Route::delete('{id}', [RoleController::class, 'destroy'])
         ->middleware(['permission:delete.role']);
+});
+
+Route::prefix('permission')->middleware('auth:sanctum')->group(function () {
+    Route::get('', [PermissionController::class, 'index']);
 });
 
 // Department

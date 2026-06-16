@@ -45,13 +45,17 @@ class RoleController extends Controller
         return $this->successResponse($role);
     }
 
-    public function assign(int $user_id, AssignRoleToUserRequest $request)
+    public function assignRole(int $user_id, AssignRoleToUserRequest $request)
     {
         $this->roleService->assignUserRoles($user_id, $request->validated());
         return $this->successResponse([]);
     }
 
-    public function invoke(int $user_id, Request $request) {}
+    public function invoke(int $user_id, AssignRoleToUserRequest $request)
+    {
+        $this->roleService->removeUserRoles($user_id, $request->validated());
+        return $this->successResponse([]);
+    }
 
     public function update(int $id, Request $request)
     {
