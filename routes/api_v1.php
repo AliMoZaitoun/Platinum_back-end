@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\NoteController;
+use App\Http\Controllers\V1\Lottery\LotteryController;
+use App\Http\Controllers\V1\Lottery\LotteryRuleController;
 use App\Http\Controllers\V1\Auth\LoginController;
 use App\Http\Controllers\V1\Auth\PasswordManagementController;
 use App\Http\Controllers\V1\Auth\VerificationController;
@@ -370,14 +373,21 @@ Route::prefix('order')->middleware('auth:sanctum')->group(function () {
         Route::get('/', [OrderController::class, 'index'])
             ->middleware(['permission:read.order']);
 
-        Route::get('getClientUnitOrders/{client_id}', [OrderController::class, 'getClientUnitOrders'])
+        Route::get('departmentOrders/{department_id}', [OrderController::class, 'departmentOrders'])
             ->middleware(['permission:read.order']);
 
-        Route::get('getClientSolutionOrders/{client_id}', [OrderController::class, 'getClientSolutionOrders'])
+        Route::get('getClientUnitOrders/{client_id}', [OrderController::class, 'clientUnitOrders'])
             ->middleware(['permission:read.order']);
 
+        Route::get('getClientSolutionOrders/{client_id}', [OrderController::class, 'clientSolutionOrders'])
+            ->middleware(['permission:read.order']);
 
-        Route::put('{id}', [OrderController::class, 'update'])
+        Route::post('note/add/{id}', [OrderController::class, 'addNote']);
+
+        Route::put('changeStatus/{id}', [OrderController::class, 'changeStatus'])
+            ->middleware(['permission:update.order']);
+
+        Route::put('transfer/{id}', [OrderController::class, 'transfer'])
             ->middleware(['permission:update.order']);
     });
 
@@ -394,6 +404,12 @@ Route::prefix('order')->middleware('auth:sanctum')->group(function () {
 
     Route::delete('{id}', [OrderController::class, 'destroy'])
         ->middleware(['permission:delete.order']);
+});
+
+Route::prefix('note')->group(function () {
+    // ->middleware(['permission:update.order']);
+    Route::put('{id}', [NoteController::class, 'update']);
+    Route::delete('{id}', [NoteController::class, 'destroy']);
 });
 
 // Available slot
@@ -511,6 +527,20 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Broadcast::routes(['middleware' => ['auth:sanctum']]);
+});
+
+Route::prefix('lottery')->middleware(['auth:sanctum', 'is_staff'])->group(function () {
+    Route::get('', [LotteryController::class, 'index']);
+    Route::post('', [LotteryController::class, 'store']);
+    Route::put('', [LotteryController::class, 'update']);
+    Route::delete('', [LotteryController::class, 'destroy']);
+
+    Route::prefix('rule')->group(function () {
+        Route::get('', [LotteryRuleController::class, 'index']);
+        Route::post('', [LotteryRuleController::class, 'store']);
+        Route::put('', [LotteryRuleController::class, 'update']);
+        Route::delete('', [LotteryRuleController::class, 'destroy']);
+    });
 });
 
 Route::get('/run-seeder', function () {

@@ -18,7 +18,9 @@ class UpdateComplaintRequest extends FormRequest
             'unit_id'               => 'nullable|exists:units,id',
             'complaint_type_id'     => 'nullable:new_type|prohibited_if:new_type,true|exists:complaint_types,id',
             'title'                 => 'nullable|string',
-            'body'                  => 'nullable|text'
+            'body'                  => 'nullable|text',
+
+            'note'                 => 'nullable|string'
         ];
     }
 }

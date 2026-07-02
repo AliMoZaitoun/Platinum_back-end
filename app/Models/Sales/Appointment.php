@@ -4,6 +4,7 @@ namespace App\Models\Sales;
 
 use App\Models\Client\Client;
 use App\Models\Engineer\Engineer;
+use App\Models\Note;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -28,5 +29,10 @@ class Appointment extends Model
     public function createdBy()
     {
         return $this->morphTo();
+    }
+
+    public function notes()
+    {
+        return $this->morphMany(Note::class, 'noteable');
     }
 }

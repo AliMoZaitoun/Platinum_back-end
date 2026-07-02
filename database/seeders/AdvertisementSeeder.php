@@ -58,7 +58,7 @@ class AdvertisementSeeder extends Seeder
             ]
         ];
 
-        for ($i = 1; $i <= 30; $i++) {
+        for ($i = 1; $i <= 10; $i++) {
 
             $data = $translations[array_rand($translations)];
 

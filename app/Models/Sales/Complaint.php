@@ -4,6 +4,7 @@ namespace App\Models\Sales;
 
 use App\Models\Client\Client;
 use App\Models\Media;
+use App\Models\Note;
 use App\Models\RealEstate\Unit;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
@@ -29,5 +30,10 @@ class Complaint extends Model
     public function attachments()
     {
         return $this->morphMany(Media::class, 'mediable');
+    }
+
+    public function notes()
+    {
+        return $this->morphMany(Note::class, 'noteable');
     }
 }

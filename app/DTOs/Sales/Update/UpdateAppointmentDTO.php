@@ -9,7 +9,8 @@ class UpdateAppointmentDTO
         public ?int $av_slot_id,
         public ?int $client_id,
         public ?int $created_by,
-        public ?string $status
+        public ?string $status,
+        public ?string $notes
     ) {}
 
     public static function fromRequest(array $request)
@@ -19,7 +20,8 @@ class UpdateAppointmentDTO
             av_slot_id: $request['av_slot_id'] ?? null,
             client_id: $request['client_id'] ?? null,
             created_by: $request['created_by'] ?? null,
-            status: $request['status'] ?? null
+            status: $request['status'] ?? null,
+            notes: $request['notes'] ?? null,
         );
     }
 
@@ -30,7 +32,8 @@ class UpdateAppointmentDTO
             'av_slot_id' => $this->av_slot_id,
             'client_id'  => $this->client_id,
             'created_by'  => $this->created_by,
-            'status'     => $this->status
+            'status'     => $this->status,
+            'notes'     => $this->notes,
         ], fn($value) => !is_null($value));
     }
 }

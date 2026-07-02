@@ -2,16 +2,23 @@
 
 namespace App\Services\Sales;
 
+use App\DAO\Core\DepartmentDAO;
 use App\DAO\Sales\OrderDAO;
+use App\DTOs\Note\Create\CreateNoteDTO;
 use App\DTOs\Sales\Create\CreateOrderDTO;
 use App\DTOs\Sales\Update\UpdateOrderDTO;
 use App\Exceptions\V1\Order\OrderAlreadySubmittedException;
+use App\Services\NoteService;
+use App\Services\TransactionService;
 use Illuminate\Support\Facades\Auth;
 
 class OrderService
 {
     public function __construct(
-        private OrderDAO $orderDAO
+        private OrderDAO $orderDAO,
+        private DepartmentDAO $departmentDAO,
+        private NoteService $noteService,
+        private TransactionService $transactionService
     ) {}
 
     public function index(array $relations = [])
@@ -27,6 +34,12 @@ class OrderService
             throw new OrderAlreadySubmittedException();
         }
 
+        if ($dto->unit_id) {
+            $dto->department_id = 5;
+        } else if ($dto->solution_id) {
+            $dto->department_id = 1;
+        }
+
         return $this->orderDAO->store($dto);
     }
 
@@ -35,19 +48,29 @@ class OrderService
         return $this->orderDAO->show($id);
     }
 
-    public function getClientUnitOrders(int $client_id)
+    public function clientUnitOrders(int $client_id)
     {
-        return $this->orderDAO->getClientUnitOrders($client_id);
+        return $this->orderDAO->clientUnitOrders($client_id);
     }
 
-    public function getClientSolutionOrders(int $client_id)
+    public function clientSolutionOrders(int $client_id)
     {
-        return $this->orderDAO->getClientSolutionOrders($client_id);
+        return $this->orderDAO->clientSolutionOrders($client_id);
     }
 
-    public function update(int $id, UpdateOrderDTO $orderDTO)
+    public function departmentOrders(int $department_id)
     {
-        return $this->orderDAO->update($id, $orderDTO);
+        return $this->orderDAO->departmentOrders($department_id);
+    }
+
+    public function update(int $id, UpdateOrderDTO $orderDTO, CreateNoteDTO $noteDTO = null)
+    {
+        return $this->transactionService->execute(function () use ($id, $orderDTO, $noteDTO) {
+            $order = $this->orderDAO->update($id, $orderDTO);
+            if ($noteDTO)
+                $this->noteService->store($order, $noteDTO);
+            return $order;
+        });
     }
 
     public function destroy(int $id)

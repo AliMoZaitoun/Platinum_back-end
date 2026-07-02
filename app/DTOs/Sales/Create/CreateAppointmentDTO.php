@@ -12,7 +12,8 @@ class CreateAppointmentDTO
         public int $createdById,
         public string $createdByType,
         public int $avSlotId,
-        public string $status = 'pending'
+        public ?string $notes,
+        public string $status = 'pending',
     ) {}
 
     public static function fromRequest(CreateAppointmentRequest $request): self
@@ -28,7 +29,8 @@ class CreateAppointmentDTO
             clientId: $clientId,
             createdById: $user->id,
             createdByType: get_class($user),
-            avSlotId: (int) $request->input('av_slot_id')
+            avSlotId: (int) $request->input('av_slot_id'),
+            notes: $request->input('notes')
         );
     }
 
@@ -41,6 +43,7 @@ class CreateAppointmentDTO
             'created_by_type' => $this->createdByType,
             'av_slot_id'      => $this->avSlotId,
             'status'          => $this->status,
+            'notes'           => $this->notes,
         ], fn($value) => !is_null($value));
     }
 }

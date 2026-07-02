@@ -2,6 +2,7 @@
 
 namespace App\Models\Core;
 
+use App\Models\Sales\Order;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
@@ -24,5 +25,10 @@ class Department extends Model
     public function employees()
     {
         return $this->hasMany(EmployeeDepartment::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }

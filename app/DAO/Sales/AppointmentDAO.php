@@ -23,7 +23,7 @@ class AppointmentDAO
 
     public function show(int $id)
     {
-        return Appointment::find($id) ?? throw new NotFoundException("Appointment");
+        return Appointment::where('id', $id)->with(['client', 'createdBy', 'slot', 'order']) ?? throw new NotFoundException("Appointment");
     }
 
     public function showByClient(int $client_id)

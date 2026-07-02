@@ -9,6 +9,7 @@ class UpdateComplaintDTO
         public ?string $title,
         public ?string $body,
         public ?string $status,
+        public ?string $notes
     ) {}
 
     public static function fromRequest(array $request)
@@ -18,6 +19,7 @@ class UpdateComplaintDTO
             title: $request['title'] ?? null,
             body: $request['body'] ?? null,
             status: $request['status'] ?? null,
+            notes: $request['notes'] ?? null,
         );
     }
 
@@ -28,6 +30,7 @@ class UpdateComplaintDTO
             'title'             => $this->title,
             'body'              => $this->body,
             'status'            => $this->status,
+            'notes'             => $this->notes,
         ], fn($value) => !is_null($value));
     }
 }

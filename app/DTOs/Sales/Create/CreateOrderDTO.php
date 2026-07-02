@@ -8,6 +8,7 @@ class CreateOrderDTO
         public int $client_id,
         public ?int $unit_id,
         public ?int $solution_id,
+        public ?int $department_id,
         public string $status
     ) {}
 
@@ -17,6 +18,7 @@ class CreateOrderDTO
             client_id: $clientId,
             unit_id: $request['unit_id'] ?? null,
             solution_id: $request['solution_id'] ?? null,
+            department_id: $request['department_id'] ?? null,
             status: $request['status'] ?? 'pending'
         );
     }
@@ -27,6 +29,7 @@ class CreateOrderDTO
             'client_id'  => $this->client_id,
             'unit_id'    => $this->unit_id,
             'solution_id' => $this->solution_id,
+            'department_id' => $this->department_id,
             'status'     => $this->status
         ], fn($value) => !is_null($value));
     }

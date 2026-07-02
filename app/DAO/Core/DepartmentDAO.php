@@ -25,6 +25,11 @@ class DepartmentDAO
         return Department::where('id', $id)->with('employees')->first() ?? throw new NotFoundException("Department");
     }
 
+    public function showByName(string $name)
+    {
+        return Department::where('name', $name)->with('employees')->first() ?? throw new NotFoundException("Department");
+    }
+
     public function update(int $id, UpdateDepartmentDTO $departmentDTO)
     {
         $department = $this->show($id);

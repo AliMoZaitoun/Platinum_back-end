@@ -26,7 +26,7 @@ class OrderDAO
 
     public function show(int $id)
     {
-        return Order::where('id', $id)->with(['unit', 'client', 'solution', 'unit.attachments', 'solution.attachments'])->first() ?? throw new NotFoundException("Order");
+        return Order::where('id', $id)->with(['unit', 'client', 'solution', 'unit.attachments', 'solution.attachments', 'notes', 'department'])->first() ?? throw new NotFoundException("Order");
     }
 
     public function exists(int $client_id, ?int $unit_id, ?int $solution_id)
@@ -41,7 +41,7 @@ class OrderDAO
             ->exists();
     }
 
-    public function getClientUnitOrders(int $client_id, int $perPage = 15)
+    public function clientUnitOrders(int $client_id, int $perPage = 15)
     {
         return Order::query()
             ->where('client_id', $client_id)
@@ -51,7 +51,7 @@ class OrderDAO
             ->paginate($perPage);
     }
 
-    public function getClientSolutionOrders(int $client_id, int $perPage = 15)
+    public function clientSolutionOrders(int $client_id, int $perPage = 15)
     {
 
         return Order::query()
@@ -62,10 +62,20 @@ class OrderDAO
             ->paginate($perPage);
     }
 
+    public function departmentOrders(int $department_id, int $perPage = 15)
+    {
+        return Order::query()
+            ->where('department_id', $department_id)
+            ->with(['unit', 'unit.attachments', 'solution'])
+            ->latest()
+            ->paginate($perPage);
+    }
+
     public function update(int $id, UpdateOrderDTO $orderDTO)
     {
         $order = $this->show($id);
-        return $order->update($orderDTO->toArray());
+        $order->update($orderDTO->toArray());
+        return $order->refresh();
     }
 
     public function destroy(int $id)

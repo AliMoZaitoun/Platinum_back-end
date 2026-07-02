@@ -20,9 +20,11 @@ class CreateAppointmentRequest extends FormRequest
             'order_id'   => 'required|exists:orders,id',
             'av_slot_id' => 'required|exists:availability_slots,id',
 
-            'client_id'  => $user && $user->type !== 'client'
+            'client_id'  => $user && $user->type === 'employee'
                 ? 'required|exists:clients,id'
                 : 'nullable',
+
+            'note'      => 'nullable|string'
         ];
     }
 }
