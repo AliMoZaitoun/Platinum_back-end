@@ -89,4 +89,13 @@ return [
         'room_not_found' => 'The requested chat room was not found in the system.',
         'unauthorized_access' => 'You are not authorized to access this chat room.',
     ],
+
+    'lottery' => [
+        'not_open' => 'This lottery is not open for modifications or drawing.',
+        'cannot_update' => 'You cannot update this lottery as it is already closed or cancelled.',
+        'cannot_cancel' => 'You cannot cancel a lottery that is not currently open.',
+        'cannot_draw' => 'This lottery is not valid for drawing.',
+        'no_participants' => 'There are no eligible clients in this lottery to perform the draw.',
+        'not_found' => 'The requested lottery could not be found.',
+    ],
 ];

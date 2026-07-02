@@ -15,6 +15,7 @@ class LotteryParticipantResource extends JsonResource
             'lottery'        => new LotteryResource($this->whenLoaded('lottery')),
             'client'         => new ClientDetailResource($this->whenLoaded('client')),
             'entry_date'     => $this->entry_date,
+            'is_winner'      => $this->is_winner,
             'created_at'     => $this->created_at->format('Y-m-d h:i A'),
         ];
     }

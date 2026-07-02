@@ -18,6 +18,9 @@ use App\Exceptions\V1\Engineer\Attendance\MockLocationDetectedException;
 use App\Exceptions\V1\Engineer\Attendance\OfflineSyncExpiredException;
 use App\Exceptions\V1\Engineer\Attendance\ShiftTimeoutException;
 use App\Exceptions\V1\Engineer\Report\EngineerNotCheckedInException;
+use App\Exceptions\V1\Lottery\LotteryNotFoundException;
+use App\Exceptions\V1\Lottery\LotteryNotOpenException;
+use App\Exceptions\V1\Lottery\NoEligibleParticipantsException;
 use App\Exceptions\V1\ProjectHasNoBuildingsException;
 use App\Exceptions\V1\Sales\CompleteFutureAppointmentException;
 use App\Traits\ResponseTrait;
@@ -148,6 +151,19 @@ class Handler
         });
 
         $exceptions->render(function (CompleteFutureAppointmentException $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode() ?: 422);
+        });
+
+        # Lottery
+        $exceptions->render(function (LotteryNotFoundException $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode() ?: 404);
+        });
+
+        $exceptions->render(function (LotteryNotOpenException $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode() ?: 422);
+        });
+
+        $exceptions->render(function (NoEligibleParticipantsException $e) {
             return $this->errorResponse($e->getMessage(), $e->getCode() ?: 422);
         });
     }

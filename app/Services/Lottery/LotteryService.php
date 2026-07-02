@@ -7,6 +7,8 @@ use App\DAO\Lottery\LotteryRuleDAO;
 use App\DAO\Lottery\LotteryParticipantDAO;
 use App\DTOs\Lottery\Create\CreateLotteryDTO;
 use App\DTOs\Lottery\Update\UpdateLotteryDTO;
+use App\Exceptions\V1\Lottery\LotteryNotOpenException;
+use App\Exceptions\V1\Lottery\NoEligibleParticipantsException;
 use App\Services\TransactionService;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -48,9 +50,11 @@ class LotteryService
     {
         return $this->transaction->execute(function () use ($id, $dto) {
             $lottery = $this->lotteryDAO->show($id);
-            if ($lottery->status != 'open') {
-                throw new Exception("No");
+
+            if ($lottery->status !== 'open') {
+                throw new LotteryNotOpenException("messages.lottery.cannot_update");
             }
+
             $lottery = $this->lotteryDAO->update($id, $dto);
             $this->ruleDAO->destroyByLotId($id);
 
@@ -76,7 +80,7 @@ class LotteryService
             $lottery = $this->lotteryDAO->show($id);
 
             if ($lottery->status !== 'open') {
-                throw new \Exception("You Cannot");
+                throw new LotteryNotOpenException("messages.lottery.cannot_cancel");
             }
 
             $lottery->update(['status' => 'cancelled']);
@@ -93,13 +97,13 @@ class LotteryService
             $lottery = $this->lotteryDAO->show($id);
 
             if ($lottery->status !== 'open') {
-                throw new \Exception("هذه القرعة غير صالحة للسحب (ليست مفتوحة)!");
+                throw new LotteryNotOpenException("messages.lottery.cannot_draw");
             }
 
             $participants = $this->participantDAO->readByLotId($id);
 
             if ($participants->isEmpty()) {
-                throw new \Exception("لا يوجد أي زبائن مؤهلين في هذه القرعة لإجراء السحب!");
+                throw new NoEligibleParticipantsException();
             }
 
             $luckyParticipant = $participants->random();
