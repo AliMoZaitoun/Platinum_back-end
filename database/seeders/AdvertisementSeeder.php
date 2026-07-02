@@ -79,34 +79,34 @@ class AdvertisementSeeder extends Seeder
                 'created_by'    => $employeeId,
             ]);
 
-            $numberOfImages = rand(1, 2);
-            for ($j = 1; $j <= $numberOfImages; $j++) {
+            // $numberOfImages = rand(1, 2);
+            // for ($j = 1; $j <= $numberOfImages; $j++) {
 
-                $imagePath = 'advertisements/ad_' . Str::random(5) . '.png';
+            //     $imagePath = 'advertisements/ad_' . Str::random(5) . '.png';
 
-                ob_start();
-                $im = imagecreatetruecolor(400, 250);
-                $bg = imagecolorallocate($im, 41, 128, 185);
-                imagefill($im, 0, 0, $bg);
-                imagestring($im, 5, 20, 110, "Ad Image #{$j}", imagecolorallocate($im, 255, 255, 255));
-                imagepng($im);
-                $imgContent = ob_get_clean();
-                imagedestroy($im);
+            //     ob_start();
+            //     $im = imagecreatetruecolor(400, 250);
+            //     $bg = imagecolorallocate($im, 41, 128, 185);
+            //     imagefill($im, 0, 0, $bg);
+            //     imagestring($im, 5, 20, 110, "Ad Image #{$j}", imagecolorallocate($im, 255, 255, 255));
+            //     imagepng($im);
+            //     $imgContent = ob_get_clean();
+            //     imagedestroy($im);
 
-                try {
-                    Storage::disk('s3')->put($imagePath, $imgContent, 'public');
+            //     try {
+            //         Storage::disk('s3')->put($imagePath, $imgContent, 'public');
 
-                    $advertisement->attachments()->create([
-                        'uuid'              => (string) Str::uuid(),
-                        'path'              => $imagePath,
-                        'original_name'     => "advertisement_banner_{$j}.png",
-                        'type'              => 'image',
-                        'custom_properties' => null,
-                        'recorded_at'       => now(),
-                    ]);
-                } catch (\Exception $e) {
-                }
-            }
+            //         $advertisement->attachments()->create([
+            //             'uuid'              => (string) Str::uuid(),
+            //             'path'              => $imagePath,
+            //             'original_name'     => "advertisement_banner_{$j}.png",
+            //             'type'              => 'image',
+            //             'custom_properties' => null,
+            //             'recorded_at'       => now(),
+            //         ]);
+            //     } catch (\Exception $e) {
+            //     }
+            // }
         }
 
         $this->command->info('🎉 AdvertisementSeeder executed successfully with Dual-Language data!');

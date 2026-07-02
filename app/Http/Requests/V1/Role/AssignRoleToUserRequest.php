@@ -16,7 +16,7 @@ class AssignRoleToUserRequest extends FormRequest
     {
         return [
             'roles' => 'required|array',
-            'roles.*'  => 'exists:roles,id'
+            'roles.*'  => 'integer|exists:roles,id'
         ];
     }
 }

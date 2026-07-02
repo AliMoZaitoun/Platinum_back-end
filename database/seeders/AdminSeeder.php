@@ -24,6 +24,8 @@ class AdminSeeder extends Seeder
             'email_verified_at' => now()
         ]);
 
-        $user->assignRole('admin');
+        $user->employee()->create([]);
+
+        $user->syncRoles(['admin', 'employee']);
     }
 }

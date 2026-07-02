@@ -39,9 +39,8 @@ class RoleService
 
     public function assignUserRoles(int $user_id, array $roles)
     {
-        $roleIds = array_map('intval', $roles);
 
-        return $this->roleDAO->assignUserRoles($user_id, $roleIds);
+        return $this->roleDAO->assignUserRoles($user_id, $roles);
     }
 
     public function selectPermission(int $id, array $permissions)

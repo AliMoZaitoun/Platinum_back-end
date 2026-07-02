@@ -56,30 +56,30 @@ class BuildingSeeder extends Seeder
                     'radius_meters'   => rand(60, 100),
                 ]);
 
-                if ($status === 'in_progress' || $status === 'completed') {
-                    $imagePath = 'buildings/building_' . Str::random(5) . '.png';
-                    ob_start();
-                    $im = imagecreatetruecolor(400, 250);
-                    $bg = imagecolorallocate($im, 39, 174, 96);
-                    imagefill($im, 0, 0, $bg);
-                    imagestring($im, 5, 20, 110, "Building: " . $buildingNumber, imagecolorallocate($im, 255, 255, 255));
-                    imagepng($im);
-                    $imgContent = ob_get_clean();
-                    imagedestroy($im);
+                // if ($status === 'in_progress' || $status === 'completed') {
+                //     $imagePath = 'buildings/building_' . Str::random(5) . '.png';
+                //     ob_start();
+                //     $im = imagecreatetruecolor(400, 250);
+                //     $bg = imagecolorallocate($im, 39, 174, 96);
+                //     imagefill($im, 0, 0, $bg);
+                //     imagestring($im, 5, 20, 110, "Building: " . $buildingNumber, imagecolorallocate($im, 255, 255, 255));
+                //     imagepng($im);
+                //     $imgContent = ob_get_clean();
+                //     imagedestroy($im);
 
-                    try {
-                        Storage::disk($disk)->put($imagePath, $imgContent, 'public');
-                        $building->attachments()->create([
-                            'uuid'          => (string) Str::uuid(),
-                            'path'          => $imagePath,
-                            'original_name' => 'facade_elevation.png',
-                            'type'          => 'image',
-                            'recorded_at'   => now(),
-                        ]);
-                    } catch (\Exception $e) {
-                        $this->command->error("Failed to upload building image: " . $e->getMessage());
-                    }
-                }
+                //     try {
+                //         Storage::disk($disk)->put($imagePath, $imgContent, 'public');
+                //         $building->attachments()->create([
+                //             'uuid'          => (string) Str::uuid(),
+                //             'path'          => $imagePath,
+                //             'original_name' => 'facade_elevation.png',
+                //             'type'          => 'image',
+                //             'recorded_at'   => now(),
+                //         ]);
+                //     } catch (\Exception $e) {
+                //         $this->command->error("Failed to upload building image: " . $e->getMessage());
+                //     }
+                // }
             }
         }
         $this->command->info('🎉 Buildings seeded logically and perfectly aligned with projects!');

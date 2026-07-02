@@ -32,29 +32,29 @@ class SolutionSeeder extends Seeder
                 'price'       => $sData['price']
             ]);
 
-            // رفع غلاف أو أيقونة للخدمة المقدمة
-            $imagePath = 'solutions/service_' . Str::random(5) . '.png';
-            ob_start();
-            $im = imagecreatetruecolor(400, 250);
-            $bg = imagecolorallocate($im, 52, 73, 94); // Dark Navy
-            imagefill($im, 0, 0, $bg);
-            imagestring($im, 4, 10, 110, "Service: " . substr($sData['name']['en'], 0, 30), imagecolorallocate($im, 255, 255, 255));
-            imagepng($im);
-            $imgContent = ob_get_clean();
-            imagedestroy($im);
+            // // رفع غلاف أو أيقونة للخدمة المقدمة
+            // $imagePath = 'solutions/service_' . Str::random(5) . '.png';
+            // ob_start();
+            // $im = imagecreatetruecolor(400, 250);
+            // $bg = imagecolorallocate($im, 52, 73, 94); // Dark Navy
+            // imagefill($im, 0, 0, $bg);
+            // imagestring($im, 4, 10, 110, "Service: " . substr($sData['name']['en'], 0, 30), imagecolorallocate($im, 255, 255, 255));
+            // imagepng($im);
+            // $imgContent = ob_get_clean();
+            // imagedestroy($im);
 
-            try {
-                Storage::disk($disk)->put($imagePath, $imgContent, 'public');
-                $solution->attachments()->create([
-                    'uuid'          => (string) Str::uuid(),
-                    'path'          => $imagePath,
-                    'original_name' => 'service_cover.png',
-                    'type'          => 'image',
-                    'recorded_at'   => now(),
-                ]);
-            } catch (\Exception $e) {
-                $this->command->error("Failed to upload service solution icon: " . $e->getMessage());
-            }
+            // try {
+            //     Storage::disk($disk)->put($imagePath, $imgContent, 'public');
+            //     $solution->attachments()->create([
+            //         'uuid'          => (string) Str::uuid(),
+            //         'path'          => $imagePath,
+            //         'original_name' => 'service_cover.png',
+            //         'type'          => 'image',
+            //         'recorded_at'   => now(),
+            //     ]);
+            // } catch (\Exception $e) {
+            //     $this->command->error("Failed to upload service solution icon: " . $e->getMessage());
+            // }
         }
     }
 }

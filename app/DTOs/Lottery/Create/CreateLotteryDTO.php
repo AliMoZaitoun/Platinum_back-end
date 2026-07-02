@@ -7,7 +7,8 @@ class CreateLotteryDTO
     public function __construct(
         public string $title,
         public ?string $status,
-        public int $unit_id
+        public int $unit_id,
+        public array $rules
     ) {}
 
     public static function fromRequest(array $request)
@@ -15,7 +16,8 @@ class CreateLotteryDTO
         return new self(
             title: $request['title'],
             status: $request['status'] ?? 'open',
-            unit_id: $request['unit_id']
+            unit_id: $request['unit_id'],
+            rules: $request['rules']
         );
     }
 

@@ -29,6 +29,11 @@ class OrderDAO
         return Order::where('id', $id)->with(['unit', 'client', 'solution', 'unit.attachments', 'solution.attachments', 'notes', 'department'])->first() ?? throw new NotFoundException("Order");
     }
 
+    public function query()
+    {
+        return Order::query();
+    }
+
     public function exists(int $client_id, ?int $unit_id, ?int $solution_id)
     {
         return Order::where('client_id', $client_id)

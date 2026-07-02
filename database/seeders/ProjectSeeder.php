@@ -67,21 +67,21 @@ class ProjectSeeder extends Seeder
                 'end_date'      => $data['end_date']
             ]);
 
-            $imagePath = 'projects/project_' . Str::random(5) . '.png';
-            $imageContent = $this->generateDummyImage("Project: " . $data['name']['en']);
+            // $imagePath = 'projects/project_' . Str::random(5) . '.png';
+            // $imageContent = $this->generateDummyImage("Project: " . $data['name']['en']);
 
-            try {
-                Storage::disk($disk)->put($imagePath, $imageContent, 'public');
-                $project->attachments()->create([
-                    'uuid'          => (string) Str::uuid(),
-                    'path'          => $imagePath,
-                    'original_name' => 'project_master_plan.png',
-                    'type'          => 'image',
-                    'recorded_at'   => now(),
-                ]);
-            } catch (\Exception $e) {
-                $this->command->error("Failed uploading project image: " . $e->getMessage());
-            }
+            // try {
+            //     Storage::disk($disk)->put($imagePath, $imageContent, 'public');
+            //     $project->attachments()->create([
+            //         'uuid'          => (string) Str::uuid(),
+            //         'path'          => $imagePath,
+            //         'original_name' => 'project_master_plan.png',
+            //         'type'          => 'image',
+            //         'recorded_at'   => now(),
+            //     ]);
+            // } catch (\Exception $e) {
+            //     $this->command->error("Failed uploading project image: " . $e->getMessage());
+            // }
         }
         $this->command->info('🎉 Projects seeded successfully!');
     }

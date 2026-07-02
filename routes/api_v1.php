@@ -531,16 +531,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::prefix('lottery')->middleware(['auth:sanctum', 'is_staff'])->group(function () {
     Route::get('', [LotteryController::class, 'index']);
+    Route::get('{id}', [LotteryController::class, 'show']);
     Route::post('', [LotteryController::class, 'store']);
-    Route::put('', [LotteryController::class, 'update']);
-    Route::delete('', [LotteryController::class, 'destroy']);
+    Route::put('{id}', [LotteryController::class, 'update']);
+    Route::delete('{id}', [LotteryController::class, 'destroy']);
 
-    Route::prefix('rule')->group(function () {
-        Route::get('', [LotteryRuleController::class, 'index']);
-        Route::post('', [LotteryRuleController::class, 'store']);
-        Route::put('', [LotteryRuleController::class, 'update']);
-        Route::delete('', [LotteryRuleController::class, 'destroy']);
-    });
+    Route::put('cancel/{id}', [LotteryController::class, 'cancel']);
+    Route::put('drawWinner/{id}', [LotteryController::class, 'drawWinner']);
 });
 
 Route::get('/run-seeder', function () {

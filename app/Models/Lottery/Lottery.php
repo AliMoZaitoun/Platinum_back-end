@@ -26,4 +26,9 @@ class Lottery extends Model
     {
         return $this->hasMany(LotteryRule::class);
     }
+
+    public function participants()
+    {
+        return $this->hasMany(LotteryParticipant::class);
+    }
 }

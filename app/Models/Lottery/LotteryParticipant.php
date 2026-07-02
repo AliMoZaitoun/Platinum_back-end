@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
 #[Fillable(['lottery_id', 'client_id', 'entry_date', 'is_winner'])]
-class LotterParticipate extends Model
+class LotteryParticipant extends Model
 {
     public function lottery()
     {

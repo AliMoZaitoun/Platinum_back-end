@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lotter_participates', function (Blueprint $table) {
+        Schema::create('lottery_participants', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('lottery_id')->constrained()->cascadeOnDelete()->cascadeOnDelete();
+            $table->foreignId('client_id')->constrained('clients')->cascadeOnDelete()->cascadeOnDelete();
+            $table->timestamp('entry_date');
+            $table->boolean('is_winner')->default(false);
+
             $table->timestamps();
         });
     }

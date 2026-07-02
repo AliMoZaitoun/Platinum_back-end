@@ -8,7 +8,8 @@ class UpdateLotteryDTO
         public ?string $title,
         public ?string $status,
         public ?int $unit_id,
-        public ?int $winner_client_id
+        public ?int $winner_client_id,
+        public ?array $rules
     ) {}
 
     public static function fromRequest(array $request)
@@ -17,7 +18,8 @@ class UpdateLotteryDTO
             title: $request['title'] ?? null,
             status: $request['status'] ?? 'open',
             unit_id: $request['unit_id'] ?? null,
-            winner_client_id: $request['winner_client_id'] ?? null
+            winner_client_id: $request['winner_client_id'] ?? null,
+            rules: $request['rules'] ?? null
         );
     }
 
