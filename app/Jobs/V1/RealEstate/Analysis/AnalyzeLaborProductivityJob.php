@@ -35,11 +35,11 @@ class AnalyzeLaborProductivityJob implements ShouldQueue
                 AVG(CASE WHEN report_date > ? THEN daily_progress END) as current_avg_progress
             ", [
                 $sevenDaysAgo,
-                $threeDaysAgo, // للـ manpower الماضي
+                $threeDaysAgo, // Past manpower
                 $sevenDaysAgo,
-                $threeDaysAgo, // للـ progress الماضي
-                $threeDaysAgo,                 // للـ manpower الحاضر
-                $threeDaysAgo                  // للـ progress الحاضر
+                $threeDaysAgo, // Past progress
+                $threeDaysAgo, // Present manpower
+                $threeDaysAgo  // Present Progress
             ])
             ->first();
 
@@ -47,11 +47,9 @@ class AnalyzeLaborProductivityJob implements ShouldQueue
             return;
         }
 
-        // الحسابات الرياضية البسيطة
         $pastWorkerProd    = $analytics->past_avg_manpower > 0 ? ($analytics->past_avg_progress / $analytics->past_avg_manpower) : 0;
         $currentWorkerProd = $analytics->current_avg_manpower > 0 ? ($analytics->current_avg_progress / $analytics->current_avg_manpower) : 0;
 
-        // الشروط (إذا تحقق الانحراف الكارثي)
         if (
             $analytics->current_avg_manpower > $analytics->past_avg_manpower &&
             $analytics->current_avg_progress < $analytics->past_avg_progress &&

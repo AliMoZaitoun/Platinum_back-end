@@ -4,6 +4,7 @@ namespace App\Models\RealEstate;
 
 use App\Models\Client\Client;
 use App\Models\Client\Favorite;
+use App\Models\Marketing\Offer;
 use App\Models\Media;
 use App\Models\Sales\Complaint;
 use App\Models\Sales\Order;
@@ -80,5 +81,10 @@ class Unit extends Model
     public function complaints()
     {
         return $this->hasMany(Complaint::class);
+    }
+
+    public function offerable()
+    {
+        return $this->morphMany(Offer::class, 'offerable');
     }
 }

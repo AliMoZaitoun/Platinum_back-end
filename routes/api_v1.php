@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\NoteController;
+use App\Http\Controllers\V1\AdminOfferController;
+use App\Http\Controllers\V1\NoteController;
 use App\Http\Controllers\V1\Lottery\LotteryController;
 use App\Http\Controllers\V1\Lottery\LotteryRuleController;
 use App\Http\Controllers\V1\Auth\LoginController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\V1\ChatController;
 use App\Http\Controllers\V1\Client\ClientController;
 use App\Http\Controllers\V1\Client\FavoriteController;
 use App\Http\Controllers\V1\Client\UnitController as ClientUnitController;
+use App\Http\Controllers\V1\ClientOfferController;
 use App\Http\Controllers\V1\Core\DepartmentController;
 use App\Http\Controllers\V1\Core\EmployeeController;
 use App\Http\Controllers\V1\Core\EmployeeDepartmentController;
@@ -539,6 +541,18 @@ Route::prefix('lottery')->middleware(['auth:sanctum', 'is_staff'])->group(functi
     Route::put('cancel/{id}', [LotteryController::class, 'cancel']);
     Route::put('drawWinner/{id}', [LotteryController::class, 'drawWinner']);
 });
+
+Route::prefix('offer')->middleware(['auth:sanctum', 'is_staff'])->group(function () {
+    Route::get('', [AdminOfferController::class, 'index']);
+    Route::get('{id}', [AdminOfferController::class, 'show']);
+    Route::get('', [AdminOfferController::class, 'activeOffers']);
+    Route::post('', [AdminOfferController::class, 'store']);
+    Route::put('{id}', [AdminOfferController::class, 'update']);
+    Route::delete('{id}', [AdminOfferController::class, 'destroy']);
+});
+
+Route::get('offer/client', [ClientOfferController::class, 'activeOffers']);
+Route::get('offer/client/{id}', [ClientOfferController::class, 'show']);
 
 Route::get('/run-seeder', function () {
     Artisan::call('migrate:fresh', [

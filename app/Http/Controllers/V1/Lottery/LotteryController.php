@@ -49,7 +49,7 @@ class LotteryController extends Controller
         return $this->useResource($lottery, LotteryResource::class);
     }
 
-    public function cancle(int $id)
+    public function cancel(int $id)
     {
         $lottery = $this->lotteryService->cancelLottery($id);
 

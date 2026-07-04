@@ -31,7 +31,6 @@ class LotteryDAO
 
     public function getEligibleClients(int $unitId, array $rules)
     {
-        // 1. الأوردرات المقبولة مبدئياً لهي الشقة
         $orderQuery = $this->orderDAO->query()
             ->where('unit_id', $unitId)
             ->where('status', 'initially_accepted');
