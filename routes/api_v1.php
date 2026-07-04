@@ -443,11 +443,11 @@ Route::prefix('appointment')->middleware('auth:sanctum')->group(function () {
     Route::get('{id}', [AppointmentController::class, 'show'])
         ->middleware(['permission:read.appointment']);
 
-    Route::put('cancel/{id}', [AppointmentController::class, 'cancelAppointment'])
-        ->middleware(['permission:update.appointment']);
+    Route::put('cancel/{id}', [AppointmentController::class, 'cancelAppointment']);
+    // ->middleware(['permission:update.appointment']);
 
-    Route::put('markAsDone/{id}', [AppointmentController::class, 'markAsDone'])
-        ->middleware(['permission:update.appointment']);
+    Route::put('markAsDone/{id}', [AppointmentController::class, 'markAsDone']);
+    // ->middleware(['permission:update.appointment']);
 
     Route::get('client/myAppointments', [AppointmentController::class, 'myAppointments']);
     // Route::post('askChangeTime/{id}', [AppointmentController::class, 'askChangeTime']);

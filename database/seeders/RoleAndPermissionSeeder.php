@@ -120,8 +120,10 @@ class RoleAndPermissionSeeder extends Seeder
             'read.engineer',
             'read.attendance',
             'read.project',
+
             'create.appointment',
             'read.appointment',
+            'update.appointment',
 
             'read.client',
             'read.unit'
