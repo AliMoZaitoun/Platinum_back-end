@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('unit_id')->constrained('units')->onDelete('cascade');
             $table->string('title');
-            $table->enum('status', ['open', 'closed', 'completed'])->default('open');
+            $table->enum('status', ['open', 'cancelled', 'completed'])->default('open');
             $table->foreignId('winner_client_id')->nullable()->constrained('clients');
             $table->softDeletes();
             $table->timestamps();
