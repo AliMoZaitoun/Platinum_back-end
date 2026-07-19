@@ -17,7 +17,7 @@ class OfferDAO
 
     public function getActiveOffers()
     {
-        return Offer::active()->get();
+        return Offer::where('status', true)->get();
     }
 
     public function store(CreateOfferDTO $dto)

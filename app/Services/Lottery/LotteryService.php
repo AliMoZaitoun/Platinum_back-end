@@ -128,4 +128,9 @@ class LotteryService
     {
         return $this->lotteryDAO->destroy($id);
     }
+
+    public function byClient(int $client_id)
+    {
+        return $this->lotteryDAO->byClient($client_id);
+    }
 }

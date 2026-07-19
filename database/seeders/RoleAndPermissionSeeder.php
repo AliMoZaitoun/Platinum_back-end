@@ -20,6 +20,7 @@ class RoleAndPermissionSeeder extends Seeder
             'department',
             'role',
 
+            'contract',
             'solution',
             'project',
             'building',
@@ -76,6 +77,9 @@ class RoleAndPermissionSeeder extends Seeder
             'read.location',
             'create.appointment',
             'read.appointment',
+
+            'read.payment',
+            'read.contract',
         ]);
 
         $marketing_staff = Role::firstOrCreate(['name' => 'marketing_staff']);
@@ -126,7 +130,13 @@ class RoleAndPermissionSeeder extends Seeder
             'update.appointment',
 
             'read.client',
-            'read.unit'
+            'read.unit',
+
+            'create.contract',
+            'read.contract',
+            'update.contract',
+            'delete.contract',
+
         ]);
 
         $customer_service = Role::firstOrCreate(['name' => 'customer_service_staff']);
@@ -142,7 +152,11 @@ class RoleAndPermissionSeeder extends Seeder
 
             'create.client',
             'read.client',
-            'delete.client'
+            'delete.client',
+
+            'read.payment',
+            'read.contract',
+
         ]);
 
 
@@ -151,7 +165,12 @@ class RoleAndPermissionSeeder extends Seeder
             'create.availableSlot',
             'read.availableSlot',
             'update.availableSlot',
-            'delete.availableSlot'
+            'delete.availableSlot',
+
+            'create.payment',
+            'read.payment',
+            'update.payment',
+            'delete.payment',
         ]);
 
         $engineering = Role::firstOrCreate(['name' => 'engineering_staff']);

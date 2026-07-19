@@ -10,6 +10,7 @@ use App\Http\Requests\V1\Lottery\UpdateLotteryRequest;
 use App\Http\Resources\V1\Lottery\LotteryResource;
 use App\Services\Lottery\LotteryService;
 use App\Traits\ResponseTrait;
+use Illuminate\Support\Facades\Auth;
 
 class LotteryController extends Controller
 {
@@ -67,5 +68,18 @@ class LotteryController extends Controller
         $this->lotteryService->destroy($id);
 
         return $this->successResponse([], LotteryResource::class);
+    }
+
+    public function byClient(int $client_id)
+    {
+        $lotteries = $this->lotteryService->byClient($client_id);
+        return $this->successCollection($lotteries, LotteryResource::class);
+    }
+
+    public function forClient()
+    {
+        $client = Auth::user()->client;
+        $lotteries = $this->lotteryService->byClient($client->id);
+        return $this->successCollection($lotteries, LotteryResource::class);
     }
 }

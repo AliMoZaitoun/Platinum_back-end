@@ -118,4 +118,15 @@ class LotteryDAO
         $lottery = $this->show($id);
         return $lottery->delete();
     }
+
+    public function byClient(int $client_id)
+    {
+        return Lottery::query()
+            ->whereHas('participants', function ($query) use ($client_id) {
+                $query->where('client_id', $client_id);
+            })
+            ->with(['unit', 'rules'])
+            ->latest()
+            ->get();
+    }
 }

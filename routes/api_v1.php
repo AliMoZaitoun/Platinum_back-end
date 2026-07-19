@@ -34,8 +34,11 @@ use App\Http\Controllers\V1\Sales\AppointmentController;
 use App\Http\Controllers\V1\Sales\AvailabilitySlotController;
 use App\Http\Controllers\V1\Sales\ComplaintController;
 use App\Http\Controllers\V1\Sales\ComplaintTypeController;
+use App\Http\Controllers\V1\Sales\ContractController;
 use App\Http\Controllers\V1\Sales\OrderController;
+use App\Http\Controllers\V1\Sales\PaymentController;
 use App\Http\Controllers\V1\Sales\UnitOwnershipController;
+use Aws\Route53\Exception\Route53Exception;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
@@ -324,6 +327,43 @@ Route::prefix('unit')->middleware(['auth:sanctum', 'is_staff'])->group(function 
     Route::post('sale/{unit_id}', [UnitOwnershipController::class, 'store']);
 });
 
+Route::prefix('contract')->middleware('auth:sanctum')->group(function () {
+    Route::get('', [ContractController::class, 'index'])
+        ->middleware('permission:read.contract');
+
+    Route::get('{id}', [ContractController::class, 'show'])
+        ->middleware('permission:read.contract');
+
+    Route::get('client/{client_id}', [ContractController::class, 'byClient'])
+        ->middleware('permission:read.contract');
+
+    Route::post('', [ContractController::class, 'store'])
+        ->middleware('permission:create.contract');
+
+    Route::put('changeStatus/{id}', [ContractController::class, 'changeStatus'])
+        ->middleware('permission:update.contract');
+
+    Route::delete('{id}', [ContractController::class, 'destroy'])
+        ->middleware('permission:delete.contract');
+});
+
+Route::prefix('payment')->middleware('auth:sanctum')->group(function () {
+    Route::get('', [PaymentController::class, 'index'])
+        ->middleware('permission:read.payment');
+
+    Route::post('', [PaymentController::class, 'store'])
+        ->middleware('permission:create.payment');
+
+    Route::put('{id}', [PaymentController::class, 'update'])
+        ->middleware('permission:update.payment');
+
+    Route::put('uploadFile/{id}', [PaymentController::class, 'uploadFile']);
+    // ->middleware('permission:read.payment');
+
+    Route::delete('{id}', [PaymentController::class, 'destroy'])
+        ->middleware('permission:delete.payment');
+});
+
 Route::prefix('client')->middleware(['auth:sanctum', 'is_client'])->group(function () {
     Route::get('unit/read', [ClientUnitController::class, 'index']);
 
@@ -336,6 +376,11 @@ Route::prefix('client')->middleware(['auth:sanctum', 'is_client'])->group(functi
     Route::get('unit/{id}', [ClientUnitController::class, 'show']);
 
     Route::get('myUnits', [UnitOwnershipController::class, 'myUnits']);
+
+    //  Contracts
+    Route::get('contract', [ContractController::class, 'forClient']);
+
+    Route::get('payment', [PaymentController::class, 'getMine']);
 });
 
 Route::prefix('complaint')->middleware(['auth:sanctum'])->group(function () {
@@ -393,7 +438,7 @@ Route::prefix('order')->middleware('auth:sanctum')->group(function () {
             ->middleware(['permission:update.order']);
     });
 
-    Route::middleware('is_client')->group(function () {
+    Route::middleware(['auth:sanctum', 'is_client'])->group(function () {
         Route::get('myUnitOrders', [OrderController::class, 'myUnitOrders']);
         Route::get('mySolutionOrders', [OrderController::class, 'mySolutionOrders']);
 
@@ -551,8 +596,13 @@ Route::prefix('offer')->middleware(['auth:sanctum', 'is_staff'])->group(function
     Route::delete('{id}', [AdminOfferController::class, 'destroy']);
 });
 
-Route::get('offer/client', [ClientOfferController::class, 'activeOffers']);
-Route::get('offer/client/{id}', [ClientOfferController::class, 'show']);
+Route::prefix('client')->middleware(['auth:sanctum', 'is_client'])->group(function () {
+    Route::get('lottery', [LotteryController::class, 'forClient']);
+    Route::get('lottery/{id}', [LotteryController::class, 'show']);
+
+    Route::get('offer', [ClientOfferController::class, 'activeOffers']);
+    Route::get('offer/{id}', [ClientOfferController::class, 'show']);
+});
 
 Route::get('/run-seeder', function () {
     Artisan::call('migrate:fresh', [
