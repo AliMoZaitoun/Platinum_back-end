@@ -138,6 +138,9 @@ class RoleAndPermissionSeeder extends Seeder
             'update.contract',
             'delete.contract',
 
+            'read.order',
+            'update.order',
+
         ]);
 
         $customer_service = Role::firstOrCreate(['name' => 'customer_service_staff']);
@@ -172,6 +175,9 @@ class RoleAndPermissionSeeder extends Seeder
             'read.payment',
             'update.payment',
             'delete.payment',
+
+            'read.order',
+
         ]);
 
         $engineering = Role::firstOrCreate(['name' => 'engineering_staff']);
@@ -182,6 +188,8 @@ class RoleAndPermissionSeeder extends Seeder
             'delete.engineer',
 
             'read.project',
+
+            'read.order',
 
             'read.report',
             'update.report',
