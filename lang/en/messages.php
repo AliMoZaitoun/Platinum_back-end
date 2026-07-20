@@ -98,4 +98,8 @@ return [
         'no_participants' => 'There are no eligible clients in this lottery to perform the draw.',
         'not_found' => 'The requested lottery could not be found.',
     ],
+
+    'payment' => [
+        'cannot_be_updated' => 'This payment cannot be updated because it is no longer pending.',
+    ]
 ];

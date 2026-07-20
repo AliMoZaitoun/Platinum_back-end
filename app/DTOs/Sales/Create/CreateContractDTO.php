@@ -6,7 +6,7 @@ class CreateContractDTO
 {
     public function __construct(
         public int $order_id,
-        public int $client_id,
+        public ?int $client_id,
         public ?int $employee_id,
         public float $total_price,
         public float $down_payment_amount,
@@ -14,11 +14,11 @@ class CreateContractDTO
         public string $status
     ) {}
 
-    public static function fromRequest(array $request, int $employeeId)
+    public static function fromRequest(array $request, int $employeeId, ?int $client_id)
     {
         return new self(
             employee_id: $employeeId,
-            client_id: $request['client_id'],
+            client_id: $client_id,
             order_id: $request['order_id'],
             total_price: $request['total_price'],
             down_payment_amount: $request['down_payment_amount'],

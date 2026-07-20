@@ -16,7 +16,6 @@ class CreateContractRequest extends FormRequest
     {
         return [
             'order_id'                        => 'required|integer|exists:orders,id',
-            'client_id'                       => 'required|integer|exists:clients,id',
             'total_price'                     => 'required|numeric|min:0|max:999999999999.99',
             'down_payment_amount'             => 'required|numeric',
             'installments_count'              => 'required|integer',

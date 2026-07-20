@@ -5,6 +5,7 @@ namespace App\Services\Sales;
 use App\DAO\Sales\PaymentDAO;
 use App\DTOs\Sales\Create\CreatePaymentDTO;
 use App\DTOs\Sales\Update\UpdatePaymentDTO;
+use App\Exceptions\V1\Sales\PaymentImmutableException;
 use App\Services\FileManagerService;
 use App\Services\Transaction;
 
@@ -51,6 +52,12 @@ class PaymentService
     public function update(int $id, UpdatePaymentDTO $dto, $attachments = null)
     {
         return $this->transaction->execute(function () use ($id, $dto, $attachments) {
+            $pay = $this->dao->show($id);
+
+            if ($pay->status !== 'pending') {
+                throw new PaymentImmutableException();
+            }
+
             $payment = $this->dao->update($id, $dto);
 
             if ($attachments) {

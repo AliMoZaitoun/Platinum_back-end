@@ -15,13 +15,13 @@ class StoreLotteryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'unit_id' => 'required|integer|exists:units,id',
-            'title' => 'required|string|max:255',
-            'rules' => 'required|array|min:1',
-            'rules.*.rule_key' => 'required|string',
-            'rules.*.operator' => 'required|string|in:=,>=,<=,>,<,LIKE,IN',
-            'rules.*.rule_value' => 'required|string',
-            'status'    => 'string|in:open,closed,completed'
+            'unit_id'               => 'required|integer|exists:units,id',
+            'title'                 => 'required|string|max:255',
+            'rules'                 => 'required|array|min:1',
+            'rules.*.rule_key'      => 'required|string',
+            'rules.*.operator'      => 'required|string|in:=,>=,<=,>,<,LIKE,IN',
+            'rules.*.rule_value'    => 'required|string',
+            'status'                => 'string|in:open,closed,completed'
         ];
     }
 }

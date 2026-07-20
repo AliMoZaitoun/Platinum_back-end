@@ -29,7 +29,7 @@ class ContractController extends Controller
     public function store(CreateContractRequest $request)
     {
         $employee = Auth::user()->employee;
-        $dto = CreateContractDTO::fromRequest($request->validated(), $employee->id);
+        $dto = CreateContractDTO::fromRequest($request->validated(), $employee->id, null);
         $contract = $this->service->store($dto, $request->file('attachments'));
         return $this->useResource($contract, ContractResource::class, __('messages.common.stored'), 201);
     }

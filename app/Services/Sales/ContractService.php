@@ -17,7 +17,8 @@ class ContractService
         private ContractDAO $dao,
         private Transaction $transaction,
         private PaymentDAO $paymentDAO,
-        private FileManagerService $fileManager
+        private FileManagerService $fileManager,
+        private OrderService $orderService
     ) {}
 
     public function index(array $relations = [], int $perPage = 15)
@@ -28,6 +29,9 @@ class ContractService
     public function store(CreateContractDTO $dto, $attachments = null)
     {
         return $this->transaction->execute(function () use ($dto, $attachments) {
+            $order = $this->orderService->show($dto->order_id);
+            $dto->client_id = $order->client_id;
+
             $contract = $this->dao->store($dto);
 
             if ($attachments) {
