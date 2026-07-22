@@ -8,6 +8,7 @@ use App\Http\Requests\V1\RealEstate\CreateReportRequest;
 use App\Http\Resources\V1\RealEstate\ConstructionReportResource;
 use App\Services\Engineer\ConstructionReportService;
 use App\Traits\ResponseTrait;
+use Illuminate\Support\Facades\Auth;
 
 class ConstructionReportController extends Controller
 {
@@ -25,7 +26,8 @@ class ConstructionReportController extends Controller
 
     public function store(CreateReportRequest $request)
     {
-        $reportDTO = CreateReportDTO::fromRequest($request->validated());
+        $engineer = Auth::user()->engineer;
+        $reportDTO = CreateReportDTO::fromRequest($request->validated(), $engineer->id);
         $report = $this->service->store($reportDTO, $request->file('attachments'));
         return $this->useResource($report, ConstructionReportResource::class, __('messages.common.stored'), 201);
     }

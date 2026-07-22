@@ -3,6 +3,7 @@
 namespace App\Jobs\V1\RealEstate\Analysis;
 
 use App\Models\Engineer\ConstructionReport;
+use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +19,7 @@ class AnalyzeLaborProductivityJob implements ShouldQueue
     {
         $report = $this->report;
         $reportDate = $report->report_date;
+        $reportDate = Carbon::parse($report->report_date);
 
         $sevenDaysAgo = $reportDate->copy()->subDays(7)->toDateTimeString();
         $threeDaysAgo = $reportDate->copy()->subDays(3)->toDateTimeString();

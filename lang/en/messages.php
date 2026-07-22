@@ -67,6 +67,7 @@ return [
         'different_device'          => 'This device is not registered to your account. Please contact the administration to authorize this new device.',
         'building_required'         => 'The building (building_id) must be specified to determine the exact location of attendance.',
         'not_checked_in_yet'        => 'No active check-in record found for this session to complete the check-out.',
+        'not_checked_in_yet_report' => 'No active check-in record found for this session to upload the report.',
         'low_gps_accuracy'          => 'GPS signal is weak (Accuracy: :current meters). The system requires an accuracy better than :required meters. Please move to an open area.',
         'mock_location_detected'    => 'Attendance rejected! The use of fake location applications (Mock Location) is strictly prohibited.',
         'shift_timeout'             => 'You forgot to check out from your previous shift on :date. Please contact management to adjust your hours.',

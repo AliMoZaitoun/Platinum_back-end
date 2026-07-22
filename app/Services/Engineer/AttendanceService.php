@@ -102,9 +102,9 @@ class AttendanceService
         $serverTime = Carbon::now();
         $maxOfflineDays = 2;
 
-        if ($attendanceDate->gt($serverTime->addMinutes(5))) {
-            throw new FutureAttendanceTimeException();
-        }
+        // if ($attendanceDate->gt($serverTime->addMinutes(5))) {
+        //     throw new FutureAttendanceTimeException();
+        // }
 
         if ($attendanceDate->diffInDays($serverTime) > $maxOfflineDays) {
             throw new OfflineSyncExpiredException($maxOfflineDays);

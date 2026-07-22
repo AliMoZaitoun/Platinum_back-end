@@ -8,7 +8,7 @@ class CreateReportDTO
         public string $uuid,
         public int $project_id,
         public ?int $building_id,
-        public int $engineer_id,
+        public ?int $engineer_id,
         public string $phase,
         public int $completion_percentage,
         public int $daily_progress,
@@ -20,13 +20,13 @@ class CreateReportDTO
         public ?string $recorded_at
     ) {}
 
-    public static function fromRequest(array $request): self
+    public static function fromRequest(array $request, int $engineerId): self
     {
         return new self(
             uuid: $request['uuid'],
             project_id: $request['project_id'],
             building_id: $request['building_id'] ?? null,
-            engineer_id: $request['engineer_id'],
+            engineer_id: $request['engineer_id'] ?? $engineerId,
             phase: $request['phase'],
             completion_percentage: (int) $request['completion_percentage'],
             daily_progress: (int) $request['daily_progress'],

@@ -11,6 +11,7 @@ use App\Exceptions\V1\Engineer\Attendance\AlreadyCheckedInException;
 use App\Exceptions\V1\Engineer\Attendance\BuildingProjectMismatchException;
 use App\Exceptions\V1\Engineer\Attendance\DeviceMismatchException;
 use App\Exceptions\V1\Engineer\Attendance\BuildingRequiredException;
+use App\Exceptions\V1\Engineer\Attendance\FutureAttendanceTimeException;
 use App\Exceptions\V1\Engineer\Attendance\InvalidCheckOutTimeException;
 use App\Exceptions\V1\Engineer\Attendance\NotCheckedInYetException;
 use App\Exceptions\V1\Engineer\Attendance\LowGpsAccuracyException;
@@ -151,6 +152,10 @@ class Handler
         });
 
         $exceptions->render(function (CompleteFutureAppointmentException $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode() ?: 422);
+        });
+
+        $exceptions->render(function (FutureAttendanceTimeException $e) {
             return $this->errorResponse($e->getMessage(), $e->getCode() ?: 422);
         });
 

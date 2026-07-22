@@ -15,7 +15,7 @@ class CheckInAttRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'uuid'          => 'required|string',
+            'uuid'          => 'required|uuid',
             'project_id'    => 'required|integer|exists:projects,id',
             'building_id'   => 'nullable|integer|exists:buildings,id',
             'check_in_lat'  => 'required|numeric|between:-90,90',
