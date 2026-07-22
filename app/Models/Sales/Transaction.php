@@ -2,6 +2,10 @@
 
 namespace App\Models\Sales;
 
+use App\Enums\TransactionCategory;
+use App\Models\Core\Employee;
+use App\Models\Core\Warehouse;
+use App\Models\RealEstate\Project;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -24,7 +28,30 @@ use Illuminate\Database\Eloquent\SoftDeletes;
     'description',
     'created_by',
 ])]
+
 class Transaction extends Model
 {
     use SoftDeletes;
+
+    protected function casts(): array
+    {
+        return [
+            'category' => TransactionCategory::class,
+        ];
+    }
+
+    public function transactionable()
+    {
+        return $this->morphTo();
+    }
+
+    public function party()
+    {
+        return $this->morphTo();
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(Employee::class, 'created_by');
+    }
 }

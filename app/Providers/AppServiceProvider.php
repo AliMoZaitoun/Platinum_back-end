@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Engineer\ConstructionReport;
 use App\Models\Message;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

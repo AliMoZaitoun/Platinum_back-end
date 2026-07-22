@@ -100,5 +100,16 @@ return [
 
     'payment' => [
         'cannot_be_updated' => 'لا يمكن تعديل هذه الدفعة لأنها لم تعد في حالة الانتظار.',
-    ]
+    ],
+
+    'transaction' => [
+        'voucher_number_required' => 'رقم السند مطلوب.',
+        'voucher_number_unique'   => 'رقم السند هذا مستخدم من قبل.',
+        'type_required'           => 'نوع السند (قبض/صرف) مطلوب.',
+        'type_invalid'            => 'نوع السند غير صالح.',
+        'amount_required'         => 'المبلغ مطلوب.',
+        'amount_must_be_positive' => 'يجب أن يكون المبلغ أكبر من صفر.',
+        'category_required'       => 'تصنيف الحركة المالية مطلوب.',
+        'payment_method_required' => 'طريقة الدفع مطلوبة.',
+    ],
 ];

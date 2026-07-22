@@ -101,5 +101,16 @@ return [
 
     'payment' => [
         'cannot_be_updated' => 'This payment cannot be updated because it is no longer pending.',
-    ]
+    ],
+
+    'transaction' => [
+        'voucher_number_required' => 'The voucher number is required.',
+        'voucher_number_unique'   => 'This voucher number has already been taken.',
+        'type_required'           => 'The transaction type (receipt/payment) is required.',
+        'type_invalid'            => 'The selected transaction type is invalid.',
+        'amount_required'         => 'The amount is required.',
+        'amount_must_be_positive' => 'The amount must be greater than zero.',
+        'category_required'       => 'The transaction category is required.',
+        'payment_method_required' => 'The payment method is required.',
+    ],
 ];

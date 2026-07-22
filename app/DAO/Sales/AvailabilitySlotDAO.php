@@ -46,7 +46,7 @@ class AvailabilitySlotDAO
 
     public function show(int $id)
     {
-        return AvailabilitySlot::where('id', $id)->with('employee')->get() ?? throw new NotFoundException("Appointment");
+        return AvailabilitySlot::where('id', $id)->with('employee')->first() ?? throw new NotFoundException("Appointment");
     }
 
     public function update(int $id, UpdateAvailabilitySlotDTO $appointmentDTO)

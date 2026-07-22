@@ -22,6 +22,8 @@ class RoleAndPermissionSeeder extends Seeder
 
             'contract',
             'payment',
+            'transaction',
+
             'solution',
             'project',
             'building',

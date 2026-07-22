@@ -32,4 +32,9 @@ class Payment extends Model
     {
         return $this->morphMany(Media::class, 'mediable');
     }
+
+    public function transactions()
+    {
+        return $this->morphMany(Transaction::class, 'transactionable');
+    }
 }

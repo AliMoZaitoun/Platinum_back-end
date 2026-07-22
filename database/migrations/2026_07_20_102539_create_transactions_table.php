@@ -21,12 +21,9 @@ return new class extends Migration
 
             $table->nullableMorphs('transactionable');
 
-            $table->foreignId('project_id')->nullable()->constrained()->nullOnDelete();
-            $table->foreignId('warehouse_id')->nullable()->constrained()->nullOnDelete();
-
             $table->nullableMorphs('party');
 
-            $table->string('category');
+            $table->string('category', 50);
 
             $table->enum('payment_method', ['cash', 'bank_transfer', 'check', 'card']);
 
@@ -34,7 +31,7 @@ return new class extends Migration
 
             $table->text('description')->nullable();
 
-            $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('created_by')->constrained('employees')->cascadeOnDelete();
 
             $table->timestamps();
             $table->softDeletes();

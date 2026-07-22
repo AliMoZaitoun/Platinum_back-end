@@ -34,7 +34,6 @@ class AvailabilitySlotService
             $slots[] = date('H:i:s', $current_time);
             $current_time += $interval;
         }
-        // return $slots;
 
         $avSlotDTO->employee_id = $user->employee->id;
         $avSlotDTO->batch_id = $batch_id;

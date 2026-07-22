@@ -4,6 +4,7 @@ namespace App\Models\Core;
 
 use App\Models\Marketing\Advertisement;
 use App\Models\Sales\AvailabilitySlot;
+use App\Models\Sales\Transaction;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -33,5 +34,15 @@ class Employee extends Model
     public function advertisments()
     {
         return $this->hasMany(Advertisement::class);
+    }
+
+    public function transactions()
+    {
+        return $this->morphMany(Transaction::class, 'party');
+    }
+
+    public function createdTransactions()
+    {
+        return $this->hasMany(Transaction::class, 'created_by');
     }
 }

@@ -6,7 +6,8 @@ use App\Models\RealEstate\Unit;
 use App\Models\Sales\Order;
 use App\Models\Sales\UnitOwnership;
 use App\Models\User;
-use App\Models\V1\Sales\Complaint;
+use App\Models\Sales\Complaint;
+use App\Models\Sales\Transaction;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 
@@ -54,5 +55,10 @@ class Client extends Model
     public function complaints()
     {
         return $this->hasMany(Complaint::class);
+    }
+
+    public function transactions()
+    {
+        return $this->morphMany(Transaction::class, 'party');
     }
 }

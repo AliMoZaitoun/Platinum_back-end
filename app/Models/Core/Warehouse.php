@@ -3,6 +3,7 @@
 namespace App\Models\Core;
 
 use App\Models\RealEstate\Location;
+use App\Models\Sales\Transaction;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;

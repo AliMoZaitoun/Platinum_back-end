@@ -6,6 +6,7 @@ use App\Models\Engineer\Attendance;
 use App\Models\Engineer\EngineerProject;
 use App\Models\Engineer\ProjectEngineerAllocation;
 use App\Models\Media;
+use App\Models\Sales\Transaction;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;

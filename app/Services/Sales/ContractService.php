@@ -10,6 +10,7 @@ use App\DTOs\Sales\Update\UpdateContractDTO;
 use App\Services\FileManagerService;
 use App\Services\Transaction;
 use Carbon\Carbon;
+use Exception;
 
 class ContractService
 {
@@ -110,6 +111,9 @@ class ContractService
 
     public function changeStatus(int $id, UpdateContractDTO $dto)
     {
+        $contract = $this->dao->show($id);
+        if ($contract->status != 'draft')
+            throw new Exception("Couldn't change non-draft contract", 402);
         return $this->dao->changeStatus($id, $dto);
     }
 

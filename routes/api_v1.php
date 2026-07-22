@@ -37,6 +37,7 @@ use App\Http\Controllers\V1\Sales\ComplaintTypeController;
 use App\Http\Controllers\V1\Sales\ContractController;
 use App\Http\Controllers\V1\Sales\OrderController;
 use App\Http\Controllers\V1\Sales\PaymentController;
+use App\Http\Controllers\V1\Sales\TransactionController;
 use App\Http\Controllers\V1\Sales\UnitOwnershipController;
 use Aws\Route53\Exception\Route53Exception;
 use Illuminate\Support\Facades\Artisan;
@@ -604,15 +605,26 @@ Route::prefix('client')->middleware(['auth:sanctum', 'is_client'])->group(functi
     Route::get('offer/{id}', [ClientOfferController::class, 'show']);
 });
 
+Route::middleware('auth:sanctum')->prefix('sales')->group(function () {
+
+    Route::get('transactions/summary', [TransactionController::class, 'summary']);
+
+    Route::get('transactions/warehouse/{warehouseId}', [TransactionController::class, 'warehouseTransactions']);
+
+    Route::get('transactions/project/{projectId}', [TransactionController::class, 'projectTransactions']);
+
+    Route::get('transactions/party/{partyType}/{partyId}', [TransactionController::class, 'partyStatement']);
+
+    Route::post('transactions/{id}/cancel', [TransactionController::class, 'cancel']);
+
+    Route::apiResource('transactions', TransactionController::class)->except(['update', 'destroy']);
+});
+
+
 Route::get('/run-seeder', function () {
     Artisan::call('migrate:fresh', [
         '--seed' => true,
         '--force' => true,
     ]);
     return 'Database has been refreshed and seeded!';
-});
-
-
-Route::get('/queue', function () {
-    Artisan::call('queue:work');
 });
