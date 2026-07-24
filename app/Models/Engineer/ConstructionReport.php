@@ -26,6 +26,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class ConstructionReport extends Model
 {
+    protected $casts = [
+        'report_date' => 'datetime',
+    ];
+
     public function project()
     {
         return $this->belongsTo(Project::class);
