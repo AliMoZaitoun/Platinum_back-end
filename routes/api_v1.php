@@ -394,6 +394,12 @@ Route::prefix('client')->middleware(['auth:sanctum', 'is_client'])->group(functi
 
     Route::get('solution/read/{solution_id}', [SolutionController::class, 'showForClient'])
         ->middleware(['permission:read.solution']);
+
+    Route::get('advertisement/active', [AdvertisementController::class, 'activeAdvertisementsForClient'])
+        ->middleware(['permission:read.advertisment']);
+
+    Route::get('advertisement/read/{ad_id}', [AdvertisementController::class, 'show'])
+        ->middleware(['permission:read.advertisment']);
 });
 
 Route::prefix('complaint')->middleware(['auth:sanctum'])->group(function () {
@@ -516,7 +522,7 @@ Route::prefix('advertisment')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [AdvertisementController::class, 'index'])
         ->middleware(['permission:create.advertisment']);
 
-    Route::get('getActiveAdvertisements', [AdvertisementController::class, 'activeAdvertisements'])
+    Route::get('activeAdvertisements', [AdvertisementController::class, 'activeAdvertisements'])
         ->middleware(['permission:read.advertisment']);
 
     Route::post('/', [AdvertisementController::class, 'store'])
