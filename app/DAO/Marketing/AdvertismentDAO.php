@@ -12,12 +12,12 @@ class AdvertismentDAO
 
     public function index()
     {
-        return Advertisement::latest()->with('attachments', 'offers')->get();
+        return Advertisement::latest()->with(['attachments', 'offer'])->get();
     }
 
     public function activeAdvertisements()
     {
-        return Advertisement::active()->with('attachments', 'offers')->get();
+        return Advertisement::active()->with(['attachments', 'offer'])->get();
     }
 
     public function store(array $data)
@@ -27,7 +27,7 @@ class AdvertismentDAO
 
     public function show(int $id)
     {
-        return Advertisement::where('id', $id)->with('attachments', 'offers.offerable')->first() ?? throw new NotFoundException("Advertisement");
+        return Advertisement::where('id', $id)->with(['attachments', 'offer.offerable'])->first() ?? throw new NotFoundException("Advertisement");
     }
 
     public function update(int $id, UpdateAdDTO $adDTO)

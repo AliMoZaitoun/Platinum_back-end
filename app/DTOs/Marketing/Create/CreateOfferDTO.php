@@ -7,7 +7,6 @@ use Carbon\Carbon;
 class CreateOfferDTO
 {
     public function __construct(
-        public ?int $advertisement_id,
         public float $discount_percentage,
         public float $old_price,
         public float $new_price,
@@ -31,7 +30,6 @@ class CreateOfferDTO
         }
 
         return new self(
-            advertisement_id: isset($data['advertisement_id']) ? (int) $data['advertisement_id'] : null,
             discount_percentage: (float) $data['discount_percentage'],
             old_price: $oldPrice,
             new_price: $newPrice,
@@ -47,7 +45,6 @@ class CreateOfferDTO
     public function toArray(): array
     {
         return [
-            'advertisement_id'    => $this->advertisement_id,
             'discount_percentage' => $this->discount_percentage,
             'old_price'           => $this->old_price,
             'new_price'           => $this->new_price,

@@ -24,7 +24,7 @@ class ClientAdvertisementResource extends JsonResource
             'duration_days' => $this->duration_days,
             'is_active'     => $isCurrentlyActive,
 
-            'offers'        => ClientOfferResource::collection($this->whenLoaded('offers')),
+            'offer'        => new ClientOfferResource($this->whenLoaded('offer')),
 
             'attachments'   => MediaResource::collection($this->whenLoaded('attachments')),
         ];

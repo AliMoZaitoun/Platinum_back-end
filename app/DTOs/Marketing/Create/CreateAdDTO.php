@@ -12,6 +12,7 @@ class CreateAdDTO
         public Carbon $starts_at,
         public Carbon $ends_at,
         public int $duration_days,
+        public ?int $offer_id,
         public bool $status,
         public int $created_by
     ) {}
@@ -28,6 +29,7 @@ class CreateAdDTO
             starts_at: $startsAt,
             ends_at: $endsAt,
             duration_days: $durationDays,
+            offer_id: $data['offer_id'],
             status: (bool) ($data['status'] ?? true),
             created_by: $created_by
         );
@@ -41,6 +43,7 @@ class CreateAdDTO
             'starts_at'     => $this->starts_at->format('Y-m-d H:i:s'),
             'ends_at'       => $this->ends_at->format('Y-m-d H:i:s'),
             'duration_days' => $this->duration_days,
+            'offer_id'      => $this->offer_id,
             'status'        => $this->status,
             'created_by' => $this->created_by
         ], fn($value) => !is_null($value));

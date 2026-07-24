@@ -7,13 +7,14 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-#[Fillable(['advertisement_id', 'discount_percentage', 'offerable_id', 'offerable_type', 'old_price', 'new_price', 'start_date', 'end_date', 'status', 'created_by'])]
+#[Fillable(['discount_percentage', 'offerable_id', 'offerable_type', 'old_price', 'new_price', 'start_date', 'end_date', 'status', 'created_by'])]
 class Offer extends Model
 {
     use SoftDeletes;
-    public function advertisement()
+
+    public function advertisements()
     {
-        return $this->belongsTo(Advertisement::class, 'advertisement_id');
+        return $this->hasMany(Advertisement::class);
     }
 
     public function offerable()

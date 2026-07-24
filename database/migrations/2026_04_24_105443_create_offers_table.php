@@ -10,7 +10,6 @@ return new class extends Migration
     {
         Schema::create('offers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('advertisement_id')->nullable()->constrained()->onDelete('set null');
             $table->morphs('offerable');
 
             $table->decimal('discount_percentage');

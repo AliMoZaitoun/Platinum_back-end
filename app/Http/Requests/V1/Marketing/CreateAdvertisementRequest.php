@@ -21,6 +21,7 @@ class CreateAdvertisementRequest extends FormRequest
             'duration_days' => ['required', 'integer', 'min:1'],
             'status'        => ['nullable', 'boolean'],
             'created_by'    => ['nullable'],
+            'offer_id'      => ['nullable', 'integer', 'exists:offers,id'],
             'attachments'   => 'nullable|array',
             'attachments.*' => 'file|mimes:jpg,jpeg,png,pdf,docx,xlsx,zip,txt|max:10240',
         ];

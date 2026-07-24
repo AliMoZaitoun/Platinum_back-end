@@ -15,7 +15,6 @@ class CreateOfferRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'advertisement_id'    => ['nullable', 'integer', 'exists:advertisements,id'],
             'discount_percentage' => ['required', 'numeric', 'min:0.01', 'max:100'],
 
             'start_date'          => ['nullable', 'date'],

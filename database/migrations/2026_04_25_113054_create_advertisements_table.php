@@ -22,6 +22,8 @@ return new class extends Migration
 
             $table->boolean('status')->default(1);
 
+            $table->foreignId('offer_id')->nullable()->constrained('offers')->nullOnDelete();
+
             $table->softDeletes();
             $table->index(['starts_at', 'ends_at', 'status']);
 
