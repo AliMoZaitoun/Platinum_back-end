@@ -20,7 +20,7 @@ class UnitDAO
     public function getAllForAdmin(int $perPage = 15): LengthAwarePaginator
     {
         return Unit::query()
-            ->with(['building'])
+            ->with(['building', 'activeOffer'])
             ->latest()
             ->paginate($perPage);
     }
@@ -32,7 +32,7 @@ class UnitDAO
         return Unit::query()
             ->where('status', 'available')
 
-            ->with(['attachments'])
+            ->with(['attachments', 'activeOffer'])
 
             ->when($user && $user->client, function ($query) use ($user) {
                 $query->withExists(['favorites' => function ($q) use ($user) {
@@ -45,7 +45,7 @@ class UnitDAO
 
     public function byBuilding(int $building_id, array $relations = [])
     {
-        $defaultRelation = ['building.project'];
+        $defaultRelation = ['building.project', 'activeOffer'];
         $allRelations = array_merge($defaultRelation, $relations);
         return Unit::with($allRelations)->where('building_id', $building_id)->get();
     }
@@ -57,7 +57,7 @@ class UnitDAO
 
     public function show(int $id)
     {
-        return Unit::where('id', $id)->with(['attachments', 'building'])->first() ?? throw new NotFoundException("Unit");
+        return Unit::where('id', $id)->with(['attachments', 'building', 'activeOffer'])->first() ?? throw new NotFoundException("Unit");
     }
 
     protected function getBaseSearchQuery()

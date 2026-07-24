@@ -233,7 +233,7 @@ Route::prefix('employeeDepartment')->middleware('auth:sanctum')->group(function 
 });
 
 // Solution
-Route::prefix('solution')->middleware('auth:sanctum')->group(function () {
+Route::prefix('solution')->middleware(['auth:sanctum', 'is_staff'])->group(function () {
     Route::post('/', [SolutionController::class, 'store'])
         ->middleware(['permission:create.solution']);
 
@@ -382,6 +382,18 @@ Route::prefix('client')->middleware(['auth:sanctum', 'is_client'])->group(functi
     Route::get('contract', [ContractController::class, 'forClient']);
 
     Route::get('payment', [PaymentController::class, 'getMine']);
+
+    Route::get('lottery', [LotteryController::class, 'forClient']);
+    Route::get('lottery/{id}', [LotteryController::class, 'show']);
+
+    Route::get('offer', [ClientOfferController::class, 'activeOffers']);
+    Route::get('offer/{id}', [ClientOfferController::class, 'show']);
+
+    Route::get('solution/read', [SolutionController::class, 'readForClient'])
+        ->middleware(['permission:read.solution']);
+
+    Route::get('solution/read/{solution_id}', [SolutionController::class, 'showForClient'])
+        ->middleware(['permission:read.solution']);
 });
 
 Route::prefix('complaint')->middleware(['auth:sanctum'])->group(function () {
@@ -504,7 +516,7 @@ Route::prefix('advertisment')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [AdvertisementController::class, 'index'])
         ->middleware(['permission:create.advertisment']);
 
-    Route::get('getActiveAdvertisements', [AdvertisementController::class, 'getActiveAdvertisements'])
+    Route::get('getActiveAdvertisements', [AdvertisementController::class, 'activeAdvertisements'])
         ->middleware(['permission:read.advertisment']);
 
     Route::post('/', [AdvertisementController::class, 'store'])
@@ -591,19 +603,12 @@ Route::prefix('lottery')->middleware(['auth:sanctum', 'is_staff'])->group(functi
 Route::prefix('offer')->middleware(['auth:sanctum', 'is_staff'])->group(function () {
     Route::get('', [AdminOfferController::class, 'index']);
     Route::get('{id}', [AdminOfferController::class, 'show']);
-    Route::get('', [AdminOfferController::class, 'activeOffers']);
+    Route::get('active/read', [AdminOfferController::class, 'activeOffers']);
     Route::post('', [AdminOfferController::class, 'store']);
-    Route::put('{id}', [AdminOfferController::class, 'update']);
+    Route::put('changeStatus/{id}', [AdminOfferController::class, 'changeStatus']);
     Route::delete('{id}', [AdminOfferController::class, 'destroy']);
 });
 
-Route::prefix('client')->middleware(['auth:sanctum', 'is_client'])->group(function () {
-    Route::get('lottery', [LotteryController::class, 'forClient']);
-    Route::get('lottery/{id}', [LotteryController::class, 'show']);
-
-    Route::get('offer', [ClientOfferController::class, 'activeOffers']);
-    Route::get('offer/{id}', [ClientOfferController::class, 'show']);
-});
 
 Route::middleware('auth:sanctum')->prefix('sales')->group(function () {
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\V1\Marketing;
 
+use App\Http\Resources\V1\RealEstate\ClientSolutionResource;
 use App\Http\Resources\V1\RealEstate\ClientUnitResource;
 use App\Http\Resources\V1\RealEstate\SolutionResource;
 use Illuminate\Http\Request;
@@ -12,33 +13,40 @@ class ClientOfferResource extends JsonResource
     public function toArray(Request $request): array
     {
         $now = now();
-        $isCurrentlyActive = $this->status == 1 && $this->starts_at <= $now && $this->ends_at >= $now;
+
+        $isCurrentlyActive = (bool) $this->status
+            && $this->start_date <= $now
+            && ($this->end_date === null || $this->end_date >= $now);
 
         return [
-            'id'    =>     $this->id,
+            'id'                  => $this->id,
 
-            'item'                => $this->whenRelationLoaded('offerable', function () {
+            'item_type'           => match ($this->offerable_type) {
+                \App\Models\RealEstate\Unit::class     => 'unit',
+                \App\Models\RealEstate\Solution::class => 'solution',
+                default                                => 'unknown',
+            },
+
+            'item'                => $this->whenLoaded('offerable', function () {
                 if ($this->offerable instanceof \App\Models\RealEstate\Unit) {
                     return new ClientUnitResource($this->offerable);
                 }
                 if ($this->offerable instanceof \App\Models\RealEstate\Solution) {
-                    return new SolutionResource($this->offerable);
+                    return new ClientSolutionResource($this->offerable);
                 }
                 return null;
             }),
 
-            'discount_percentage'   => $this->discount_percentage,
-            'old_price'     => $this->old_price,
-            'new_price'     => $this->new_price,
+            'discount_percentage' => (float) $this->discount_percentage,
+            'old_price'           => (float) $this->old_price,
+            'new_price'           => (float) $this->new_price,
 
-            'starts_at'     => $this->starts_at?->format('Y-m-d h:i:s A'),
-            'ends_at'       => $this->ends_at?->format('Y-m-d h:i:s A'),
+            'start_date'          => $this->start_date?->format('Y-m-d H:i:s'),
+            'end_date'            => $this->end_date?->format('Y-m-d H:i:s'),
 
-            'duration_days' => $this->duration_days,
+            'is_active'           => $isCurrentlyActive,
 
-            'is_active'     => $isCurrentlyActive,
-
-            'created_at'     => $this->created_at->format('Y-m-d h:i A'),
+            'created_at'          => $this->created_at?->format('Y-m-d H:i'),
         ];
     }
 }

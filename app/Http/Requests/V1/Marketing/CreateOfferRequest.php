@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\V1\Marketing;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateOfferRequest extends FormRequest
 {
@@ -15,12 +15,15 @@ class CreateOfferRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'ad_id'                 => ['nullable', 'integer', 'exists:advertisments,id'],
-            'discount_percentage'   => ['required', 'numeric', 'min:0', 'max:100'],
+            'advertisement_id'    => ['nullable', 'integer', 'exists:advertisements,id'],
+            'discount_percentage' => ['required', 'numeric', 'min:0.01', 'max:100'],
 
-            'starts_at'             => ['nullable', 'date', 'date_format:Y-m-d H:i:s'],
-            'duration_days'         => ['required', 'integer', 'min:1'],
-            'status'                => ['nullable', 'boolean'],
+            'start_date'          => ['nullable', 'date'],
+            'duration_days'       => ['required', 'integer', 'min:1'],
+            'status'              => ['nullable', 'boolean'],
+
+            'offerable_type'      => ['required', 'string', Rule::in(['unit', 'solution'])],
+            'offerable_id'        => ['required', 'integer', 'min:1'],
         ];
     }
 }

@@ -11,7 +11,7 @@ class SolutionDAO
 {
     public function index()
     {
-        return Solution::all();
+        return Solution::with(['attachments', 'activeOffer'])->get();
     }
 
     public function store(array $data)

@@ -6,6 +6,7 @@ use App\DTOs\RealEstate\Create\CreateSolutionDTO;
 use App\DTOs\RealEstate\Update\UpdateSolutionDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\CreateSolutionRequest;
+use App\Http\Resources\V1\RealEstate\ClientSolutionResource;
 use App\Http\Resources\V1\RealEstate\SolutionResource;
 use App\Services\RealEstate\SolutionService;
 use App\Traits\ResponseTrait;
@@ -26,6 +27,12 @@ class SolutionController extends Controller
         return $this->successCollection($solutions, SolutionResource::class);
     }
 
+    public function readForClient()
+    {
+        $solutions = $this->solutionService->index();
+        return $this->successCollection($solutions, ClientSolutionResource::class);
+    }
+
     public function store(CreateSolutionRequest $request)
     {
         $solutionDTO = CreateSolutionDTO::fromRequest($request->validated());
@@ -38,6 +45,12 @@ class SolutionController extends Controller
     {
         $solution = $this->solutionService->show($id);
         return $this->useResource($solution, SolutionResource::class);
+    }
+
+    public function showForClient(int $solution_id)
+    {
+        $solution = $this->solutionService->show($solution_id);
+        return $this->useResource($solution, ClientSolutionResource::class);
     }
 
     public function update(int $id, Request $request)

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\V1\Marketing;
 
+use App\Http\Resources\V1\EmployeeDetailResource;
 use App\Http\Resources\V1\RealEstate\UnitResource;
 use App\Http\Resources\V1\RealEstate\SolutionResource;
 use Illuminate\Http\Request;
@@ -12,12 +13,16 @@ class AdminOfferResource extends JsonResource
     public function toArray(Request $request): array
     {
         $now = now();
-        $isCurrentlyActive = $this->status == 1 && $this->starts_at <= $now && $this->ends_at >= $now;
+
+        $isCurrentlyActive = (bool) $this->status
+            && $this->start_date <= $now
+            && ($this->end_date === null || $this->end_date >= $now);
 
         return [
-            'id'    =>     $this->id,
+            'id'                  => $this->id,
+            'advertisement_id'    => $this->advertisement_id,
 
-            'item'                => $this->whenRelationLoaded('offerable', function () {
+            'item'                => $this->whenLoaded('offerable', function () {
                 if ($this->offerable instanceof \App\Models\RealEstate\Unit) {
                     return new UnitResource($this->offerable);
                 }
@@ -27,18 +32,18 @@ class AdminOfferResource extends JsonResource
                 return null;
             }),
 
-            'discount_percentage'   => $this->discount_percentage,
-            'old_price'     => $this->old_price,
-            'new_price'     => $this->new_price,
+            'discount_percentage' => (float) $this->discount_percentage,
+            'old_price'           => (float) $this->old_price,
+            'new_price'           => (float) $this->new_price,
 
-            'starts_at'     => $this->starts_at?->format('Y-m-d h:i:s A'),
-            'ends_at'       => $this->ends_at?->format('Y-m-d h:i:s A'),
+            'start_date'          => $this->start_date?->format('Y-m-d H:i:s'),
+            'end_date'            => $this->end_date?->format('Y-m-d H:i:s'),
 
-            'duration_days' => $this->duration_days,
+            'status'              => (bool) $this->status,
+            'is_active'           => $isCurrentlyActive,
 
-            'is_active'     => $isCurrentlyActive,
-
-            'created_at'     => $this->created_at->format('Y-m-d h:i A'),
+            'created_by'          => new EmployeeDetailResource($this->whenLoaded('createdBy')),
+            'created_at'          => $this->created_at?->format('Y-m-d H:i'),
         ];
     }
 }

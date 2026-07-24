@@ -12,6 +12,7 @@ use App\Http\Resources\V1\Marketing\ClientAdvertisementResource;
 use App\Services\Marketing\AdvertismentSerivce;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdvertisementController extends Controller
 {
@@ -26,17 +27,24 @@ class AdvertisementController extends Controller
         return $this->successCollection($ads, AdminAdvertisementResource::class);
     }
 
-    public function getActiveAdvertisements()
+    public function activeAdvertisements()
     {
-        $ads = $this->adService->getActiveAdvertisements();
+        $ads = $this->adService->activeAdvertisements();
+        return $this->successCollection($ads, AdminAdvertisementResource::class);
+    }
+
+    public function activeAdvertisementsForClient()
+    {
+        $ads = $this->adService->activeAdvertisements();
         return $this->successCollection($ads, ClientAdvertisementResource::class);
     }
 
     public function store(CreateAdvertisementRequest $request)
     {
+        $employee = Auth::user()->employee;
         $dto = CreateAdDTO::fromRequest(
             $request->validated(),
-            $request->user()->employee->id ?? $request->user()->id
+            $employee->id
         );
 
         $ad = $this->adService->store($dto, $request->file('attachments'));

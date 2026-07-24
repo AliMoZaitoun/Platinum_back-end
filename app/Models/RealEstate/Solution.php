@@ -39,4 +39,30 @@ class Solution extends Model
     {
         return $this->morphMany(Offer::class, 'offerable');
     }
+
+    public function activeOffer()
+    {
+        return $this->morphOne(Offer::class, 'offerable')
+            ->where('status', true)
+            ->where('start_date', '<=', now())
+            ->where(function ($q) {
+                $q->whereNull('end_date')
+                    ->orWhere('end_date', '>=', now());
+            });
+    }
+
+    public function getCurrentPriceAttribute()
+    {
+        return $this->activeOffer ? $this->activeOffer->new_price : $this->price;
+    }
+
+    public function getHasActiveOfferAttribute(): bool
+    {
+        return $this->activeOffer !== null;
+    }
+
+    public function getDiscountPercentageAttribute()
+    {
+        return $this->activeOffer ? $this->activeOffer->discount_percentage : 0;
+    }
 }

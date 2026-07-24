@@ -19,7 +19,7 @@ class ClientOfferController extends Controller
 
     public function activeOffers()
     {
-        $offers = $this->offerService->getActiveOffers();
+        $offers = $this->offerService->activeOffers();
         return $this->successCollection($offers, ClientOfferResource::class);
     }
 

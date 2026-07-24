@@ -10,14 +10,26 @@ use App\Models\Marketing\Offer;
 class OfferDAO
 {
 
-    public function index()
+    public function index(array $relations = [], int $perPage = 15)
     {
-        return Offer::latest()->get();
+        $defaultRelations = ['offerable'];
+        $allRelations = array_merge($defaultRelations, $relations);
+        return Offer::query()
+            ->with($allRelations)
+            ->latest()
+            ->paginate($perPage);
     }
 
-    public function getActiveOffers()
+    public function activeOffers(array $relations = [], int $perPage = 15)
     {
-        return Offer::where('status', true)->get();
+        $defaultRelations = ['offerable'];
+        $allRelations = array_merge($defaultRelations, $relations);
+
+        return Offer::query()
+            ->with($allRelations)
+            ->active()
+            ->latest()
+            ->paginate($perPage);
     }
 
     public function store(CreateOfferDTO $dto)
@@ -27,13 +39,22 @@ class OfferDAO
 
     public function show(int $id)
     {
-        return Offer::find($id) ?? throw new NotFoundException("Offer");
+        return Offer::where('id', $id)->with(['offerable'])->first() ?? throw new NotFoundException("Offer");
     }
 
     public function update(int $id, UpdateOfferDTO $dto)
     {
-        $ad = $this->show($id);
-        return $ad->update($dto->toArray());
+        $offer = $this->show($id);
+        $offer->update($dto->toArray());
+        return $offer->refresh();
+    }
+
+    public function deactivatePreviousOffers(string $offerableType, int $offerableId): void
+    {
+        Offer::where('offerable_type', $offerableType)
+            ->where('offerable_id', $offerableId)
+            ->where('status', true)
+            ->update(['status' => false]);
     }
 
     public function destroy(int $id)

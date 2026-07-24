@@ -25,9 +25,9 @@ class AdvertismentSerivce
         return $this->dao->index();
     }
 
-    public function getActiveAdvertisements()
+    public function activeAdvertisements()
     {
-        return $this->dao->getActiveAdvertisements();
+        return $this->dao->activeAdvertisements();
     }
 
     public function store(CreateAdDTO $dto, $attachments = null)

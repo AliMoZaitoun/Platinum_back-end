@@ -30,7 +30,7 @@ class AdminOfferController extends Controller
 
     public function activeOffers()
     {
-        $offers = $this->service->getActiveOffers();
+        $offers = $this->service->activeOffers();
         return $this->successCollection($offers, AdminOfferResource::class);
     }
 
@@ -42,12 +42,12 @@ class AdminOfferController extends Controller
 
     public function store(CreateOfferRequest $request)
     {
-        $dto = CreateOfferDTO::fromRequest($request->validated(), Auth::user()->employee->id);
-        $offer = $this->service->store($dto);
+        $employee = Auth::user()->employee;
+        $offer = $this->service->store($request->validated(), $employee->id);
         return $this->useResource($offer, AdminOfferResource::class, __('messages.common.created'), 201);
     }
 
-    public function update(int $id, UpdateOfferRequest $request)
+    public function changeStatus(int $id, UpdateOfferRequest $request)
     {
         $dto = UpdateOfferDTO::fromRequest($request->toArray());
         $offer = $this->service->update($id, $dto);
