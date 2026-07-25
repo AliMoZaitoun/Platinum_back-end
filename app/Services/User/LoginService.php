@@ -9,6 +9,7 @@ use App\Exceptions\V1\InvalidRefreshTokenException;
 use App\Models\User;
 use App\Services\OtpService;
 use Illuminate\Support\Str;
+use Nette\Schema\ValidationException;
 
 class LoginService
 {
@@ -80,5 +81,24 @@ class LoginService
         ];
 
         return $tokens;
+    }
+
+    public function selectRole(int $roleId, User $user): array
+    {
+        $activeRole = $user->roles()->where('roles.id', $roleId)->first();
+
+        if (! $activeRole) {
+            throw new ValidationException("messages.auth.role_not_assigned_to_user");
+        }
+
+        $permissions = $activeRole->permissions()->pluck('name');
+
+        return [
+            'active_role' => [
+                'id'           => $activeRole->id,
+                'name'         => $activeRole->name,
+            ],
+            'permissions' => $permissions,
+        ];
     }
 }

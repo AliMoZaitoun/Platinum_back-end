@@ -54,6 +54,7 @@ Route::post('refreshToken', [LoginController::class, 'refreshToken'])->middlewar
 Route::post('forgotPassword', [PasswordManagementController::class, 'forgotPassword']);
 Route::post('resetPassword', [PasswordManagementController::class, 'resetPassword']);
 Route::post('logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/select-role', [LoginController::class, 'selectRole'])->middleware('auth:sanctum');
 
 // Test
 Route::post('gemini/{id}', [ClientController::class, 'generatePlan']);
@@ -213,7 +214,7 @@ Route::prefix('department')->middleware('auth:sanctum')->group(function () {
 });
 
 // Department
-Route::prefix('employeeDepartment')->middleware('auth:sanctum')->group(function () {
+Route::prefix('employeeDepartment')->middleware(['auth:sanctum'])->group(function () {
     Route::post('assign/', [EmployeeDepartmentController::class, 'store'])
         ->middleware(['permission:create.department']);
 

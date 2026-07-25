@@ -2,12 +2,14 @@
 
 namespace App\Services\Core;
 
+use App\DAO\Core\DepartmentDAO;
 use App\DAO\Core\EmployeeDAO;
 use App\DAO\Core\EmployeeDepartmentDAO;
 use App\DAO\RoleDAO;
 use App\DTOs\Core\Create\AssignEmployeeDepartmentDTO;
 use App\DTOs\Core\Update\UpdateEmployeeDepartmentDTO;
 use App\Services\TransactionService;
+use App\Enums\UserRole;
 
 class EmployeeDepartmentService
 {
@@ -15,6 +17,7 @@ class EmployeeDepartmentService
         private EmployeeDepartmentDAO $employeeDepartmentDAO,
         private TransactionService $transaction,
         private EmployeeDAO $employeeDAO,
+        private DepartmentDAO $departmentDAO,
         private RoleDAO $roleDAO
     ) {}
 
@@ -29,10 +32,14 @@ class EmployeeDepartmentService
             $record = $this->employeeDepartmentDAO->store($dto);
 
             $employee = $this->employeeDAO->show($dto->employee_id);
+            $department = $this->departmentDAO->show($dto->department_id);
             $user = $employee->user;
 
-            $this->roleDAO->syncUserRoles($user, ['employee', $this->roleDAO->show($dto->role_id, 'web')]);
-
+            $targetRole = UserRole::fromDepartmentName($department->name);
+            $this->roleDAO->assignUserRoles($user->id, [
+                UserRole::EMPLOYEE->value,
+                $targetRole
+            ]);
             return $record;
         });
     }

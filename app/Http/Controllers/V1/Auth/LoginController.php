@@ -5,9 +5,11 @@ namespace App\Http\Controllers\V1\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\LoginRequest;
 use App\Http\Requests\V1\RefreshTokenRequest;
+use App\Http\Requests\V1\SelectRoleRequest;
 use App\Services\User\LoginService;
 use App\Traits\ProvidesUserResource;
 use App\Traits\ResponseTrait;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -40,5 +42,15 @@ class LoginController extends Controller
         $currentToken = $request->user()->currentAccessToken();
         $data['tokens'] = $this->loginService->refreshToken($request->input('refresh_token'), $currentToken);
         return $this->successResponse($data, code: 201);
+    }
+
+    public function selectRole(SelectRoleRequest $request)
+    {
+        $roleId = $request->input('role_id');
+        $user   = $request->user();
+
+        $data = $this->loginService->selectRole($roleId, $user);
+
+        return $this->successResponse($data, __('messages.auth.role_selected_successfully'));
     }
 }

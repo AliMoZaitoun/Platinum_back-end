@@ -48,7 +48,7 @@ class RoleController extends Controller
 
     public function assignRoles(int $user_id, AssignRoleToUserRequest $request)
     {
-        $this->roleService->assignUserRoles($user_id, $request->validated());
+        $this->roleService->assignUserRoles($user_id, $request->input("roles"));
         return $this->successResponse([]);
     }
 
