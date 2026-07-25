@@ -70,7 +70,7 @@ class OrderDAO
     {
         return Order::query()
             ->where('department_id', $department_id)
-            ->with(['unit', 'unit.attachments', 'solution'])
+            ->with(['unit', 'unit.attachments', 'solution', 'notes'])
             ->latest()
             ->paginate($perPage);
     }
