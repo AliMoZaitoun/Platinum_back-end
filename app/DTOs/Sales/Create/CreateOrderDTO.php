@@ -18,7 +18,7 @@ class CreateOrderDTO
             client_id: $clientId,
             unit_id: $request['unit_id'] ?? null,
             solution_id: $request['solution_id'] ?? null,
-            department_id: $request['department_id'] ?? null,
+            department_id: $request['department_id'] ?? 2,
             status: $request['status'] ?? 'pending'
         );
     }

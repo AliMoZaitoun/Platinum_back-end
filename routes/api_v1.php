@@ -350,14 +350,14 @@ Route::prefix('contract')->middleware(['auth:sanctum', 'is_staff'])->group(funct
 });
 
 Route::prefix('contract-exceptions')->middleware(['auth:sanctum', 'is_staff'])->group(function () {
-    Route::get('/', [ContractExceptionController::class, 'index']);
-    // ->middleware('permission:read.contract-exception');
+    Route::get('/', [ContractExceptionController::class, 'index'])
+        ->middleware('permission:read.contract-exception');
 
     Route::get('/{id}', [ContractExceptionController::class, 'show'])
         ->middleware('permission:read.contract-exception');
 
-    Route::post('/{id}/review', [ContractExceptionController::class, 'review']);
-    // ->middleware('permission:update.contract-exception');
+    Route::post('/{id}/review', [ContractExceptionController::class, 'review'])
+        ->middleware('permission:update.contract-exception');
 });
 
 Route::prefix('payment')->middleware('auth:sanctum')->group(function () {

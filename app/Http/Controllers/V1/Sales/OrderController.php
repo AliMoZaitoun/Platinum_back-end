@@ -83,7 +83,7 @@ class OrderController extends Controller
     public function changeStatus(int $id, ChangeStatusOrderRequest $request)
     {
         $orderDTO = UpdateOrderDTO::fromRequest($request->validated());
-        $order = $this->orderService->update($id, $orderDTO);
+        $order = $this->orderService->update($id, $orderDTO, null);
         return $this->useResource($order, OrderResource::class, __('messages.common.updated'));
     }
 
@@ -97,8 +97,10 @@ class OrderController extends Controller
 
     public function transfer(int $id, TransferOrderRequest $request)
     {
+        $employee = Auth::user()->employee;
         $orderDTO = UpdateOrderDTO::fromRequest($request->validated());
-        $order = $this->orderService->update($id, $orderDTO);
+        $noteDTO = CreateNoteDTO::fromRequest($employee->id, $request->validated());
+        $order = $this->orderService->update($id, $orderDTO, $noteDTO);
         return $this->useResource($order, OrderResource::class, __('messages.common.updated'));
     }
 

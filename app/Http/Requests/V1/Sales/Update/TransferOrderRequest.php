@@ -16,6 +16,7 @@ class TransferOrderRequest extends FormRequest
     {
         return [
             'department_id' => 'required|integer|exists:departments,id',
+            'note'          =>  'required|string'
         ];
     }
 }

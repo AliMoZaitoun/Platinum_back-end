@@ -104,7 +104,7 @@ class AttendanceService
 
         // if ($attendanceDate->gt($serverTime->addMinutes(5))) {
         //     throw new FutureAttendanceTimeException();
-        // }
+        // }    
 
         if ($attendanceDate->diffInDays($serverTime) > $maxOfflineDays) {
             throw new OfflineSyncExpiredException($maxOfflineDays);

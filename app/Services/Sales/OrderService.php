@@ -34,12 +34,6 @@ class OrderService
             throw new OrderAlreadySubmittedException();
         }
 
-        if ($dto->unit_id) {
-            $dto->department_id = 5;
-        } else if ($dto->solution_id) {
-            $dto->department_id = 1;
-        }
-
         return $this->orderDAO->store($dto);
     }
 
@@ -63,7 +57,7 @@ class OrderService
         return $this->orderDAO->departmentOrders($department_id);
     }
 
-    public function update(int $id, UpdateOrderDTO $orderDTO, CreateNoteDTO $noteDTO = null)
+    public function update(int $id, UpdateOrderDTO $orderDTO, ?CreateNoteDTO $noteDTO)
     {
         return $this->transactionService->execute(function () use ($id, $orderDTO, $noteDTO) {
             $order = $this->orderDAO->update($id, $orderDTO);

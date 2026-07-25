@@ -11,7 +11,7 @@ class OrderDAO
 {
     public function index(array $relations = [], int $perPage = 15)
     {
-        $defaultRelation = ['unit', 'client', 'solution'];
+        $defaultRelation = ['unit', 'client', 'solution', 'department'];
         $allRelations = array_merge($defaultRelation, $relations);
         return Order::query()
             ->with($allRelations)
@@ -58,7 +58,6 @@ class OrderDAO
 
     public function clientSolutionOrders(int $client_id, int $perPage = 15)
     {
-
         return Order::query()
             ->where('client_id', $client_id)
             ->whereNotNull('solution_id')

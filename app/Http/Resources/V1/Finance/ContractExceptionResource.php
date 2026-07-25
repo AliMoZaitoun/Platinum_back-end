@@ -19,9 +19,9 @@ class ContractExceptionResource extends JsonResource
 
             'comparison' => [
                 'total_price' => [
-                    'original'  => (float) $this->original_total_price,
-                    'requested' => (float) $this->contract?->total_price,
-                    'is_changed' => (float) $this->original_total_price != (float) $this->contract?->total_price,
+                    'original'               => (float) $this->original_total_price,
+                    'requested'              => (float) $this->contract?->total_price,
+                    'is_changed'             => (float) $this->original_total_price != (float) $this->contract?->total_price,
                     'discount_amount'        => (float) ($this->original_total_price - $this->contract?->total_price),
                 ],
                 'down_payment' => [
