@@ -19,7 +19,12 @@ class UserResource extends JsonResource
             'created_at'    => $this->created_at->format('Y-m-d h:i A'),
             'created_from'  => $this->created_at->diffForHumans(),
             'verified_at'   => $this?->email_verified_at?->format('Y-m-d h:i A'),
-            'roles'         => $this->getRoleNames()
+            'roles'         => $this->getRoleNames(),
+
+            'available_roles' => $this->roles->map(fn($role) => [
+                'id'   => $role->id,
+                'name' => $role->name,
+            ]),
         ];
     }
 }
