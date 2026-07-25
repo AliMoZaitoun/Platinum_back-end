@@ -17,7 +17,7 @@ return new class extends Migration
             $table->double('down_payment_amount');
             $table->integer('installments_count');
 
-            $table->enum('status', ['draft', 'active', 'completed', 'terminated'])->default('draft');
+            $table->enum('status', ['draft', 'pending_approval', 'active', 'rejected', 'completed', 'terminated'])->default('draft');
 
             $table->softDeletes();
             $table->timestamps();

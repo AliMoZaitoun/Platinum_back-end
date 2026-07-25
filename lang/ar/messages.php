@@ -113,4 +113,14 @@ return [
         'category_required'       => 'تصنيف الحركة المالية مطلوب.',
         'payment_method_required' => 'طريقة الدفع مطلوبة.',
     ],
+
+    'legal' => [
+        'exception_reason_required'   => 'يجب ذكر سبب الاستثناء عند تقديم طلب تعديل على الشروط القياسية.',
+        'original_total_price_required' => 'يرجى إرسال السعر الأصلي قبل الخصم للاستثناء.',
+        'down_payment_lte_total'     => 'الدفعة الأولى لا يمكن أن تكون أكبر من السعر الإجمالي.',
+    ],
+    'finance' => [
+        'invalid_status'             => 'الحالة يجب أن تكون إما مقبولة (approved) أو مرفوضة (rejected).',
+        'rejection_reason_required'  => 'يجب توضيح سبب الرفض المالي للموظف القانوني.',
+    ],
 ];

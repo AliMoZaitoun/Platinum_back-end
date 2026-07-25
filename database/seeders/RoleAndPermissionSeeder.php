@@ -23,6 +23,7 @@ class RoleAndPermissionSeeder extends Seeder
             'contract',
             'payment',
             'transaction',
+            'contract-exception',
 
             'solution',
             'project',
@@ -33,6 +34,7 @@ class RoleAndPermissionSeeder extends Seeder
             'order',
             'availableSlot',
             'advertisment',
+            'offer',
             'location',
             'report',
             'attendance'
@@ -140,6 +142,9 @@ class RoleAndPermissionSeeder extends Seeder
             'update.contract',
             'delete.contract',
 
+            'read.payment',
+            'read.contract-exception',
+
             'read.order',
             'update.order',
 
@@ -177,6 +182,9 @@ class RoleAndPermissionSeeder extends Seeder
             'read.payment',
             'update.payment',
             'delete.payment',
+
+            'update.contract-exception',
+            'read.contract-exception',
 
             'read.order',
 

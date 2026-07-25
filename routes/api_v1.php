@@ -21,6 +21,7 @@ use App\Http\Controllers\V1\Engineer\AttendanceController;
 use App\Http\Controllers\V1\Engineer\ConstructionReportController;
 use App\Http\Controllers\V1\Engineer\ProjectEngineerAllocationController;
 use App\Http\Controllers\V1\Engineer\EngineerController;
+use App\Http\Controllers\V1\Finance\ContractExceptionController;
 use App\Http\Controllers\V1\Marketing\AdvertisementController;
 use App\Http\Controllers\V1\OtpController;
 use App\Http\Controllers\V1\PermissionController;
@@ -34,10 +35,10 @@ use App\Http\Controllers\V1\Sales\AppointmentController;
 use App\Http\Controllers\V1\Sales\AvailabilitySlotController;
 use App\Http\Controllers\V1\Sales\ComplaintController;
 use App\Http\Controllers\V1\Sales\ComplaintTypeController;
-use App\Http\Controllers\V1\Sales\ContractController;
+use App\Http\Controllers\V1\Legal\ContractController;
 use App\Http\Controllers\V1\Sales\OrderController;
-use App\Http\Controllers\V1\Sales\PaymentController;
-use App\Http\Controllers\V1\Sales\TransactionController;
+use App\Http\Controllers\V1\Finance\PaymentController;
+use App\Http\Controllers\V1\Finance\TransactionController;
 use App\Http\Controllers\V1\Sales\UnitOwnershipController;
 use Aws\Route53\Exception\Route53Exception;
 use Illuminate\Support\Facades\Artisan;
@@ -328,7 +329,7 @@ Route::prefix('unit')->middleware(['auth:sanctum', 'is_staff'])->group(function 
     Route::post('sale/{unit_id}', [UnitOwnershipController::class, 'store']);
 });
 
-Route::prefix('contract')->middleware('auth:sanctum')->group(function () {
+Route::prefix('contract')->middleware(['auth:sanctum', 'is_staff'])->group(function () {
     Route::get('', [ContractController::class, 'index'])
         ->middleware('permission:read.contract');
 
@@ -346,6 +347,17 @@ Route::prefix('contract')->middleware('auth:sanctum')->group(function () {
 
     Route::delete('{id}', [ContractController::class, 'destroy'])
         ->middleware('permission:delete.contract');
+});
+
+Route::prefix('contract-exceptions')->middleware(['auth:sanctum', 'is_staff'])->group(function () {
+    Route::get('/', [ContractExceptionController::class, 'index']);
+    // ->middleware('permission:read.contract-exception');
+
+    Route::get('/{id}', [ContractExceptionController::class, 'show'])
+        ->middleware('permission:read.contract-exception');
+
+    Route::post('/{id}/review', [ContractExceptionController::class, 'review']);
+    // ->middleware('permission:update.contract-exception');
 });
 
 Route::prefix('payment')->middleware('auth:sanctum')->group(function () {

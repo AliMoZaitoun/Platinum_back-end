@@ -114,4 +114,14 @@ return [
         'category_required'       => 'The transaction category is required.',
         'payment_method_required' => 'The payment method is required.',
     ],
+
+    'legal' => [
+        'exception_reason_required'   => 'The exception reason is required when modifying standard terms.',
+        'original_total_price_required' => 'Please provide the original price before discount.',
+        'down_payment_lte_total'     => 'The down payment amount cannot exceed the total price.',
+    ],
+    'finance' => [
+        'invalid_status'             => 'The status must be either approved or rejected.',
+        'rejection_reason_required'  => 'Please provide a reason for the financial rejection.',
+    ],
 ];

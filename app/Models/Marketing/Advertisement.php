@@ -17,11 +17,11 @@ class Advertisement extends Model
     protected function casts(): array
     {
         return [
-            'title' => 'array',
+            'title'       => 'array',
             'description' => 'array',
-            'starts_at' => 'datetime',
-            'ends_at'   => 'datetime',
-            'status'    => 'boolean',
+            'starts_at'   => 'datetime',
+            'ends_at'     => 'datetime',
+            'status'      => 'boolean',
         ];
     }
 
