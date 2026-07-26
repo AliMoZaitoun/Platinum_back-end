@@ -36,6 +36,7 @@ return [
         'validation' => 'The given data was invalid.',
         'db_error' => 'A system error occurred. Please contact support with code: :trace_id',
         'no_results' => 'No results found.',
+        'permission_not_change' => 'You cannot change permissions of admin role',
     ],
 
     'sentences' => [

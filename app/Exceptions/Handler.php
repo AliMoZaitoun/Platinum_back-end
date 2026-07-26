@@ -22,6 +22,7 @@ use App\Exceptions\V1\Engineer\Report\EngineerNotCheckedInException;
 use App\Exceptions\V1\Lottery\LotteryNotFoundException;
 use App\Exceptions\V1\Lottery\LotteryNotOpenException;
 use App\Exceptions\V1\Lottery\NoEligibleParticipantsException;
+use App\Exceptions\V1\PermissionsNeverChangeException;
 use App\Exceptions\V1\ProjectHasNoBuildingsException;
 use App\Exceptions\V1\Sales\CompleteFutureAppointmentException;
 use App\Traits\ResponseTrait;
@@ -170,6 +171,10 @@ class Handler
 
         $exceptions->render(function (NoEligibleParticipantsException $e) {
             return $this->errorResponse($e->getMessage(), $e->getCode() ?: 422);
+        });
+
+        $exceptions->render(function (PermissionsNeverChangeException $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode() ?: 403);
         });
     }
 }

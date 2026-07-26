@@ -29,7 +29,7 @@ class CreateAdDTO
             starts_at: $startsAt,
             ends_at: $endsAt,
             duration_days: $durationDays,
-            offer_id: $data['offer_id'],
+            offer_id: $data['offer_id'] ?? null,
             status: (bool) ($data['status'] ?? true),
             created_by: $created_by
         );

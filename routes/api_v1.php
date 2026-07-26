@@ -45,6 +45,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 // Auth
 Route::post('verifyEmail', [VerificationController::class, 'verifyEmail']);
@@ -651,4 +652,11 @@ Route::get('/run-seeder', function () {
         '--force' => true,
     ]);
     return 'Database has been refreshed and seeded!';
+});
+
+
+Route::get('return-permissions', function () {
+    $admin = Role::firstOrCreate(['name' => 'admin']);
+    $admin->syncPermissions(Permission::all());
+    return "Done";
 });

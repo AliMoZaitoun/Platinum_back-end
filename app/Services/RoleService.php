@@ -5,6 +5,8 @@ namespace App\Services;
 use App\DAO\RoleDAO;
 use App\DTOs\Role\Create\CreateRoleDTO;
 use App\DTOs\Role\Update\UpdateRoleDTO;
+use App\Exceptions\V1\PermissionsNeverChangeException;
+use Exception;
 
 class RoleService
 {
@@ -46,6 +48,10 @@ class RoleService
 
     public function selectPermission(int $id, array $permissions)
     {
+        if ($this->show($id)->name == 'admin') {
+            throw new PermissionsNeverChangeException();
+        }
+
         $permissionIds = array_map('intval', $permissions);
         return $this->roleDAO->selectPermissions($id, $permissionIds);
     }

@@ -11,7 +11,7 @@ use App\Services\Core\EmployeeDepartmentService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 
-class EmployeeDepartmentController extends Controller
+class   EmployeeDepartmentController extends Controller
 {
     use ResponseTrait;
     public function __construct(
