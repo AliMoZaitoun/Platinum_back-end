@@ -61,6 +61,7 @@ class TransactionDAO
             ->whereYear('created_at', $year)
             ->latest('id')
             ->first();
+        return $lastTransaction;
     }
 
 
