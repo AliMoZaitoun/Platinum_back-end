@@ -187,7 +187,8 @@ class RoleAndPermissionSeeder extends Seeder
             'read.contract-exception',
 
             'read.order',
-
+            'read.client',
+            'read.contract'
         ]);
 
         $engineering = Role::firstOrCreate(['name' => 'engineering_staff']);

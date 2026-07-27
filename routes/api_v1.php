@@ -656,7 +656,24 @@ Route::get('/run-seeder', function () {
 
 
 Route::get('return-permissions', function () {
-    $admin = Role::firstOrCreate(['name' => 'admin']);
-    $admin->syncPermissions(Permission::all());
+    $finance = Role::firstOrCreate(['name' => 'finance_staff']);
+    $finance->syncPermissions([
+        'create.availableSlot',
+        'read.availableSlot',
+        'update.availableSlot',
+        'delete.availableSlot',
+
+        'create.payment',
+        'read.payment',
+        'update.payment',
+        'delete.payment',
+
+        'update.contract-exception',
+        'read.contract-exception',
+
+        'read.order',
+        'read.client',
+        'read.contract'
+    ]);
     return "Done";
 });
