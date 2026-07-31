@@ -11,19 +11,19 @@ class PaymentSeeder extends Seeder
 {
     public function run(): void
     {
-        $contracts = Contract::where('status', 'active')->get();
+        $activeContracts = Contract::where('status', 'active')->get();
 
         $financeEmployee = Employee::whereHas('user', function ($query) {
             $query->role('finance_staff');
         })->first() ?? Employee::first();
 
-        foreach ($contracts as $contract) {
+        foreach ($activeContracts as $contract) {
             Payment::create([
                 'client_id'      => $contract->client_id,
                 'employee_id'    => $financeEmployee->id,
                 'contract_id'    => $contract->id,
                 'amount'         => $contract->down_payment_amount,
-                'payment_date'   => now(),
+                'payment_date'   => now()->subDays(15),
                 'payment_method' => 'bank_transfer',
                 'payment_type'   => 'down_payment',
                 'status'         => 'paid',

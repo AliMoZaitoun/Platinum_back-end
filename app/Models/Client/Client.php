@@ -7,7 +7,8 @@ use App\Models\Sales\Order;
 use App\Models\Sales\UnitOwnership;
 use App\Models\User;
 use App\Models\Sales\Complaint;
-use App\Models\Sales\Transaction;
+use App\Models\Finance\Transaction;
+use App\Models\Legal\Contract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 
@@ -60,5 +61,10 @@ class Client extends Model
     public function transactions()
     {
         return $this->morphMany(Transaction::class, 'party');
+    }
+
+    public function contracts()
+    {
+        return $this->hasMany(Contract::class);
     }
 }
