@@ -61,8 +61,8 @@ class NotificationController extends Controller
         $user = $client->user;
 
         $user->notify(new BaseNotification(
-            title: '🔔 إشعار موحد جديد!',
-            body: "أهلاً {$user->first_name}، هاد إشعار تجريبي بنفس هيكلية الـ Resource الموحدة.",
+            title: '🔔 إشعار جديد!',
+            body: "أهلاً {$user->first_name}، لقد تمت الموافقة الأولية على طلبك، رجاءً قم بتحديد موعد للمقابلة.",
             data: ['type' => 'test_event', 'client_id' => $client->id],
             actionUrl: '/dashboard'
         ));
