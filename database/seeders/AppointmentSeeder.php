@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Enums\AppointmentType;
+use App\Models\Client\Client;
 use App\Models\Core\Employee;
 use App\Models\Sales\Appointment;
 use App\Models\Sales\AvailabilitySlot;
@@ -13,31 +13,43 @@ class AppointmentSeeder extends Seeder
 {
     public function run(): void
     {
-        $orders = Order::whereIn('status', ['initially_accepted', 'accepted'])->get();
-        $slots = AvailabilitySlot::where('status', 'available')->get();
+        $clients = Client::all();
+        $employees = Employee::all();
+        $availableSlots = AvailabilitySlot::all();
 
-        $csEmployee = Employee::whereHas('user', function ($query) {
-            $query->role('customer_service_staff');
-        })->first() ?? Employee::first();
+        if ($clients->isEmpty() || $availableSlots->isEmpty()) {
+            return;
+        }
 
-        foreach ($orders as $index => $order) {
-            $slot = $slots->get($index);
+        $statuses = ['pending', 'done', 'cancelled'];
 
-            if (! $slot) {
-                break;
+        foreach ($clients as $client) {
+            // فحص هل لدى العميل طلب شراء شقة (Order)؟
+            $order = Order::where('client_id', $client->id)->first();
+
+            if ($order) {
+                // إذا وجد طلب شراء -> الموعد مبيعات sales وينربط بالطلب
+                $type = 'sales';
+                $orderId = $order->id;
+            } else {
+                // غير ذلك -> نوع متنوع (عام أو مناقشة قانونية) بدون طلب شراء
+                $type = collect(['general', 'legal_discussion'])->random();
+                $orderId = null;
             }
 
-            Appointment::create([
-                'order_id'        => $order->id,
-                'client_id'       => $order->client_id,
-                'created_by_type' => Employee::class,
-                'created_by_id'   => $csEmployee->id,
-                'av_slot_id'      => $slot->id,
-                'type'            => AppointmentType::LEGAL_CONSULTATION->value,
-                'status'          => $index % 2 === 0 ? 'done' : 'pending',
-            ]);
+            // اختيار موظف للإنشاء (created_by) وسلوت متاح عشوائي
+            $creator = $employees->isNotEmpty() ? $employees->random() : $client;
+            $slot = $availableSlots->random();
 
-            $slot->update(['status' => 'booked']);
+            Appointment::create([
+                'order_id'        => $orderId,
+                'client_id'       => $client->id,
+                'created_by_type' => get_class($creator),
+                'created_by_id'   => $creator->id,
+                'av_slot_id'      => $slot->id,
+                'type'            => $type,
+                'status'          => collect($statuses)->random(),
+            ]);
         }
     }
 }
