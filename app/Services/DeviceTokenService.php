@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\DAO\DeviceTokenDAO;
-use App\DTO\DeviceTokenData;
+use App\DTOs\DeviceTokenData;
 
 class DeviceTokenService
 {

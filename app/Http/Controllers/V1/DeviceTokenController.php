@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\V1;
 
-use App\DTO\DeviceTokenData;
+use App\DTOs\DeviceTokenData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\RegisterDeviceTokenRequest;
 use App\Http\Resources\V1\DeviceTokenResource;

@@ -2,7 +2,7 @@
 
 namespace App\DAO;
 
-use App\DTO\DeviceTokenData;
+use App\DTOs\DeviceTokenData;
 use App\Models\UserDeviceToken;
 
 class DeviceTokenDAO
