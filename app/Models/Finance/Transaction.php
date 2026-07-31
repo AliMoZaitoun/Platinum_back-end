@@ -54,4 +54,14 @@ class Transaction extends Model
     {
         return $this->belongsTo(Employee::class, 'created_by');
     }
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
+
+    public function warehouse()
+    {
+        return $this->belongsTo(Warehouse::class);
+    }
 }

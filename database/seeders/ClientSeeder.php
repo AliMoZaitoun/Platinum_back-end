@@ -49,7 +49,7 @@ class ClientSeeder extends Seeder
             [
                 'first_name'        => 'Ahmed',
                 'last_name'         => 'Al-Farsi',
-                'email'             => 'ahmed.alfarsi@gmail.com',
+                'email'             => 'ahmed.alfarsi@gmail.comش',
                 'phone'             => '+31 6 20000003',
                 'address'           => 'Teilingerstraat 30, Rotterdam, South Holland',
                 'gender'            => 'male',

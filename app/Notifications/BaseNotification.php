@@ -45,9 +45,10 @@ class BaseNotification extends Notification
 
         $messaging = app('firebase.messaging');
 
+        $safeData = array_map('strval', $this->data);
         $message = CloudMessage::new()
             ->withNotification(FcmNotification::create($this->title, $this->body))
-            ->withData(array_merge($this->data, [
+            ->withData(array_merge($safeData, [
                 'action_url' => $this->actionUrl ?? '',
             ]));
 
