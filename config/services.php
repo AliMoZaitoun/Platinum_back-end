@@ -39,4 +39,12 @@ return [
         'key' => env('GEMINI_API_KEY'),
     ],
 
+    'huggingface' => [
+        'api_token' => env('HUGGINGFACE_API_KEY'),
+    ],
+
+    'replicate' => [
+        'api_token' => env('REPLICATE_API_TOKEN'),
+    ],
+
 ];

@@ -39,6 +39,12 @@ return [
         'permission_not_change' => 'You cannot change permissions of admin role',
     ],
 
+    'validation' => [
+        'date_cannot_be_in_past'       => 'The selected date cannot be in the past.',
+        'end_time_must_be_after_start' => 'The end time must be strictly after the start time.',
+        'appointment_notes_required' => 'Please provide the reason or notes for the appointment when no order is selected.',
+    ],
+
     'sentences' => [
         'wrong_start_date' => 'The start date must be after or equal to the project start date: :date',
 
@@ -52,6 +58,13 @@ return [
 
     'orders' => [
         'already_submitted' => 'You have already submitted an order for this unit or service.',
+        'unit_not_available' => 'The requested unit is currently not available for ordering.',
+        'not_approved_for_appointment' => 'This order has not been approved for booking an appointment yet.'
+    ],
+
+    'appointments'  => [
+        'slot_not_available' => 'The selected time slot is no longer available.',
+        'cannot_cancel_late' => 'Appointments cannot be cancelled less than 24 hours in advance. Please contact customer service.',
     ],
 
     'project' => [
@@ -124,5 +137,10 @@ return [
     'finance' => [
         'invalid_status'             => 'The status must be either approved or rejected.',
         'rejection_reason_required'  => 'Please provide a reason for the financial rejection.',
+    ],
+
+    'insight' => [
+        'marked_as_read' => 'Insight marked as read successfully.',
+        'retrieved_successfully' => 'Construction insights retrieved successfully.',
     ],
 ];

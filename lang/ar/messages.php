@@ -38,6 +38,12 @@ return [
         'permission_not_change' => 'لا يمكنك تغيير الصلاحيات الخاصة بالمدير',
     ],
 
+    'validation' => [
+        'date_cannot_be_in_past'       => 'لا يمكن اختيار تاريخ في الماضي.',
+        'end_time_must_be_after_start' => 'يجب أن يكون وقت النهاية بعد وقت البداية.',
+        'appointment_notes_required' => 'يرجى كتابة سبب الحجز أو الملاحظات عند عدم اختيار طلب شراء.',
+    ],
+
     'sentences' => [
         'wrong_start_date' => 'يجب أن يكون تاريخ البدء بعد أو يوازي تاريخ بداية المشروع وهو :date',
 
@@ -51,6 +57,13 @@ return [
 
     'orders' => [
         'already_submitted' => 'لقد قمت بالفعل بتقديم طلب على هذه الشقة أو الخدمة سابقاً.',
+        'unit_not_available' => 'العقار المطلوبة غير متاح للطلب في الوقت الحالي.',
+        'not_approved_for_appointment' => 'لم يتم قبول الطلب مبدئياً بعد لتحديد موعد مقابلة.'
+    ],
+
+    'appointments'  => [
+        'slot_not_available' => 'الموعد المحدد غير متاح أو تم حجزه سابقاً.',
+        'cannot_cancel_late' => 'لا يمكنك إلغاء الموعد قبل أقل من 24 ساعة من موعده. يرجى التواصل مع خدمة العملاء.',
     ],
 
     'project' => [
@@ -123,5 +136,10 @@ return [
     'finance' => [
         'invalid_status'             => 'الحالة يجب أن تكون إما مقبولة (approved) أو مرفوضة (rejected).',
         'rejection_reason_required'  => 'يجب توضيح سبب الرفض المالي للموظف القانوني.',
+    ],
+
+    'insight' => [
+        'marked_as_read' => 'تم تحديد التنبيه كـ مقروء بنجاح.',
+        'retrieved_successfully' => 'تم جلب تحليلات المشروع بنجاح.',
     ],
 ];

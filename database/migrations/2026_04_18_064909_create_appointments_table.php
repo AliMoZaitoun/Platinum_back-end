@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('order_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('client_id')->constrained()->cascadeOnDelete();
             $table->morphs('created_by');
             $table->foreignId('av_slot_id')->constrained()->on('availability_slots')->cascadeOnDelete();
+
+            $table->string('type')->default('general');
+
             $table->enum('status', ['pending', 'done', 'cancelled']);
             $table->softDeletes();
             $table->timestamps();

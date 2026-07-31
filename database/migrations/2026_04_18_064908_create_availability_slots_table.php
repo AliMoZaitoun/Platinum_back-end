@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('availability_slots', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
+            $table->date('date');
             $table->uuid('batch_id');
             $table->time('start_time');
             $table->enum('status', ['available', 'booked', 'cancelled'])->default('available');

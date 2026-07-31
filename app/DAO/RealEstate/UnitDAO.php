@@ -14,7 +14,7 @@ class UnitDAO
 
     public function getWithoutPag()
     {
-        return Unit::with('attachments')->get();
+        return Unit::with('attachments')->where('status', 'available')->get();
     }
 
     public function getAllForAdmin(int $perPage = 15): LengthAwarePaginator
@@ -106,6 +106,13 @@ class UnitDAO
 
         return $query->with(['building.location'])
             ->paginate(12);
+    }
+
+    public function isUnitAvailable(int $unitId): bool
+    {
+        return Unit::where('id', $unitId)
+            ->where('status', 'available')
+            ->exists();
     }
 
     public function update(int $id, UpdateUnitDTO $UnitDTO)

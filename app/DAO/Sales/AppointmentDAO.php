@@ -16,9 +16,9 @@ class AppointmentDAO
             ->paginate($per_page);
     }
 
-    public function store(CreateAppointmentDTO $appoinmentDTO)
+    public function store(CreateAppointmentDTO $dto)
     {
-        return Appointment::create($appoinmentDTO->toArray());
+        return Appointment::create($dto->toArray());
     }
 
     public function show(int $id)
@@ -28,13 +28,13 @@ class AppointmentDAO
 
     public function showByClient(int $client_id)
     {
-        return Appointment::where('client_id', $client_id)->get();
+        return Appointment::where('client_id', $client_id)->with(['createdBy', 'slot', 'order', 'notes'])->get();
     }
 
-    public function update(int $id, UpdateAppointmentDTO $appointmentDTO)
+    public function update(int $id, UpdateAppointmentDTO $dto)
     {
         $appointment = $this->show($id);
-        return $appointment->update($appointmentDTO->toArray());
+        return $appointment->update($dto->toArray());
     }
 
     public function cancelAppointment(int $id)

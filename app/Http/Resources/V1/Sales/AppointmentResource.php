@@ -19,6 +19,7 @@ class AppointmentResource extends JsonResource
             'order' => new OrderResource($this->whenLoaded('order')),
             'slot'  => new AvailableSlotResource($this->whenLoaded('slot')),
             'status'    => $this->status,
+            'type'      => $this->type,
             'created_by' => new UserResource($this->whenLoaded('createdBy')),
 
             'created_at'     => $this->created_at->format('Y-m-d h:i A'),

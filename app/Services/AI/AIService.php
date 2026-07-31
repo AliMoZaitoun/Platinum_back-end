@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\AI;
 
 use Gemini;
 use Illuminate\Support\Facades\Http;

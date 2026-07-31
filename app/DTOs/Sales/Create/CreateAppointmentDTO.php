@@ -7,13 +7,14 @@ use App\Http\Requests\V1\Sales\CreateAppointmentRequest;
 class CreateAppointmentDTO
 {
     public function __construct(
-        public int $orderId,
+        public ?int $orderId,
         public int $clientId,
         public int $createdById,
         public string $createdByType,
         public int $avSlotId,
+        public string $status,
+        public ?string $type,
         public ?string $notes,
-        public string $status = 'pending',
     ) {}
 
     public static function fromRequest(CreateAppointmentRequest $request): self
@@ -25,12 +26,14 @@ class CreateAppointmentDTO
             : (int) $request->input('client_id');
 
         return new self(
-            orderId: (int) $request->input('order_id'),
+            orderId: $request->input('order_id') ?? null,
             clientId: $clientId,
             createdById: $user->id,
             createdByType: get_class($user),
             avSlotId: (int) $request->input('av_slot_id'),
-            notes: $request->input('notes')
+            type: $request->input('type') ?? null,
+            notes: $request->input('notes') ?? null,
+            status: 'pending',
         );
     }
 
@@ -43,6 +46,7 @@ class CreateAppointmentDTO
             'created_by_type' => $this->createdByType,
             'av_slot_id'      => $this->avSlotId,
             'status'          => $this->status,
+            'type'            => $this->type,
             'notes'           => $this->notes,
         ], fn($value) => !is_null($value));
     }

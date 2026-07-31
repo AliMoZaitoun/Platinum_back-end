@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\V1\Engineer\ApartmentDesignAiController;
+use App\Http\Controllers\V1\Admin\ConstructionInsightController;
 use App\Http\Controllers\V1\AdminOfferController;
 use App\Http\Controllers\V1\NoteController;
 use App\Http\Controllers\V1\Lottery\LotteryController;
@@ -17,6 +19,7 @@ use App\Http\Controllers\V1\Core\EmployeeController;
 use App\Http\Controllers\V1\Core\EmployeeDepartmentController;
 use App\Http\Controllers\V1\Core\ItemController;
 use App\Http\Controllers\V1\Core\WarehouseController;
+use App\Http\Controllers\V1\DeviceTokenController;
 use App\Http\Controllers\V1\Engineer\AttendanceController;
 use App\Http\Controllers\V1\Engineer\ConstructionReportController;
 use App\Http\Controllers\V1\Engineer\ProjectEngineerAllocationController;
@@ -39,6 +42,7 @@ use App\Http\Controllers\V1\Legal\ContractController;
 use App\Http\Controllers\V1\Sales\OrderController;
 use App\Http\Controllers\V1\Finance\PaymentController;
 use App\Http\Controllers\V1\Finance\TransactionController;
+use App\Http\Controllers\V1\NotificationController;
 use App\Http\Controllers\V1\Sales\UnitOwnershipController;
 use Aws\Route53\Exception\Route53Exception;
 use Illuminate\Support\Facades\Artisan;
@@ -56,6 +60,18 @@ Route::post('forgotPassword', [PasswordManagementController::class, 'forgotPassw
 Route::post('resetPassword', [PasswordManagementController::class, 'resetPassword']);
 Route::post('logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/select-role', [LoginController::class, 'selectRole'])->middleware('auth:sanctum');
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/device-tokens', [DeviceTokenController::class, 'store']);
+    Route::delete('/device-tokens', [DeviceTokenController::class, 'destroy']);
+});
+
+Route::middleware('auth:sanctum')->prefix('notifications')->group(function () {
+    Route::get('', [NotificationController::class, 'index']);
+    Route::get('/unread-count', [NotificationController::class, 'unreadCount']);
+    Route::post('/{id}/read', [NotificationController::class, 'markAsRead']);
+    Route::post('/read-all', [NotificationController::class, 'markAllAsRead']);
+});
 
 // Test
 Route::post('gemini/{id}', [ClientController::class, 'generatePlan']);
@@ -645,6 +661,18 @@ Route::middleware('auth:sanctum')->prefix('sales')->group(function () {
     Route::apiResource('transactions', TransactionController::class)->except(['update', 'destroy']);
 });
 
+
+Route::prefix('admin')->middleware(['auth:sanctum', 'role:admin'])->group(function () {
+    Route::get('/construction-insights', [ConstructionInsightController::class, 'index']);
+    Route::patch('/construction-insights/{id}/read', [ConstructionInsightController::class, 'markAsRead']);
+});
+
+Route::middleware(['auth:sanctum'])->group(function () {
+
+    Route::post('/ai-design/from-text', [ApartmentDesignAiController::class, 'generate']);
+
+    Route::post('/ai-design/from-image', [ApartmentDesignAiController::class, 'generateFromImage']);
+});
 
 Route::get('/run-seeder', function () {
     Artisan::call('migrate:fresh', [

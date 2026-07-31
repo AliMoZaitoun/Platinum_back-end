@@ -9,6 +9,7 @@ class CreateAvailabilitySlotDTO
 {
     public function __construct(
         public ?int $employee_id,
+        public string $date,
         public string $start_time,
         public string $end_time,
         public ?string $batch_id = null,
@@ -19,6 +20,7 @@ class CreateAvailabilitySlotDTO
     {
         return new self(
             employee_id: $request['employee_id'] ?? null,
+            date: $request['date'],
             start_time: $request['start_time'],
             end_time: $request['end_time'],
         );
@@ -28,6 +30,7 @@ class CreateAvailabilitySlotDTO
     {
         return array_filter([
             'employee_id'    => $this->employee_id,
+            'date'           => $this->date,
             'start_time'     => $this->start_time,
             'end_time'       => $this->end_time,
             'batch_id'       => $this->batch_id,

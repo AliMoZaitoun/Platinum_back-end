@@ -34,11 +34,12 @@ class AvailabilitySlotDAO
         $data = [];
         foreach ($dto->generated_slots as $slot) {
             $data[] = [
-                'employee_id' => $dto->employee_id,
-                'start_time' => $slot,
-                'batch_id' => $dto->batch_id,
-                'created_at' => now(),
-                'updated_at' => now()
+                'employee_id'   => $dto->employee_id,
+                'date'          => $dto->date,
+                'start_time'    => $slot,
+                'batch_id'      => $dto->batch_id,
+                'created_at'    => now(),
+                'updated_at'    => now()
             ];
         }
         return AvailabilitySlot::insert($data);
@@ -54,6 +55,18 @@ class AvailabilitySlotDAO
         $appointment = $this->show($id);
         $appointment->update($appointmentDTO->toArray());
         return $appointment;
+    }
+
+    public function findAndLock(int $slotId)
+    {
+        return AvailabilitySlot::where('id', $slotId)
+            ->lockForUpdate()
+            ->first();
+    }
+
+    public function updateStatus(AvailabilitySlot $slot, string $status): bool
+    {
+        return $slot->update(['status' => $status]);
     }
 
     public function destroy(int $id)

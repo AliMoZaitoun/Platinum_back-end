@@ -22,9 +22,13 @@ use App\Exceptions\V1\Engineer\Report\EngineerNotCheckedInException;
 use App\Exceptions\V1\Lottery\LotteryNotFoundException;
 use App\Exceptions\V1\Lottery\LotteryNotOpenException;
 use App\Exceptions\V1\Lottery\NoEligibleParticipantsException;
+use App\Exceptions\V1\Order\OrderNotApprovedForAppointmentException;
+use App\Exceptions\V1\Order\UnitNotAvailableException;
 use App\Exceptions\V1\PermissionsNeverChangeException;
 use App\Exceptions\V1\ProjectHasNoBuildingsException;
+use App\Exceptions\V1\Sales\CannotCancelAppointmentException;
 use App\Exceptions\V1\Sales\CompleteFutureAppointmentException;
+use App\Exceptions\V1\Sales\SlotNotAvailableException;
 use App\Traits\ResponseTrait;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Validation\UnauthorizedException;
@@ -81,6 +85,22 @@ class Handler
         });
 
         $exceptions->render(function (OrderAlreadySubmittedException $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode() ?: 422);
+        });
+
+        $exceptions->render(function (UnitNotAvailableException $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode() ?: 422);
+        });
+
+        $exceptions->render(function (SlotNotAvailableException $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode() ?: 422);
+        });
+
+        $exceptions->render(function (CannotCancelAppointmentException $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode() ?: 422);
+        });
+
+        $exceptions->render(function (OrderNotApprovedForAppointmentException $e) {
             return $this->errorResponse($e->getMessage(), $e->getCode() ?: 422);
         });
 

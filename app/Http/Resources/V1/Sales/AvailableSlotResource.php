@@ -12,6 +12,7 @@ class AvailableSlotResource extends JsonResource
     {
         return [
             'id'            => $this->id,
+            'date'          => $this->date,
             'start_time'    => $this->start_time,
             'status'        => $this->status,
             'batch_id'      => $this->batch_id,

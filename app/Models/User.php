@@ -21,7 +21,6 @@ use Spatie\Permission\Traits\HasRoles;
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, HasRoles, HasApiTokens;
 
     protected function casts(): array
@@ -75,5 +74,10 @@ class User extends Authenticatable
     public function isEmployee(): bool
     {
         return $this->type === 'employee';
+    }
+
+    public function deviceTokens()
+    {
+        return $this->hasMany(UserDeviceToken::class);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models\Engineer;
 
+use App\Models\RealEstate\ConstructionInsight;
 use App\Models\Media;
 use App\Models\RealEstate\Building;
 use App\Models\RealEstate\Project;
@@ -48,5 +49,10 @@ class ConstructionReport extends Model
     public function attachments()
     {
         return $this->morphMany(Media::class, 'mediable');
+    }
+
+    public function insights()
+    {
+        return $this->hasMany(ConstructionInsight::class, 'construction_report_id');
     }
 }

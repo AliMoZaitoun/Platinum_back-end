@@ -10,6 +10,7 @@ use App\Http\Resources\V1\Sales\AppointmentResource;
 use App\Services\Sales\AppointmentService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AppointmentController extends Controller
 {
@@ -53,7 +54,8 @@ class AppointmentController extends Controller
 
     public function cancelAppointment(int $id)
     {
-        $this->appointmentService->cancelAppointment($id);
+        $user = Auth::user();
+        $this->appointmentService->cancelAppointment($id, $user->type);
         return $this->successResponse([], __('messages.appointment.cancelled'));
     }
 

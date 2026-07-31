@@ -6,6 +6,7 @@ use App\DAO\Engineer\AttendanceDAO;
 use App\DAO\Engineer\ConstructionReportDAO;
 use App\DTOs\Engineer\Create\CreateReportDTO;
 use App\Exceptions\V1\Engineer\Report\EngineerNotCheckedInException;
+use App\Jobs\V1\RealEstate\Analysis\AnalyzeLaborProductivityJob;
 use App\Services\FileManagerService;
 use App\Services\TransactionService;
 use Illuminate\Support\Facades\Auth;
@@ -42,6 +43,8 @@ class ConstructionReportService
                     relationName: 'attachments'
                 );
             }
+
+            AnalyzeLaborProductivityJob::dispatch($report);
             return $report;
         });
     }

@@ -82,7 +82,7 @@ class RoleAndPermissionSeeder extends Seeder
             'read.location',
             'create.appointment',
             'read.appointment',
-
+            'read.availableSlot',
             'read.payment',
             'read.contract',
         ]);

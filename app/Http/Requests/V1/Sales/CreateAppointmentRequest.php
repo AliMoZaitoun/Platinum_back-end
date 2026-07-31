@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\V1\Sales;
 
+use App\Enums\AppointmentType;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateAppointmentRequest extends FormRequest
 {
@@ -17,14 +19,22 @@ class CreateAppointmentRequest extends FormRequest
         $user = $this->user();
 
         return [
-            'order_id'   => 'required|exists:orders,id',
-            'av_slot_id' => 'required|exists:availability_slots,id',
+            'order_id'   => ['nullable', 'integer', 'exists:orders,id'],
+            'av_slot_id' => ['required', 'integer', 'exists:availability_slots,id'],
 
             'client_id'  => $user && $user->type === 'employee'
                 ? 'required|exists:clients,id'
                 : 'nullable',
 
-            'note'      => 'nullable|string'
+            'type'       => ['nullable', Rule::enum(AppointmentType::class)],
+            'notes'      => ['required_without:order_id', 'nullable', 'string', 'max:1000'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'notes.required_without' => __('messages.validation.appointment_notes_required'),
         ];
     }
 }

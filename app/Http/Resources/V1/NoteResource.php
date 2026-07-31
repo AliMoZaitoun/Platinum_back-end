@@ -12,7 +12,7 @@ class NoteResource extends JsonResource
         return [
             'id'             => $this->id,
             'text'           => $this->text,
-            'created_by'     => new EmployeeDetailResource($this->createdBy),
+            'created_by'     => new UserResource($this->createdBy),
             'created_at'     => $this->created_at->format('Y-m-d h:i A'),
         ];
     }

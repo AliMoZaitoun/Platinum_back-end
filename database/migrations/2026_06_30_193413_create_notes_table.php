@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->morphs('noteable');
             $table->text('text');
-            $table->foreignId('created_by')->constrained('employees')->onDelete('cascade');
+            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
         });
