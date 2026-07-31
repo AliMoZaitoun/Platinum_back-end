@@ -36,7 +36,7 @@ class NotificationController extends Controller
     {
         $updated = $this->notificationService->markAsRead($request->user(), $id);
 
-        return $this->useResource($updated, NotificationResource::class, __('messages.common.updated'));
+        return $this->successResponse([], __('messages.common.updated'));
     }
 
     public function markAllAsRead(Request $request)
