@@ -21,7 +21,7 @@ class SolutionDAO
 
     public function show(int $id)
     {
-        return Solution::find($id) ?? throw new NotFoundException("Solution");
+        return Solution::where('id', $id)->with(['attachments', 'activeOffer'])->first() ?? throw new NotFoundException("Solution");
     }
 
     public function update(int $id, UpdateSolutionDTO $solutionDTO)

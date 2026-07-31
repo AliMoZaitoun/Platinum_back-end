@@ -4,6 +4,8 @@ namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\NotificationResource;
+use App\Models\Client\Client;
+use App\Notifications\BaseNotification;
 use App\Services\NotificationService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
@@ -44,5 +46,29 @@ class NotificationController extends Controller
         $this->notificationService->markAllAsRead($request->user());
 
         return $this->successResponse([], __('messages.common.updated'));
+    }
+
+    public function test(int $clientId)
+    {
+        $client = $clientId
+            ? Client::with('user')->find($clientId)
+            : Client::with('user')->first();
+
+        if (! $client || ! $client->user) {
+            return $this->successResponse([], "Not Found", 404);
+        }
+
+        $user = $client->user;
+
+        $user->notify(new BaseNotification(
+            title: '🔔 إشعار موحد جديد!',
+            body: "أهلاً {$user->first_name}، هاد إشعار تجريبي بنفس هيكلية الـ Resource الموحدة.",
+            data: ['type' => 'test_event', 'client_id' => $client->id],
+            actionUrl: '/dashboard'
+        ));
+
+        $latestNotification = $user->notifications()->latest()->first();
+
+        return $this->useResource($latestNotification, NotificationResource::class);
     }
 }

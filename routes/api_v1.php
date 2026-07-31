@@ -74,9 +74,13 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 
+
 // Test
 Route::post('gemini/{id}', [ClientController::class, 'generatePlan']);
 Route::get('listModels', [ClientController::class, 'listModels']);
+
+Route::post('test-notification/{clientId}', [NotificationController::class, 'test']);
+
 
 // OTP
 Route::post('resendCode', [OtpController::class, 'resendCode']);
