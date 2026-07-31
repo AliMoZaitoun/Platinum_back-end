@@ -63,7 +63,7 @@ class NotificationController extends Controller
         $user->notify(new BaseNotification(
             title: '🔔 إشعار جديد!',
             body: "أهلاً {$user->first_name}، لقد تمت الموافقة الأولية على طلبك، رجاءً قم بتحديد موعد للمقابلة.",
-            data: ['type' => 'test_event', 'client_id' => $client->id],
+            data: ['type' => 'test_event', 'client_id' => (string) $client->id],
             actionUrl: '/dashboard'
         ));
 
