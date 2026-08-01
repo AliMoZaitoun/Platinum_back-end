@@ -34,7 +34,13 @@ class TransactionResource extends JsonResource
 
             'party_type'     => $this->party_type,
             'party_id'       => $this->party_id,
-            'party'          => $this->whenLoaded('party'),
+            'party'      => $this->whenLoaded('party', function () {
+                if ($this->party instanceof \App\Models\Client\Client) {
+                    return new \App\Http\Resources\V1\ClientDetailResource($this->party);
+                }
+
+                return $this->party;
+            }),
 
             'transactionable_type' => $this->transactionable_type,
             'transactionable_id'   => $this->transactionable_id,
