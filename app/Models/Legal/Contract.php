@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
     'reference_number',
     'order_id',
     'employee_id',
+    'currency',
     'client_id',
     'total_price',
     'down_payment_amount',

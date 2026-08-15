@@ -15,6 +15,7 @@ return new class extends Migration
             $table->foreignId('employee_id')->constrained()->cascadeOnDelete();
             $table->foreignId('order_id')->constrained()->cascadeOnDelete();
             $table->decimal('total_price', 15, 2)->unsigned();
+            $table->string('currency', 3)->default('USD');
             $table->double('down_payment_amount');
             $table->integer('installments_count');
 

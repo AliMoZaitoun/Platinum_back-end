@@ -11,6 +11,7 @@ class CreateContractDTO
         public readonly int $employeeId,
         public readonly int $orderId,
         public readonly float $totalPrice,
+        public readonly string $currency,
         public readonly float $downPaymentAmount,
         public readonly int $installmentsCount,
         public readonly ?CreateContractExceptionDTO $exception = null,
@@ -25,6 +26,7 @@ class CreateContractDTO
             referenceNumber: $request->validated('reference_number'),
             orderId: $request->validated('order_id'),
             totalPrice: (float) $request->validated('total_price'),
+            currency: $request->validated('currency'),
             downPaymentAmount: (float) $request->validated('down_payment_amount'),
             installmentsCount: (int) $request->validated('installments_count'),
             exception: $hasException ? CreateContractExceptionDTO::fromRequest($request) : null,
@@ -38,6 +40,7 @@ class CreateContractDTO
             'reference_number'    => $this->referenceNumber,
             'order_id'            => $this->orderId,
             'total_price'         => $this->totalPrice,
+            'currency'            => $this->currency,
             'down_payment_amount' => $this->downPaymentAmount,
             'installments_count'  => $this->installmentsCount,
         ], fn($value) => $value !== null);

@@ -17,6 +17,7 @@ class CreateContractRequest extends FormRequest
             'reference_number'           => ['required', 'string', 'unique:contracts,reference_number'],
             'order_id'                   => ['required', 'integer', 'exists:orders,id'],
             'total_price'                => ['required', 'numeric', 'min:0'],
+            'currency'                   => ['nullable', 'string', 'size:3'],
             'down_payment_amount'        => ['required', 'numeric', 'min:0', 'lte:total_price'],
             'installments_count'         => ['required', 'integer', 'min:1'],
 

@@ -48,7 +48,7 @@ class UnitOwnershipDAO
     {
         return UnitOwnership::where('contract_id', $contract_id)
             ->with(['unit', 'attachments', 'contract'])
-            ->get();
+            ->first();
     }
 
     public function update(int $id, UpdateUnitOwnershipDTO $dto)

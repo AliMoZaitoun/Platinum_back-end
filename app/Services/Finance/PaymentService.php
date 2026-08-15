@@ -6,6 +6,7 @@ use App\DAO\Finance\PaymentDAO;
 use App\DTOs\Finance\Create\CreatePaymentDTO;
 use App\DTOs\Finance\Create\CreateTransactionDTO;
 use App\DTOs\Finance\Update\UpdatePaymentDTO;
+use App\Enums\TransactionCategory;
 use App\Exceptions\V1\Sales\PaymentImmutableException;
 use App\Models\Finance\Payment;
 use App\Services\FileManagerService;
@@ -158,23 +159,24 @@ class PaymentService
             return;
         }
 
-        $transactionData = [
-            'type'                 => 'receipt',
-            'amount'               => $payment->amount,
-            'currency'             => $payment->contract->currency,
-            'exchange_rate'        => 1.0000,
-            'transactionable_type' => 'payment',
-            'transactionable_id'   => $payment->id,
-            'party_type'           => 'client',
-            'party_id'             => $payment->client_id,
-            'category'             => $payment->payment_type,
-            'payment_method'       => $payment->payment_method,
-            'status'               => 'posted',
-            'description'          => 'تسديد تلقائي للدفعة رقم ' . $payment->id . ' للعقد التابع للعميل',
-            'created_by'           => auth()->id() ?? $payment->employee_id,
-        ];
+        $categoryEnum = TransactionCategory::tryFrom($payment->payment_type)
+            ?? TransactionCategory::OTHER;
 
-        $dto = new CreateTransactionDTO(...$transactionData);
+        $dto = new CreateTransactionDTO(
+            type: 'receipt',
+            amount: (float) $payment->amount,
+            currency: $payment->contract->currency,
+            exchange_rate: 1.0000,
+            category: $categoryEnum,
+            payment_method: $payment->payment_method,
+            created_by: auth()->id() ?? $payment->employee_id,
+            transactionable_type: 'payment',
+            transactionable_id: $payment->id,
+            party_type: 'client',
+            party_id: $payment->client_id,
+            status: 'posted',
+            description: 'تسديد تلقائي للدفعة رقم ' . $payment->id . ' للعقد التابع للعميل'
+        );
 
         $this->financeTransactionService->store($dto);
     }
