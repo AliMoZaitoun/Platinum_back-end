@@ -9,7 +9,7 @@ use Illuminate\Database\Seeder;
 class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
-    
+
     public function run(): void
     {
         $this->call([
@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
             ContractSeeder::class,
             PaymentSeeder::class,
             TransactionSeeder::class,
-            UnitOwnershipSeeder::class,
+            // UnitOwnershipSeeder::class,
             NotificationSeeder::class,
         ]);
     }
