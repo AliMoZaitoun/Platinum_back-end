@@ -11,7 +11,7 @@ class PaymentDAO
 {
     public function index(array $relations = [], int $perPage = 15)
     {
-        $defaultRelations = ['client', 'attachments'];
+        $defaultRelations = ['client', 'attachments', 'contract'];
         $allRelations = array_merge($defaultRelations, $relations);
         return Payment::query()
             ->with($allRelations)
@@ -36,6 +36,20 @@ class PaymentDAO
             ->with(['attachments'])
             ->get()
             ->groupBy('contract_id');
+    }
+
+    public function byContract(int $contract_id)
+    {
+        return Payment::where('contract_id', $contract_id)
+            ->where(function ($query) {
+                $query->where('payment_date', '<', now()->startOfMonth())
+                    ->whereIn('status', ['pending', 'failed'])
+
+                    ->orWhere('payment_date', '>=', now()->startOfMonth());
+            })
+            ->orderBy('payment_date', 'asc')
+            ->with(['attachments', 'contract'])
+            ->get();
     }
 
     public function update(int $id, UpdatePaymentDTO $dto)

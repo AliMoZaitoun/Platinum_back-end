@@ -14,6 +14,7 @@ class CreateContractRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'reference_number'           => ['required', 'string', 'unique:contracts,reference_number'],
             'order_id'                   => ['required', 'integer', 'exists:orders,id'],
             'total_price'                => ['required', 'numeric', 'min:0'],
             'down_payment_amount'        => ['required', 'numeric', 'min:0', 'lte:total_price'],

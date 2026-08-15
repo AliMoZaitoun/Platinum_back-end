@@ -44,6 +44,12 @@ class ContractController extends Controller
         return $this->useResource($contract, ContractResource::class);
     }
 
+    public function showByRef(string $reference_number)
+    {
+        $contract = $this->service->showByRef($reference_number);
+        return $this->useResource($contract, ContractResource::class);
+    }
+
     public function forClient()
     {
         $client = Auth::user()->client;
@@ -64,7 +70,7 @@ class ContractController extends Controller
         return $this->useResource($contract, ContractResource::class, __('messages.common.updated'));
     }
 
-    public function destroy(int $id)
+    public function destroy(string $id)
     {
         $this->service->destroy($id);
         return $this->successResponse([], __('messages.common.deleted'));

@@ -21,6 +21,7 @@ class ContractResource extends JsonResource
             'client'                => new ClientDetailResource($this->whenLoaded('client')),
             'employee'              => new EmployeeDetailResource($this->whenLoaded('employee')),
 
+            'reference_number'      => $this->reference_number,
             'total_price'           => $this->total_price,
             'down_payment_amount'   => $this->down_payment_amount,
             'installments_count'    => $this->installments_count,

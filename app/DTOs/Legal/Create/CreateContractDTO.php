@@ -7,6 +7,7 @@ use App\Http\Requests\V1\Legal\CreateContractRequest;
 class CreateContractDTO
 {
     public function __construct(
+        public readonly string $referenceNumber,
         public readonly int $employeeId,
         public readonly int $orderId,
         public readonly float $totalPrice,
@@ -21,6 +22,7 @@ class CreateContractDTO
 
         return new self(
             employeeId: $request->user()->employee->id,
+            referenceNumber: $request->validated('reference_number'),
             orderId: $request->validated('order_id'),
             totalPrice: (float) $request->validated('total_price'),
             downPaymentAmount: (float) $request->validated('down_payment_amount'),
@@ -33,6 +35,7 @@ class CreateContractDTO
     {
         return array_filter([
             'employee_id'         => $this->employeeId,
+            'reference_number'    => $this->referenceNumber,
             'order_id'            => $this->orderId,
             'total_price'         => $this->totalPrice,
             'down_payment_amount' => $this->downPaymentAmount,

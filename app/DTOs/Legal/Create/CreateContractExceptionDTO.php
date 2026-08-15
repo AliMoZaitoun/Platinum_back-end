@@ -25,7 +25,7 @@ class CreateContractExceptionDTO
             requestedDownPayment: (float) $request->validated('down_payment_amount'),
             originalInstallmentsCount: (int) $request->validated('original_installments_count'),
             requestedInstallmentsCount: (int) $request->validated('installments_count'),
-            reason: $request->validated('exception_reason'),
+            reason: (string) $request->validated('exception_reason'),
         );
     }
 

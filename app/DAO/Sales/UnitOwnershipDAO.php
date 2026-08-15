@@ -39,7 +39,15 @@ class UnitOwnershipDAO
     public function unitClient(int $unit_id)
     {
         return UnitOwnership::where('unit_id', $unit_id)
-            ->with(['unit', 'attachments'])
+            ->with(['unit', 'attachments', 'contract'])
+            ->get();
+    }
+
+
+    public function byContract(int $contract_id)
+    {
+        return UnitOwnership::where('contract_id', $contract_id)
+            ->with(['unit', 'attachments', 'contract'])
             ->get();
     }
 

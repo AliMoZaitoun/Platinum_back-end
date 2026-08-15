@@ -56,6 +56,12 @@ class PaymentController extends Controller
         return $this->successCollection($payments, ContractPaymentsGroupResource::class);
     }
 
+    public function byContract(int $contractId)
+    {
+        $payments = $this->service->byContract($contractId);
+        return $this->successCollection($payments, PaymentResource::class);
+    }
+
     public function update(int $id, UpdatePaymentRequest $request)
     {
         $dto = UpdatePaymentDTO::fromRequest($request->toArray());

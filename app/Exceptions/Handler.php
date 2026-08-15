@@ -19,6 +19,7 @@ use App\Exceptions\V1\Engineer\Attendance\MockLocationDetectedException;
 use App\Exceptions\V1\Engineer\Attendance\OfflineSyncExpiredException;
 use App\Exceptions\V1\Engineer\Attendance\ShiftTimeoutException;
 use App\Exceptions\V1\Engineer\Report\EngineerNotCheckedInException;
+use App\Exceptions\V1\Legal\CouldnotChangeNotDraftContract;
 use App\Exceptions\V1\Lottery\LotteryNotFoundException;
 use App\Exceptions\V1\Lottery\LotteryNotOpenException;
 use App\Exceptions\V1\Lottery\NoEligibleParticipantsException;
@@ -118,6 +119,10 @@ class Handler
 
         $exceptions->render(function (ProjectHasNoBuildingsException $e) {
             return $this->errorResponse($e->getMessage(), $e->getCode() ?: 422);
+        });
+
+        $exceptions->render(function (CouldnotChangeNotDraftContract $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode() ?: 403);
         });
 
         // ---------------------------------------------------------------------

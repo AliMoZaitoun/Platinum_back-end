@@ -12,7 +12,17 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-#[Fillable(['order_id', 'employee_id', 'client_id', 'total_price', 'down_payment_amount', 'installments_count', 'status'])]
+#[Fillable([
+    'reference_number',
+    'order_id',
+    'employee_id',
+    'client_id',
+    'total_price',
+    'down_payment_amount',
+    'installments_count',
+    'status'
+])]
+
 class Contract extends Model
 {
     use SoftDeletes;

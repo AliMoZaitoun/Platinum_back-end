@@ -6,7 +6,9 @@ use App\DAO\Finance\PaymentDAO;
 use App\DTOs\Finance\Create\CreatePaymentDTO;
 use App\DTOs\Finance\Update\UpdatePaymentDTO;
 use App\Exceptions\V1\Sales\PaymentImmutableException;
+use App\Models\Finance\Payment;
 use App\Services\FileManagerService;
+use App\Services\Sales\UnitOwnershipService;
 use App\Services\Transaction;
 
 class PaymentService
@@ -14,7 +16,8 @@ class PaymentService
     public function __construct(
         private PaymentDAO $dao,
         private Transaction $transaction,
-        private FileManagerService $fileManager
+        private FileManagerService $fileManager,
+        private UnitOwnershipService $ownershipService
     ) {}
 
     public function index(array $relations = [], int $perPage = 15)
@@ -35,6 +38,9 @@ class PaymentService
                     relationName: 'attachments'
                 );
             }
+
+            $this->activateContractIfDownPaymentPaid($payment);
+
             return $payment;
         });
     }
@@ -47,6 +53,11 @@ class PaymentService
     public function byClient(int $client_id)
     {
         return $this->dao->byClient($client_id);
+    }
+
+    public function byContract(int $contractId)
+    {
+        return $this->dao->byContract($contractId);
     }
 
     public function update(int $id, UpdatePaymentDTO $dto, $attachments = null)
@@ -68,6 +79,10 @@ class PaymentService
                     relationName: 'attachments'
                 );
             }
+
+            $this->completeContractIfAllPaid($payment);
+            $this->activateContractIfDownPaymentPaid($payment);
+
             return $payment;
         });
     }
@@ -92,5 +107,39 @@ class PaymentService
     public function destroy(int $id)
     {
         return $this->dao->destroy($id);
+    }
+
+    private function activateContractIfDownPaymentPaid(Payment $payment): void
+    {
+        if ($payment->payment_type === 'down_payment' && $payment->status === 'paid') {
+
+            $contract = $payment->contract;
+
+            if ($contract && $contract->status !== 'active') {
+                $contract->update([
+                    'status' => 'active'
+                ]);
+            }
+        }
+    }
+
+    private function completeContractIfAllPaid(Payment $payment): void
+    {
+        $contract = $payment->contract;
+
+        if ($contract && $contract->status !== 'completed') {
+
+            $hasUnpaidPayments = $contract->payments()
+                ->whereIn('status', ['pending', 'failed'])
+                ->exists();
+
+            if (!$hasUnpaidPayments) {
+                $contract->update([
+                    'status' => 'completed'
+                ]);
+
+                $this->ownershipService->finalizeOwnershipForContract($contract->id);
+            }
+        }
     }
 }

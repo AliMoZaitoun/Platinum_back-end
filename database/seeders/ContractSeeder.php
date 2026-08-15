@@ -21,6 +21,7 @@ class ContractSeeder extends Seeder
 
         foreach ($orders as $order) {
             $contract = Contract::create([
+                'reference_number'   => 'PLA-' . Str::random(5),
                 'client_id'          => $order->client_id,
                 'employee_id'        => $legalEmployee->id,
                 'order_id'           => $order->id,

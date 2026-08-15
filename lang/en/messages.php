@@ -143,4 +143,8 @@ return [
         'marked_as_read' => 'Insight marked as read successfully.',
         'retrieved_successfully' => 'Construction insights retrieved successfully.',
     ],
+
+    'contract'  => [
+        'non-draft_change' => 'Couldn\'t change non-draft contract',
+    ]
 ];

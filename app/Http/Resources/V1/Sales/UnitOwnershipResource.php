@@ -3,6 +3,7 @@
 namespace App\Http\Resources\V1\Sales;
 
 use App\Http\Resources\V1\ClientDetailResource;
+use App\Http\Resources\V1\Legal\ContractResource;
 use App\Http\Resources\V1\MediaResource;
 use App\Http\Resources\V1\RealEstate\UnitResource;
 use Illuminate\Http\Request;
@@ -15,6 +16,7 @@ class UnitOwnershipResource extends JsonResource
         return [
             'client' => new ClientDetailResource($this->whenLoaded('client')),
             'unit'              => new UnitResource($this->whenLoaded('unit')),
+            'contract'          => new ContractResource($this->whenLoaded('contract')),
             'purchase_price'    => (float) $this->purchase_price . '$',
             'status'            => $this->status,
             'owned_at'          => $this->owned_at,

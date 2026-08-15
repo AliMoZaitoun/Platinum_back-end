@@ -45,6 +45,22 @@ class ContractDAO
             ->first() ?? throw new NotFoundException("Contract");
     }
 
+    public function byRef(string $reference_number)
+    {
+        return Contract::where('reference_number', $reference_number)
+            ->with([
+                'order',
+                'client',
+                'employee',
+                'attachments',
+                'latestException',
+                'payments' => function ($query) {
+                    $query->orderBy('payment_date', 'asc');
+                }
+            ])
+            ->first() ?? throw new NotFoundException("Contract");
+    }
+
     public function byClient(int $client_id)
     {
         return Contract::where('client_id', $client_id)

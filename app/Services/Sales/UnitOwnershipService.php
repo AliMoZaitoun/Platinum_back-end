@@ -45,6 +45,36 @@ class UnitOwnershipService
         });
     }
 
+    public function finalizeOwnershipForContract(int $contractId)
+    {
+        return $this->transaction->execute(function () use ($contractId) {
+            $ownership = $this->dao->byContract($contractId);
+
+            if ($ownership && $ownership->status !== 'transferred') {
+                $ownership->update([
+                    'status' => 'transferred',
+                    'owned_at' => now(),
+                ]);
+
+                $this->unitDAO->update($ownership->unit_id, UpdateUnitDTO::fromRequest(['status' => 'sold']));
+            }
+            return $ownership;
+        });
+    }
+
+    public function cancelOwnershipForContract(int $contractId)
+    {
+        return $this->transaction->execute(function () use ($contractId) {
+            $ownership = $this->dao->byContract($contractId);
+
+            if ($ownership) {
+                $this->unitDAO->update($ownership->unit_id, UpdateUnitDTO::fromRequest(['status' => 'available']));
+
+                $ownership->delete();
+            }
+        });
+    }
+
     public function show(int $id)
     {
         return $this->dao->show($id);

@@ -8,6 +8,7 @@ use App\DAO\Finance\PaymentDAO;
 use App\DTOs\Legal\Create\CreateContractDTO;
 use App\DTOs\Finance\Create\CreatePaymentDTO;
 use App\DTOs\Legal\Update\UpdateContractDTO;
+use App\Exceptions\V1\Legal\CouldnotChangeNotDraftContract;
 use App\Services\FileManagerService;
 use App\Services\Sales\OrderService;
 use App\Services\Transaction;
@@ -129,6 +130,11 @@ class ContractService
         return $this->dao->show($id);
     }
 
+    public function showByRef(string $reference_number)
+    {
+        return $this->dao->byRef($reference_number);
+    }
+
     public function byClient(int $client_id)
     {
         return $this->dao->byClient($client_id);
@@ -138,7 +144,7 @@ class ContractService
     {
         $contract = $this->dao->show($id);
         if ($contract->status != 'draft') {
-            throw new Exception("Couldn't change non-draft contract", 402);
+            throw new CouldnotChangeNotDraftContract();
         }
         return $this->dao->updateStatus($id, $dto->status);
     }
