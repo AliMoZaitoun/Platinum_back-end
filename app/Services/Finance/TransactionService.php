@@ -57,9 +57,6 @@ class TransactionService
 
                     $data['party_type'] = \App\Models\Client\Client::class;
                     $data['party_id']   = $payment->client_id;
-
-                    $paymentDTO = UpdatePaymentDTO::fromRequest(['status' => 'paid']);
-                    $this->paymentDAO->update($payment->id, $paymentDTO);
                 }
             }
 

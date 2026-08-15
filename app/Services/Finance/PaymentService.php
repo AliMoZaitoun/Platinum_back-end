@@ -4,6 +4,7 @@ namespace App\Services\Finance;
 
 use App\DAO\Finance\PaymentDAO;
 use App\DTOs\Finance\Create\CreatePaymentDTO;
+use App\DTOs\Finance\Create\CreateTransactionDTO;
 use App\DTOs\Finance\Update\UpdatePaymentDTO;
 use App\Exceptions\V1\Sales\PaymentImmutableException;
 use App\Models\Finance\Payment;
@@ -17,7 +18,8 @@ class PaymentService
         private PaymentDAO $dao,
         private Transaction $transaction,
         private FileManagerService $fileManager,
-        private UnitOwnershipService $ownershipService
+        private UnitOwnershipService $ownershipService,
+        private TransactionService $financeTransactionService
     ) {}
 
     public function index(array $filters = [], array $relations = [], int $perPage = 15)
@@ -39,7 +41,11 @@ class PaymentService
                 );
             }
 
-            $this->activateContractIfDownPaymentPaid($payment);
+            if ($payment->status === 'paid') {
+                $this->createReceiptForPayment($payment);
+                $this->activateContractIfDownPaymentPaid($payment);
+                $this->completeContractIfAllPaid($payment);
+            }
 
             return $payment;
         });
@@ -80,8 +86,11 @@ class PaymentService
                 );
             }
 
-            $this->completeContractIfAllPaid($payment);
-            $this->activateContractIfDownPaymentPaid($payment);
+            if ($payment->status === 'paid') {
+                $this->createReceiptForPayment($payment);
+                $this->activateContractIfDownPaymentPaid($payment);
+                $this->completeContractIfAllPaid($payment);
+            }
 
             return $payment;
         });
@@ -141,5 +150,32 @@ class PaymentService
                 $this->ownershipService->finalizeOwnershipForContract($contract->id);
             }
         }
+    }
+
+    private function createReceiptForPayment(Payment $payment): void
+    {
+        if ($payment->transactions()->exists()) {
+            return;
+        }
+
+        $transactionData = [
+            'type'                 => 'receipt',
+            'amount'               => $payment->amount,
+            'currency'             => $payment->contract->currency,
+            'exchange_rate'        => 1.0000,
+            'transactionable_type' => 'payment',
+            'transactionable_id'   => $payment->id,
+            'party_type'           => 'client',
+            'party_id'             => $payment->client_id,
+            'category'             => $payment->payment_type,
+            'payment_method'       => $payment->payment_method,
+            'status'               => 'posted',
+            'description'          => 'تسديد تلقائي للدفعة رقم ' . $payment->id . ' للعقد التابع للعميل',
+            'created_by'           => auth()->id() ?? $payment->employee_id,
+        ];
+
+        $dto = new CreateTransactionDTO(...$transactionData);
+
+        $this->financeTransactionService->store($dto);
     }
 }
