@@ -6,17 +6,46 @@ use App\DTOs\Finance\Create\CreatePaymentDTO;
 use App\DTOs\Finance\Update\UpdatePaymentDTO;
 use App\Exceptions\NotFoundException;
 use App\Models\Finance\Payment;
+use Illuminate\Database\Eloquent\Builder;
 
 class PaymentDAO
 {
-    public function index(array $relations = [], int $perPage = 15)
+    public function index(array $filters = [], array $relations = [], int $perPage = 15)
     {
         $defaultRelations = ['client', 'attachments', 'contract'];
         $allRelations = array_merge($defaultRelations, $relations);
-        return Payment::query()
-            ->with($allRelations)
-            ->latest()
-            ->paginate($perPage);
+
+        $query = Payment::query()->with($allRelations);
+
+        if (!empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+        if (!empty($filters['client_id'])) {
+            $query->where('client_id', $filters['client_id']);
+        }
+        if (!empty($filters['contract_id'])) {
+            $query->where('contract_id', $filters['contract_id']);
+        }
+        if (!empty($filters['payment_type'])) {
+            $query->where('payment_type', $filters['payment_type']);
+        }
+        if (!empty($filters['from_date'])) {
+            $query->whereDate('payment_date', '>=', $filters['from_date']);
+        }
+        if (!empty($filters['to_date'])) {
+            $query->whereDate('payment_date', '<=', $filters['to_date']);
+        }
+
+        if (empty($filters['view_all'])) {
+            $query->where(function (Builder $q) {
+                $q->where('payment_date', '<', now()->startOfMonth())
+                    ->whereIn('status', ['pending', 'failed'])
+
+                    ->orWhere('payment_date', '>=', now()->startOfMonth());
+            });
+        }
+
+        return $query->orderBy('payment_date', 'asc')->paginate($perPage);
     }
 
     public function store(CreatePaymentDTO $dto)

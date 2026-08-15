@@ -23,9 +23,19 @@ class PaymentController extends Controller
         private PaymentService $service
     ) {}
 
-    public function index()
+    public function index(Request $request)
     {
-        $payments = $this->service->index();
+        $filters = $request->only([
+            'status',
+            'client_id',
+            'contract_id',
+            'payment_type',
+            'from_date',
+            'to_date',
+            'view_all'
+        ]);
+
+        $payments = $this->service->index($filters);
         return $this->successCollection($payments, PaymentResource::class);
     }
 

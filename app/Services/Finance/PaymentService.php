@@ -20,9 +20,9 @@ class PaymentService
         private UnitOwnershipService $ownershipService
     ) {}
 
-    public function index(array $relations = [], int $perPage = 15)
+    public function index(array $filters = [], array $relations = [], int $perPage = 15)
     {
-        return $this->dao->index($relations, $perPage);
+        return $this->dao->index($filters, $relations, $perPage);
     }
 
     public function store(CreatePaymentDTO $dto, $attachments = null)
