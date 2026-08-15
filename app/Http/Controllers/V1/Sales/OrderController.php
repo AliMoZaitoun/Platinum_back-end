@@ -90,14 +90,14 @@ class OrderController extends Controller
     public function addNote(int $id, AddNoteRequest $request)
     {
         $orderDTO = UpdateOrderDTO::fromRequest($request->validated());
-        $noteDTO = CreateNoteDTO::fromRequest(Auth::user()->employee->id, $request->validated());
+        $noteDTO = CreateNoteDTO::fromRequest(Auth::user()->id, $request->validated());
         $order = $this->orderService->update($id, $orderDTO, $noteDTO);
         return $this->useResource($order, OrderResource::class, __('messages.common.updated'));
     }
 
     public function transfer(int $id, TransferOrderRequest $request)
     {
-        $employee = Auth::user()->employee;
+        $employee = Auth::user();
         $orderDTO = UpdateOrderDTO::fromRequest($request->validated());
         $noteDTO = CreateNoteDTO::fromRequest($employee->id, $request->validated());
         $order = $this->orderService->update($id, $orderDTO, $noteDTO);
