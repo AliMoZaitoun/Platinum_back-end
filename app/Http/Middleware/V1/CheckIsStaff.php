@@ -11,7 +11,6 @@ class CheckIsStaff
 {
     public function handle(Request $request, Closure $next): Response
     {
-
         if ($request->user() && in_array($request->user()->type, ['admin', 'employee'])) {
             return $next($request);
         }

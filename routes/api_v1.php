@@ -339,17 +339,17 @@ Route::prefix('unit')->middleware(['auth:sanctum', 'is_staff'])->group(function 
 
     Route::prefix('sold')->group(function () {
 
-        Route::get('unitOwnership', [UnitOwnershipController::class, 'index'])->middleware(['permissions:read.unit-ownership']);
+        Route::get('unitOwnership', [UnitOwnershipController::class, 'index'])->middleware(['permission:read.unit-ownership']);
 
-        Route::get('clientUnits/{client_id}', [UnitOwnershipController::class, 'clientUnits'])->middleware(['permissions:read.unit-ownership']);
+        Route::get('clientUnits/{client_id}', [UnitOwnershipController::class, 'clientUnits'])->middleware(['permission:read.unit-ownership']);
 
-        Route::get('unitClient/{unit_id}', [UnitOwnershipController::class, 'clientUnits'])->middleware(['permissions:read.unit-ownership']);
+        Route::get('unitClient/{unit_id}', [UnitOwnershipController::class, 'clientUnits'])->middleware(['permission:read.unit-ownership']);
 
-        Route::put('update/{unit_id}', [UnitOwnershipController::class, 'update'])->middleware(['permissions:update.unit-ownership']);
+        Route::put('update/{unit_id}', [UnitOwnershipController::class, 'update'])->middleware(['permission:update.unit-ownership']);
 
-        Route::delete('retrieve/{unit_id}', [UnitOwnershipController::class, 'destroy'])->middleware(['permissions:delete.unit-ownership']);
+        Route::delete('retrieve/{unit_id}', [UnitOwnershipController::class, 'destroy'])->middleware(['permission:delete.unit-ownership']);
     });
-    Route::post('sale/{unit_id}', [UnitOwnershipController::class, 'store'])->middleware(['permissions:create.unit-ownership']);
+    Route::post('sale/{unit_id}', [UnitOwnershipController::class, 'store'])->middleware(['permission:create.unit-ownership']);
 });
 
 Route::prefix('contract')->middleware(['auth:sanctum', 'is_staff'])->group(function () {
