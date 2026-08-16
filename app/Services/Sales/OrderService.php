@@ -8,6 +8,7 @@ use App\DAO\Sales\OrderDAO;
 use App\DTOs\Note\Create\CreateNoteDTO;
 use App\DTOs\Sales\Create\CreateOrderDTO;
 use App\DTOs\Sales\Update\UpdateOrderDTO;
+use App\Events\Order\OrderTransferred;
 use App\Exceptions\V1\Order\OrderAlreadySubmittedException;
 use App\Exceptions\V1\Order\UnitNotAvailableException;
 use App\Services\NoteService;
@@ -74,6 +75,11 @@ class OrderService
             $order = $this->orderDAO->update($id, $orderDTO);
             if ($noteDTO)
                 $this->noteService->store($order, $noteDTO);
+
+            if ($orderDTO->department_id) {
+                OrderTransferred::dispatch($order);
+            }
+
             return $order;
         });
     }

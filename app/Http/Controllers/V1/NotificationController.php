@@ -71,4 +71,34 @@ class NotificationController extends Controller
 
         return $this->useResource($latestNotification, NotificationResource::class);
     }
+
+    public function testEmployeeNotification(?int $employeeId = null)
+    {
+        $employee = $employeeId
+            ? \App\Models\Core\Employee::with('user')->find($employeeId)
+            : \App\Models\Core\Employee::with('user')->first();
+
+        if (! $employee || ! $employee->user) {
+            return $this->successResponse([], "Employee or User account Not Found", 404);
+        }
+
+        $user = $employee->user;
+
+        $orderNumber = 'ORD-' . date('Y') . '-' . rand(1000, 9999);
+
+        $user->notify(new BaseNotification(
+            title: '📦 استلام طلب شراء جديد!',
+            body: "مرحباً {$user->full_name}، تم استلام طلب شراء جديد برقم {$orderNumber} بانتظار مراجعتك واتخاذ الإجراء اللازم.",
+            data: [
+                'type'         => 'new_purchase_order',
+                'order_number' => $orderNumber,
+                'employee_id'  => (string) $employee->id
+            ],
+            actionUrl: '/dashboard/orders'
+        ));
+
+        $latestNotification = $user->notifications()->latest()->first();
+
+        return $this->useResource($latestNotification, NotificationResource::class);
+    }
 }

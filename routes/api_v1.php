@@ -80,6 +80,7 @@ Route::post('gemini/{id}', [ClientController::class, 'generatePlan']);
 Route::get('listModels', [ClientController::class, 'listModels']);
 
 Route::post('test-notification/{clientId}', [NotificationController::class, 'test']);
+Route::post('test-not/{employeeId}', [NotificationController::class, 'testEmployeeNotification']);
 
 
 // OTP
