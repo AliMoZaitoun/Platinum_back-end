@@ -2,7 +2,7 @@
 
 namespace App\Events\Complaint;
 
-use App\Models\Sales\Complaint; // تأكد من مسار الموديل لديك
+use App\Models\Sales\Complaint;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 

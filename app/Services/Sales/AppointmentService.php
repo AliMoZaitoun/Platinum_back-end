@@ -39,7 +39,7 @@ class AppointmentService
             if ($dto->orderId) {
                 $order = $this->orderDAO->show($dto->orderId);
 
-                if ($order->status !== 'approved') {
+                if ($order->status !== 'initially_accepted') {
                     throw new OrderNotApprovedForAppointmentException();
                 }
             }
