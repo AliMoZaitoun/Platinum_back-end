@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners\Order;
+namespace App\Listeners\V1;
 
 use App\Events\Order\OrderTransferred;
 use App\Notifications\BaseNotification;

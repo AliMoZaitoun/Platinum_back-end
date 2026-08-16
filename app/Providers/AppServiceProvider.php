@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Events\Order\OrderTransferred;
-use App\Listeners\Order\SendOrderTransferNotification;
+use App\Listeners\V1\SendOrderTransferNotification;
 use App\Models\Engineer\ConstructionReport;
 use App\Models\Message;
 use Illuminate\Database\Eloquent\Relations\Relation;
