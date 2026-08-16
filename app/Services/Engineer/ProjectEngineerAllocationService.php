@@ -5,11 +5,14 @@ namespace App\Services\Engineer;
 use App\DAO\Engineer\ProjectEngineerAllocationDAO;
 use App\DTOs\Engineer\Create\AssignEngineerAllocationDTO;
 use App\DTOs\Engineer\Update\UpdateEngProDTO;
+use App\Events\Engineer\EngineerAllocated;
+use App\Services\Transaction;
 
 class ProjectEngineerAllocationService
 {
     public function __construct(
-        private ProjectEngineerAllocationDAO $allocationDAO
+        private ProjectEngineerAllocationDAO $allocationDAO,
+        private Transaction $transaction
     ) {}
 
     public function index(array $relations = [])
@@ -19,7 +22,11 @@ class ProjectEngineerAllocationService
 
     public function store(AssignEngineerAllocationDTO $dto)
     {
-        return $this->allocationDAO->store($dto);
+        return $this->transaction->execute(function () use ($dto) {
+            $proEng = $this->allocationDAO->store($dto);
+            EngineerAllocated::dispatch($proEng);
+            return $proEng;
+        });
     }
 
     public function show(int $id)

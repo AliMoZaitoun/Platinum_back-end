@@ -7,6 +7,8 @@ use App\DAO\Sales\ComplaintTypeDAO;
 use App\DTOs\Sales\Create\CreateComplaintDTO;
 use App\DTOs\Sales\Create\CreateComplaintTypeDTO;
 use App\DTOs\Sales\Update\UpdateComplaintDTO;
+use App\Events\Complaint\ComplaintCreated;
+use App\Events\Complaint\ComplaintStatusUpdated;
 use App\Services\FileManagerService;
 use App\Services\Transaction;
 
@@ -49,6 +51,8 @@ class ComplaintService
                     relationName: 'attachments'
                 );
             }
+
+            ComplaintCreated::dispatch($complaint);
             return $complaint;
         });
     }
@@ -65,7 +69,11 @@ class ComplaintService
 
     public function updateStatus(int $id, UpdateComplaintDTO $dto)
     {
-        return $this->dao->update($id, $dto);
+        return $this->transaction->execute(function () use ($id, $dto) {
+            $complaint = $this->dao->update($id, $dto);
+            ComplaintStatusUpdated::dispatch($complaint);
+            return $complaint;
+        });
     }
 
     public function destroy(int $id)

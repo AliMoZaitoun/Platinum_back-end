@@ -2,7 +2,17 @@
 
 namespace App\Providers;
 
+use App\Events\Complaint\ComplaintCreated;
+use App\Events\Complaint\ComplaintStatusUpdated;
+use App\Events\Engineer\EngineerAllocated;
+use App\Events\Order\OrderCreated;
+use App\Events\Order\OrderStatusUpdated;
 use App\Events\Order\OrderTransferred;
+use App\Listeners\Complaint\SendComplaintStatusNotification;
+use App\Listeners\Complaint\SendNewComplaintNotification;
+use App\Listeners\Engineer\SendEngineerAllocationNotification;
+use App\Listeners\Order\SendOrderStatusNotification;
+use App\Listeners\V1\SendNewOrderNotification;
 use App\Listeners\V1\SendOrderTransferNotification;
 use App\Models\Engineer\ConstructionReport;
 use App\Models\Message;
@@ -28,6 +38,31 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(
             OrderTransferred::class,
             SendOrderTransferNotification::class
+        );
+
+        Event::listen(
+            OrderCreated::class,
+            SendNewOrderNotification::class
+        );
+
+        Event::listen(
+            ComplaintCreated::class,
+            SendNewComplaintNotification::class
+        );
+
+        Event::listen(
+            ComplaintStatusUpdated::class,
+            SendComplaintStatusNotification::class
+        );
+
+        Event::listen(
+            OrderStatusUpdated::class,
+            SendOrderStatusNotification::class
+        );
+
+        Event::listen(
+            EngineerAllocated::class,
+            SendEngineerAllocationNotification::class
         );
     }
 }

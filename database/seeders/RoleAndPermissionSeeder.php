@@ -174,6 +174,7 @@ class RoleAndPermissionSeeder extends Seeder
             'read.payment',
             'read.contract',
 
+            'read.availableSlot',
         ]);
 
 

@@ -8,10 +8,13 @@ use App\DAO\Sales\OrderDAO;
 use App\DTOs\Note\Create\CreateNoteDTO;
 use App\DTOs\Sales\Create\CreateOrderDTO;
 use App\DTOs\Sales\Update\UpdateOrderDTO;
+use App\Events\Order\OrderCreated;
+use App\Events\Order\OrderStatusUpdated;
 use App\Events\Order\OrderTransferred;
 use App\Exceptions\V1\Order\OrderAlreadySubmittedException;
 use App\Exceptions\V1\Order\UnitNotAvailableException;
 use App\Services\NoteService;
+use App\Services\Transaction;
 use App\Services\TransactionService;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,7 +25,8 @@ class OrderService
         private DepartmentDAO $departmentDAO,
         private UnitDAO $unitDAO,
         private NoteService $noteService,
-        private TransactionService $transactionService
+        private TransactionService $transactionService,
+        private Transaction $transaction
     ) {}
 
     public function index(array $relations = [])
@@ -32,21 +36,27 @@ class OrderService
 
     public function store(CreateOrderDTO $dto)
     {
-        if ($dto->unit_id) {
-            $isAvailable = $this->unitDAO->isUnitAvailable($dto->unit_id);
+        return $this->transaction->execute(function () use ($dto) {
+            if ($dto->unit_id) {
+                $isAvailable = $this->unitDAO->isUnitAvailable($dto->unit_id);
 
-            if (! $isAvailable) {
-                throw new UnitNotAvailableException();
+                if (! $isAvailable) {
+                    throw new UnitNotAvailableException();
+                }
             }
-        }
 
-        $exists = $this->orderDAO->exists($dto->client_id, $dto->unit_id, $dto->solution_id);
+            $exists = $this->orderDAO->exists($dto->client_id, $dto->unit_id, $dto->solution_id);
 
-        if ($exists) {
-            throw new OrderAlreadySubmittedException();
-        }
+            if ($exists) {
+                throw new OrderAlreadySubmittedException();
+            }
 
-        return $this->orderDAO->store($dto);
+            $order = $this->orderDAO->store($dto);
+
+            OrderCreated::dispatch($order);
+
+            return $order;
+        });
     }
 
     public function show(int $id)
@@ -78,6 +88,10 @@ class OrderService
 
             if ($orderDTO->department_id) {
                 OrderTransferred::dispatch($order);
+            }
+
+            if ($orderDTO->status) {
+                OrderStatusUpdated::dispatch($order);
             }
 
             return $order;
