@@ -3,6 +3,7 @@
 namespace App\Http\Resources\V1\Sales;
 
 use App\DAO\UserDAO;
+use App\Http\Resources\V1\ClientDetailResource;
 use App\Http\Resources\V1\NoteResource;
 use App\Http\Resources\V1\OrderResource;
 use App\Http\Resources\V1\UserResource;
@@ -23,7 +24,7 @@ class AppointmentResource extends JsonResource
             // 'created_by' => new UserResource($this->whenLoaded('createdBy')),
 
             'created_at'     => $this->created_at->format('Y-m-d h:i A'),
-
+            'client'        => new ClientDetailResource($this->whenLoaded('client')),
             'notes'        => NoteResource::collection($this->whenLoaded('notes'))
         ];
     }

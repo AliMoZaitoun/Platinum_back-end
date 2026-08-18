@@ -4,7 +4,7 @@ namespace App\Listeners\V1;
 
 use App\Events\Order\OrderCreated;
 use App\Notifications\BaseNotification;
-use App\Models\Core\Employee;
+use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Notification;
 
@@ -14,7 +14,7 @@ class SendNewOrderNotification implements ShouldQueue
     {
         $order = $event->order;
 
-        $employees = Employee::role('customer_service_staff')->get();
+        $employees = User::role('customer_service_staff')->get();
 
         if ($employees->isNotEmpty()) {
             $title = "🆕 طلب جديد مستلم!";

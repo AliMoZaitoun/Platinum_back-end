@@ -8,6 +8,7 @@ use App\DAO\RealEstate\UnitDAO;
 use App\DTOs\Marketing\Create\CreateOfferDTO;
 use App\DTOs\Marketing\Update\UpdateOfferDTO;
 use App\Exceptions\NotFoundException;
+use App\Exceptions\V1\Marketing\ItemNotAvailableForOfferException;
 use App\Models\RealEstate\Solution;
 use App\Models\RealEstate\Unit;
 use App\Services\TransactionService;
@@ -43,6 +44,10 @@ class OfferSerivce
 
             $item = $targetDAO->show($requestData['offerable_id']);
 
+            if (isset($item->status) && $item->status !== 'available') {
+                throw new ItemNotAvailableForOfferException();
+            }
+
             $oldPrice = (float) $item->price;
             $discountPercentage = (float) $requestData['discount_percentage'];
             $newPrice = $oldPrice - ($oldPrice * ($discountPercentage / 100));
@@ -59,7 +64,6 @@ class OfferSerivce
             return $this->dao->store($dto);
         });
     }
-
     public function show(int $id)
     {
         return $this->dao->show($id);

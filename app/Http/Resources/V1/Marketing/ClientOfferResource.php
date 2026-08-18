@@ -37,6 +37,8 @@ class ClientOfferResource extends JsonResource
                 return null;
             }),
 
+            'item_id'             => $this->offerable_id,
+
             'discount_percentage' => (float) $this->discount_percentage,
             'old_price'           => (float) $this->old_price,
             'new_price'           => (float) $this->new_price,

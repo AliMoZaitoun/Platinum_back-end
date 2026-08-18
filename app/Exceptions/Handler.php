@@ -23,6 +23,7 @@ use App\Exceptions\V1\Legal\CouldnotChangeNotDraftContract;
 use App\Exceptions\V1\Lottery\LotteryNotFoundException;
 use App\Exceptions\V1\Lottery\LotteryNotOpenException;
 use App\Exceptions\V1\Lottery\NoEligibleParticipantsException;
+use App\Exceptions\V1\Marketing\ItemNotAvailableForOfferException;
 use App\Exceptions\V1\Order\OrderNotApprovedForAppointmentException;
 use App\Exceptions\V1\Order\UnitNotAvailableException;
 use App\Exceptions\V1\PermissionsNeverChangeException;
@@ -200,6 +201,10 @@ class Handler
 
         $exceptions->render(function (PermissionsNeverChangeException $e) {
             return $this->errorResponse($e->getMessage(), $e->getCode() ?: 403);
+        });
+
+        $exceptions->render(function (ItemNotAvailableForOfferException $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode() ?: 400);
         });
     }
 }

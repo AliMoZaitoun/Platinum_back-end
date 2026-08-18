@@ -146,5 +146,9 @@ return [
 
     'contract'  => [
         'non-draft_change' => 'Couldn\'t change non-draft contract',
-    ]
+    ],
+
+    'offer' => [
+        'item_not_available' => 'Cannot add an offer! This item is currently not available (sold or reserved).',
+    ],
 ];
