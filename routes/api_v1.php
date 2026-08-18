@@ -459,7 +459,6 @@ Route::prefix('complaint')->middleware(['auth:sanctum'])->group(function () {
 
     Route::delete('{id}', [ComplaintController::class, 'destroy']);
 
-
     Route::get('type/read', [ComplaintTypeController::class, 'index']);
 
     Route::post('type/create', [ComplaintTypeController::class, 'store']);

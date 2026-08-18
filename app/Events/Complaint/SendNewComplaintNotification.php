@@ -5,6 +5,7 @@ namespace App\Listeners\Complaint;
 use App\Events\Complaint\ComplaintCreated;
 use App\Notifications\BaseNotification;
 use App\Models\Core\Employee;
+use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Notification;
 
@@ -14,7 +15,7 @@ class SendNewComplaintNotification implements ShouldQueue
     {
         $complaint = $event->complaint;
 
-        $employees = Employee::role('customer_service')->get();
+        $employees = User::role('customer_service_staff')->get();
 
         if ($employees->isNotEmpty()) {
             $title = "🚨 شكوى جديدة مستلمة!";
@@ -24,7 +25,7 @@ class SendNewComplaintNotification implements ShouldQueue
                 'type'         => 'new_complaint'
             ];
 
-            Notification::send($employees, new BaseNotification($title, $body, $data, '/dashboard/complaints'));
+            Notification::send($employees, new BaseNotification($title, $body, $data, '/complaint'));
         }
     }
 }
