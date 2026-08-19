@@ -21,6 +21,8 @@ return new class extends Migration
 
             $table->enum('status', ['draft', 'pending_approval', 'active', 'rejected', 'completed', 'terminated'])->default('draft');
 
+            $table->unique(['client_id', 'order_id']);
+
             $table->softDeletes();
             $table->timestamps();
         });
