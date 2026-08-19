@@ -423,6 +423,8 @@ Route::prefix('client')->middleware(['auth:sanctum', 'is_client'])->group(functi
     //  Contracts
     Route::get('contract', [ContractController::class, 'forClient']);
 
+    Route::get('contract/{id}', [ContractController::class, 'show']);
+
     Route::get('payment', [PaymentController::class, 'getMine']);
 
     Route::get('lottery', [LotteryController::class, 'forClient']);
