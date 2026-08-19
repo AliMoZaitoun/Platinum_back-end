@@ -515,7 +515,7 @@ Route::prefix('order')->middleware('auth:sanctum')->group(function () {
         ->middleware(['permission:delete.order']);
 });
 Route::get('client/slots/available', [AvailabilitySlotController::class, 'getForClient'])
-    ->middleware(['permission:read.availableSlot']);
+    ->middleware(['auth:sanctum', 'permission:read.availableSlot']);
 
 Route::prefix('note')->group(function () {
     // ->middleware(['permission:update.order']);
