@@ -514,7 +514,7 @@ Route::prefix('order')->middleware('auth:sanctum')->group(function () {
     Route::delete('{id}', [OrderController::class, 'destroy'])
         ->middleware(['permission:delete.order']);
 });
-Route::get('client/availableSlot', [AvailabilitySlotController::class, 'getForClient'])
+Route::get('client/slots/available', [AvailabilitySlotController::class, 'getForClient'])
     ->middleware(['permission:read.availableSlot']);
 
 Route::prefix('note')->group(function () {
