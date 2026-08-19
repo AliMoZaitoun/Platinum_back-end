@@ -155,9 +155,9 @@ class PaymentService
 
     private function createReceiptForPayment(Payment $payment): void
     {
-        if ($payment->transactions()->exists()) {
-            return;
-        }
+        // if ($payment->transactions()->exists()) {
+        //     return;
+        // }
 
         $categoryEnum = TransactionCategory::tryFrom($payment->payment_type)
             ?? TransactionCategory::OTHER;
