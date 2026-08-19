@@ -45,6 +45,8 @@ use App\Http\Controllers\V1\Finance\PaymentController;
 use App\Http\Controllers\V1\Finance\TransactionController;
 use App\Http\Controllers\V1\NotificationController;
 use App\Http\Controllers\V1\Sales\UnitOwnershipController;
+use App\Models\Legal\Contract;
+use App\Models\Sales\UnitOwnership;
 use Aws\Route53\Exception\Route53Exception;
 use Database\Seeders\FaqNodeSeeder;
 use Illuminate\Support\Facades\Artisan;
@@ -749,4 +751,25 @@ Route::get('add-faqs-seeder', function () {
     return response()->json([
         'message' => 'تم زرع بيانات الأسئلة الشائعة بنجاح!'
     ]);
+});
+
+Route::get('sell-the-unit', function () {
+    $contract = Contract::find(3);
+
+    $order = $contract->order->update(['status' => 'accepted']);
+
+    $contract->update(['status' => 'completed']);
+
+    $contract->order->unit->update(['status' => 'sold']);
+
+    $ownerShip = UnitOwnership::create([
+        'client_id' => $contract->client_id,
+        'contract_id' => $contract->id,
+        'unit_id' => $contract->order->unit_id,
+        'purchase_price'    => $contract->total_price,
+        'status' => 'transferred',
+        'owned_at' => now()
+    ]);
+
+    return $ownerShip;
 });
