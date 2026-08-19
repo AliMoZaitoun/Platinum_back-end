@@ -122,13 +122,12 @@ class PaymentService
 
     private function activateContractIfDownPaymentPaid(Payment $payment): void
     {
-        if ($payment->payment_type === 'down_payment' && $payment->status === 'paid') {
+        if ($payment->status === 'paid') {
 
             $contract = $payment->contract;
 
             if ($contract) {
-
-                if ($contract->status !== 'active') {
+                if (!in_array($contract->status, ['active', 'completed'])) {
                     $contract->update([
                         'status' => 'active'
                     ]);
@@ -158,11 +157,11 @@ class PaymentService
 
         if ($contract && $contract->status !== 'completed') {
 
-            $hasUnpaidPayments = $contract->payments()
-                ->whereIn('status', ['pending', 'failed'])
-                ->exists();
+            $totalPaid = $contract->payments()
+                ->where('status', 'paid')
+                ->sum('amount');
 
-            if (!$hasUnpaidPayments) {
+            if ($totalPaid >= $contract->total_price) {
                 $contract->update([
                     'status' => 'completed'
                 ]);
