@@ -506,9 +506,6 @@ Route::prefix('order')->middleware('auth:sanctum')->group(function () {
 
         Route::post('/', [OrderController::class, 'store'])
             ->middleware(['permission:create.order']);
-
-        Route::get('client/availableSlot', [AvailabilitySlotController::class, 'getForClient'])
-            ->middleware(['permission:read.availableSlot']);
     });
 
     Route::get('{id}', [OrderController::class, 'show'])
@@ -517,6 +514,8 @@ Route::prefix('order')->middleware('auth:sanctum')->group(function () {
     Route::delete('{id}', [OrderController::class, 'destroy'])
         ->middleware(['permission:delete.order']);
 });
+Route::get('client/availableSlot', [AvailabilitySlotController::class, 'getForClient'])
+    ->middleware(['permission:read.availableSlot']);
 
 Route::prefix('note')->group(function () {
     // ->middleware(['permission:update.order']);
