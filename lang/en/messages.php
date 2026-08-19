@@ -151,4 +151,11 @@ return [
     'offer' => [
         'item_not_available' => 'Cannot add an offer! This item is currently not available (sold or reserved).',
     ],
+
+    'faq' => [
+        'not_found' => 'FAQ node not found.',
+        'created'   => 'FAQ node created successfully.',
+        'updated'   => 'FAQ node updated successfully.',
+        'deleted'   => 'FAQ node deleted successfully.',
+    ],
 ];

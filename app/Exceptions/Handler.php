@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Exceptions\V1\Chat\FaqNodeNotFoundException;
 use App\Exceptions\V1\EmailAlreadyVerifiedException;
 use App\Exceptions\V1\InvalidPasswordException;
 use App\Exceptions\V1\InvalidRefreshTokenException;
@@ -205,6 +206,10 @@ class Handler
 
         $exceptions->render(function (ItemNotAvailableForOfferException $e) {
             return $this->errorResponse($e->getMessage(), $e->getCode() ?: 400);
+        });
+
+        $exceptions->render(function (FaqNodeNotFoundException $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode() ?: 404);
         });
     }
 }

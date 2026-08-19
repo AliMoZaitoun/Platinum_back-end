@@ -38,6 +38,8 @@ class DatabaseSeeder extends Seeder
             TransactionSeeder::class,
             // UnitOwnershipSeeder::class,
             NotificationSeeder::class,
+
+            FaqNodeSeeder::class
         ]);
     }
 }

@@ -9,6 +9,7 @@ use App\Http\Controllers\V1\Lottery\LotteryRuleController;
 use App\Http\Controllers\V1\Auth\LoginController;
 use App\Http\Controllers\V1\Auth\PasswordManagementController;
 use App\Http\Controllers\V1\Auth\VerificationController;
+use App\Http\Controllers\V1\Chat\FaqNodeController;
 use App\Http\Controllers\V1\ChatController;
 use App\Http\Controllers\V1\Client\ClientController;
 use App\Http\Controllers\V1\Client\FavoriteController;
@@ -45,6 +46,7 @@ use App\Http\Controllers\V1\Finance\TransactionController;
 use App\Http\Controllers\V1\NotificationController;
 use App\Http\Controllers\V1\Sales\UnitOwnershipController;
 use Aws\Route53\Exception\Route53Exception;
+use Database\Seeders\FaqNodeSeeder;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
@@ -640,6 +642,21 @@ Route::middleware('auth:sanctum')->group(function () {
     Broadcast::routes(['middleware' => ['auth:sanctum']]);
 });
 
+Route::prefix('faqs')->group(function () {
+
+    Route::get('/root', [FaqNodeController::class, 'index']);
+    Route::get('/{id}/children', [FaqNodeController::class, 'children']);
+
+    Route::middleware(['auth:sanctum', 'is_staff'])->group(function () {
+        Route::get('/admin/tree', [FaqNodeController::class, 'adminIndex']);
+
+        Route::post('/', [FaqNodeController::class, 'store']);
+        Route::get('/{id}', [FaqNodeController::class, 'show']);
+        Route::put('/{id}', [FaqNodeController::class, 'update']);
+        Route::delete('/{id}', [FaqNodeController::class, 'destroy']);
+    });
+});
+
 Route::prefix('lottery')->middleware(['auth:sanctum', 'is_staff'])->group(function () {
     Route::get('', [LotteryController::class, 'index']);
     Route::get('{id}', [LotteryController::class, 'show']);
@@ -721,4 +738,15 @@ Route::get('return-permissions', function () {
     ]);
 
     return "Done";
+});
+
+
+Route::get('add-faqs-seeder', function () {
+    Artisan::call('db:seed', [
+        '--class' => \Database\Seeders\FaqNodeSeeder::class
+    ]);
+
+    return response()->json([
+        'message' => 'تم زرع بيانات الأسئلة الشائعة بنجاح!'
+    ]);
 });
