@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners\Complaint;
+namespace App\Listeners\V1\Complaint;
 
 use App\Events\Complaint\ComplaintCreated;
 use App\Notifications\BaseNotification;
