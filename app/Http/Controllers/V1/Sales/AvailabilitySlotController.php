@@ -31,6 +31,12 @@ class AvailabilitySlotController extends Controller
         return $this->successResponse([], __('messages.common.stored'), 201);
     }
 
+    public function getForClient()
+    {
+        $avaSlots = $this->avaSlotService->getForClient();
+        return $this->successCollection($avaSlots, AvailableSlotResource::class);
+    }
+
     public function show(int $id)
     {
         $avaSlot = $this->avaSlotService->show($id);

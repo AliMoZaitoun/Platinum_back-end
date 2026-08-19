@@ -20,6 +20,11 @@ class AvailabilitySlotService
         return $this->avaSlotDAO->index();
     }
 
+    public function getForClient()
+    {
+        return $this->avaSlotDAO->getAvailableSlots();
+    }
+
     public function store(CreateAvailabilitySlotDTO $avSlotDTO)
     {
         $user = Auth::user();

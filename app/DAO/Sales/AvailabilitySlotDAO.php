@@ -20,11 +20,14 @@ class AvailabilitySlotDAO
     {
         return AvailabilitySlot
             ::where(function ($query) {
-                $query->where('start_time', '>', now()->format('Y-m-d'))
+                $query
+                    ->where('start_time', '>', now()->format('Y-m-d'))
                     ->orWhere(function ($q) {
                         $q->where('date', now()->format('Y-m-d'))
                             ->where('start_time', '>', now()->format('H:i:s'));
-                    });
+                    })
+                    ->where('status', 'available')
+                ;
             })
             ->get();
     }

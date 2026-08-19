@@ -6,6 +6,7 @@ use App\DAO\Finance\PaymentDAO;
 use App\DTOs\Finance\Create\CreatePaymentDTO;
 use App\DTOs\Finance\Create\CreateTransactionDTO;
 use App\DTOs\Finance\Update\UpdatePaymentDTO;
+use App\DTOs\Sales\Create\CreateUnitOwnershipDTO;
 use App\Enums\TransactionCategory;
 use App\Exceptions\V1\Sales\PaymentImmutableException;
 use App\Models\Finance\Payment;
@@ -129,6 +130,13 @@ class PaymentService
                 $contract->update([
                     'status' => 'active'
                 ]);
+                $data = [
+                    "client_id" => $payment->client_id,
+                    "contract_id" => $payment->contract_id,
+                    "purchase_price" => $payment->contract->total_price,
+                ];
+                $dtoOwnerShip = CreateUnitOwnershipDTO::fromRequest($payment->contract->order->unit_id, $data);
+                $this->ownershipService->store($dtoOwnerShip);
             }
         }
     }
@@ -155,9 +163,9 @@ class PaymentService
 
     private function createReceiptForPayment(Payment $payment): void
     {
-        // if ($payment->transactions()->exists()) {
-        //     return;
-        // }
+        if ($payment->transactions()->exists()) {
+            return;
+        }
 
         $categoryEnum = TransactionCategory::tryFrom($payment->payment_type)
             ?? TransactionCategory::OTHER;

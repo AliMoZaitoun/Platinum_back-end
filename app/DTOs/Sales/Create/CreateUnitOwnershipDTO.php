@@ -7,9 +7,10 @@ class CreateUnitOwnershipDTO
     public function __construct(
         public int $client_id,
         public int $unit_id,
+        public int $contract_id,
         public float $purchase_price,
         public ?string $status,
-        public string $owned_at,
+        public ?string $owned_at,
     ) {}
 
     public static function fromRequest(int $unit_id, array $request)
@@ -17,9 +18,10 @@ class CreateUnitOwnershipDTO
         return new self(
             client_id: $request['client_id'],
             unit_id: $unit_id,
+            contract_id: $request['contract_id'],
             purchase_price: $request['purchase_price'],
-            status: $request['status'] ?? null,
-            owned_at: $request['owned_at'],
+            status: $request['status'] ?? 'pending',
+            owned_at: $request['owned_at'] ?? null,
         );
     }
 
@@ -28,6 +30,7 @@ class CreateUnitOwnershipDTO
         return array_filter([
             'client_id'  => $this->client_id,
             'unit_id'    => $this->unit_id,
+            'contract_id'    => $this->contract_id,
             'purchase_price' => $this->purchase_price,
             'status'     => $this->status,
             'owned_at'  => $this->owned_at,

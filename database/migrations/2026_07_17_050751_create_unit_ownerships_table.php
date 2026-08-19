@@ -15,7 +15,7 @@ return new class extends Migration
             $table->foreignId('contract_id')->constrained()->cascadeOnDelete();
 
             $table->decimal('purchase_price', 15, 2)->nullable();
-            $table->enum('status', ['active', 'pending', 'transferred'])->default('active');
+            $table->enum('status', ['active', 'pending', 'transferred'])->default('pending');
 
             $table->date('owned_at')->nullable();
 

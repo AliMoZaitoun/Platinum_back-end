@@ -506,6 +506,9 @@ Route::prefix('order')->middleware('auth:sanctum')->group(function () {
 
         Route::post('/', [OrderController::class, 'store'])
             ->middleware(['permission:create.order']);
+
+        Route::get('client/availableSlot', [AvailabilitySlotController::class, 'getForClient'])
+            ->middleware(['permission:read.availableSlot']);
     });
 
     Route::get('{id}', [OrderController::class, 'show'])
