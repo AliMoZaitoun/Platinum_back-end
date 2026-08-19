@@ -14,8 +14,6 @@ use App\Services\FileManagerService;
 use App\Services\Sales\UnitOwnershipService;
 use App\Services\Transaction;
 
-use function PHPUnit\Framework\isEmpty;
-
 class PaymentService
 {
     public function __construct(
@@ -137,7 +135,7 @@ class PaymentService
 
                 $existingOwnerships = $this->ownershipService->byContract($contract->id);
 
-                if (isEmpty($existingOwnerships)) {
+                if (empty($existingOwnerships)) {
                     $data = [
                         "client_id" => $payment->client_id,
                         "contract_id" => $payment->contract_id,
