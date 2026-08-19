@@ -37,11 +37,16 @@ class PaymentDAO
         }
 
         if (empty($filters['view_all'])) {
-            $query->where(function (Builder $q) {
-                $q->where('payment_date', '<', now()->startOfMonth())
-                    ->whereIn('status', ['pending', 'failed'])
+            $startOfMonth = now()->startOfMonth()->toDateString();
 
-                    ->orWhere('payment_date', '>=', now()->startOfMonth());
+            $query->where(function (Builder $q) use ($startOfMonth) {
+
+                $q->where(function ($subQ) use ($startOfMonth) {
+                    $subQ->where('payment_date', '<', $startOfMonth)
+                        ->whereIn('status', ['pending', 'failed']);
+                })
+
+                    ->orWhere('payment_date', '>=', $startOfMonth);
             });
         }
 
@@ -58,27 +63,46 @@ class PaymentDAO
         return Payment::with(['client', 'attachments', 'employee'])->where('id', $id)->first() ?? throw new NotFoundException("Payment");
     }
 
-    public function byClient(int $client_id)
+    public function byClient(int $client_id, bool $viewAll = false)
     {
-        return Payment::where('client_id', $client_id)
-            ->latest()
-            ->with(['attachments'])
-            ->get()
-            ->groupBy('contract_id');
+        $query = Payment::where('client_id', $client_id)
+            ->with(['attachments', 'contract'])
+            ->orderBy('payment_date', 'asc');
+
+        if (!$viewAll) {
+            $startOfMonth = now()->startOfMonth()->toDateString();
+
+            $query->where(function (Builder $q) use ($startOfMonth) {
+                $q->where(function ($subQ) use ($startOfMonth) {
+                    $subQ->where('payment_date', '<', $startOfMonth)
+                        ->whereIn('status', ['pending', 'failed']);
+                })
+                    ->orWhere('payment_date', '>=', $startOfMonth);
+            });
+        }
+
+        return $query->get();
     }
 
-    public function byContract(int $contract_id)
+    public function byContract(int $contract_id, bool $viewAll = false)
     {
-        return Payment::where('contract_id', $contract_id)
-            ->where(function ($query) {
-                $query->where('payment_date', '<', now()->startOfMonth())
-                    ->whereIn('status', ['pending', 'failed'])
-
-                    ->orWhere('payment_date', '>=', now()->startOfMonth());
-            })
-            ->orderBy('payment_date', 'asc')
+        $query = Payment::where('contract_id', $contract_id)
             ->with(['attachments', 'contract'])
-            ->get();
+            ->orderBy('payment_date', 'asc');
+
+        if (!$viewAll) {
+            $startOfMonth = now()->startOfMonth()->toDateString();
+
+            $query->where(function (Builder $q) use ($startOfMonth) {
+                $q->where(function ($subQ) use ($startOfMonth) {
+                    $subQ->where('payment_date', '<', $startOfMonth)
+                        ->whereIn('status', ['pending', 'failed']);
+                })
+                    ->orWhere('payment_date', '>=', $startOfMonth);
+            });
+        }
+
+        return $query->get();
     }
 
     public function update(int $id, UpdatePaymentDTO $dto)

@@ -51,6 +51,7 @@ use Aws\Route53\Exception\Route53Exception;
 use Database\Seeders\FaqNodeSeeder;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -744,13 +745,24 @@ Route::get('return-permissions', function () {
 
 
 Route::get('add-faqs-seeder', function () {
-    Artisan::call('db:seed', [
-        '--class' => \Database\Seeders\FaqNodeSeeder::class
-    ]);
+    try {
+        Artisan::call('db:seed', [
+            '--class' => 'Database\\Seeders\\FaqNodeSeeder',
+            '--force' => true
+        ]);
 
-    return response()->json([
-        'message' => 'تم زرع بيانات الأسئلة الشائعة بنجاح!'
-    ]);
+        return response()->json([
+            'status'  => true,
+            'message' => 'تم زرع بيانات الأسئلة الشائعة بنجاح!'
+        ]);
+    } catch (\Throwable $e) {
+        Log::error('Seeder Error: ' . $e->getMessage());
+
+        return response()->json([
+            'status'  => false,
+            'message' => 'حدث خطأ أثناء تنفيذ الـ Seeder: ' . $e->getMessage()
+        ], 500);
+    }
 });
 
 Route::get('sell-the-unit', function () {
