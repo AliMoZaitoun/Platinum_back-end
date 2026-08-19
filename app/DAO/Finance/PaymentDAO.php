@@ -84,6 +84,14 @@ class PaymentDAO
         return $query->get();
     }
 
+    public function getPendingByContract(int $contractId)
+    {
+        return Payment::where('contract_id', $contractId)
+            ->whereIn('status', ['pending', 'failed'])
+            ->orderBy('payment_date', 'asc')
+            ->get();
+    }
+
     public function byContract(int $contract_id, bool $viewAll = false)
     {
         $query = Payment::where('contract_id', $contract_id)

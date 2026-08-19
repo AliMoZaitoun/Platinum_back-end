@@ -404,9 +404,11 @@ Route::prefix('payment')->middleware('auth:sanctum')->group(function () {
         ->middleware('permission:update.payment');
 
     Route::get('showByContract/{contractId}', [PaymentController::class, 'byContract']);
+    Route::post('byContract/{contractId}/custom', [PaymentController::class, 'payCustomAmount']);
 
     Route::put('uploadFile/{id}', [PaymentController::class, 'uploadFile']);
     // ->middleware('permission:read.payment');
+
 
     Route::delete('{id}', [PaymentController::class, 'destroy'])
         ->middleware('permission:delete.payment');

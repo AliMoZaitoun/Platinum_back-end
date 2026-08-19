@@ -6,6 +6,7 @@ use App\DTOs\Finance\Create\CreatePaymentDTO;
 use App\DTOs\Finance\Update\UpdatePaymentDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Finance\CreatePaymentRequest;
+use App\Http\Requests\V1\Finance\PayCustomAmountRequest;
 use App\Http\Requests\V1\Finance\UpdatePaymentRequest;
 use App\Http\Requests\V1\Finance\UploadPaymentProofRequest;
 use App\Http\Resources\V1\Finance\ClientPaymentResource;
@@ -70,6 +71,16 @@ class PaymentController extends Controller
     {
         $payments = $this->service->byContract($contractId);
         return $this->successCollection($payments, PaymentResource::class);
+    }
+
+    public function payCustomAmount(PayCustomAmountRequest $request, int $contractId)
+    {
+        $this->service->payCustomAmount($contractId, $request->validated(), $request->file('attachments'));
+
+        return $this->successResponse(
+            data: [],
+            message: __('messages.payment.custom_payment_success')
+        );
     }
 
     public function update(int $id, UpdatePaymentRequest $request)

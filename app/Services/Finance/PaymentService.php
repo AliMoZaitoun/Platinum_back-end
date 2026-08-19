@@ -8,6 +8,7 @@ use App\DTOs\Finance\Create\CreateTransactionDTO;
 use App\DTOs\Finance\Update\UpdatePaymentDTO;
 use App\DTOs\Sales\Create\CreateUnitOwnershipDTO;
 use App\Enums\TransactionCategory;
+use App\Exceptions\V1\Finance\PaymentExceedsRemainingBalanceException;
 use App\Exceptions\V1\Sales\PaymentImmutableException;
 use App\Models\Finance\Payment;
 use App\Services\FileManagerService;
@@ -98,6 +99,94 @@ class PaymentService
         });
     }
 
+    public function payCustomAmount(int $contractId, array $data, $attachments)
+    {
+        return $this->transaction->execute(function () use ($contractId, $data, $attachments) {
+
+            $pendingPayments = $this->dao->getPendingByContract($contractId);
+
+            $totalPendingAmount = $pendingPayments->sum('amount');
+
+            if ($data['amount'] > $totalPendingAmount) {
+                throw new PaymentExceedsRemainingBalanceException($data['amount'], $totalPendingAmount);
+            }
+
+            $remainingAmountToDistribute = $data['amount'];
+
+            foreach ($pendingPayments as $payment) {
+                if ($remainingAmountToDistribute <= 0) break;
+
+                if ($remainingAmountToDistribute >= $payment->amount) {
+
+                    $updateDto = new UpdatePaymentDTO(
+                        amount: $payment->amount,
+                        payment_date: $payment->payment_date,
+                        payment_type: $payment->payment_type,
+                        payment_method: $data['payment_method'],
+                        status: 'paid'
+                    );
+
+                    $updatedPayment = $this->dao->update($payment->id, $updateDto);
+
+                    $remainingAmountToDistribute -= $payment->amount;
+
+                    $this->fileManager->storeFile(
+                        model: $updatedPayment,
+                        files: $attachments,
+                        folderPath: "payments",
+                        relationName: 'attachments'
+                    );
+
+                    $this->createReceiptForPayment($updatedPayment);
+                    $this->activateContractIfDownPaymentPaid($updatedPayment);
+                } else {
+
+
+                    $unpaidBalance = $payment->amount - $remainingAmountToDistribute;
+
+                    $updateDto = new UpdatePaymentDTO(
+                        amount: $remainingAmountToDistribute,
+                        payment_date: $payment->payment_date,
+                        payment_type: $payment->payment_type,
+                        payment_method: 'cash',
+                        status: 'paid'
+                    );
+                    $updatedPayment = $this->dao->update($payment->id, $updateDto);
+
+                    $this->fileManager->storeFile(
+                        model: $updatedPayment,
+                        files: $attachments,
+                        folderPath: "payments",
+                        relationName: 'attachments'
+                    );
+
+                    $this->createReceiptForPayment($updatedPayment);
+                    $this->activateContractIfDownPaymentPaid($updatedPayment);
+
+                    $splitPaymentDto = new CreatePaymentDTO(
+                        contract_id: $payment->contract_id,
+                        client_id: $payment->client_id,
+                        employee_id: $payment->employee_id,
+                        amount: $unpaidBalance,
+                        payment_date: $payment->payment_date,
+                        payment_type: $payment->payment_type,
+                        payment_method: $payment->payment_method,
+                        status: 'pending'
+                    );
+                    $this->dao->store($splitPaymentDto);
+
+                    $remainingAmountToDistribute = 0;
+                }
+            }
+
+            if (isset($updatedPayment)) {
+                $this->completeContractIfAllPaid($updatedPayment);
+            }
+
+            return true;
+        });
+    }
+
     public function uploadFile(int $id, $attachments = null)
     {
         return $this->transaction->execute(function () use ($id, $attachments) {
@@ -142,7 +231,7 @@ class PaymentService
                         "purchase_price" => $contract->total_price,
                     ];
 
-                    $unitId = $contract->order->unit_id ?? $contract->unit_id;
+                    $unitId = $contract->order?->unit_id ?? $contract->unit_id;
 
                     $dtoOwnerShip = CreateUnitOwnershipDTO::fromRequest($unitId, $data);
                     $this->ownershipService->store($dtoOwnerShip);

@@ -115,6 +115,8 @@ return [
 
     'payment' => [
         'cannot_be_updated' => 'لا يمكن تعديل هذه الدفعة لأنها لم تعد في حالة الانتظار.',
+        'custom_payment_success' => 'تم توزيع المبلغ وتسديد الدفعات بنجاح.',
+        'exceeds_remaining_balance' => 'المبلغ المدفوع (:paid_amount) أكبر من إجمالي الدفعات المتبقية للعقد (:total_pending_amount). لا يمكن إتمام العملية.',
     ],
 
     'transaction' => [
