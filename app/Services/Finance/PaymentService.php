@@ -126,10 +126,13 @@ class PaymentService
 
             $contract = $payment->contract;
 
-            if ($contract && $contract->status !== 'active') {
-                $contract->update([
-                    'status' => 'active'
-                ]);
+            if ($contract) {
+
+                if ($contract->status !== 'active') {
+                    $contract->update([
+                        'status' => 'active'
+                    ]);
+                }
 
                 $existingOwnerships = $this->ownershipService->byContract($contract->id);
 
@@ -140,7 +143,9 @@ class PaymentService
                         "purchase_price" => $contract->total_price,
                     ];
 
-                    $dtoOwnerShip = CreateUnitOwnershipDTO::fromRequest($contract->order->unit_id, $data);
+                    $unitId = $contract->order->unit_id ?? $contract->unit_id;
+
+                    $dtoOwnerShip = CreateUnitOwnershipDTO::fromRequest($unitId, $data);
                     $this->ownershipService->store($dtoOwnerShip);
                 }
             }

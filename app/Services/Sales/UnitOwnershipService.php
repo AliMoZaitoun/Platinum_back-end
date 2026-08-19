@@ -29,9 +29,6 @@ class UnitOwnershipService
         return $this->transaction->execute(function () use ($dto, $attachments) {
 
             $unitOwnership = $this->dao->store($dto);
-            $unitDTO = UpdateUnitDTO::fromRequest(['status' => 'sold']);
-
-            $this->unitDAO->update($dto->unit_id, $unitDTO);
 
             if ($attachments) {
                 $this->fileManager->storeFile(
@@ -48,17 +45,19 @@ class UnitOwnershipService
     public function finalizeOwnershipForContract(int $contractId)
     {
         return $this->transaction->execute(function () use ($contractId) {
-            $ownership = $this->dao->byContract($contractId);
+            $ownerships = $this->dao->byContract($contractId);
 
-            if ($ownership && $ownership->status !== 'transferred') {
-                $ownership->update([
-                    'status' => 'transferred',
-                    'owned_at' => now(),
-                ]);
+            foreach ($ownerships as $ownership) {
+                if ($ownership->status !== 'transferred') {
+                    $ownership->update([
+                        'status' => 'transferred',
+                        'owned_at' => now(),
+                    ]);
 
-                $this->unitDAO->update($ownership->unit_id, UpdateUnitDTO::fromRequest(['status' => 'sold']));
+                    $this->unitDAO->update($ownership->unit_id, UpdateUnitDTO::fromRequest(['status' => 'sold']));
+                }
             }
-            return $ownership;
+            return $ownerships;
         });
     }
 
