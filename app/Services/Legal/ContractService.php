@@ -38,7 +38,7 @@ class ContractService
             $clientId = $order->client_id;
 
             $hasException = $dto->exception !== null;
-            $status = $hasException ? 'pending_approval' : 'active';
+            $status = $hasException ? 'pending_approval' : 'draft';
 
             $contractData = array_merge($dto->toArray(), [
                 'client_id' => $clientId,
@@ -83,7 +83,7 @@ class ContractService
                 payment_date: $baseDate->toDateTimeString(),
                 payment_type: 'down_payment',
                 payment_method: 'cash',
-                status: 'paid'
+                status: 'pending'
             );
             $this->paymentDAO->store($downPaymentDTO);
         }
