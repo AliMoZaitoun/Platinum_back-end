@@ -85,6 +85,11 @@ class UnitOwnershipService
         return $this->dao->clientUnits($client_id);
     }
 
+    public function byContract(int $contractId)
+    {
+        return $this->dao->byContract($contractId);
+    }
+
     public function unitClient(int $unit_id)
     {
         return $this->dao->unitClient($unit_id);

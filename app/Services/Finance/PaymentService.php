@@ -130,13 +130,19 @@ class PaymentService
                 $contract->update([
                     'status' => 'active'
                 ]);
-                $data = [
-                    "client_id" => $payment->client_id,
-                    "contract_id" => $payment->contract_id,
-                    "purchase_price" => $payment->contract->total_price,
-                ];
-                $dtoOwnerShip = CreateUnitOwnershipDTO::fromRequest($payment->contract->order->unit_id, $data);
-                $this->ownershipService->store($dtoOwnerShip);
+
+                $existingOwnerships = $this->ownershipService->byContract($contract->id);
+
+                if ($existingOwnerships->isEmpty()) {
+                    $data = [
+                        "client_id" => $payment->client_id,
+                        "contract_id" => $payment->contract_id,
+                        "purchase_price" => $contract->total_price,
+                    ];
+
+                    $dtoOwnerShip = CreateUnitOwnershipDTO::fromRequest($contract->order->unit_id, $data);
+                    $this->ownershipService->store($dtoOwnerShip);
+                }
             }
         }
     }
