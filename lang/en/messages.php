@@ -117,7 +117,7 @@ return [
     'payment' => [
         'cannot_be_updated' => 'This payment cannot be updated because it is no longer pending.',
         'custom_payment_success' => 'The amount has been successfully distributed and the payments have been settled.',
-        'payment_exceeds_remaining_balance' => 'The paid amount (:paid_amount) is greater than the total pending payments for the contract (:total_pending_amount). The operation cannot be completed.',
+        'exceeds_remaining_balance' => 'The paid amount (:paid_amount) is greater than the total pending payments for the contract (:total_pending_amount). The operation cannot be completed.',
     ],
 
     'transaction' => [

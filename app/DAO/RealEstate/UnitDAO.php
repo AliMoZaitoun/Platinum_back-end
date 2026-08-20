@@ -20,7 +20,7 @@ class UnitDAO
     public function getAllForAdmin(int $perPage = 15): LengthAwarePaginator
     {
         return Unit::query()
-            ->with(['building', 'activeOffer'])
+            ->with(['building', 'activeOffer', 'attachments'])
             ->latest()
             ->paginate($perPage);
     }

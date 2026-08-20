@@ -6,10 +6,6 @@ use Exception;
 
 class PaymentExceedsRemainingBalanceException extends Exception
 {
-    /**
-     * @param float|string $paidAmount
-     * @param float|string $totalPendingAmount
-     */
     public function __construct($paidAmount, $totalPendingAmount)
     {
         $message = __('messages.payment.exceeds_remaining_balance', [
