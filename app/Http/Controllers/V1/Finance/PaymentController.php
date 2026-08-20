@@ -44,7 +44,7 @@ class PaymentController extends Controller
     {
         $employee = Auth::user()->employee;
         $dto = CreatePaymentDTO::fromRequest($request->validated(), $employee->id);
-        $payment = $this->service->store($dto, $request->file('attachments'));
+        $payment = $this->service->store($dto, $request->file('attachments'), $employee->id);
         return $this->useResource($payment, PaymentResource::class, __('messages.common.stored'), 201);
     }
 

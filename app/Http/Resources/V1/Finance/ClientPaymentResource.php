@@ -26,7 +26,7 @@ class ClientPaymentResource extends JsonResource
 
             'created_at'        => $this->created_at->format('Y-m-d h:i A'),
 
-            'attachments'   => MediaResource::collection($this->whenLoaded('attachments')),
+            'attachments'       => MediaResource::collection($this->whenLoaded('attachments')),
 
         ];
     }

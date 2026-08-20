@@ -30,9 +30,9 @@ class PaymentService
         return $this->dao->index($filters, $relations, $perPage);
     }
 
-    public function store(CreatePaymentDTO $dto, $attachments = null)
+    public function store(CreatePaymentDTO $dto, $attachments = null, int $employeeId)
     {
-        return $this->transaction->execute(function () use ($dto, $attachments) {
+        return $this->transaction->execute(function () use ($dto, $attachments, $employeeId) {
             $payment = $this->dao->store($dto);
 
             if ($attachments) {
@@ -45,7 +45,7 @@ class PaymentService
             }
 
             if ($payment->status === 'paid') {
-                $this->createReceiptForPayment($payment);
+                $this->createReceiptForPayment($payment, $employeeId);
                 $this->activateContractIfDownPaymentPaid($payment);
                 $this->completeContractIfAllPaid($payment);
             }
@@ -258,7 +258,7 @@ class PaymentService
         }
     }
 
-    private function createReceiptForPayment(Payment $payment): void
+    private function createReceiptForPayment(Payment $payment, int $employeeId): void
     {
         if ($payment->transactions()->exists()) {
             return;
@@ -274,7 +274,7 @@ class PaymentService
             exchange_rate: 1.0000,
             category: $categoryEnum,
             payment_method: $payment->payment_method,
-            created_by: $payment->employee_id,
+            created_by: $employeeId,
             transactionable_type: 'payment',
             transactionable_id: $payment->id,
             party_type: 'client',
