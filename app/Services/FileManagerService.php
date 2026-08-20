@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\MediaType;
 use App\Exceptions\NotFoundException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -29,6 +30,10 @@ class FileManagerService
             }
 
             $passedType = is_array($fileData) ? ($fileData['type'] ?? null) : null;
+            if (is_string($passedType)) {
+                $passedType = MediaType::tryFrom($passedType);
+            }
+
             $customProps = is_array($fileData) ? ($fileData['custom_properties'] ?? []) : [];
 
             $fileName = Str::uuid() . '.' . $file->getClientOriginalExtension();
@@ -80,15 +85,15 @@ class FileManagerService
         return $fileRecord->delete();
     }
 
-    public function detectFileType($file, $passedType = null)
+    public function detectFileType($file, $passedType = null): MediaType
     {
-        if ($passedType === '360_panorama') {
-            return '360_panorama';
+        if ($passedType === MediaType::PANORAMA || $passedType === '360_panorama') {
+            return MediaType::PANORAMA;
         }
 
         $mime = $file->getMimeType();
-        if (str_contains($mime, 'image')) return 'image';
-        if (str_contains($mime, 'video')) return 'video';
-        return 'document';
+        if (str_contains($mime, 'image')) return MediaType::IMAGE;
+        if (str_contains($mime, 'video')) return MediaType::VIDEO;
+        return MediaType::DOCUMENT;
     }
 }

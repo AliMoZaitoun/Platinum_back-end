@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\MediaType;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
@@ -24,6 +25,7 @@ class Media extends Model
     protected function casts(): array
     {
         return [
+            'type'              => MediaType::class,
             'custom_properties' => 'array',
             'recorded_at'       => 'datetime',
         ];

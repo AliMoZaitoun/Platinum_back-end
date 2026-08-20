@@ -22,7 +22,7 @@ class MediaResource extends JsonResource
             'url'           => Storage::disk('s3')->url($this->path),
 
             'path'          => $this->path,
-            'type'          => $this->type,
+            'type'          => $this->type?->value ?? $this->type,
             'extension'     => pathinfo($path, PATHINFO_EXTENSION),
         ];
     }
