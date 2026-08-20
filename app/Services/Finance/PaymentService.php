@@ -140,8 +140,6 @@ class PaymentService
                     $this->createReceiptForPayment($updatedPayment);
                     $this->activateContractIfDownPaymentPaid($updatedPayment);
                 } else {
-
-
                     $unpaidBalance = $payment->amount - $remainingAmountToDistribute;
 
                     $updateDto = new UpdatePaymentDTO(
@@ -276,7 +274,7 @@ class PaymentService
             exchange_rate: 1.0000,
             category: $categoryEnum,
             payment_method: $payment->payment_method,
-            created_by: auth()->id() ?? $payment->employee_id,
+            created_by: $payment->employee_id,
             transactionable_type: 'payment',
             transactionable_id: $payment->id,
             party_type: 'client',
