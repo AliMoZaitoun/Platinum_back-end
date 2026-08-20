@@ -75,7 +75,9 @@ class PaymentController extends Controller
 
     public function payCustomAmount(PayCustomAmountRequest $request, int $contractId)
     {
-        $this->service->payCustomAmount($contractId, $request->validated(), $request->file('attachments'));
+        $employee = Auth::user()->employee;
+
+        $this->service->payCustomAmount($contractId, $request->validated(), $request->file('attachments'), $employee->id);
 
         return $this->successResponse(
             data: [],
@@ -85,8 +87,9 @@ class PaymentController extends Controller
 
     public function update(int $id, UpdatePaymentRequest $request)
     {
+        $employee = Auth::user()->employee;
         $dto = UpdatePaymentDTO::fromRequest($request->toArray());
-        $payment = $this->service->update($id, $dto, $request->file('attachments'));
+        $payment = $this->service->update($id, $dto, $employee->id, $request->file('attachments'));
         return $this->useResource($payment, PaymentResource::class, __('messages.common.updated'));
     }
 

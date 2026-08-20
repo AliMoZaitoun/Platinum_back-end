@@ -32,7 +32,7 @@ class PaymentService
 
     public function store(CreatePaymentDTO $dto, int $employeeId, $attachments = null)
     {
-        return $this->transaction->execute(function () use ($dto, $attachments, $employeeId) {
+        return $this->transaction->execute(function () use ($dto, $employeeId, $attachments) {
             $payment = $this->dao->store($dto);
 
             if ($attachments) {
@@ -69,9 +69,9 @@ class PaymentService
         return $this->dao->byContract($contractId);
     }
 
-    public function update(int $id, UpdatePaymentDTO $dto, $attachments = null)
+    public function update(int $id, UpdatePaymentDTO $dto, int $employeeId, $attachments = null)
     {
-        return $this->transaction->execute(function () use ($id, $dto, $attachments) {
+        return $this->transaction->execute(function () use ($id, $dto, $attachments, $employeeId) {
             $pay = $this->dao->show($id);
 
             if ($pay->status !== 'pending') {
@@ -90,7 +90,7 @@ class PaymentService
             }
 
             if ($payment->status === 'paid') {
-                $this->createReceiptForPayment($payment);
+                $this->createReceiptForPayment($payment, $employeeId);
                 $this->activateContractIfDownPaymentPaid($payment);
                 $this->completeContractIfAllPaid($payment);
             }
@@ -99,9 +99,9 @@ class PaymentService
         });
     }
 
-    public function payCustomAmount(int $contractId, array $data, $attachments)
+    public function payCustomAmount(int $contractId, array $data, $attachments, int $employeeId)
     {
-        return $this->transaction->execute(function () use ($contractId, $data, $attachments) {
+        return $this->transaction->execute(function () use ($contractId, $data, $attachments, $employeeId) {
 
             $pendingPayments = $this->dao->getPendingByContract($contractId);
 
@@ -137,7 +137,7 @@ class PaymentService
                         relationName: 'attachments'
                     );
 
-                    $this->createReceiptForPayment($updatedPayment);
+                    $this->createReceiptForPayment($updatedPayment, $employeeId);
                     $this->activateContractIfDownPaymentPaid($updatedPayment);
                 } else {
                     $unpaidBalance = $payment->amount - $remainingAmountToDistribute;
@@ -158,7 +158,7 @@ class PaymentService
                         relationName: 'attachments'
                     );
 
-                    $this->createReceiptForPayment($updatedPayment);
+                    $this->createReceiptForPayment($updatedPayment, $employeeId);
                     $this->activateContractIfDownPaymentPaid($updatedPayment);
 
                     $splitPaymentDto = new CreatePaymentDTO(
