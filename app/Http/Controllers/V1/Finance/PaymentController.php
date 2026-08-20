@@ -57,8 +57,18 @@ class PaymentController extends Controller
     public function getMine()
     {
         $client = Auth::user()->client;
+
         $payments = $this->service->byClient($client->id);
-        return $this->successCollection($payments, ContractPaymentsGroupResource::class);
+
+        $paymentsCollection = collect($payments);
+
+        if ($paymentsCollection->isEmpty()) {
+            return $this->successResponse([]);
+        }
+
+        $formattedPayments = $paymentsCollection->values();
+
+        return $this->successCollection($formattedPayments, ContractPaymentsGroupResource::class);
     }
 
     public function getForClient(int $client_id)
