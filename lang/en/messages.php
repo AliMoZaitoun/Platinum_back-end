@@ -160,4 +160,12 @@ return [
         'updated'   => 'FAQ node updated successfully.',
         'deleted'   => 'FAQ node deleted successfully.',
     ],
+
+    'notification'  => [
+        'overdue_client_title' => '⚠️ Payment Overdue Alert',
+        'overdue_client_body'  => 'We would like to remind you that the payment due on :date for the amount of :amount has not been settled for contract #:contract.',
+
+        'overdue_employee_title' => 'Client Payment Overdue',
+        'overdue_employee_body'  => 'Client :name has an overdue payment for contract #:contract.',
+    ]
 ];

@@ -4,28 +4,36 @@ namespace App\Listeners\V1\Complaint;
 
 use App\Events\Complaint\ComplaintCreated;
 use App\Notifications\BaseNotification;
-use App\Models\Core\Employee;
 use App\Models\User;
+use App\Traits\LocalizesNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Facades\Notification;
 
 class SendNewComplaintNotification implements ShouldQueue
 {
+    use LocalizesNotification;
+
     public function handle(ComplaintCreated $event): void
     {
         $complaint = $event->complaint;
-
         $employees = User::role('customer_service_staff')->get();
 
         if ($employees->isNotEmpty()) {
-            $title = "🚨 شكوى جديدة مستلمة!";
-            $body = "تم استلام شكوى جديدة بعنوان '{$complaint->title}'، يرجى المتابعة والرد.";
-            $data = [
-                'complaint_id' => (string) $complaint->id,
-                'type'         => 'new_complaint'
-            ];
+            foreach ($employees as $employee) {
+                $this->withUserLocale($employee, function () use ($complaint, $employee) {
 
-            Notification::send($employees, new BaseNotification($title, $body, $data, '/complaint'));
+                    $title = __('notifications.new_complaint_title');
+                    $body = __('notifications.new_complaint_body', [
+                        'title' => $complaint->title
+                    ]);
+
+                    $data = [
+                        'complaint_id' => (string) $complaint->id,
+                        'type'         => 'new_complaint'
+                    ];
+
+                    $employee->notify(new BaseNotification($title, $body, $data, '/complaint'));
+                });
+            }
         }
     }
 }
