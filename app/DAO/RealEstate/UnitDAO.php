@@ -14,13 +14,13 @@ class UnitDAO
 
     public function getWithoutPag()
     {
-        return Unit::with('attachments')->where('status', 'available')->get();
+        return Unit::with(['attachments', 'building', 'building.project'])->where('status', 'available')->get();
     }
 
     public function getAllForAdmin(int $perPage = 15): LengthAwarePaginator
     {
         return Unit::query()
-            ->with(['building', 'activeOffer', 'attachments'])
+            ->with(['building', 'activeOffer', 'attachments', 'building.project'])
             ->latest()
             ->paginate($perPage);
     }
@@ -32,7 +32,7 @@ class UnitDAO
         return Unit::query()
             ->where('status', 'available')
 
-            ->with(['attachments', 'activeOffer'])
+            ->with(['attachments', 'activeOffer', 'building', 'building.project'])
 
             ->when($user && $user->client, function ($query) use ($user) {
                 $query->withExists(['favorites' => function ($q) use ($user) {
@@ -45,7 +45,7 @@ class UnitDAO
 
     public function byBuilding(int $building_id, array $relations = [])
     {
-        $defaultRelation = ['building.project', 'activeOffer'];
+        $defaultRelation = ['building.project', 'activeOffer', 'attachments'];
         $allRelations = array_merge($defaultRelation, $relations);
         return Unit::with($allRelations)->where('building_id', $building_id)->get();
     }
@@ -57,7 +57,7 @@ class UnitDAO
 
     public function show(int $id)
     {
-        return Unit::where('id', $id)->with(['attachments', 'building', 'activeOffer'])->first() ?? throw new NotFoundException("Unit");
+        return Unit::where('id', $id)->with(['attachments', 'building', 'activeOffer', 'building.project'])->first() ?? throw new NotFoundException("Unit");
     }
 
     protected function getBaseSearchQuery()
