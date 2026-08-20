@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners\Finance;
+namespace App\Listeners\V1\Finance;
 
 use App\Events\Finance\PaymentOverdue;
 use App\Notifications\BaseNotification;

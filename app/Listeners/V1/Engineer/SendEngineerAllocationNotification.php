@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners\Engineer;
+namespace App\Listeners\V1\Engineer;
 
 use App\Events\Engineer\EngineerAllocated;
 use App\Notifications\BaseNotification;

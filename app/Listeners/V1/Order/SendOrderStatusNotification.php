@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners\Order;
+namespace App\Listeners\V1\Order;
 
 use App\Events\Order\OrderStatusUpdated;
 use App\Notifications\BaseNotification;
