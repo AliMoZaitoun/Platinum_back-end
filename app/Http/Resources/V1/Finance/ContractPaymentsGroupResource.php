@@ -9,9 +9,10 @@ class ContractPaymentsGroupResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        $payments = collect($this->resource);
         return [
             'contract_id' => $this->resource->first()?->contract_id,
-            'payments'    => ClientPaymentResource::collection($this->resource),
+            'payments'    => ClientPaymentResource::collection($payments),
         ];
     }
 }
