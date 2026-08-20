@@ -30,7 +30,7 @@ class PaymentService
         return $this->dao->index($filters, $relations, $perPage);
     }
 
-    public function store(CreatePaymentDTO $dto, $attachments = null, int $employeeId)
+    public function store(CreatePaymentDTO $dto, int $employeeId, $attachments = null)
     {
         return $this->transaction->execute(function () use ($dto, $attachments, $employeeId) {
             $payment = $this->dao->store($dto);
