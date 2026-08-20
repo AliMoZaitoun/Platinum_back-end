@@ -60,15 +60,7 @@ class PaymentController extends Controller
 
         $payments = $this->service->byClient($client->id);
 
-        $paymentsCollection = collect($payments);
-
-        if ($paymentsCollection->isEmpty()) {
-            return $this->successResponse([]);
-        }
-
-        $formattedPayments = $paymentsCollection->values();
-
-        return $this->successCollection($formattedPayments, ContractPaymentsGroupResource::class);
+        return $this->successCollection($payments, ContractPaymentsGroupResource::class);
     }
 
     public function getForClient(int $client_id)

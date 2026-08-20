@@ -32,8 +32,8 @@ class DatabaseSeeder extends Seeder
 
             AvailabilitySlotSeeder::class,
             OrderSeeder::class,
-            AppointmentSeeder::class,
-            ContractSeeder::class,
+            // AppointmentSeeder::class,
+            // ContractSeeder::class,
             // PaymentSeeder::class,
             // TransactionSeeder::class,
             // // UnitOwnershipSeeder::class,

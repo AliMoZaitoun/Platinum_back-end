@@ -7,6 +7,7 @@ use App\DTOs\Finance\Update\UpdatePaymentDTO;
 use App\Exceptions\NotFoundException;
 use App\Models\Finance\Payment;
 use Illuminate\Database\Eloquent\Builder;
+use Ramsey\Collection\Collection;
 
 class PaymentDAO
 {
@@ -72,7 +73,7 @@ class PaymentDAO
         if (!$viewAll) {
             $startOfMonth = now()->startOfMonth()->toDateString();
 
-            $query->where(function (Builder $q) use ($startOfMonth) {
+            $query->where(function ($q) use ($startOfMonth) {
                 $q->where(function ($subQ) use ($startOfMonth) {
                     $subQ->where('payment_date', '<', $startOfMonth)
                         ->whereIn('status', ['pending', 'failed']);
@@ -81,7 +82,7 @@ class PaymentDAO
             });
         }
 
-        return $query->get();
+        return $query->get()->groupBy('contract_id')->values();
     }
 
     public function getPendingByContract(int $contractId)
