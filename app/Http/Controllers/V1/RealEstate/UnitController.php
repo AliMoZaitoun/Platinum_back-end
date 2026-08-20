@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1\RealEstate;
 
 use App\DTOs\RealEstate\Create\CreateUnitDTO;
+use App\DTOs\RealEstate\Other\SearchUnitDTO;
 use App\DTOs\RealEstate\Update\UpdateUnitDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\RealEstate\CreateUnitRequest;
@@ -33,7 +34,7 @@ class UnitController extends Controller
     public function store(CreateUnitRequest $request)
     {
         $unitDTO = CreateUnitDTO::fromRequest($request->validated());
-        $unit = $this->unitService->store($unitDTO);
+        $unit = $this->unitService->store($unitDTO, $request->file('attachments'));
         return $this->useResource($unit, UnitResource::class, __('messages.common.stored'), 201);
     }
 
@@ -45,7 +46,8 @@ class UnitController extends Controller
 
     public function search(Request $request)
     {
-        $units = $this->unitService->search($request->all());
+        $unitDTO = SearchUnitDTO::fromRequest($request->all());
+        $units = $this->unitService->search($unitDTO);
         return $this->successCollection($units, UnitResource::class);
     }
 
