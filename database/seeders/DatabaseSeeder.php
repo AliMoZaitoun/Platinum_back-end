@@ -24,9 +24,9 @@ class DatabaseSeeder extends Seeder
             EmployeeDepartmentSeeder::class,
             // AdvertisementSeeder::class,
             // SolutionSeeder::class,
-            // ProjectSeeder::class,
-            // BuildingSeeder::class,
-            // UnitSeeder::class,
+            ProjectSeeder::class,
+            BuildingSeeder::class,
+            UnitSeeder::class,
             ClientSeeder::class,
             // EngineerSystemSeeder::class,
 
