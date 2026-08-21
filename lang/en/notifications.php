@@ -7,6 +7,12 @@ return [
     'overdue_employee_title' => 'Client Payment Overdue',
     'overdue_employee_body'  => 'Client :name has an overdue payment for contract #:contract.',
 
+    'payment_uploaded_title'   => 'New Payment Receipt Pending Review',
+    'payment_uploaded_body'    => 'Client :client has uploaded a payment receipt of :amount requiring your review.',
+    'payment_approved_title'   => 'Payment Approved Successfully',
+    'payment_approved_body'    => 'Your payment of :amount has been verified and your account has been updated.',
+    'payment_rejected_title'   => 'Payment Receipt Notice',
+    'payment_rejected_body'    => 'Sorry, your payment receipt of :amount was rejected. Please re-upload a clear image.',
 
     # Engineer
     'engineer_allocation_title' => '🏗️ New Engineering Assignment',

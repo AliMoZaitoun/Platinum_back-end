@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamp('payment_date');
             $table->enum('payment_method', ['cash', 'bank_transfer', 'check', 'card'])->default('cash');
             $table->enum('payment_type', ['down_payment', 'installment', 'final_payment', 'maintenance_fees'])->default('installment');
-            $table->enum('status', ['pending', 'paid', 'failed', 'refunded'])->default('pending');
+            $table->enum('status', ['pending', 'pending_approval', 'paid', 'failed', 'refunded'])->default('pending');
 
             $table->softDeletes();
             $table->timestamps();

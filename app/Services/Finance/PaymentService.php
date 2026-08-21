@@ -198,6 +198,7 @@ class PaymentService
                     folderPath: "payments",
                     relationName: 'attachments'
                 );
+                $payment->update(['status' => 'pending_approval']);
             }
             return $payment->refresh();
         });

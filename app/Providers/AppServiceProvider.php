@@ -5,12 +5,14 @@ namespace App\Providers;
 use App\Events\Complaint\ComplaintCreated;
 use App\Events\Complaint\ComplaintStatusUpdated;
 use App\Events\Engineer\EngineerAllocated;
+use App\Events\Finance\PaymentStatusChanged;
 use App\Events\Order\OrderCreated;
 use App\Events\Order\OrderStatusUpdated;
 use App\Events\Order\OrderTransferred;
 use App\Listeners\V1\Complaint\SendComplaintStatusNotification;
 use App\Listeners\V1\Complaint\SendNewComplaintNotification;
 use App\Listeners\V1\Engineer\SendEngineerAllocationNotification;
+use App\Listeners\V1\Finance\SendPaymentStatusNotification;
 use App\Listeners\V1\Order\SendNewOrderNotification;
 use App\Listeners\V1\Order\SendOrderStatusNotification;
 use App\Listeners\V1\Order\SendOrderTransferNotification;
@@ -22,9 +24,6 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         $this->app->bind(\App\Services\TransactionService::class, \App\Services\Transaction::class);
@@ -63,6 +62,11 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(
             EngineerAllocated::class,
             SendEngineerAllocationNotification::class
+        );
+
+        Event::listen(
+            PaymentStatusChanged::class,
+            SendPaymentStatusNotification::class
         );
     }
 }

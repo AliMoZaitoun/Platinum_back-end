@@ -8,6 +8,14 @@ return [
     'overdue_employee_body'  => 'العميل :name لديه دفعة متأخرة للعقد رقم #:contract.',
 
 
+    'payment_uploaded_title'   => 'وصل دفع جديد بانتظار المراجعة',
+    'payment_uploaded_body'    => 'قام العميل :client برفع وصل دفع بقيمة :amount ويحتاج للمراجعة.',
+    'payment_approved_title'   => 'تم قبول دفعتك بنجاح',
+    'payment_approved_body'    => 'تم اعتماد دفعتك المالية بقيمة :amount وتحديث حسابك.',
+    'payment_rejected_title'   => 'ملاحظة حول وصل الدفع',
+    'payment_rejected_body'    => 'عذراً، تم رفض وصل الدفع بقيمة :amount، يرجى إعادة رفعه بصورة واضحة.',
+
+
     # Engineer
     'engineer_allocation_title' => '🏗️ مهمة هندسية جديدة',
     'engineer_allocation_building' => "تم إسنادك للإشراف الميداني على ':building' ضمن ':project'. تبدأ المهمة بتاريخ :date.",
