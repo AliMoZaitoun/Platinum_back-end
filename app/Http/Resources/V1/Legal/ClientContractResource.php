@@ -25,6 +25,7 @@ class ClientContractResource extends JsonResource
             'installments_count'    => $this->installments_count,
 
             'payments'              => ClientPaymentResource::collection($this->whenLoaded('payments')),
+            'status'                => $this->status,
 
             'created_at'     => $this->created_at->format('Y-m-d h:i A'),
             'attachments'   => MediaResource::collection($this->whenLoaded('attachments')),
