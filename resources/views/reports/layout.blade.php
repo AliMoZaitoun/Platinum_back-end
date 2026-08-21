@@ -3,44 +3,41 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
 
         body {
             font-family: 'Tajawal', sans-serif;
             background-color: #f8fafc;
         }
-
-        .report-card {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-        }
     </style>
 </head>
 
-<body class="p-12 text-gray-800">
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col justify-between p-8 md:p-12">
 
-    <div class="flex justify-between items-start mb-12">
-        <div class="w-1/3">
-            <img src="{{ $logo_path }}" class="h-20 w-auto object-contain">
-        </div>
-        <div class="text-end w-2/3 border-r-4 border-blue-600 pr-6">
-            <h1 class="text-4xl font-bold text-gray-900 tracking-tight">@yield('report_title')</h1>
-            <p class="text-blue-600 font-medium mt-2">{{ __('reports.issue_date') }}: {{ $generation_date }}</p>
-        </div>
+    <div>
+        <header class="flex justify-between items-center border-b border-slate-200 pb-6 mb-8">
+            <div class="flex items-center">
+                <img src="{{ $logo_path }}" class="h-14 w-auto object-contain">
+            </div>
+            <div class="text-end">
+                <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">@yield('report_title')</h1>
+                <p class="text-xs font-semibold text-slate-400 mt-1">{{ __('reports.issue_date') }}: <span class="text-slate-600">{{ $generation_date }}</span></p>
+            </div>
+        </header>
+
+        <main>
+            @yield('content')
+        </main>
     </div>
 
-    <main>
-        @yield('content')
-    </main>
-
-    <footer class="fixed bottom-10 left-10 right-10 border-t border-gray-200 pt-6 flex justify-between text-gray-400 text-sm">
-        <span>{{ config('app.name') }} &copy; {{ date('Y') }}</span>
+    <footer class="mt-12 pt-6 border-t border-slate-200 flex justify-between items-center text-xs text-slate-400 font-medium">
+        <span>تقرير تنفيذي محمي</span>
         <span>صفحة 1 من 1</span>
     </footer>
+
 </body>
 
 </html>

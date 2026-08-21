@@ -1,78 +1,61 @@
-<!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
+@extends('layouts.report')
 
-<head>
-    <meta charset="UTF-8">
-    <title>{{ __('reports.inventory_summary') }}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            font-family: 'DejaVu Sans', 'Arial', sans-serif;
-        }
-    </style>
-</head>
+@section('report_title')
+{{ __('reports.inventory_summary') }}
+@endsection
 
-<body class="bg-gray-50 p-10">
+@section('content')
+<div class="space-y-8">
 
-    <div class="flex justify-between items-center border-b-2 border-gray-300 pb-4 mb-8">
-        <div>
-            <img src="{{ $logo_path }}" alt="Logo" class="h-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+            <h2 class="text-lg font-bold text-slate-900 mb-6">{{ __('reports.warehouses_overview') }}</h2>
+            <div class="space-y-3">
+                <div class="flex justify-between items-center p-3.5 bg-blue-50/50 border border-blue-100 rounded-xl">
+                    <span class="text-sm font-medium text-blue-900">{{ __('reports.total_warehouses') }}</span>
+                    <span class="text-lg font-bold text-blue-600">{{ $warehouses['total_warehouses'] }}</span>
+                </div>
+                <div class="flex justify-between items-center p-3.5 bg-slate-50 border border-slate-100 rounded-xl">
+                    <span class="text-sm font-medium text-slate-700">{{ __('reports.total_items_quantity') }}</span>
+                    <span class="text-lg font-bold text-slate-900">{{ number_format($warehouses['total_items']) }}</span>
+                </div>
+            </div>
         </div>
-        <div class="text-end">
-            <h1 class="text-2xl font-bold text-gray-800">{{ __('reports.inventory_summary') }}</h1>
-            <p class="text-sm text-gray-500">{{ __('reports.issue_date') }}: {{ $generation_date }}</p>
+
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+            <h2 class="text-lg font-bold text-slate-900 mb-6">{{ __('reports.items_status') }}</h2>
+            <div class="space-y-3">
+                <div class="flex justify-between items-center p-3 bg-emerald-50/50 border border-emerald-100 rounded-xl">
+                    <span class="text-sm font-medium text-emerald-900">{{ __('reports.in_stock') }}</span>
+                    <span class="text-lg font-bold text-emerald-600">{{ $status['in_stock'] }}</span>
+                </div>
+                <div class="flex justify-between items-center p-3 bg-rose-50/50 border border-rose-100 rounded-xl">
+                    <span class="text-sm font-medium text-rose-900">{{ __('reports.out_of_stock') }}</span>
+                    <span class="text-lg font-bold text-rose-600">{{ $status['out_of_stock'] }}</span>
+                </div>
+                <div class="flex justify-between items-center p-3 bg-slate-50 border border-slate-100 rounded-xl">
+                    <span class="text-sm font-medium text-slate-600">{{ __('reports.discontinued') }}</span>
+                    <span class="text-lg font-bold text-slate-500">{{ $status['discontinued'] }}</span>
+                </div>
+            </div>
         </div>
+
     </div>
 
-    <div class="grid grid-cols-2 gap-6">
-
-        <div class="bg-white p-6 rounded-lg shadow border border-gray-100">
-            <h2 class="text-lg font-bold text-gray-700 mb-2">{{ __('reports.warehouses_overview') }}</h2>
-            <ul class="text-gray-600 space-y-2">
-                <li class="flex justify-between">
-                    <span>{{ __('reports.total_warehouses') }}:</span>
-                    <span class="font-bold text-blue-600">{{ $warehouses['total_warehouses'] }}</span>
-                </li>
-                <li class="flex justify-between border-t pt-2 mt-2">
-                    <span>{{ __('reports.total_items_quantity') }}:</span>
-                    <span class="font-bold text-gray-800">{{ number_format($warehouses['total_items']) }}</span>
-                </li>
-            </ul>
-        </div>
-
-        <div class="bg-white p-6 rounded-lg shadow border border-gray-100">
-            <h2 class="text-lg font-bold text-gray-700 mb-2">{{ __('reports.items_status') }}</h2>
-            <ul class="text-gray-600 space-y-2">
-                <li class="flex justify-between">
-                    <span>{{ __('reports.in_stock') }}:</span>
-                    <span class="font-bold text-green-600">{{ $status['in_stock'] }}</span>
-                </li>
-                <li class="flex justify-between border-t pt-2 mt-2">
-                    <span>{{ __('reports.out_of_stock') }}:</span>
-                    <span class="font-bold text-red-600">{{ $status['out_of_stock'] }}</span>
-                </li>
-                <li class="flex justify-between border-t pt-2 mt-2">
-                    <span>{{ __('reports.discontinued') }}:</span>
-                    <span class="font-bold text-gray-500">{{ $status['discontinued'] }}</span>
-                </li>
-            </ul>
-        </div>
-
-        <div class="bg-white p-6 rounded-lg shadow border border-red-100 col-span-2">
-            <h2 class="text-lg font-bold text-red-700 mb-4">{{ __('reports.inventory_alerts') }}</h2>
-            <div class="grid grid-cols-2 gap-4">
-                <div class="bg-orange-50 p-4 rounded text-center border border-orange-100">
-                    <span class="block text-sm text-gray-600 mb-1">{{ __('reports.expiring_soon') }} (30 {{ __('reports.days') }})</span>
-                    <span class="text-3xl font-bold text-orange-600">{{ $alerts['expiring_soon'] }}</span>
-                </div>
-                <div class="bg-red-50 p-4 rounded text-center border border-red-100">
-                    <span class="block text-sm text-gray-600 mb-1">{{ __('reports.expired_items') }}</span>
-                    <span class="text-3xl font-bold text-red-600">{{ $alerts['expired'] }}</span>
-                </div>
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-rose-100">
+        <h2 class="text-lg font-bold text-rose-900 mb-6">{{ __('reports.inventory_alerts') }}</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-5 bg-amber-50/60 border border-amber-100 rounded-xl text-center">
+                <span class="block text-xs font-semibold text-amber-800 mb-1">{{ __('reports.expiring_soon') }} (30 {{ __('reports.days') }})</span>
+                <span class="text-3xl font-extrabold text-amber-600">{{ $alerts['expiring_soon'] }}</span>
+            </div>
+            <div class="p-5 bg-rose-50/60 border border-rose-100 rounded-xl text-center">
+                <span class="block text-xs font-semibold text-rose-800 mb-1">{{ __('reports.expired_items') }}</span>
+                <span class="text-3xl font-extrabold text-rose-600">{{ $alerts['expired'] }}</span>
             </div>
         </div>
     </div>
 
-</body>
-
-</html>
+</div>
+@endsection
