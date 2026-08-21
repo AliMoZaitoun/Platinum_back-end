@@ -228,7 +228,7 @@ class PaymentService
                     ? $result->isNotEmpty()
                     : !is_null($result);
 
-                if ($hasOwnership) {
+                if (!$hasOwnership && $payment->payment_type === 'down_payment') {
                     $data = [
                         "client_id" => $payment->client_id,
                         "contract_id" => $payment->contract_id,
