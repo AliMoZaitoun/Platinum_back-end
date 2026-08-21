@@ -3,54 +3,62 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap');
 
         body {
             font-family: 'Tajawal', sans-serif;
-            background-color: #f8fafc;
+            background-color: #ffffff;
+            color: #0f172a;
         }
 
-        .blueprint-grid {
-            background-image: linear-gradient(to right, #e2e8f0 1px, transparent 1px),
-                linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
-            background-size: 20px 20px;
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 12mm;
+            }
+
+            body {
+                padding: 0;
+                background: white;
+            }
         }
     </style>
 </head>
 
-<body class="bg-slate-100 text-slate-900 antialiased min-h-screen flex flex-col justify-between p-6 md:p-10 blueprint-grid">
+<body class="bg-white text-slate-900 antialiased p-6 max-w-[210mm] mx-auto border border-slate-200 shadow-sm my-4">
 
-    <div class="bg-white border-2 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] p-8">
+    <!-- Header Section -->
+    <header class="flex justify-between items-center border-b-2 border-slate-900 pb-4 mb-5">
+        <div class="flex items-center gap-3">
+            <img src="{{ $logo_path }}" class="h-12 w-auto object-contain">
+        </div>
 
-        <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b-2 border-slate-900 pb-6 mb-8 gap-4">
-            <div class="flex items-center gap-4">
-                <img src="{{ $logo_path }}" class="h-16 w-auto object-contain">
+        <div class="text-end">
+            <div class="inline-block bg-amber-500 text-slate-950 text-[9px] font-bold tracking-widest px-2 py-0.5 uppercase mb-1">
+                {{ __('reports.official_document') }}
             </div>
+            <h1 class="text-xl font-black text-slate-900 uppercase tracking-tight">@yield('report_title')</h1>
+            <p class="text-[11px] font-mono font-medium text-slate-500">
+                {{ __('reports.issue_date') }}: <span class="text-slate-800 font-bold">{{ $generation_date }}</span>
+            </p>
+        </div>
+    </header>
 
-            <div class="text-end border-s-0 sm:border-s-2 border-slate-900 sm:ps-6">
-                <div class="inline-block bg-slate-900 text-white text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 mb-1">
-                    {{ __('reports.official_document') }}
-                </div>
-                <h1 class="text-2xl font-black text-slate-900 uppercase tracking-tight">@yield('report_title')</h1>
-                <p class="text-xs font-mono font-bold text-slate-600 mt-1">
-                    {{ __('reports.issue_date') }}: <span class="text-slate-900">{{ $generation_date }}</span>
-                </p>
-            </div>
-        </header>
+    <!-- Content Area -->
+    <main class="min-h-[680px]">
+        @yield('content')
+    </main>
 
-        <main>
-            @yield('content')
-        </main>
-
-        <footer class="mt-12 pt-4 border-t-2 border-slate-900 flex justify-between items-center font-mono text-xs text-slate-700 font-bold uppercase tracking-wider">
+    <!-- Footer Section -->
+    <footer class="mt-6 pt-3 border-t border-slate-300 flex justify-between items-center text-[10px] font-mono text-slate-500 uppercase tracking-wider">
+        <div class="flex items-center gap-2">
+            <span class="w-1.5 h-1.5 bg-amber-500 inline-block"></span>
             <span>{{ config('app.name') }} | {{ __('reports.confidential') }}</span>
-            <span>{{ __('reports.page') }} 1 / 1</span>
-        </footer>
-
-    </div>
+        </div>
+        <span>{{ __('reports.page') }} 1 / 1</span>
+    </footer>
 
 </body>
 

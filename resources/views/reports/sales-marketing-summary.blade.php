@@ -5,61 +5,61 @@
 @endsection
 
 @section('content')
-<div class="space-y-8">
+<div class="space-y-5">
 
-    <div class="border-2 border-slate-900 p-6 bg-white">
-        <div class="border-b-2 border-slate-900 pb-3 mb-6 flex justify-between items-center">
-            <h2 class="font-black text-base uppercase tracking-wider text-slate-900">{{ __('reports.sales_funnel') }}</h2>
-            <span class="font-mono text-xs text-slate-500">[MKT-01]</span>
+    <div class="border border-slate-200 p-4 bg-slate-50/50">
+        <div class="border-b border-slate-300 pb-2 mb-3 flex justify-between items-center">
+            <h2 class="font-bold text-xs uppercase tracking-wider text-slate-800">{{ __('reports.sales_funnel') }}</h2>
+            <span class="font-mono text-[10px] text-slate-400">REF: MKT-01</span>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="p-5 border-2 border-slate-900 bg-slate-50 text-center">
-                <span class="block text-xs font-mono font-bold text-slate-600 uppercase mb-2">{{ __('reports.appointments_done') }}</span>
-                <span class="font-mono text-3xl font-black text-blue-600">{{ $funnel['appointments_done'] }}</span>
+        <div class="grid grid-cols-3 gap-3">
+            <div class="p-3 bg-white border border-slate-200 text-center">
+                <span class="block text-[10px] font-mono text-slate-500 uppercase mb-1">{{ __('reports.appointments_done') }}</span>
+                <span class="font-mono text-2xl font-bold text-blue-600">{{ $funnel['appointments_done'] }}</span>
             </div>
-            <div class="p-5 border-2 border-slate-900 bg-slate-50 text-center">
-                <span class="block text-xs font-mono font-bold text-slate-600 uppercase mb-2">{{ __('reports.orders_received') }}</span>
-                <span class="font-mono text-3xl font-black text-indigo-600">{{ $funnel['orders_received'] }}</span>
+            <div class="p-3 bg-white border border-slate-200 text-center">
+                <span class="block text-[10px] font-mono text-slate-500 uppercase mb-1">{{ __('reports.orders_received') }}</span>
+                <span class="font-mono text-2xl font-bold text-indigo-600">{{ $funnel['orders_received'] }}</span>
             </div>
-            <div class="p-5 border-2 border-slate-900 bg-slate-50 text-center">
-                <span class="block text-xs font-mono font-bold text-slate-600 uppercase mb-2">{{ __('reports.orders_accepted') }}</span>
-                <span class="font-mono text-3xl font-black text-emerald-600">{{ $funnel['orders_accepted'] }}</span>
+            <div class="p-3 bg-white border border-slate-200 text-center">
+                <span class="block text-[10px] font-mono text-slate-500 uppercase mb-1">{{ __('reports.orders_accepted') }}</span>
+                <span class="font-mono text-2xl font-bold text-emerald-600">{{ $funnel['orders_accepted'] }}</span>
             </div>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="grid grid-cols-2 gap-4">
 
-        <div class="border-2 border-slate-900 p-6 bg-white">
-            <div class="border-b-2 border-slate-900 pb-3 mb-6 flex justify-between items-center">
-                <h2 class="font-black text-base uppercase tracking-wider text-slate-900">{{ __('reports.ads_stats') }}</h2>
-                <span class="font-mono text-xs text-slate-500">[MKT-02]</span>
+        <div class="border border-slate-200 p-4 bg-slate-50/50">
+            <div class="border-b border-slate-300 pb-2 mb-3 flex justify-between items-center">
+                <h2 class="font-bold text-xs uppercase tracking-wider text-slate-800">{{ __('reports.ads_stats') }}</h2>
+                <span class="font-mono text-[10px] text-slate-400">REF: MKT-02</span>
             </div>
-            <div class="space-y-3">
-                <div class="flex justify-between items-center p-3 border border-slate-300 bg-slate-50">
-                    <span class="text-xs font-bold text-slate-700">{{ __('reports.active_ads') }}</span>
-                    <span class="font-mono font-black text-emerald-600 text-base">{{ $ads['active'] }}</span>
+            <div class="space-y-2">
+                <div class="flex justify-between items-center p-2 bg-white border border-slate-200 text-xs">
+                    <span class="text-slate-600 font-medium">{{ __('reports.active_ads') }}</span>
+                    <span class="font-mono font-bold text-emerald-600">{{ $ads['active'] }}</span>
                 </div>
-                <div class="flex justify-between items-center p-3 border border-slate-300 bg-slate-50">
-                    <span class="text-xs font-bold text-slate-700">{{ __('reports.total_ads') }}</span>
-                    <span class="font-mono font-black text-slate-900 text-base">{{ $ads['total'] }}</span>
+                <div class="flex justify-between items-center p-2 bg-white border border-slate-200 text-xs">
+                    <span class="text-slate-600 font-medium">{{ __('reports.total_ads') }}</span>
+                    <span class="font-mono font-bold text-slate-900">{{ $ads['total'] }}</span>
                 </div>
             </div>
         </div>
 
-        <div class="border-2 border-slate-900 p-6 bg-white">
-            <div class="border-b-2 border-slate-900 pb-3 mb-6 flex justify-between items-center">
-                <h2 class="font-black text-base uppercase tracking-wider text-slate-900">{{ __('reports.offers_stats') }}</h2>
-                <span class="font-mono text-xs text-slate-500">[MKT-03]</span>
+        <div class="border border-slate-200 p-4 bg-slate-50/50">
+            <div class="border-b border-slate-300 pb-2 mb-3 flex justify-between items-center">
+                <h2 class="font-bold text-xs uppercase tracking-wider text-slate-800">{{ __('reports.offers_stats') }}</h2>
+                <span class="font-mono text-[10px] text-slate-400">REF: MKT-03</span>
             </div>
-            <div class="space-y-3">
-                <div class="flex justify-between items-center p-3 border border-slate-300 bg-slate-50">
-                    <span class="text-xs font-bold text-slate-700">{{ __('reports.active_offers') }}</span>
-                    <span class="font-mono font-black text-blue-600 text-base">{{ $offers['active'] }}</span>
+            <div class="space-y-2">
+                <div class="flex justify-between items-center p-2 bg-white border border-slate-200 text-xs">
+                    <span class="text-slate-600 font-medium">{{ __('reports.active_offers') }}</span>
+                    <span class="font-mono font-bold text-blue-600">{{ $offers['active'] }}</span>
                 </div>
-                <div class="flex justify-between items-center p-3 border border-slate-300 bg-slate-50">
-                    <span class="text-xs font-bold text-slate-700">{{ __('reports.avg_discount') }}</span>
-                    <span class="font-mono font-black text-amber-600 text-base">%{{ number_format($offers['avg_discount'], 1) }}</span>
+                <div class="flex justify-between items-center p-2 bg-white border border-slate-200 text-xs">
+                    <span class="text-slate-600 font-medium">{{ __('reports.avg_discount') }}</span>
+                    <span class="font-mono font-bold text-amber-600">%{{ number_format($offers['avg_discount'], 1) }}</span>
                 </div>
             </div>
         </div>

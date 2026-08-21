@@ -5,39 +5,41 @@
 @endsection
 
 @section('content')
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="grid grid-cols-2 gap-4">
 
-    <div class="border-2 border-slate-900 p-6 bg-white">
-        <div class="border-b-2 border-slate-900 pb-3 mb-6 flex justify-between items-center">
-            <h2 class="font-black text-base uppercase tracking-wider text-slate-900">{{ __('reports.chat_stats') }}</h2>
-            <span class="font-mono text-xs text-slate-500">[CS-01]</span>
+    <!-- Chat Statistics -->
+    <div class="border border-slate-200 p-4 bg-slate-50/50">
+        <div class="border-b border-slate-300 pb-2 mb-3 flex justify-between items-center">
+            <h2 class="font-bold text-xs uppercase tracking-wider text-slate-800">{{ __('reports.chat_stats') }}</h2>
+            <span class="font-mono text-[10px] text-slate-400">REF: CS-01</span>
         </div>
-        <div class="space-y-3">
-            <div class="flex justify-between items-center p-3.5 border-2 border-slate-200 bg-slate-50">
-                <span class="text-xs font-bold text-slate-800">{{ __('reports.active_chats') }}</span>
-                <span class="font-mono font-black text-blue-600 text-xl">{{ $chats['active_chats'] }}</span>
+        <div class="space-y-2">
+            <div class="flex justify-between items-center p-2 bg-white border border-slate-200 text-xs">
+                <span class="text-slate-600 font-medium">{{ __('reports.active_chats') }}</span>
+                <span class="font-mono font-bold text-blue-600 text-sm">{{ $chats['active_chats'] }}</span>
             </div>
-            <div class="flex justify-between items-center p-3.5 border-2 border-slate-200 bg-slate-50">
-                <span class="text-xs font-bold text-slate-800">{{ __('reports.open_chats') }}</span>
-                <span class="font-mono font-black text-amber-600 text-xl">{{ $chats['open_chats'] }}</span>
+            <div class="flex justify-between items-center p-2 bg-white border border-slate-200 text-xs">
+                <span class="text-slate-600 font-medium">{{ __('reports.open_chats') }}</span>
+                <span class="font-mono font-bold text-amber-600 text-sm">{{ $chats['open_chats'] }}</span>
             </div>
-            <div class="flex justify-between items-center p-3.5 border-2 border-slate-200 bg-slate-50">
-                <span class="text-xs font-bold text-slate-800">{{ __('reports.closed_chats') }}</span>
-                <span class="font-mono font-black text-emerald-600 text-xl">{{ $chats['closed_chats'] }}</span>
+            <div class="flex justify-between items-center p-2 bg-white border border-slate-200 text-xs">
+                <span class="text-slate-600 font-medium">{{ __('reports.closed_chats') }}</span>
+                <span class="font-mono font-bold text-emerald-600 text-sm">{{ $chats['closed_chats'] }}</span>
             </div>
         </div>
     </div>
 
-    <div class="border-2 border-slate-900 p-6 bg-white">
-        <div class="border-b-2 border-slate-900 pb-3 mb-6 flex justify-between items-center">
-            <h2 class="font-black text-base uppercase tracking-wider text-slate-900">{{ __('reports.complaint_analytics') }}</h2>
-            <span class="font-mono text-xs text-slate-500">[CS-02]</span>
+    <!-- Complaint Analytics -->
+    <div class="border border-slate-200 p-4 bg-slate-50/50">
+        <div class="border-b border-slate-300 pb-2 mb-3 flex justify-between items-center">
+            <h2 class="font-bold text-xs uppercase tracking-wider text-slate-800">{{ __('reports.complaint_analytics') }}</h2>
+            <span class="font-mono text-[10px] text-slate-400">REF: CS-02</span>
         </div>
-        <div class="divide-y-2 divide-slate-200">
+        <div class="space-y-2">
             @foreach($analytics as $type => $count)
-            <div class="flex justify-between items-center py-3">
-                <span class="text-xs font-bold text-slate-700">{{ $type }}</span>
-                <span class="font-mono font-black border border-slate-900 bg-slate-900 text-white px-2.5 py-0.5 text-xs">{{ $count }}</span>
+            <div class="flex justify-between items-center p-2 bg-white border border-slate-200 text-xs">
+                <span class="text-slate-600 font-medium">{{ $type }}</span>
+                <span class="font-mono font-bold text-slate-900 border border-slate-300 bg-slate-100 px-2 py-0.5 text-[11px]">{{ $count }}</span>
             </div>
             @endforeach
         </div>
