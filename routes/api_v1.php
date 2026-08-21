@@ -505,6 +505,9 @@ Route::prefix('order')->middleware('auth:sanctum')->group(function () {
 
         Route::put('transfer/{id}', [OrderController::class, 'transfer'])
             ->middleware(['permission:update.order']);
+
+        Route::get('ordersWithoutContracts', [OrderController::class, 'ordersWithoutContracts'])
+            ->middleware(['permission:read.order']);
     });
 
     Route::middleware(['auth:sanctum', 'is_client'])->group(function () {

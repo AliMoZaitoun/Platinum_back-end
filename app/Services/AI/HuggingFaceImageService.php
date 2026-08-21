@@ -158,10 +158,10 @@ class HuggingFaceImageService
 
     public function generateFromExistingImage(GenerateApartmentDesignFromImageDTO $dto): ApartmentDesignSuggestion
     {
-        $hfToken = config('services.huggingface.api_token');
+        $replicateToken = config('services.replicate.api_token');
 
-        if (empty($hfToken)) {
-            throw new Exception("Hugging Face API token is missing in configuration.");
+        if (empty($replicateToken)) {
+            throw new Exception("Replicate API token is missing in configuration.");
         }
 
         $suggestion = $this->designSuggestionDAO->create([
@@ -172,6 +172,7 @@ class HuggingFaceImageService
             'style'            => $dto->style,
         ]);
 
+        // 1. حفظ الصورة الأصلية المرفوعة
         $storedAttachments = $this->fileManagerService->storeFile(
             model: $suggestion,
             files: $dto->imageFile,
@@ -179,41 +180,49 @@ class HuggingFaceImageService
             relationName: 'attachments'
         );
 
-        $originalAttachment = $storedAttachments[0] ?? null;
+        $originalImageUrl = $storedAttachments[0]->url ?? null;
 
-        if (! $originalAttachment) {
-            throw new Exception("Failed to store original image.");
+        if (! $originalImageUrl) {
+            throw new Exception("Failed to process original image URL.");
         }
 
+        // 2. ترجمة وتحضير الوصف (Prompt)
         $englishPrompt = $this->translation->translateToEnglishPrompt($dto->prompt);
-        $fullPrompt = "Professional interior design render of this room, style: {$dto->style}, {$englishPrompt}, fully furnished, realistic lighting, 8k";
 
-        $modelId = 'black-forest-labs/FLUX.1-schnell';
+        // Flux لا يحتاج كلمات مفتاحية معقدة مثل الموديلات القديمة، يفضل الوصف الطبيعي المباشر
+        $fullPrompt = "Professional architectural photography of an interior room, {$dto->style} style. {$englishPrompt}. Highly detailed, realistic lighting, beautiful furnished interior.";
 
-        $response = Http::withToken($hfToken)
-            ->timeout(120)
-            ->post("https://router.huggingface.co/hf-inference/v1/models/{$modelId}", [
-                'inputs' => $fullPrompt,
+        // 3. الاتصال بـ Replicate لاستخدام xlabs-ai/flux-controlnet-depth
+        $response = Http::withToken($replicateToken)
+            ->timeout(60)
+            ->post('https://api.replicate.com/v1/models/xlabs-ai/flux-controlnet-depth/predictions', [
+                'input' => [
+                    'prompt'                        => $fullPrompt,
+                    'control_image'                 => $originalImageUrl, // الصورة الأصلية التي سيستخرج منها الأبعاد
+                    'steps'                         => 28,                // عدد خطوات المعالجة (28-30 مثالي لـ Flux)
+                    'controlnet_conditioning_scale' => 0.8,               // مدى الالتزام بأبعاد الصورة الأصلية (0.8 ممتاز)
+                    'guidance_scale'                => 3.5,               // مدى الالتزام بالنص المكتوب
+                ]
             ]);
 
         if (! $response->successful()) {
-            $response = Http::withToken($hfToken)
-                ->timeout(120)
-                ->post("https://router.huggingface.co/models/{$modelId}", [
-                    'inputs' => $fullPrompt,
-                ]);
+            throw new Exception("Replicate API Error: " . $response->body());
         }
 
-        if (! $response->successful()) {
-            throw new Exception("Hugging Face API Error: " . $response->body());
-        }
+        // 4. الانتظار حتى تنتهي المعالجة (Polling)
+        $output = $this->pollReplicateResult($response->json('urls.get'), $replicateToken);
 
-        $imageBinary = $response->body();
+        // ملاحظة: الـ Output قد يكون مصفوفة، نأخذ أول عنصر منها (الرابط)
+        $outputUrl = is_array($output) ? $output[0] : $output;
+
+        // 5. تحميل الصورة الناتجة وحفظها في S3 لديك
+        $imageBinary = Http::get($outputUrl)->body();
         $generatedFileName = 'ai_designs/redesign_' . Str::random(12) . '.png';
 
         Storage::disk(config('filesystems.default', 's3'))->put($generatedFileName, $imageBinary, 'public');
         $generatedS3Url = Storage::disk(config('filesystems.default', 's3'))->url($generatedFileName);
 
+        // 6. تحديث السجل برابط الصورة الجديدة
         $suggestion->update([
             'generated_image_urls' => [$generatedS3Url],
         ]);

@@ -79,6 +79,11 @@ class OrderService
         return $this->orderDAO->departmentOrders($department_id);
     }
 
+    public function getOrdersWithoutContracts()
+    {
+        return $this->orderDAO->getOrdersWithoutContracts();
+    }
+
     public function update(int $id, UpdateOrderDTO $orderDTO, ?CreateNoteDTO $noteDTO)
     {
         return $this->transactionService->execute(function () use ($id, $orderDTO, $noteDTO) {

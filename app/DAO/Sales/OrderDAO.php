@@ -75,6 +75,14 @@ class OrderDAO
             ->paginate($perPage);
     }
 
+    public function getOrdersWithoutContracts(array $relations = [], int $perPage = 15)
+    {
+        return Order::doesntHave('contract')
+            ->with($relations)
+            ->latest()
+            ->paginate($perPage);
+    }
+
     public function update(int $id, UpdateOrderDTO $orderDTO)
     {
         $order = $this->show($id);

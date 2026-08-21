@@ -80,6 +80,12 @@ class OrderController extends Controller
         return $this->successCollection($orders, OrderResource::class);
     }
 
+    public function ordersWithoutContracts()
+    {
+        $orders = $this->orderService->getOrdersWithoutContracts();
+        return $this->successCollection($orders, OrderResource::class);
+    }
+
     public function changeStatus(int $id, ChangeStatusOrderRequest $request)
     {
         $orderDTO = UpdateOrderDTO::fromRequest($request->validated());

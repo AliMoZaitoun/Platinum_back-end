@@ -4,6 +4,7 @@ namespace App\Models\Sales;
 
 use App\Models\Client\Client;
 use App\Models\Core\Department;
+use App\Models\Legal\Contract;
 use App\Models\Note;
 use App\Models\RealEstate\Solution;
 use App\Models\RealEstate\Unit;
@@ -41,5 +42,10 @@ class Order extends Model
     public function appointments()
     {
         return $this->hasMany(Appointment::class, 'order_id', 'id');
+    }
+
+    public function contract()
+    {
+        return $this->hasOne(Contract::class);
     }
 }
