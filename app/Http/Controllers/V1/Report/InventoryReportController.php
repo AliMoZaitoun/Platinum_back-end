@@ -14,7 +14,7 @@ class InventoryReportController extends Controller
     public function index()
     {
         $data = $this->service->getDashboardNumbers();
-        return $this->successResponse($data, 'تم جلب إحصائيات المستودعات بنجاح');
+        return $this->successResponse($data, __('messages.report.warehouse_stats_fetched'));
     }
 
     public function downloadPdf()

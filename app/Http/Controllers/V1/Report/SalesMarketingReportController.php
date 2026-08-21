@@ -14,7 +14,7 @@ class SalesMarketingReportController extends Controller
     public function index()
     {
         $data = $this->service->getDashboardNumbers();
-        return $this->successResponse($data, 'تم جلب إحصائيات المبيعات بنجاح');
+        return $this->successResponse($data, __('messages.report.sales_stats_fetched'));
     }
 
     public function downloadPdf()

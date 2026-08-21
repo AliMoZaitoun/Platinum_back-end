@@ -167,4 +167,13 @@ return [
         'deleted'   => 'تم حذف السؤال بنجاح.',
     ],
 
+    'report' => [
+        'stats_fetched'                  => 'تم جلب الإحصائيات بنجاح',
+        'warehouse_stats_fetched'        => 'تم جلب إحصائيات المستودعات بنجاح',
+        'customer_service_stats_fetched' => 'تم جلب إحصائيات خدمة العملاء بنجاح',
+        'engineering_stats_fetched'      => 'تم جلب الإحصائيات الهندسية بنجاح',
+        'financial_stats_fetched'        => 'تم جلب الإحصائيات المالية بنجاح',
+        'sales_stats_fetched'            => 'تم جلب إحصائيات المبيعات بنجاح',
+    ]
+
 ];

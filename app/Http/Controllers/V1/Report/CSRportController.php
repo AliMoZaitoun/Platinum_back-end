@@ -14,7 +14,7 @@ class CSRportController extends Controller
     public function index()
     {
         $data = $this->service->getDashboardNumbers();
-        return $this->successResponse($data, 'تم جلب إحصائيات خدمة العملاء بنجاح');
+        return $this->successResponse($data, __('messages.report.customer_service_stats_fetched'));
     }
 
     public function downloadPdf()

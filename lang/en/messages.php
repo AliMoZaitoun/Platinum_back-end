@@ -173,5 +173,14 @@ return [
 
         'overdue_employee_title' => 'Client Payment Overdue',
         'overdue_employee_body'  => 'Client :name has an overdue payment for contract #:contract.',
+    ],
+
+    'report' => [
+        'stats_fetched'                  => 'Statistics fetched successfully',
+        'warehouse_stats_fetched'        => 'Warehouse statistics fetched successfully',
+        'customer_service_stats_fetched' => 'Customer service statistics fetched successfully',
+        'engineering_stats_fetched'      => 'Engineering statistics fetched successfully',
+        'financial_stats_fetched'        => 'Financial statistics fetched successfully',
+        'sales_stats_fetched'            => 'Sales statistics fetched successfully',
     ]
 ];

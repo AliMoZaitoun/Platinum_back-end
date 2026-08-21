@@ -14,7 +14,7 @@ class AdminReportController extends Controller
     public function index()
     {
         $data = $this->service->getDashboardNumbers();
-        return $this->successResponse($data, 'تم جلب الإحصائيات بنجاح');
+        return $this->successResponse($data, __('messages.report.stats_fetched'));
     }
 
     public function downloadPdf()

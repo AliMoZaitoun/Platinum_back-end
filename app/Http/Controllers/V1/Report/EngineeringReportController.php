@@ -14,7 +14,7 @@ class EngineeringReportController extends Controller
     public function index()
     {
         $data = $this->service->getDashboardNumbers();
-        return $this->successResponse($data, 'تم جلب الإحصائيات الهندسية بنجاح');
+        return $this->successResponse($data, __('messages.report.engineering_stats_fetched'));
     }
 
     public function downloadPdf()

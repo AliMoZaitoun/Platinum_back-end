@@ -14,7 +14,7 @@ class FinanceReportController extends Controller
     public function index()
     {
         $data = $this->service->getDashboardNumbers();
-        return $this->successResponse($data, 'تم جلب الإحصائيات المالية بنجاح');
+        return $this->successResponse($data, __('messages.report.financial_stats_fetched'));
     }
 
     public function downloadPdf()
