@@ -66,4 +66,11 @@ return [
     'expiring_soon'          => 'تنتهي صلاحيتها قريباً',
     'days'                   => 'يوم',
     'expired_items'          => 'مواد منتهية الصلاحية (تالفة)',
+
+    'cs_summary'          => 'تقرير خدمة العملاء',
+    'chat_stats'          => 'إحصائيات المحادثات',
+    'active_chats'        => 'محادثات نشطة',
+    'open_chats'          => 'محادثات مفتوحة',
+    'closed_chats'        => 'محادثات مغلقة',
+    'complaint_analytics' => 'تحليل أنواع الشكاوى',
 ];

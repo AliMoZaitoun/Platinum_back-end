@@ -65,4 +65,11 @@ return [
     'expiring_soon'          => 'Expiring Soon',
     'days'                   => 'Days',
     'expired_items'          => 'Expired Items',
+
+    'cs_summary'          => 'Customer Service Report',
+    'chat_stats'          => 'Chat Statistics',
+    'active_chats'        => 'Active Chats',
+    'open_chats'          => 'Open Chats',
+    'closed_chats'        => 'Closed Chats',
+    'complaint_analytics' => 'Complaint Analytics',
 ];

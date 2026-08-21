@@ -3,28 +3,33 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>@yield('title', 'التقرير')</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&display=swap');
+
         body {
-            font-family: 'DejaVu Sans', 'Arial', sans-serif;
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f8fafc;
         }
 
-        @page {
-            margin: 0;
+        .report-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
         }
     </style>
 </head>
 
-<body class="bg-gray-50 p-10">
+<body class="p-12 text-gray-800">
 
-    <div class="flex justify-between items-center border-b-2 border-gray-300 pb-4 mb-8">
-        <div>
-            <img src="{{ $logo_path }}" alt="Logo" class="h-16">
+    <div class="flex justify-between items-start mb-12">
+        <div class="w-1/3">
+            <img src="{{ $logo_path }}" class="h-20 w-auto object-contain">
         </div>
-        <div class="text-end">
-            <h1 class="text-2xl font-bold text-gray-800">@yield('report_title')</h1>
-            <p class="text-sm text-gray-500">{{ __('reports.issue_date') }}: {{ $generation_date }}</p>
+        <div class="text-end w-2/3 border-r-4 border-blue-600 pr-6">
+            <h1 class="text-4xl font-bold text-gray-900 tracking-tight">@yield('report_title')</h1>
+            <p class="text-blue-600 font-medium mt-2">{{ __('reports.issue_date') }}: {{ $generation_date }}</p>
         </div>
     </div>
 
@@ -32,10 +37,10 @@
         @yield('content')
     </main>
 
-    <div class="mt-12 pt-4 border-t border-gray-200 text-center text-xs text-gray-400">
-        تم توليد هذا التقرير آلياً عبر نظام إدارة الموارد - {{ config('app.name', 'ERP System') }}
-    </div>
-
+    <footer class="fixed bottom-10 left-10 right-10 border-t border-gray-200 pt-6 flex justify-between text-gray-400 text-sm">
+        <span>{{ config('app.name') }} &copy; {{ date('Y') }}</span>
+        <span>صفحة 1 من 1</span>
+    </footer>
 </body>
 
 </html>
