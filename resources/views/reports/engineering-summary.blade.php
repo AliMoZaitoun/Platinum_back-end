@@ -1,4 +1,4 @@
-@extends('layouts.report')
+@extends('reports.layout')
 
 @section('report_title')
 {{ __('reports.engineering_summary') }}
