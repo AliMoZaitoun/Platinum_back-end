@@ -148,6 +148,12 @@ return [
 
     'contract'  => [
         'non-draft_change' => 'Couldn\'t change non-draft contract',
+        'missing_appointment_exception'  => 'Workflow bypassed: Contract created without a prior completed appointment.',
+        'contract_approved_successfully' => 'Contract approved successfully and financial payments generated.',
+        'contract_not_pending'           => 'Operation failed. The contract is not in a pending approval state.',
+
+        'exception_approved'   => 'Financial exception approved. Contract changed to draft and payments generated successfully.',
+        'exception_rejected'   => 'Financial exception rejected. Contract status updated to rejected.',
     ],
 
     'offer' => [

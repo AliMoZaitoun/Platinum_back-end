@@ -1,5 +1,8 @@
 FROM php:8.5-fpm-alpine
 
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
 RUN apk add --no-cache \
     git \
     curl \
@@ -10,9 +13,20 @@ RUN apk add --no-cache \
     zip \
     unzip \
     postgresql-dev \
-    linux-headers
+    linux-headers \
+    nodejs \
+    npm \
+    chromium \
+    nss \
+    freetype \
+    freetype-dev \
+    harfbuzz \
+    ttf-freefont \
+    font-dejavu # خطوط أساسية لتجنب مشكلة مربعات النصوص
 
 RUN docker-php-ext-install pdo_pgsql pgsql mbstring exif pcntl bcmath gd
+
+RUN npm install -g puppeteer
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
@@ -26,7 +40,6 @@ RUN composer install --no-dev --optimize-autoloader && \
 EXPOSE 8080
 
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
-
 RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
 COPY docker/start.sh /entrypoint.sh

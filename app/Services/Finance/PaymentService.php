@@ -221,13 +221,18 @@ class PaymentService
                     ]);
                 }
 
-                $existingOwnerships = $this->ownershipService->byContract($contract->id);
+                $result = $this->ownershipService->byContract($contract->id);
 
-                if (empty($existingOwnerships)) {
+                $hasOwnership = $result instanceof \Illuminate\Support\Collection
+                    ? $result->isNotEmpty()
+                    : !is_null($result);
+
+                if ($hasOwnership) {
                     $data = [
                         "client_id" => $payment->client_id,
                         "contract_id" => $payment->contract_id,
                         "purchase_price" => $contract->total_price,
+                        "status"        => 'pending'
                     ];
 
                     $unitId = $contract->order?->unit_id ?? $contract->unit_id;

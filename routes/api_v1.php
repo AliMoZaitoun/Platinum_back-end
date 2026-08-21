@@ -711,6 +711,42 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/ai-design/from-image', [ApartmentDesignAiController::class, 'generateFromImage']);
 });
 
+
+Route::prefix('reports')->group(function () {
+
+    // 1. الآدمن (الإدارة العليا)
+    Route::prefix('admin')->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\V1\Report\AdminReportController::class, 'index']);
+        Route::get('/download-pdf', [\App\Http\Controllers\V1\Report\AdminReportController::class, 'downloadPdf']);
+    });
+
+    // 2. المالية
+    Route::prefix('finance')->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\V1\Report\FinanceReportController::class, 'index']);
+        Route::get('/download-pdf', [\App\Http\Controllers\V1\Report\FinanceReportController::class, 'downloadPdf']);
+    });
+
+    // 3. المبيعات والتسويق
+    Route::prefix('sales')->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\V1\Report\SalesMarketingReportController::class, 'index']);
+        Route::get('/download-pdf', [\App\Http\Controllers\V1\Report\SalesMarketingReportController::class, 'downloadPdf']);
+    });
+
+    // 4. الهندسة والمقاولات
+    Route::prefix('engineering')->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\V1\Report\EngineeringReportController::class, 'index']);
+        Route::get('/download-pdf', [\App\Http\Controllers\V1\Report\EngineeringReportController::class, 'downloadPdf']);
+    });
+
+    // 5. المستودعات والجرد
+    Route::prefix('inventory')->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\V1\Report\InventoryReportController::class, 'index']);
+        Route::get('/download-pdf', [\App\Http\Controllers\V1\Report\InventoryReportController::class, 'downloadPdf']);
+    });
+});
+
+
+
 Route::get('/run-seeder', function () {
     Artisan::call('migrate:fresh', [
         '--seed' => true,

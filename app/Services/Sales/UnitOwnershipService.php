@@ -45,10 +45,14 @@ class UnitOwnershipService
     public function finalizeOwnershipForContract(int $contractId)
     {
         return $this->transaction->execute(function () use ($contractId) {
-            $ownerships = $this->dao->byContract($contractId);
+            $result = $this->dao->byContract($contractId);
+
+            $ownerships = $result instanceof \Illuminate\Database\Eloquent\Model
+                ? collect([$result])
+                : collect($result);
 
             foreach ($ownerships as $ownership) {
-                if ($ownership->status !== 'transferred') {
+                if ($ownership && $ownership->status !== 'transferred') {
                     $ownership->update([
                         'status' => 'transferred',
                         'owned_at' => now(),
@@ -64,12 +68,17 @@ class UnitOwnershipService
     public function cancelOwnershipForContract(int $contractId)
     {
         return $this->transaction->execute(function () use ($contractId) {
-            $ownership = $this->dao->byContract($contractId);
+            $result = $this->dao->byContract($contractId);
 
-            if ($ownership) {
-                $this->unitDAO->update($ownership->unit_id, UpdateUnitDTO::fromRequest(['status' => 'available']));
+            $ownerships = $result instanceof \Illuminate\Database\Eloquent\Model
+                ? collect([$result])
+                : collect($result);
 
-                $ownership->delete();
+            foreach ($ownerships as $ownership) {
+                if ($ownership) {
+                    $this->unitDAO->update($ownership->unit_id, UpdateUnitDTO::fromRequest(['status' => 'available']));
+                    $ownership->delete();
+                }
             }
         });
     }

@@ -70,6 +70,28 @@ class ContractController extends Controller
         return $this->useResource($contract, ContractResource::class, __('messages.common.updated'));
     }
 
+    // public function approve(int $id)
+    // {
+    //     $contract = $this->service->approveException($id);
+
+    //     return $this->useResource(
+    //         $contract,
+    //         ContractResource::class,
+    //         __('messages.contract.exception_approved')
+    //     );
+    // }
+
+    // public function reject(int $id)
+    // {
+    //     $contract = $this->service->rejectException($id);
+
+    //     return $this->useResource(
+    //         $contract,
+    //         ContractResource::class,
+    //         __('messages.contract.exception_rejected')
+    //     );
+    // }
+
     public function destroy(string $id)
     {
         $this->service->destroy($id);

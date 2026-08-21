@@ -32,7 +32,7 @@ class UnitDAO
         return Unit::query()
             ->where('status', 'available')
 
-            ->with(['attachments', 'activeOffer', 'building', 'building.project'])
+            ->with(['attachments', 'activeOffer'])
 
             ->when($user && $user->client, function ($query) use ($user) {
                 $query->withExists(['favorites' => function ($q) use ($user) {

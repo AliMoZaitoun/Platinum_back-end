@@ -5,10 +5,13 @@ namespace App\Services\Legal;
 use App\DAO\Finance\ContractExceptionDAO;
 use App\DAO\Legal\ContractDAO;
 use App\DAO\Finance\PaymentDAO;
+use App\DAO\Sales\AppointmentDAO;
 use App\DTOs\Legal\Create\CreateContractDTO;
 use App\DTOs\Finance\Create\CreatePaymentDTO;
 use App\DTOs\Legal\Update\UpdateContractDTO;
+use App\Exceptions\V1\Legal\ContractNotPending;
 use App\Exceptions\V1\Legal\CouldnotChangeNotDraftContract;
+use App\Exceptions\V1\Legal\MissingAppointmentException;
 use App\Services\FileManagerService;
 use App\Services\Sales\OrderService;
 use App\Services\Transaction;
@@ -23,7 +26,8 @@ class ContractService
         private Transaction $transaction,
         private PaymentDAO $paymentDAO,
         private FileManagerService $fileManager,
-        private OrderService $orderService
+        private OrderService $orderService,
+        private AppointmentDAO $appointmentDAO
     ) {}
 
     public function index(array $relations = [], int $perPage = 15)
@@ -34,6 +38,12 @@ class ContractService
     public function store(CreateContractDTO $dto, $attachments = null)
     {
         return $this->transaction->execute(function () use ($dto, $attachments) {
+            $hasDoneAppointment = $this->appointmentDAO->byOrder($dto->orderId);
+
+            if (!$hasDoneAppointment) {
+                throw new MissingAppointmentException();
+            }
+
             $order = $this->orderService->show($dto->orderId);
             $clientId = $order->client_id;
 
@@ -139,6 +149,45 @@ class ContractService
     {
         return $this->dao->byClient($client_id);
     }
+
+    public function getPendingApprovalContracts(array $relations = [], int $perPage = 15)
+    {
+        return $this->dao->getPendingApprovalContracts($relations, $perPage);
+    }
+
+    // public function approveException(int $contractId)
+    // {
+    //     return $this->transaction->execute(function () use ($contractId) {
+    //         $contract = $this->dao->show($contractId);
+
+    //         if ($contract->status !== 'pending_approval') {
+    //             throw new ContractNotPending();
+    //         }
+
+    //         $this->dao->updateStatus($contractId, 'draft');
+
+    //         $this->generatePayments($contract);
+
+    //         return $contract->refresh()->load(['payments', 'latestException']);
+    //     });
+    // }
+
+    // public function rejectException(int $contractId)
+    // {
+    //     return $this->transaction->execute(function () use ($contractId) {
+    //         $contract = $this->dao->show($contractId);
+
+    //         if ($contract->status !== 'pending_approval') {
+    //             throw new ContractNotPending();
+    //         }
+
+    //         $this->dao->updateStatus($contractId, 'rejected');
+
+    //         // $this->contractExceptionDAO->updateStatus($contract->latestException->id, 'rejected');
+
+    //         return $contract->refresh();
+    //     });
+    // }
 
     public function changeStatus(int $id, UpdateContractDTO $dto)
     {

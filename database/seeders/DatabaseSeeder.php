@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
 
             AvailabilitySlotSeeder::class,
             OrderSeeder::class,
-            // AppointmentSeeder::class,
+            // App1ointmentSeeder::class,
             // ContractSeeder::class,
             // PaymentSeeder::class,
             // TransactionSeeder::class,

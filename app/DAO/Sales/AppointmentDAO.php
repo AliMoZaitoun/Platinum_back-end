@@ -26,6 +26,13 @@ class AppointmentDAO
         return Appointment::where('id', $id)->with(['client', 'createdBy', 'slot', 'order'])->first() ?? throw new NotFoundException("Appointment");
     }
 
+    public function byOrder(int $orderId)
+    {
+        return Appointment::where('order_id', $orderId)
+            ->where('status', 'done')
+            ->exists();
+    }
+
     public function showByClient(int $client_id)
     {
         return Appointment::where('client_id', $client_id)->with(['createdBy', 'slot', 'order', 'notes'])->get();
