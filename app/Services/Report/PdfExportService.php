@@ -8,7 +8,7 @@ class PdfExportService
 {
     public function generate(string $view, array $data, string $fileName = 'report.pdf')
     {
-        $logoPath = public_path('images/logo.png');
+        $logoPath = public_path('images/logo.jpg');
 
         $data['logo_path'] = $logoPath;
         $data['generation_date'] = now()->format('Y-m-d H:i');
