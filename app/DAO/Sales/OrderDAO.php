@@ -11,7 +11,7 @@ class OrderDAO
 {
     public function index(array $relations = [], int $perPage = 15)
     {
-        $defaultRelation = ['unit', 'client', 'solution', 'department'];
+        $defaultRelation = ['unit', 'client', 'solution', 'department', 'appointments'];
         $allRelations = array_merge($defaultRelation, $relations);
         return Order::query()
             ->with($allRelations)
@@ -26,7 +26,7 @@ class OrderDAO
 
     public function show(int $id)
     {
-        return Order::where('id', $id)->with(['unit', 'client', 'solution', 'unit.attachments', 'solution.attachments', 'notes', 'department'])->first() ?? throw new NotFoundException("Order");
+        return Order::where('id', $id)->with(['unit', 'client', 'appointments', 'solution', 'unit.attachments', 'solution.attachments', 'notes', 'department'])->first() ?? throw new NotFoundException("Order");
     }
 
     public function query()
@@ -51,7 +51,7 @@ class OrderDAO
         return Order::query()
             ->where('client_id', $client_id)
             ->whereNotNull('unit_id')
-            ->with(['unit', 'unit.attachments'])
+            ->with(['unit', 'unit.attachments', 'appointments'])
             ->latest()
             ->paginate($perPage);
     }
