@@ -7,106 +7,76 @@
 @section('content')
 <div class="space-y-8">
 
-    <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-        <div class="flex items-center justify-between mb-6">
-            <div>
-                <h2 class="text-lg font-bold text-slate-900">{{ __('reports.project_health') }}</h2>
-                <p class="text-xs text-slate-400 mt-0.5">مؤشرات الأداء العامة لحالة المشاريع</p>
-            </div>
+    <section class="border-2 border-slate-900 p-6 bg-white">
+        <div class="border-b-2 border-slate-900 pb-3 mb-6 flex justify-between items-center">
+            <h2 class="font-black text-base uppercase tracking-wider text-slate-900">{{ __('reports.project_health') }}</h2>
+            <span class="font-mono text-xs text-slate-500">[ENG-01]</span>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="relative overflow-hidden bg-emerald-50/50 border border-emerald-100 p-5 rounded-xl">
-                <div class="flex justify-between items-start">
-                    <span class="text-xs font-semibold text-emerald-700 uppercase tracking-wider">{{ __('reports.on_track') }}</span>
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                </div>
-                <div class="mt-4 flex items-baseline justify-between">
-                    <span class="text-3xl font-extrabold text-emerald-900">{{ $health['on_track'] }}</span>
-                    <span class="text-xs text-emerald-600 font-medium">مشروع</span>
-                </div>
+            <div class="border-2 border-slate-900 p-4 bg-slate-50">
+                <span class="text-[11px] font-mono font-bold uppercase text-slate-600 block mb-2">{{ __('reports.on_track') }}</span>
+                <span class="font-mono text-3xl font-black text-emerald-600 block">{{ $health['on_track'] }}</span>
             </div>
 
-            <div class="relative overflow-hidden bg-amber-50/50 border border-amber-100 p-5 rounded-xl">
-                <div class="flex justify-between items-start">
-                    <span class="text-xs font-semibold text-amber-700 uppercase tracking-wider">{{ __('reports.delayed') }}</span>
-                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-                </div>
-                <div class="mt-4 flex items-baseline justify-between">
-                    <span class="text-3xl font-extrabold text-amber-900">{{ $health['delayed'] }}</span>
-                    <span class="text-xs text-amber-600 font-medium">متأخر</span>
-                </div>
+            <div class="border-2 border-slate-900 p-4 bg-slate-50">
+                <span class="text-[11px] font-mono font-bold uppercase text-slate-600 block mb-2">{{ __('reports.delayed') }}</span>
+                <span class="font-mono text-3xl font-black text-amber-600 block">{{ $health['delayed'] }}</span>
             </div>
 
-            <div class="relative overflow-hidden bg-rose-50/50 border border-rose-100 p-5 rounded-xl">
-                <div class="flex justify-between items-start">
-                    <span class="text-xs font-semibold text-rose-700 uppercase tracking-wider">{{ __('reports.blocked') }}</span>
-                    <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
-                </div>
-                <div class="mt-4 flex items-baseline justify-between">
-                    <span class="text-3xl font-extrabold text-rose-900">{{ $health['blocked'] }}</span>
-                    <span class="text-xs text-rose-600 font-medium">متوقف</span>
-                </div>
+            <div class="border-2 border-slate-900 p-4 bg-slate-50">
+                <span class="text-[11px] font-mono font-bold uppercase text-slate-600 block mb-2">{{ __('reports.blocked') }}</span>
+                <span class="font-mono text-3xl font-black text-rose-600 block">{{ $health['blocked'] }}</span>
             </div>
 
-            <div class="relative overflow-hidden bg-slate-100/60 border border-slate-200 p-5 rounded-xl">
-                <div class="flex justify-between items-start">
-                    <span class="text-xs font-semibold text-slate-600 uppercase tracking-wider">{{ __('reports.site_issues') }}</span>
-                    <span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
-                </div>
-                <div class="mt-4 flex items-baseline justify-between">
-                    <span class="text-3xl font-extrabold text-slate-900">{{ $health['total_issues'] }}</span>
-                    <span class="text-xs text-slate-500 font-medium">بلاغ</span>
-                </div>
+            <div class="border-2 border-slate-900 p-4 bg-slate-50">
+                <span class="text-[11px] font-mono font-bold uppercase text-slate-600 block mb-2">{{ __('reports.site_issues') }}</span>
+                <span class="font-mono text-3xl font-black text-slate-900 block">{{ $health['total_issues'] }}</span>
             </div>
         </div>
     </section>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-        <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-col justify-between">
-            <div>
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-lg font-bold text-slate-900">{{ __('reports.engineers_allocation') }}</h2>
-                    <span class="text-xs text-slate-400">توزيع الكادر</span>
+        <section class="border-2 border-slate-900 p-6 bg-white">
+            <div class="border-b-2 border-slate-900 pb-3 mb-6 flex justify-between items-center">
+                <h2 class="font-black text-base uppercase tracking-wider text-slate-900">{{ __('reports.engineers_allocation') }}</h2>
+                <span class="font-mono text-xs text-slate-500">[ENG-02]</span>
+            </div>
+
+            <div class="space-y-3">
+                <div class="flex justify-between items-center p-3 border border-slate-300 bg-slate-50">
+                    <span class="text-xs font-bold text-slate-700">{{ __('reports.total_engineers') }}</span>
+                    <span class="font-mono font-black text-slate-900 text-base">{{ $engineers['total'] }}</span>
                 </div>
 
-                <div class="space-y-3">
-                    <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100 flex justify-between items-center">
-                        <span class="text-sm font-medium text-slate-600">{{ __('reports.total_engineers') }}</span>
-                        <span class="text-base font-bold text-slate-900">{{ $engineers['total'] }}</span>
-                    </div>
+                <div class="flex justify-between items-center p-3 border border-slate-300 bg-slate-50">
+                    <span class="text-xs font-bold text-slate-700">{{ __('reports.allocated') }}</span>
+                    <span class="font-mono font-black text-blue-600 text-base">{{ $engineers['allocated'] }}</span>
+                </div>
 
-                    <div class="p-3.5 bg-blue-50/50 rounded-xl border border-blue-100 flex justify-between items-center">
-                        <span class="text-sm font-medium text-blue-900">{{ __('reports.allocated') }}</span>
-                        <span class="text-base font-bold text-blue-600">{{ $engineers['allocated'] }}</span>
-                    </div>
-
-                    <div class="p-3.5 bg-emerald-50/50 rounded-xl border border-emerald-100 flex justify-between items-center">
-                        <span class="text-sm font-medium text-emerald-900">{{ __('reports.available_engineers') }}</span>
-                        <span class="text-base font-bold text-emerald-600">{{ $engineers['available'] }}</span>
-                    </div>
+                <div class="flex justify-between items-center p-3 border border-slate-300 bg-slate-50">
+                    <span class="text-xs font-bold text-slate-700">{{ __('reports.available_engineers') }}</span>
+                    <span class="font-mono font-black text-emerald-600 text-base">{{ $engineers['available'] }}</span>
                 </div>
             </div>
         </section>
 
-        <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-col justify-between">
-            <div>
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-lg font-bold text-slate-900">{{ __('reports.site_attendance') }}</h2>
-                    <span class="text-xs text-slate-400">إحصائيات الموقع</span>
+        <section class="border-2 border-slate-900 p-6 bg-white">
+            <div class="border-b-2 border-slate-900 pb-3 mb-6 flex justify-between items-center">
+                <h2 class="font-black text-base uppercase tracking-wider text-slate-900">{{ __('reports.site_attendance') }}</h2>
+                <span class="font-mono text-xs text-slate-500">[ENG-03]</span>
+            </div>
+
+            <div class="space-y-3">
+                <div class="flex justify-between items-center p-3.5 border border-slate-300 bg-slate-50">
+                    <span class="text-xs font-bold text-slate-700">{{ __('reports.checked_in_today') }}</span>
+                    <span class="font-mono font-black text-indigo-600 text-xl">{{ $attendance['checked_in_today'] }}</span>
                 </div>
 
-                <div class="space-y-3">
-                    <div class="p-4 bg-indigo-50/40 rounded-xl border border-indigo-100 flex justify-between items-center">
-                        <span class="text-sm font-medium text-indigo-900">{{ __('reports.checked_in_today') }}</span>
-                        <span class="text-2xl font-extrabold text-indigo-600">{{ $attendance['checked_in_today'] }}</span>
-                    </div>
-
-                    <div class="p-4 bg-amber-50/40 rounded-xl border border-amber-100 flex justify-between items-center">
-                        <span class="text-sm font-medium text-amber-900">{{ __('reports.avg_hours_week') }}</span>
-                        <span class="text-2xl font-extrabold text-amber-600">{{ number_format($attendance['avg_hours_week'], 1) }} <span class="text-xs font-normal">ساعة</span></span>
-                    </div>
+                <div class="flex justify-between items-center p-3.5 border border-slate-300 bg-slate-50">
+                    <span class="text-xs font-bold text-slate-700">{{ __('reports.avg_hours_week') }}</span>
+                    <span class="font-mono font-black text-amber-600 text-xl">{{ number_format($attendance['avg_hours_week'], 1) }}</span>
                 </div>
             </div>
         </section>
