@@ -19,11 +19,16 @@ class OrderResource extends JsonResource
             'unit'         => new UnitResource($this->whenLoaded('unit')),
             'solution'     => new SolutionResource($this->whenLoaded('solution')),
             'status'       => $this->status,
+
+            'has_done_appointment' => $this->whenLoaded('appointments', function () {
+                return $this->appointments->contains('status', 'done');
+            }),
+
             'department'   => new DepartmentResource($this->whenLoaded('department')),
             'created_at'   => $this->created_at->format('Y-m-d h:i A'),
             'updated_at'   => $this->updated_at->format('Y-m-d h:i A'),
 
-            'notes'        => NoteResource::collection($this->whenLoaded('notes'))
+            'notes'        => NoteResource::collection($this->whenLoaded('notes')),
         ];
     }
 }

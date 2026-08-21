@@ -37,4 +37,9 @@ class Order extends Model
     {
         return $this->morphMany(Note::class, 'noteable');
     }
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class, 'order_id', 'id');
+    }
 }
