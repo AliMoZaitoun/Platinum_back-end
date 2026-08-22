@@ -16,7 +16,7 @@ return new class extends Migration
             $table->uuid('uuid')->unique();
             $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
             $table->foreignId('building_id')->nullable()->constrained('buildings')->onDelete('set null');
-            $table->string('apartment_number')->nullable();
+            $table->foreignId('unit_id')->nullable()->constrained('units')->onDelete('set null');
 
             $table->string('original_image_path')->nullable();
             $table->text('user_prompt')->nullable();

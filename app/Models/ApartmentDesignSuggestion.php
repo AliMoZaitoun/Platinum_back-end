@@ -6,6 +6,7 @@ use App\Models\Core\Employee;
 use App\Models\Engineer\Engineer;
 use App\Models\RealEstate\Building;
 use App\Models\BaseModel;
+use App\Models\RealEstate\Unit;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'uuid',
     'employee_id',
     'building_id',
-    'apartment_number',
+    'unit_id',
     'user_prompt',
     'design_style',
     'generated_image_urls',
@@ -37,6 +38,11 @@ class ApartmentDesignSuggestion extends BaseModel
     public function building(): BelongsTo
     {
         return $this->belongsTo(Building::class);
+    }
+
+    public function unit(): BelongsTo
+    {
+        return $this->belongsTo(Unit::class);
     }
 
     public function attachments()

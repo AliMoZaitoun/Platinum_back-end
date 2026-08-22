@@ -114,4 +114,9 @@ class Unit extends BaseModel
     {
         return $this->activeOffer ? $this->activeOffer->discount_percentage : 0;
     }
+
+    public function aiDesigns()
+    {
+        return $this->hasMany(ApartmentDesignSuggestion::class);
+    }
 }

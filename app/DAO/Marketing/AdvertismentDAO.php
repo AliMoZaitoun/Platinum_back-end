@@ -12,12 +12,12 @@ class AdvertismentDAO
 
     public function index()
     {
-        return Advertisement::latest()->with(['attachments', 'offer'])->get();
+        return Advertisement::latest()->with(['attachments', 'offer.offerable'])->get();
     }
 
     public function activeAdvertisements()
     {
-        return Advertisement::active()->with(['attachments', 'offer'])->get();
+        return Advertisement::active()->with(['attachments', 'offer.offerable'])->get();
     }
 
     public function store(array $data)

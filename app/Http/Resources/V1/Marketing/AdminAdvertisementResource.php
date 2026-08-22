@@ -20,7 +20,7 @@ class AdminAdvertisementResource extends JsonResource
             'duration_days' => $this->duration_days,
 
             'attachments'   => MediaResource::collection($this->attachments),
-            'offer'         => new ClientOfferResource($this->whenLoaded('offer')),
+            'offer'         => new AdminOfferResource($this->whenLoaded('offer')),
 
             'created_by'    => $this?->created_by,
             'created_at'    => $this->created_at?->format('Y-m-d H:i:s'),
