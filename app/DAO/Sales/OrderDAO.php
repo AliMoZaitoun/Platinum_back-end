@@ -78,6 +78,9 @@ class OrderDAO
     public function getOrdersWithoutContracts(array $relations = [], int $perPage = 15)
     {
         return Order::doesntHave('contract')
+            ->whereHas('appointments', function ($query) {
+                $query->where('status', 'done');
+            })
             ->with($relations)
             ->latest()
             ->paginate($perPage);

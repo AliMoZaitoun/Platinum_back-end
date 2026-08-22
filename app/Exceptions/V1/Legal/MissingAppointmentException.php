@@ -7,7 +7,7 @@ use Throwable;
 
 class MissingAppointmentException extends Exception
 {
-    public function __construct($messageKey = "messages.missing_appointment_exception", $code = 422, Throwable $previous = null)
+    public function __construct($messageKey = "messages.contract.missing_appointment_exception", $code = 422, Throwable $previous = null)
     {
         $message = __($messageKey);
 
