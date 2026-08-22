@@ -35,6 +35,11 @@ class AdvertismentDAO
         return Advertisement::where('id', $id)->with(['attachments', 'offer.offerable'])->first() ?? throw new NotFoundException("Advertisement");
     }
 
+    public function showForClient(int $id)
+    {
+        return Advertisement::where('id', $id)->with(['attachments', 'offer'])->first() ?? throw new NotFoundException("Advertisement");
+    }
+
     public function update(int $id, UpdateAdDTO $adDTO)
     {
         $ad = $this->show($id);

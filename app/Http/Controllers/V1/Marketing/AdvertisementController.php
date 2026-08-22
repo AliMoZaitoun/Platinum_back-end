@@ -57,9 +57,9 @@ class AdvertisementController extends Controller
         return $this->useResource($ad, AdminAdvertisementResource::class);
     }
 
-    public function showForClient(int $id)
+    public function showForClient(int $ad_id)
     {
-        $ad = $this->adService->show($id);
+        $ad = $this->adService->showForClient($ad_id);
         return $this->useResource($ad, ClientAdvertisementResource::class);
     }
 

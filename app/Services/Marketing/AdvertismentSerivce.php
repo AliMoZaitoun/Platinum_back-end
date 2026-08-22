@@ -62,6 +62,11 @@ class AdvertismentSerivce
         return $this->dao->show($id);
     }
 
+    public function showForClient(int $id)
+    {
+        return $this->dao->showForClient($id);
+    }
+
     public function update(int $id, UpdateAdDTO $dto)
     {
         return $this->dao->update($id, $dto);
