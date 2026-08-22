@@ -115,11 +115,11 @@ class UnitDAO
             ->exists();
     }
 
-    public function update(int $id, UpdateUnitDTO $UnitDTO)
+    public function update(int $id, array $data)
     {
         $unit = $this->show($id);
-        $unit->update($UnitDTO->toArray());
-        return $unit;
+        $unit->update($data);
+        return $unit->refresh();
     }
 
     public function destroy(int $id)

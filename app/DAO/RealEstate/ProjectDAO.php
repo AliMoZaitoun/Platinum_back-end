@@ -29,11 +29,11 @@ class ProjectDAO
         return Project::find($id) ?? throw new NotFoundException("Project");
     }
 
-    public function update(int $id, UpdateProjectDTO $projectDTO)
+    public function update(int $id, array $data)
     {
         $project = $this->show($id);
-        $project->update($projectDTO->toArray());
-        return $project;
+        $project->update($data);
+        return $project->refresh();
     }
 
     public function destroy(int $id)

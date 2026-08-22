@@ -7,6 +7,7 @@ use App\DTOs\RealEstate\Other\SearchUnitDTO;
 use App\DTOs\RealEstate\Update\UpdateUnitDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\RealEstate\CreateUnitRequest;
+use App\Http\Requests\V1\RealEstate\UpdateUnitRequest;
 use App\Http\Resources\V1\RealEstate\UnitResource;
 use App\Services\RealEstate\UnitService;
 use App\Traits\ResponseTrait;
@@ -33,8 +34,10 @@ class UnitController extends Controller
 
     public function store(CreateUnitRequest $request)
     {
-        $unitDTO = CreateUnitDTO::fromRequest($request->validated());
-        $unit = $this->unitService->store($unitDTO, $request->file('attachments'));
+        $validatedData = $request->validated();
+        $unitDTO = CreateUnitDTO::fromRequest($validatedData);
+        $attachments = $request->validated('attachments') ?? [];
+        $unit = $this->unitService->store($unitDTO, $attachments);
         return $this->useResource($unit, UnitResource::class, __('messages.common.stored'), 201);
     }
 
@@ -51,10 +54,12 @@ class UnitController extends Controller
         return $this->successCollection($units, UnitResource::class);
     }
 
-    public function update(int $id, Request $request)
+    public function update(int $id, UpdateUnitRequest $request)
     {
-        $unitDTO = UpdateUnitDTO::fromRequest($request->all());
-        $unit = $this->unitService->update($id, $unitDTO);
+        $validatedData = $request->validated();
+        $unitDTO = UpdateUnitDTO::fromRequest($validatedData);
+        $attachments = $request->validated('attachments') ?? [];
+        $unit = $this->unitService->update($id, $unitDTO, $attachments);
         return $this->useResource($unit, UnitResource::class, __('messages.common.updated'));
     }
 

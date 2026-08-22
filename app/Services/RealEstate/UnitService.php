@@ -56,7 +56,7 @@ class UnitService
                 $this->fileManager->storeFile(
                     model: $unit,
                     files: $attachments,
-                    folderPath: "units",
+                    folderPath: "real_estate/units",
                     relationName: 'attachments'
                 );
             }
@@ -78,9 +78,25 @@ class UnitService
         return $this->unitDAO->search($dto->toArray());
     }
 
-    public function update(int $id, UpdateUnitDTO $unitDTO)
+    public function update(int $id, UpdateUnitDTO $dto, $attachments = [])
     {
-        return $this->unitDAO->update($id, $unitDTO);
+        $data = $dto->toArray();
+
+        if ($dto->description) {
+            $data['description'] = $this->translationService->translateAll($dto->description);
+        }
+
+        $unit = $this->unitDAO->update($id, $data);
+
+        if ($attachments) {
+            $this->fileManager->storeFile(
+                model: $unit,
+                files: $attachments,
+                folderPath: "real_estate/units",
+                relationName: 'attachments'
+            );
+        }
+        return $unit;
     }
 
     public function destroy(int $id)

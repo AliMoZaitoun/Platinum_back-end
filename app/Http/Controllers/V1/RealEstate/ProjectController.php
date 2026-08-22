@@ -6,6 +6,7 @@ use App\DTOs\RealEstate\Create\CreateProjectDTO;
 use App\DTOs\RealEstate\Update\UpdateProjectDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\RealEstate\CreateProjectRequest;
+use App\Http\Requests\V1\RealEstate\UpdateProjectRequest;
 use App\Http\Resources\V1\RealEstate\ProjectResource;
 use App\Services\RealEstate\ProjectService;
 use App\Traits\ResponseTrait;
@@ -27,7 +28,8 @@ class ProjectController extends Controller
     public function store(CreateProjectRequest $request)
     {
         $projectDTO = CreateProjectDTO::fromRequest($request->validated());
-        $project = $this->projectService->store($projectDTO, $request->file('attachments'));
+        $attachments = $request->validated('attachments') ?? [];
+        $project = $this->projectService->store($projectDTO, $attachments);
         return $this->useResource($project, ProjectResource::class, __('messages.common.stored'), 201);
     }
 
@@ -37,10 +39,12 @@ class ProjectController extends Controller
         return $this->useResource($project, ProjectResource::class);
     }
 
-    public function update(int $id, Request $request)
+    public function update(int $id, UpdateProjectRequest $request)
     {
-        $projectDTO = UpdateProjectDTO::fromRequest($request->all());
-        $project = $this->projectService->update($id, $projectDTO);
+        $projectDTO = UpdateProjectDTO::fromRequest($request->validated());
+        $attachments = $request->validated('attachments') ?? [];
+
+        $project = $this->projectService->update($id, $projectDTO, $attachments);
         return $this->useResource($project, ProjectResource::class, __('messages.common.updated'), 200);
     }
 

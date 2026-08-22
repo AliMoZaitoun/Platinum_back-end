@@ -47,4 +47,8 @@ return [
         'api_token' => env('REPLICATE_API_TOKEN'),
     ],
 
+    'fal' => [
+        'api_key' => env('FAL_API_KEY'),
+    ],
+
 ];

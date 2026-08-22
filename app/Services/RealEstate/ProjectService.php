@@ -39,7 +39,7 @@ class ProjectService
                 $this->fileManager->storeFile(
                     model: $project,
                     files: $attachments,
-                    folderPath: "projects",
+                    folderPath: "real_estate/projects",
                     relationName: 'attachments'
                 );
             }
@@ -52,9 +52,29 @@ class ProjectService
         return $this->projectDAO->show($id);
     }
 
-    public function update(int $id, UpdateProjectDTO $projectDTO)
+    public function update(int $id, UpdateProjectDTO $dto, $attachments = null)
     {
-        return $this->projectDAO->update($id, $projectDTO);
+        return $this->transaction->execute(function () use ($id, $dto, $attachments) {
+            $data = $dto->toArray();
+            if ($dto->name)
+                $data['name'] = $this->translationService->translateAll($dto->name);
+
+            if ($dto->description) {
+                $data['description'] = $this->translationService->translateAll($dto->description);
+            }
+
+            $project = $this->projectDAO->update($id, $data);
+
+            if ($attachments) {
+                $this->fileManager->storeFile(
+                    model: $project,
+                    files: $attachments,
+                    folderPath: "real_estate/projects",
+                    relationName: 'attachments'
+                );
+            }
+            return $project;
+        });
     }
 
     public function destroy(int $id)

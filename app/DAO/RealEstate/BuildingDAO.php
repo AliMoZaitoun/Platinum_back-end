@@ -42,11 +42,11 @@ class BuildingDAO
         return Building::find($id) ?? throw new NotFoundException("Building");
     }
 
-    public function update(int $id, UpdateBuildingDTO $buildingDTO)
+    public function update(int $id, array $data)
     {
         $building = $this->show($id);
-        $building->update($buildingDTO->toArray());
-        return $building;
+        $building->update($data);
+        return $building->refresh();
     }
 
     public function destroy(int $id)

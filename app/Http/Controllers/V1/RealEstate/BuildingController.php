@@ -6,6 +6,7 @@ use App\DTOs\RealEstate\Create\CreateBuildingDTO;
 use App\DTOs\RealEstate\Update\UpdateBuildingDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\RealEstate\CreateBuildingRequest;
+use App\Http\Requests\V1\RealEstate\UpdateBuildingRequest;
 use App\Http\Resources\V1\RealEstate\BuildingResource;
 use App\Services\RealEstate\BuildingService;
 use App\Traits\ResponseTrait;
@@ -35,7 +36,8 @@ class BuildingController extends Controller
     public function store(CreateBuildingRequest $request)
     {
         $buildingDTO = CreateBuildingDTO::fromRequest($request->validated());
-        $building = $this->buildingService->store($buildingDTO, $request->file('attachments'));
+        $attachments = $request->validated('attachments') ?? [];
+        $building = $this->buildingService->store($buildingDTO, $attachments);
         return $this->useResource($building, BuildingResource::class, __('messages.common.stored'), 201);
     }
 
@@ -45,10 +47,12 @@ class BuildingController extends Controller
         return $this->useResource($building, BuildingResource::class);
     }
 
-    public function update(int $id, Request $request)
+    public function update(int $id, UpdateBuildingRequest $request)
     {
-        $buildingDTO = UpdateBuildingDTO::fromRequest($request->all());
-        $building = $this->buildingService->update($id, $buildingDTO);
+        $buildingDTO = UpdateBuildingDTO::fromRequest($request->validated());
+        $attachments = $request->validated('attachments') ?? [];
+
+        $building = $this->buildingService->update($id, $buildingDTO, $attachments);
         return $this->useResource($building, BuildingResource::class, __('messages.common.updated'), 200);
     }
 

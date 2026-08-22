@@ -43,7 +43,7 @@ class BuildingService
                 $this->fileManager->storeFile(
                     model: $building,
                     files: $attachments,
-                    folderPath: "buildings",
+                    folderPath: "real_estate/buildings",
                     relationName: 'attachments'
                 );
             }
@@ -56,12 +56,30 @@ class BuildingService
         return $this->buildingDAO->show($id);
     }
 
-    public function update(int $id, UpdateBuildingDTO $buildingDTO)
+    public function update(int $id, UpdateBuildingDTO $dto, $attachments = null)
     {
-        return $this->buildingDAO->update($id, $buildingDTO);
+        return $this->transaction->execute(function () use ($id, $dto, $attachments) {
+            $data = $dto->toArray();
+
+            if ($dto->description) {
+                $data['description'] = $this->translationService->translateAll($dto->description);
+            }
+
+            $building = $this->buildingDAO->update($id, $data);
+
+            if ($attachments) {
+                $this->fileManager->storeFile(
+                    model: $building,
+                    files: $attachments,
+                    folderPath: "real_estate/buildings",
+                    relationName: 'attachments'
+                );
+            }
+            return $building;
+        });
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         return $this->buildingDAO->destroy($id);
     }

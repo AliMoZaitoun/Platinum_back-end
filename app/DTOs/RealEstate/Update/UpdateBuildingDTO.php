@@ -8,6 +8,7 @@ class UpdateBuildingDTO
         public ?int $location_id,
         public ?string $building_number,
         public ?int $floors_count,
+        public ?string $description,
         public ?string $status
     ) {}
 
@@ -17,6 +18,7 @@ class UpdateBuildingDTO
             location_id: $request['location_id'] ?? null,
             building_number: $request['building_number'] ?? null,
             floors_count: $request['floors_count'] ?? null,
+            description: $request['description'] ?? null,
             status: $request['status'] ?? null
         );
     }
@@ -27,6 +29,7 @@ class UpdateBuildingDTO
             'location_id'  => $this->location_id,
             'building_number'  => $this->building_number,
             'floors_count'  => $this->floors_count,
+            'description' => $this->description,
             'status' => $this->status
         ], fn($value) => !is_null($value));
     }

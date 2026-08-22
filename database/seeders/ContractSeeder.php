@@ -2,44 +2,70 @@
 
 namespace Database\Seeders;
 
-use App\Models\Core\Employee;
+use App\Models\Client\Client;
+use App\Models\RealEstate\Unit;
 use App\Models\Legal\Contract;
-use App\Models\Media;
-use App\Models\Sales\Order;
+use App\Models\Finance\Payment;
+use App\Models\Finance\Transaction;
+use App\Models\Sales\UnitOwnership;
+use App\Models\Core\Employee;
+use App\Enums\TransactionCategory;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
 class ContractSeeder extends Seeder
 {
     public function run(): void
     {
-        $orders = Order::where('status', 'accepted')->get();
+        $clients = Client::all();
+        $units = Unit::where('status', 'available')->limit(5)->get();
+        $financeEmployee = Employee::first();
 
-        $legalEmployee = Employee::whereHas('user', function ($query) {
-            $query->role('legal_staff');
-        })->first() ?? Employee::first();
+        foreach ($units as $index => $unit) {
+            $client = $clients[$index % $clients->count()];
 
-        foreach ($orders as $order) {
-            $contract = Contract::create([
-                'reference_number'   => 'PLA-' . Str::random(5),
-                'client_id'          => $order->client_id,
-                'employee_id'        => $legalEmployee->id,
-                'order_id'           => $order->id,
-                'total_price'        => 250000.00,
-                'down_payment_amount' => 50000.00,
-                'installments_count' => 12,
-                'status'             => 'active',
+            // 1. إنشاء عقد
+            $contract = Contract::factory()->create([
+                'client_id' => $client->id,
+                'unit_id' => $unit->id,
+                'total_price' => $unit->price,
+                'down_payment_amount' => $unit->price * 0.20,
+                'status' => 'completed',
             ]);
 
-            Media::create([
-                'uuid'              => (string) Str::uuid(),
-                'mediable_id'       => $contract->id,
-                'mediable_type'     => Contract::class,
-                'path'              => 'contracts/pdf/sample_contract_' . $contract->id . '.pdf',
-                'original_name'     => 'legal_contract_signed.pdf',
-                'type'              => 'document',
-                'custom_properties' => json_encode(['signed' => true]),
-                'recorded_at'       => now(),
+            $unit->update(['status' => 'sold']);
+
+            $payment = Payment::factory()->create([
+                'contract_id' => $contract->id,
+                'client_id' => $client->id,
+                'employee_id' => $financeEmployee->id,
+                'amount' => $contract->down_payment_amount,
+                'payment_type' => 'down_payment',
+                'status' => 'paid',
+            ]);
+
+            Transaction::create([
+                'type' => 'receipt',
+                'amount' => $payment->amount,
+                'currency' => 'QAR',
+                'exchange_rate' => 1.00,
+                'category' => TransactionCategory::DOWN_PAYMENT->value,
+                'payment_method' => $payment->payment_method,
+                'created_by' => $financeEmployee->id,
+                'transactionable_type' => Payment::class,
+                'transactionable_id' => $payment->id,
+                'party_type' => Client::class,
+                'party_id' => $client->id,
+                'status' => 'posted',
+                'description' => 'تسديد آلي للدفعة الأولى - عقد رقم ' . $contract->id
+            ]);
+
+            UnitOwnership::create([
+                'client_id' => $client->id,
+                'contract_id' => $contract->id,
+                'unit_id' => $unit->id,
+                'purchase_price' => $contract->total_price,
+                'status' => 'transferred',
+                'owned_at' => now(),
             ]);
         }
     }

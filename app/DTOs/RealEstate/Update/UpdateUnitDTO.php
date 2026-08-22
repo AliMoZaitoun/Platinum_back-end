@@ -11,6 +11,7 @@ class UpdateUnitDTO
         public ?float $area,
         public ?string $type,
         public ?float $price,
+        public ?string $description,
         public ?string $status
     ) {}
 
@@ -23,6 +24,7 @@ class UpdateUnitDTO
             area: $request['area'] ?? null,
             type: $request['type'] ?? null,
             price: $request['price'] ?? null,
+            description: $request['description'] ?? null,
             status: $request['status'] ?? null
         );
     }
@@ -36,6 +38,7 @@ class UpdateUnitDTO
             'area'  => $this->area,
             'type'  => $this->type,
             'price'  => $this->price,
+            'description'   => $this->description,
             'status' => $this->status
         ], fn($value) => !is_null($value));
     }
