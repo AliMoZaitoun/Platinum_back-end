@@ -25,7 +25,6 @@ class AdvertismentDAO
         return Advertisement::active()->with(['attachments', 'offer'])->get();
     }
 
-
     public function store(array $data)
     {
         return Advertisement::create($data);

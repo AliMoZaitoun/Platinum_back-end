@@ -462,7 +462,7 @@ Route::prefix('client')->middleware(['auth:sanctum', 'is_client'])->group(functi
     Route::get('advertisement/active', [AdvertisementController::class, 'activeAdvertisementsForClient'])
         ->middleware(['permission:read.advertisment']);
 
-    Route::get('advertisement/read/{ad_id}', [AdvertisementController::class, 'show'])
+    Route::get('advertisement/read/{ad_id}', [AdvertisementController::class, 'showForClient'])
         ->middleware(['permission:read.advertisment']);
 });
 
