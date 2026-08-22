@@ -22,6 +22,7 @@ use App\Exceptions\V1\Engineer\Attendance\ShiftTimeoutException;
 use App\Exceptions\V1\Engineer\Report\EngineerNotCheckedInException;
 use App\Exceptions\V1\Finance\PaymentExceedsRemainingBalanceException;
 use App\Exceptions\V1\Legal\CouldnotChangeNotDraftContract;
+use App\Exceptions\V1\Legal\MissingAppointmentException;
 use App\Exceptions\V1\Lottery\LotteryNotFoundException;
 use App\Exceptions\V1\Lottery\LotteryNotOpenException;
 use App\Exceptions\V1\Lottery\NoEligibleParticipantsException;
@@ -214,6 +215,10 @@ class Handler
         });
 
         $exceptions->render(function (PaymentExceedsRemainingBalanceException $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode() ?: 422);
+        });
+
+        $exceptions->render(function (MissingAppointmentException $e) {
             return $this->errorResponse($e->getMessage(), $e->getCode() ?: 422);
         });
     }
