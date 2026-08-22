@@ -2,73 +2,44 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 class DatabaseSeeder extends Seeder
 {
+    use WithoutModelEvents;
+
     public function run(): void
     {
-        // تعطيل فحص المفاتيح الأجنبية لتسريع عملية الـ Seeding (اختياري ولكن مفضل في بيئة التطوير)
-        Schema::disableForeignKeyConstraints();
-
         $this->call([
             RoleAndPermissionSeeder::class,
             AdminSeeder::class,
             LocationSeeder::class,
+            WarehouseSeeder::class,
+            ItemSeeder::class,
             DepartmentSeeder::class,
-            SolutionSeeder::class,
-            // ComplaintTypeSeeder::class,
-            FaqNodeSeeder::class,
-
-            // Phase 2: Core Users & Profiles
             UserSeeder::class,
-
-            // Phase 3: Real Estate Infrastructure & Inventory
+            EmployeeSeeder::class,
+            EmployeeDepartmentSeeder::class,
+            // AdvertisementSeeder::class,
+            SolutionSeeder::class,
             ProjectSeeder::class,
             BuildingSeeder::class,
             UnitSeeder::class,
-            WarehouseSeeder::class,
-            ItemSeeder::class,
+            ClientSeeder::class,
+            // EngineerSystemSeeder::class,
 
-            // Phase 4: HR, Allocations & Working Hours
-            EmployeeDepartmentSeeder::class,
-            // ProjectEngineerAllocationSeeder::class,
             AvailabilitySlotSeeder::class,
-
-            // Phase 5: CRM, Sales & Communications
             OrderSeeder::class,
-            AppointmentSeeder::class,
-            // FavoriteSeeder::class,
-            // ComplaintSeeder::class,
-            // ChatRoomSeeder::class,
-            // MessageSeeder::class,
+            // AppointmentSeeder::class,
+            // ContractSeeder::class,
+            // PaymentSeeder::class,
+            // TransactionSeeder::class,
+            // // UnitOwnershipSeeder::class,
+            // NotificationSeeder::class,
 
-            // Phase 6: Marketing & Promotions
-            // OfferSeeder::class,
-            AdvertisementSeeder::class,
-            // LotterySeeder::class,
-
-            // Phase 7: Financials & Contracts (السيناريو الأهم)
-            ContractSeeder::class,
-            // ContractExceptionSeeder::class,
-            UnitOwnershipSeeder::class,
-            PaymentSeeder::class,
-            TransactionSeeder::class,
-
-            // Phase 8: Field Operations & Engineering Reports
-            // ConstructionReportSeeder::class,
-            // ConstructionInsightSeeder::class,
-            // AttendanceSeeder::class,
-
-            // Phase 9: Polymorphic & Media
-            // MediaSeeder::class,
-            // NoteSeeder::class,
-            NotificationSeeder::class,
-            // ApartmentDesignSuggestionSeeder::class,
+            FaqNodeSeeder::class
         ]);
-
-        Schema::enableForeignKeyConstraints();
     }
 }

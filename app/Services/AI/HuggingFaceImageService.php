@@ -187,7 +187,7 @@ class HuggingFaceImageService
             $englishPrompt = $dto->prompt;
         }
 
-        $fullPrompt = "Professional architectural photography of an interior room, {$dto->style} style. {$englishPrompt}. Highly detailed, realistic lighting, beautiful furnished interior.";
+        $fullPrompt = "Professional architectural photography of an interior room, {$dto->style} style. {$englishPrompt}. Highly detailed, realistic lighting, beautiful furnished interior.\nstrictly preserve the original room structure, windows, and walls.";
 
         $response = Http::withHeaders([
             'Authorization' => "Key {$falKey}",
@@ -195,9 +195,9 @@ class HuggingFaceImageService
         ])->timeout(180)->post('https://fal.run/fal-ai/flux-control-lora-depth', [
             'prompt'                 => $fullPrompt,
             'control_lora_image_url' => $base64Image,
-            'conditioning_scale'     => 0.85,
+            'conditioning_scale'     => 1.0,
             'num_inference_steps'    => 28,
-            'guidance_scale'         => 3.5,
+            'guidance_scale'         => 3.0,
         ]);
 
         if (! $response->successful()) {
@@ -223,7 +223,7 @@ class HuggingFaceImageService
         return $suggestion;
     }
 
-    public function togglePublish(int $id): ApartmentDesignSuggestion
+    public function togglePublish(int $id)
     {
         $suggestion = $this->designSuggestionDAO->findById($id);
 

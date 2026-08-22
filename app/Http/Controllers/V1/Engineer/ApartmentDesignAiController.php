@@ -33,29 +33,21 @@ class ApartmentDesignAiController extends Controller
         ]);
     }
 
-    public function generateFromImage(GenerateDesignFromImageRequest $request): ApartmentDesignSuggestionResource
+    public function generateFromImage(GenerateDesignFromImageRequest $request)
     {
         $dto = GenerateApartmentDesignFromImageDTO::fromRequest($request);
 
         $suggestion = $this->aiImageService->generateFromExistingImage($dto);
 
-        return new ApartmentDesignSuggestionResource($suggestion);
+        return $this->useResource($suggestion, ApartmentDesignSuggestionResource::class);
     }
 
     public function togglePublish(int $id)
     {
-        $suggestion = $this->designSuggestionDAO->findById($id);
+        $suggestion = $this->aiImageService->togglePublish($id);
 
-        $suggestion->update([
-            'is_published' => !$suggestion->is_published
-        ]);
-
-        $statusMessage = $suggestion->is_published ? 'تم نشر التصميم للعملاء بنجاح' : 'تم إخفاء التصميم عن العملاء';
-
-        return response()->json([
-            'status'  => true,
-            'message' => $statusMessage,
-            'data'    => ['is_published' => $suggestion->is_published]
+        return $this->successResponse([
+            'is_published' => $suggestion->is_published
         ]);
     }
 }

@@ -28,7 +28,7 @@ class StoreProjectEngineerAllocationRequest extends FormRequest
             'engineer_id' => [
                 'required',
                 'integer',
-                'exists:employees,id',
+                'exists:engineers,id',
                 Rule::unique('project_engineer_allocations')->where(function ($query) {
                     return $query
                         ->when($this->project_id, fn($q) => $q->where('project_id', $this->project_id))

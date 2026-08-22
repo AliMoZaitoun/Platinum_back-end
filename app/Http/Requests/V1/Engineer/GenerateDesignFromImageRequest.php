@@ -18,7 +18,7 @@ class GenerateDesignFromImageRequest extends FormRequest
             'unit_id'          => ['required', 'integer', 'exists:units,id'],
             'style'            => ['nullable', 'string'],
             'prompt'           => ['required', 'string'],
-            'image'            => ['required', 'image', 'mimes:jpeg,png,jpg,webp', 'max:10240'],
+            'image'            => ['required', 'image', 'mimes:jpeg,png,jpg,webp,avif', 'max:10240'],
         ];
     }
 
