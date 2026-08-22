@@ -4,11 +4,12 @@ namespace App\Models\Engineer;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 
 #[Fillable(['user_id', 'specialization', 'experience_years'])]
 
-class Engineer extends Model
+class Engineer extends BaseModel
 {
     public function user()
     {

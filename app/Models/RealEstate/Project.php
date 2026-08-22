@@ -7,13 +7,14 @@ use App\Models\Engineer\EngineerProject;
 use App\Models\Engineer\ProjectEngineerAllocation;
 use App\Models\Media;
 use App\Models\Sales\Transaction;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Translatable\HasTranslations;
 
 #[Fillable(['name', 'description', 'location_id', 'latitude', 'longitude', 'radius_meters', 'status', 'start_date', 'end_date'])]
-class Project extends Model
+class Project extends BaseModel
 {
     use HasTranslations, SoftDeletes;
 

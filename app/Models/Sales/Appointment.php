@@ -6,11 +6,12 @@ use App\Enums\AppointmentType;
 use App\Models\Client\Client;
 use App\Models\Engineer\Engineer;
 use App\Models\Note;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
 #[Fillable(['order_id', 'av_slot_id', 'client_id', 'created_by_id', 'created_by_type', 'status', 'type'])]
-class Appointment extends Model
+class Appointment extends BaseModel
 {
     protected $casts = [
         'type' => AppointmentType::class,

@@ -3,11 +3,12 @@
 namespace App\Models\RealEstate;
 
 use App\Models\Core\Warehouse;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
 #[Fillable(['name', 'type', 'parent_id'])]
-class Location extends Model
+class Location extends BaseModel
 {
     protected $casts = [
         'name' => 'array'

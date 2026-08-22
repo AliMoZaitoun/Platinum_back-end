@@ -6,12 +6,13 @@ use App\Models\Client\Client;
 use App\Models\Core\Employee;
 use App\Models\Legal\Contract;
 use App\Models\Media;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[Fillable(['contract_id', 'client_id', 'employee_id', 'amount', 'payment_date', 'payment_method', 'payment_type', 'status'])]
-class Payment extends Model
+class Payment extends BaseModel
 {
     use SoftDeletes;
     public function employee()

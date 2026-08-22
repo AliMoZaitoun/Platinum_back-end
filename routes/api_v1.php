@@ -15,6 +15,7 @@ use App\Http\Controllers\V1\Client\ClientController;
 use App\Http\Controllers\V1\Client\FavoriteController;
 use App\Http\Controllers\V1\Client\UnitController as ClientUnitController;
 use App\Http\Controllers\V1\ClientOfferController;
+use App\Http\Controllers\V1\Core\ActivityLogController;
 use App\Http\Controllers\V1\Core\DepartmentController;
 use App\Http\Controllers\V1\Core\EmployeeController;
 use App\Http\Controllers\V1\Core\EmployeeDepartmentController;
@@ -90,6 +91,18 @@ Route::post('test-not/{employeeId}', [NotificationController::class, 'testEmploy
 
 // OTP
 Route::post('resendCode', [OtpController::class, 'resendCode']);
+
+
+// LOG
+
+Route::prefix('admin')->middleware(['auth:sanctum', 'role:admin'])->group(function () {
+    Route::prefix('activity-logs')->group(function () {
+        Route::get('/', [ActivityLogController::class, 'index']);
+        Route::get('/subject', [ActivityLogController::class, 'subjectLogs']);
+        Route::get('/{id}', [ActivityLogController::class, 'show']);
+    });
+});
+
 
 // Client
 Route::prefix('client')->group(function () {

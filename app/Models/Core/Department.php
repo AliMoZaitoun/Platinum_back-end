@@ -3,12 +3,13 @@
 namespace App\Models\Core;
 
 use App\Models\Sales\Order;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
 #[Fillable(['name', 'description'])]
-class Department extends Model
+class Department extends BaseModel
 {
     use HasTranslations;
 

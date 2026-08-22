@@ -5,13 +5,14 @@ namespace App\Models\RealEstate;
 use App\Models\Marketing\Offer;
 use App\Models\Media;
 use App\Models\Sales\Order;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Translatable\HasTranslations;
 
 #[Fillable(['name', 'description', 'price'])]
-class Solution extends Model
+class Solution extends BaseModel
 {
     use HasTranslations, SoftDeletes;
 

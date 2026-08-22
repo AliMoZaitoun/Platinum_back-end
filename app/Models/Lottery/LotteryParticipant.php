@@ -2,13 +2,14 @@
 
 namespace App\Models\Lottery;
 
+use App\Models\BaseModel;
 use App\Models\Client\Client;
 use App\Models\Lottery\Lottery;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
 #[Fillable(['lottery_id', 'client_id', 'entry_date', 'is_winner'])]
-class LotteryParticipant extends Model
+class LotteryParticipant extends BaseModel
 {
     public function lottery()
     {

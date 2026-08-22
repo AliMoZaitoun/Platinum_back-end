@@ -5,6 +5,7 @@ namespace App\Models\RealEstate;
 use App\Enums\Reports\InsightSeverity;
 use App\Enums\Reports\InsightType;
 use App\Models\Engineer\ConstructionReport;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,7 +22,7 @@ use Illuminate\Database\Eloquent\Model;
     'is_read',
     'resolved_at'
 ])]
-class ConstructionInsight extends Model
+class ConstructionInsight extends BaseModel
 {
     protected $casts = [
         'type'        => InsightType::class,

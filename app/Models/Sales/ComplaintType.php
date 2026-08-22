@@ -3,13 +3,14 @@
 namespace App\Models\Sales;
 
 use App\Models\User;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Translatable\HasTranslations;
 
 #[Fillable(['title', 'created_by'])]
-class ComplaintType extends Model
+class ComplaintType extends BaseModel
 {
     use HasTranslations, SoftDeletes;
 

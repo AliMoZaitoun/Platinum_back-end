@@ -2,6 +2,7 @@
 
 namespace App\Models\Finance;
 
+use App\Models\BaseModel;
 use App\Models\Core\Employee;
 use App\Models\Legal\Contract;
 use App\Models\User;
@@ -26,7 +27,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
         'status',
     ]
 )]
-class ContractException extends Model
+class ContractException extends BaseModel
 {
     use HasFactory;
 

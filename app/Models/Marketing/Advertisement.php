@@ -4,12 +4,13 @@ namespace App\Models\Marketing;
 
 use App\Models\Core\Employee;
 use App\Models\Media;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
 #[Fillable(['title', 'description', 'starts_at', 'offer_id', 'ends_at', 'duration_days', 'status', 'created_by'])]
-class Advertisement extends Model
+class Advertisement extends BaseModel
 {
     use HasTranslations;
 

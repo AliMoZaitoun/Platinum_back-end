@@ -7,13 +7,14 @@ use App\Models\Marketing\Advertisement;
 use App\Models\Sales\AvailabilitySlot;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable(['user_id'])]
 
-class Employee extends Model
+class Employee extends BaseModel
 {
     use SoftDeletes;
     public function user()

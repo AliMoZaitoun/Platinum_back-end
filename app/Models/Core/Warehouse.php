@@ -4,12 +4,13 @@ namespace App\Models\Core;
 
 use App\Models\RealEstate\Location;
 use App\Models\Sales\Transaction;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
 #[Fillable(['name', 'description', 'location_id', 'address'])]
-class Warehouse extends Model
+class Warehouse extends BaseModel
 {
     use HasTranslations;
 

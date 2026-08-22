@@ -2,11 +2,12 @@
 
 namespace App\Models\Lottery;
 
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
 #[Fillable(['lottery_id', 'rule_key', 'operator', 'rule_value'])]
-class LotteryRule extends Model
+class LotteryRule extends BaseModel
 {
     public function lottery()
     {

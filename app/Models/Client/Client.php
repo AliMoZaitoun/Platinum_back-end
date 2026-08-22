@@ -10,11 +10,12 @@ use App\Models\Sales\Complaint;
 use App\Models\Finance\Transaction;
 use App\Models\Legal\Contract;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 
 #[Fillable(['user_id', 'birth_date', 'job_title', 'social_status', 'national_id'])]
 
-class Client extends Model
+class Client extends BaseModel
 {
     public function user()
     {

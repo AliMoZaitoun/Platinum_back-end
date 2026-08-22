@@ -6,11 +6,12 @@ use App\Models\Client\Client;
 use App\Models\Media;
 use App\Models\Note;
 use App\Models\RealEstate\Unit;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
 #[Fillable(['client_id', 'unit_id', 'complaint_type_id', 'title', 'body', 'status'])]
-class Complaint extends Model
+class Complaint extends BaseModel
 {
     public function client()
     {

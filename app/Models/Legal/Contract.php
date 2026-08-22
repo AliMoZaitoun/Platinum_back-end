@@ -2,6 +2,7 @@
 
 namespace App\Models\Legal;
 
+use App\Models\BaseModel;
 use App\Models\Client\Client;
 use App\Models\Core\Employee;
 use App\Models\Finance\ContractException;
@@ -24,7 +25,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
     'status'
 ])]
 
-class Contract extends Model
+class Contract extends BaseModel
 {
     use SoftDeletes;
 

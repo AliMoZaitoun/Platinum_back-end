@@ -4,12 +4,13 @@ namespace App\Models\RealEstate;
 
 use App\Models\Engineer\Attendance;
 use App\Models\Media;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
 #[Fillable(['project_id', 'location_id', 'building_number', 'latitude', 'longitude', 'radius_meters', 'description', 'floors_count', 'status', 'start_date', 'end_date'])]
-class Building extends Model
+class Building extends BaseModel
 {
     use HasTranslations;
     public $translatable = ['description'];

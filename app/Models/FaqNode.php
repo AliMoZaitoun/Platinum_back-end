@@ -3,9 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Support\LogOptions;
 use Spatie\Translatable\HasTranslations;
 
-class FaqNode extends Model
+class FaqNode extends BaseModel
 {
     use HasTranslations;
 
@@ -32,5 +33,10 @@ class FaqNode extends Model
     public function parent()
     {
         return $this->belongsTo(FaqNode::class, 'parent_id');
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()->dontLogIfAttributesChangedOnly(['*']);
     }
 }

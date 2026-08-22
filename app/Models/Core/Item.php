@@ -2,11 +2,12 @@
 
 namespace App\Models\Core;
 
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
 #[Fillable(['warehouse_id', 'sku', 'name', 'description', 'quantity', 'status', 'expiry_date', 'purchase_date', 'received_date'])]
-class Item extends Model
+class Item extends BaseModel
 {
     public function warehouse()
     {

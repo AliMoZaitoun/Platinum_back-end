@@ -4,13 +4,14 @@ namespace App\Models;
 
 use App\Models\Client\Client;
 use App\Models\Core\Employee;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable(['client_id', 'employee_id', 'status'])]
-class ChatRoom extends Model
+class ChatRoom extends BaseModel
 {
     public function messages(): HasMany
     {

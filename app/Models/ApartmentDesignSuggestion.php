@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Core\Employee;
 use App\Models\Engineer\Engineer;
 use App\Models\RealEstate\Building;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,7 +21,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'generated_image_urls',
 ])]
 
-class ApartmentDesignSuggestion extends Model
+class ApartmentDesignSuggestion extends BaseModel
 {
     use HasFactory;
 

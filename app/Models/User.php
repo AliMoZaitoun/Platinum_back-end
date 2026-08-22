@@ -8,6 +8,7 @@ use App\Models\Client\Client;
 use App\Models\Core\Employee;
 use App\Models\Engineer\Engineer;
 use Database\Factories\UserFactory;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Casts\Attribute;

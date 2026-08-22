@@ -6,6 +6,7 @@ use App\Enums\TransactionCategory;
 use App\Models\Core\Employee;
 use App\Models\Core\Warehouse;
 use App\Models\RealEstate\Project;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -29,7 +30,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
     'created_by',
 ])]
 
-class Transaction extends Model
+class Transaction extends BaseModel
 {
     use SoftDeletes;
 

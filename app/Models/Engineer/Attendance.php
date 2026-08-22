@@ -4,6 +4,7 @@ namespace App\Models\Engineer;
 
 use App\Models\RealEstate\Building;
 use App\Models\RealEstate\Project;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
     'total_hours'
 ])]
 
-class Attendance extends Model
+class Attendance extends BaseModel
 {
     public function project()
     {

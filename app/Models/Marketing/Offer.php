@@ -2,13 +2,14 @@
 
 namespace App\Models\Marketing;
 
+use App\Models\BaseModel;
 use App\Models\Core\Employee;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[Fillable(['discount_percentage', 'offerable_id', 'offerable_type', 'old_price', 'new_price', 'start_date', 'end_date', 'status', 'created_by'])]
-class Offer extends Model
+class Offer extends BaseModel
 {
     use SoftDeletes;
 

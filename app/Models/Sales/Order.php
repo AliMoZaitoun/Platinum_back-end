@@ -8,11 +8,12 @@ use App\Models\Legal\Contract;
 use App\Models\Note;
 use App\Models\RealEstate\Solution;
 use App\Models\RealEstate\Unit;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
 #[Fillable(['client_id', 'unit_id', 'solution_id', 'status', 'department_id'])]
-class Order extends Model
+class Order extends BaseModel
 {
     public function client()
     {

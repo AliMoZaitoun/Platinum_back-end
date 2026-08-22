@@ -6,6 +6,7 @@ use App\Models\RealEstate\ConstructionInsight;
 use App\Models\Media;
 use App\Models\RealEstate\Building;
 use App\Models\RealEstate\Project;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,7 +26,7 @@ use Illuminate\Database\Eloquent\Model;
     'description'
 ])]
 
-class ConstructionReport extends Model
+class ConstructionReport extends BaseModel
 {
     protected $casts = [
         'report_date' => 'datetime',

@@ -4,12 +4,13 @@ namespace App\Models\Lottery;
 
 use App\Models\Client\Client;
 use App\Models\RealEstate\Unit;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[Fillable(['unit_id', 'title', 'status', 'winner_client_id'])]
-class Lottery extends Model
+class Lottery extends BaseModel
 {
     use SoftDeletes;
     public function unit()

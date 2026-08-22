@@ -4,9 +4,11 @@ namespace App\Models;
 
 use App\Enums\MediaType;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Activitylog\Support\LogOptions;
 
 #[Fillable([
     'uuid',
@@ -19,7 +21,7 @@ use Illuminate\Support\Facades\Storage;
     'recorded_at'
 ])]
 
-class Media extends Model
+class Media extends BaseModel
 {
 
     protected function casts(): array
@@ -41,5 +43,10 @@ class Media extends Model
     public function mediable()
     {
         return $this->morphTo();
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()->dontLogIfAttributesChangedOnly(['*']);
     }
 }

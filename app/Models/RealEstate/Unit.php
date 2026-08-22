@@ -9,6 +9,7 @@ use App\Models\Media;
 use App\Models\Sales\Complaint;
 use App\Models\Sales\Order;
 use App\Models\Sales\UnitOwnership;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -28,7 +29,7 @@ use Spatie\Translatable\HasTranslations;
     'end_date'
 ])]
 
-class Unit extends Model
+class Unit extends BaseModel
 {
     use HasTranslations, SoftDeletes;
 
