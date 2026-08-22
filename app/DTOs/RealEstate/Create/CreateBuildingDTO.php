@@ -13,8 +13,9 @@ class CreateBuildingDTO
         public int $radius_meters,
         public int $floors_count,
         public string $status,
-        public string $start_date,
-        public ?string $description
+        public ?string $description,
+        public ?string $start_date,
+        public ?string $end_date,
     ) {}
 
     public static function fromRequest(array $request)
@@ -28,8 +29,9 @@ class CreateBuildingDTO
             radius_meters: $request['radius_meters'],
             floors_count: $request['floors_count'],
             status: $request['status'],
-            start_date: $request['start_date'],
-            description: $request['description'] ?? null
+            description: $request['description'] ?? null,
+            start_date: $request['start_date'] ?? null,
+            end_date: $request['end_date'] ?? null,
         );
     }
 
@@ -44,8 +46,9 @@ class CreateBuildingDTO
             'radius_meters'     => $this->radius_meters,
             'floors_count'      => $this->floors_count,
             'status'            => $this->status,
+            'description'       => $this->description,
             'start_date'        => $this->start_date,
-            'description'       => $this->description
+            'end_date'          => $this->end_date,
         ], fn($value) => !is_null($value));
     }
 }

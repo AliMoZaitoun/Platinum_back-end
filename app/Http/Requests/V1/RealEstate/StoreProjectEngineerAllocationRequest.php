@@ -30,8 +30,13 @@ class StoreProjectEngineerAllocationRequest extends FormRequest
                 'integer',
                 'exists:employees,id',
                 Rule::unique('project_engineer_allocations')->where(function ($query) {
-                    return $query->where('project_id', $this->project_id)
-                        ->where('building_id', $this->building_id)
+                    return $query
+                        ->when($this->project_id, fn($q) => $q->where('project_id', $this->project_id))
+                        ->when(
+                            $this->filled('building_id'),
+                            fn($q) => $q->where('building_id', $this->building_id),
+                            fn($q) => $q->whereNull('building_id')
+                        )
                         ->whereNull('end_date');
                 }),
             ],
@@ -48,12 +53,17 @@ class StoreProjectEngineerAllocationRequest extends FormRequest
                 'date',
                 function ($attribute, $value, $fail) use ($project) {
                     if ($project && $project->start_date) {
-                        $requestDate = Carbon::parse($value);
+                        try {
+                            $requestDate = Carbon::parse($value);
+                            $projectStartDate = Carbon::parse($project->start_date);
 
-                        if ($requestDate->lt(Carbon::parse($project->start_date))) {
-                            $fail(__('messages.sentences.wrong_start_date', [
-                                'date' => Carbon::parse($project->start_date)->format('Y-m-d')
-                            ]));
+                            if ($requestDate->lt($projectStartDate)) {
+                                $fail(__('messages.sentences.wrong_start_date', [
+                                    'date' => $projectStartDate->format('Y-m-d')
+                                ]));
+                            }
+                        } catch (\Exception $e) {
+                            // تترك المعالجة لشرط 'date' في حال كان النص غير صالح لتاريخ
                         }
                     }
                 },

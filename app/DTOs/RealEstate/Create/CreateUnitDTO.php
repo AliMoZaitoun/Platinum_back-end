@@ -12,7 +12,9 @@ class CreateUnitDTO
         public string $type,
         public float $price,
         public string $status,
-        public ?string $description
+        public ?string $description,
+        public ?string $start_date,
+        public ?string $end_date,
     ) {}
 
     public static function fromRequest(array $request)
@@ -25,7 +27,9 @@ class CreateUnitDTO
             type: $request['type'],
             price: $request['price'],
             status: $request['status'],
-            description: $request['description'] ?? null
+            description: $request['description'] ?? null,
+            start_date: $request['start_date'] ?? null,
+            end_date: $request['end_date'] ?? null,
         );
     }
 
@@ -39,7 +43,9 @@ class CreateUnitDTO
             'type'         => $this->type,
             'price'        => $this->price,
             'status'       => $this->status,
-            'description'  => $this->description
+            'description'  => $this->description,
+            'start_date'   => $this->start_date,
+            'end_date'     => $this->end_date,
         ], fn($value) => !is_null($value));
     }
 }

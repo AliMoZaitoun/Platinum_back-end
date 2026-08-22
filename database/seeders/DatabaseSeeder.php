@@ -14,18 +14,16 @@ class DatabaseSeeder extends Seeder
         Schema::disableForeignKeyConstraints();
 
         $this->call([
-            // Phase 1: Base Lookup Data
             RoleAndPermissionSeeder::class,
+            AdminSeeder::class,
             LocationSeeder::class,
             DepartmentSeeder::class,
             SolutionSeeder::class,
-            ComplaintTypeSeeder::class,
+            // ComplaintTypeSeeder::class,
             FaqNodeSeeder::class,
-            PanoramaProjectSeeder::class,
 
             // Phase 2: Core Users & Profiles
             UserSeeder::class,
-            UserDeviceTokenSeeder::class,
 
             // Phase 3: Real Estate Infrastructure & Inventory
             ProjectSeeder::class,
@@ -36,39 +34,39 @@ class DatabaseSeeder extends Seeder
 
             // Phase 4: HR, Allocations & Working Hours
             EmployeeDepartmentSeeder::class,
-            ProjectEngineerAllocationSeeder::class,
+            // ProjectEngineerAllocationSeeder::class,
             AvailabilitySlotSeeder::class,
 
             // Phase 5: CRM, Sales & Communications
             OrderSeeder::class,
             AppointmentSeeder::class,
-            FavoriteSeeder::class,
-            ComplaintSeeder::class,
-            ChatRoomSeeder::class,
-            MessageSeeder::class,
+            // FavoriteSeeder::class,
+            // ComplaintSeeder::class,
+            // ChatRoomSeeder::class,
+            // MessageSeeder::class,
 
             // Phase 6: Marketing & Promotions
-            OfferSeeder::class,
+            // OfferSeeder::class,
             AdvertisementSeeder::class,
-            LotterySeeder::class,
+            // LotterySeeder::class,
 
             // Phase 7: Financials & Contracts (السيناريو الأهم)
             ContractSeeder::class,
-            ContractExceptionSeeder::class,
+            // ContractExceptionSeeder::class,
             UnitOwnershipSeeder::class,
             PaymentSeeder::class,
             TransactionSeeder::class,
 
             // Phase 8: Field Operations & Engineering Reports
-            ConstructionReportSeeder::class,
-            ConstructionInsightSeeder::class,
-            AttendanceSeeder::class,
+            // ConstructionReportSeeder::class,
+            // ConstructionInsightSeeder::class,
+            // AttendanceSeeder::class,
 
             // Phase 9: Polymorphic & Media
-            MediaSeeder::class,
-            NoteSeeder::class,
+            // MediaSeeder::class,
+            // NoteSeeder::class,
             NotificationSeeder::class,
-            ApartmentDesignSuggestionSeeder::class,
+            // ApartmentDesignSuggestionSeeder::class,
         ]);
 
         Schema::enableForeignKeyConstraints();

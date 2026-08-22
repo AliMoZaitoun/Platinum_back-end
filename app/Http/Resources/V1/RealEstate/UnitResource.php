@@ -33,6 +33,8 @@ class UnitResource extends JsonResource
             'offer'        => new AdminOfferResource($this->whenLoaded('activeOffer')),
 
             'created_at'   => $this->created_at?->format('Y-m-d H:i'),
+            'start_date'   => $this->start_date,
+            'end_date'     => $this->end_date,
             'attachments'  => MediaResource::collection($this->whenLoaded('attachments')),
         ];
     }
