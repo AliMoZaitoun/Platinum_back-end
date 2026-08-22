@@ -19,6 +19,12 @@ class ApartmentDesignAiController extends Controller
         protected HuggingFaceImageService $aiImageService
     ) {}
 
+    public function index()
+    {
+        $ai = $this->aiImageService->index();
+        return $this->successCollection($ai, ApartmentDesignSuggestionResource::class);
+    }
+
     public function generate(GenerateDesignImageRequest $request)
     {
         $dto = GenerateApartmentDesignDTO::fromRequest($request);

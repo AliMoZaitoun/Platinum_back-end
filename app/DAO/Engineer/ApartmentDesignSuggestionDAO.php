@@ -19,6 +19,11 @@ class ApartmentDesignSuggestionDAO
         ]);
     }
 
+    public function index()
+    {
+        return ApartmentDesignSuggestion::latest()->paginate(15);
+    }
+
     public function getByEmployeeId(int $employeeId)
     {
         return ApartmentDesignSuggestion::where('employee_id', $employeeId)

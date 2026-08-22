@@ -722,6 +722,8 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'role:admin'])->group(functi
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
+    Route::get('/ai-design', [ApartmentDesignAiController::class, 'index']);
+
     Route::post('/ai-design/from-text', [ApartmentDesignAiController::class, 'generate']);
 
     Route::post('/ai-design/from-image', [ApartmentDesignAiController::class, 'generateFromImage']);

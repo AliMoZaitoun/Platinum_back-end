@@ -156,6 +156,11 @@ class HuggingFaceImageService
     //     return $suggestion;
     // }
 
+    public function index()
+    {
+        return $this->designSuggestionDAO->index();
+    }
+
     public function generateFromExistingImage(GenerateApartmentDesignFromImageDTO $dto): ApartmentDesignSuggestion
     {
         $falKey = config('services.fal.api_key');
@@ -231,6 +236,6 @@ class HuggingFaceImageService
             'is_published' => !$suggestion->is_published
         ]);
 
-        return $suggestion;
+        return $suggestion->refresh();
     }
 }
