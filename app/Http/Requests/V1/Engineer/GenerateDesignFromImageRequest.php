@@ -15,8 +15,7 @@ class GenerateDesignFromImageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'building_id'      => ['required', 'integer'],
-            'apartment_number' => ['required', 'string'],
+            'unit_id'          => ['required', 'integer', 'exists:units,id'],
             'style'            => ['nullable', 'string'],
             'prompt'           => ['required', 'string'],
             'image'            => ['required', 'image', 'mimes:jpeg,png,jpg,webp', 'max:10240'],

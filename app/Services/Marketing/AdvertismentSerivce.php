@@ -30,6 +30,11 @@ class AdvertismentSerivce
         return $this->dao->activeAdvertisements();
     }
 
+    public function activeAdvertisementsForClient()
+    {
+        return $this->dao->activeAdvertisementsForClient();
+    }
+
     public function store(CreateAdDTO $dto, $attachments = null)
     {
         return $this->transaction->execute(function () use ($dto, $attachments) {

@@ -165,11 +165,11 @@ class HuggingFaceImageService
         }
 
         $suggestion = $this->designSuggestionDAO->create([
-            'employee_id'      => $dto->employeeId,
-            'building_id'      => $dto->buildingId,
-            'apartment_number' => $dto->apartmentNumber,
-            'prompt'           => $dto->prompt,
-            'style'            => $dto->style,
+            'uuid'         => (string) \Illuminate\Support\Str::uuid(),
+            'employee_id'  => $dto->employeeId,
+            'unit_id'      => $dto->unitId,
+            'user_prompt'  => $dto->prompt,
+            'design_style' => $dto->style,
         ]);
 
         $this->fileManagerService->storeFile(
@@ -218,6 +218,17 @@ class HuggingFaceImageService
 
         $suggestion->update([
             'generated_image_urls' => [$generatedS3Url],
+        ]);
+
+        return $suggestion;
+    }
+
+    public function togglePublish(int $id): ApartmentDesignSuggestion
+    {
+        $suggestion = $this->designSuggestionDAO->findById($id);
+
+        $suggestion->update([
+            'is_published' => !$suggestion->is_published
         ]);
 
         return $suggestion;

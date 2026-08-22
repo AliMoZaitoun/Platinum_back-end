@@ -2,6 +2,7 @@
 
 namespace App\Models\RealEstate;
 
+use App\Models\ApartmentDesignSuggestion;
 use App\Models\Client\Client;
 use App\Models\Client\Favorite;
 use App\Models\Marketing\Offer;
@@ -115,8 +116,8 @@ class Unit extends BaseModel
         return $this->activeOffer ? $this->activeOffer->discount_percentage : 0;
     }
 
-    public function aiDesigns()
+    public function approvedAiDesigns()
     {
-        return $this->hasMany(ApartmentDesignSuggestion::class);
+        return $this->hasMany(ApartmentDesignSuggestion::class)->where('is_published', true);
     }
 }

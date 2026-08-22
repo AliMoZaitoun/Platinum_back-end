@@ -725,6 +725,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/ai-design/from-text', [ApartmentDesignAiController::class, 'generate']);
 
     Route::post('/ai-design/from-image', [ApartmentDesignAiController::class, 'generateFromImage']);
+
+    Route::patch('/apartment-designs/{id}/toggle-publish', [ApartmentDesignAiController::class, 'togglePublish']);
 });
 
 

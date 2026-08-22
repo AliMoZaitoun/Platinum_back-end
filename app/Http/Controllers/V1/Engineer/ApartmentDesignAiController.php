@@ -41,4 +41,21 @@ class ApartmentDesignAiController extends Controller
 
         return new ApartmentDesignSuggestionResource($suggestion);
     }
+
+    public function togglePublish(int $id)
+    {
+        $suggestion = $this->designSuggestionDAO->findById($id);
+
+        $suggestion->update([
+            'is_published' => !$suggestion->is_published
+        ]);
+
+        $statusMessage = $suggestion->is_published ? 'تم نشر التصميم للعملاء بنجاح' : 'تم إخفاء التصميم عن العملاء';
+
+        return response()->json([
+            'status'  => true,
+            'message' => $statusMessage,
+            'data'    => ['is_published' => $suggestion->is_published]
+        ]);
+    }
 }

@@ -15,14 +15,14 @@ return new class extends Migration
             $table->id();
             $table->uuid('uuid')->unique();
             $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
-            $table->foreignId('building_id')->nullable()->constrained('buildings')->onDelete('set null');
-            $table->foreignId('unit_id')->nullable()->constrained('units')->onDelete('set null');
+            $table->foreignId('unit_id')->nullable()->constrained('units')->onDelete('cascade');
 
-            $table->string('original_image_path')->nullable();
             $table->text('user_prompt')->nullable();
             $table->string('design_style')->default('modern');
 
             $table->json('generated_image_urls');
+
+            $table->boolean('is_published')->default(false);
 
             $table->timestamps();
         });

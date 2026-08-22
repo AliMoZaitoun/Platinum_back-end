@@ -12,18 +12,22 @@ class ApartmentDesignSuggestionDAO
         return ApartmentDesignSuggestion::create([
             'uuid'                 => (string) Str::uuid(),
             'employee_id'          => $data['employee_id'],
-            'building_id'          => $data['building_id'] ?? null,
-            'apartment_number'     => $data['apartment_number'] ?? null,
-            'user_prompt'          => $data['prompt'],
-            'design_style'         => $data['style'] ?? 'modern',
+            'unit_id'              => $data['unit_id'] ?? null,
+            'user_prompt'          => $data['user_prompt'],
+            'design_style'         => $data['design_style'] ?? 'modern',
             'generated_image_urls' => $data['generated_image_urls'] ?? [],
         ]);
     }
 
-    public function getByEngineerId(int $employeeId)
+    public function getByEmployeeId(int $employeeId)
     {
         return ApartmentDesignSuggestion::where('employee_id', $employeeId)
             ->latest()
             ->paginate(15);
+    }
+
+    public function findById(int $id): ApartmentDesignSuggestion
+    {
+        return ApartmentDesignSuggestion::findOrFail($id);
     }
 }

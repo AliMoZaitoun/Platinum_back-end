@@ -15,11 +15,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable([
     'uuid',
     'employee_id',
-    'building_id',
     'unit_id',
     'user_prompt',
     'design_style',
     'generated_image_urls',
+    'is_published',
 ])]
 
 class ApartmentDesignSuggestion extends BaseModel
@@ -33,11 +33,6 @@ class ApartmentDesignSuggestion extends BaseModel
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
-    }
-
-    public function building(): BelongsTo
-    {
-        return $this->belongsTo(Building::class);
     }
 
     public function unit(): BelongsTo

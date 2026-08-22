@@ -35,7 +35,7 @@ class AdvertisementController extends Controller
 
     public function activeAdvertisementsForClient()
     {
-        $ads = $this->adService->activeAdvertisements();
+        $ads = $this->adService->activeAdvertisementsForClient();
         return $this->successCollection($ads, ClientAdvertisementResource::class);
     }
 
