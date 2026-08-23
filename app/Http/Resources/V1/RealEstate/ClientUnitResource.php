@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\V1\RealEstate;
 
+use App\Http\Resources\V1\Engineer\ApartmentDesignSuggestionResource;
 use App\Http\Resources\V1\MediaResource;
 use App\Http\Resources\V1\Marketing\ClientOfferResource;
 use Illuminate\Http\Request;
@@ -41,7 +42,8 @@ class ClientUnitResource extends JsonResource
             'created_at'   => $this->created_at?->format('Y-m-d H:i'),
 
             'is_favorite'  => $isFavorite,
-            'attachments'  => MediaResource::collection($this->whenLoaded('attachments'))
+            'attachments'  => MediaResource::collection($this->whenLoaded('attachments')),
+            'approvedAiDesigns'   => ApartmentDesignSuggestionResource::collection($this->whenLoaded('approvedAiDesigns'))
         ];
     }
 }

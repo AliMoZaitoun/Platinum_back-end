@@ -32,7 +32,7 @@ class UnitDAO
         return Unit::query()
             ->where('status', 'available')
 
-            ->with(['attachments', 'activeOffer'])
+            ->with(['attachments', 'activeOffer', 'approvedAiDesigns'])
 
             ->when($user && $user->client, function ($query) use ($user) {
                 $query->withExists(['favorites' => function ($q) use ($user) {
@@ -57,7 +57,7 @@ class UnitDAO
 
     public function show(int $id)
     {
-        return Unit::where('id', $id)->with(['attachments', 'building', 'activeOffer', 'building.project'])->first() ?? throw new NotFoundException("Unit");
+        return Unit::where('id', $id)->with(['attachments', 'building', 'activeOffer', 'building.project', 'approvedAiDesigns'])->first() ?? throw new NotFoundException("Unit");
     }
 
     protected function getBaseSearchQuery()
