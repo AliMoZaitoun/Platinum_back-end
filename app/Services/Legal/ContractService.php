@@ -45,6 +45,9 @@ class ContractService
             }
 
             $order = $this->orderService->show($dto->orderId);
+
+            $order->update(['status' => 'accepted']);
+
             $clientId = $order->client_id;
 
             $hasException = $dto->exception !== null;

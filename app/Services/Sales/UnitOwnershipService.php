@@ -58,7 +58,7 @@ class UnitOwnershipService
                         'owned_at' => now(),
                     ]);
 
-                    $this->unitDAO->update($ownership->unit_id, UpdateUnitDTO::fromRequest(['status' => 'sold']));
+                    $this->unitDAO->update($ownership->unit_id, UpdateUnitDTO::fromRequest(['status' => 'sold'])->toArray());
                 }
             }
             return $ownerships;
@@ -76,7 +76,7 @@ class UnitOwnershipService
 
             foreach ($ownerships as $ownership) {
                 if ($ownership) {
-                    $this->unitDAO->update($ownership->unit_id, UpdateUnitDTO::fromRequest(['status' => 'available']));
+                    $this->unitDAO->update($ownership->unit_id, UpdateUnitDTO::fromRequest(['status' => 'available'])->toArray());
                     $ownership->delete();
                 }
             }

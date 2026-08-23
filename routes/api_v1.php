@@ -524,6 +524,9 @@ Route::prefix('order')->middleware('auth:sanctum')->group(function () {
 
         Route::get('ordersWithoutContracts', [OrderController::class, 'ordersWithoutContracts'])
             ->middleware(['permission:read.order']);
+
+        Route::get('ordersForAppointments', [OrderController::class, 'ordersForAppointments'])
+            ->middleware(['permission:read.order']);
     });
 
     Route::middleware(['auth:sanctum', 'is_client'])->group(function () {

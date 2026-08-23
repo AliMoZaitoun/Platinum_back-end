@@ -86,6 +86,11 @@ class OrderDAO
             ->paginate($perPage);
     }
 
+    public function ordersForAppointments()
+    {
+        return Order::where('status', 'initially_accepted')->get();
+    }
+
     public function update(int $id, UpdateOrderDTO $orderDTO)
     {
         $order = $this->show($id);
