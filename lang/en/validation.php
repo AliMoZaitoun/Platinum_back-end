@@ -181,6 +181,10 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'unit_id' => [
+            'unique' => 'This unit is already included in another lottery draw.',
+        ],
+
     ],
 
     /*

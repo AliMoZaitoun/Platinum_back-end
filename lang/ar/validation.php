@@ -107,4 +107,10 @@ return [
     'uploaded'             => 'فشل في رفع :attribute.',
     'url'                  => 'صيغة الرابط :attribute غير صالحة.',
     'uuid'                 => 'يجب أن يكون :attribute UUID صالحاً.',
+
+    'custom' => [
+        'unit_id' => [
+            'unique' => 'هذه الوحدة العقارية مدرجة بالفعل في سحب قرعة آخر.',
+        ],
+    ]
 ];
