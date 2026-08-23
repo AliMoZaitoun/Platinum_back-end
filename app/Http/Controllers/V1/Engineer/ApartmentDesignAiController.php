@@ -31,12 +31,7 @@ class ApartmentDesignAiController extends Controller
 
         $result = $this->aiImageService->generateAndSave($dto);
 
-        return response()->json([
-            'status'   => true,
-            'message'  => __('messages.common.stored'),
-            'data'     => new ApartmentDesignSuggestionResource($result['suggestion']),
-            'details'  => $result['layout_breakdown'],
-        ]);
+        return $this->useResource($result['suggestion'], ApartmentDesignSuggestionResource::class, __('messages.common.stored'), 201);
     }
 
     public function generateFromImage(GenerateDesignFromImageRequest $request)
