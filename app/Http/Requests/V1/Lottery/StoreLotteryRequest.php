@@ -4,6 +4,7 @@ namespace App\Http\Requests\V1\Lottery;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreLotteryRequest extends FormRequest
 {
@@ -19,7 +20,9 @@ class StoreLotteryRequest extends FormRequest
                 'required',
                 'integer',
                 'exists:units,id',
-                'unique:lotteries,unit_id',
+                Rule::unique('lotteries', 'unit_id')->where(function ($query) {
+                    return $query->whereIn('status', ['open', 'closed']);
+                }),
             ],
 
             'title' => 'required|string|max:255',
