@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Finance\CreatePaymentRequest;
 use App\Http\Requests\V1\Finance\PayCustomAmountRequest;
 use App\Http\Requests\V1\Finance\UpdatePaymentRequest;
+use App\Http\Requests\V1\Finance\UpdatePaymentStatusRequest;
 use App\Http\Requests\V1\Finance\UploadPaymentProofRequest;
 use App\Http\Resources\V1\Finance\ClientPaymentResource;
 use App\Http\Resources\V1\Finance\ContractPaymentsGroupResource;
@@ -92,6 +93,14 @@ class PaymentController extends Controller
         $employee = Auth::user()->employee;
         $dto = UpdatePaymentDTO::fromRequest($request->toArray());
         $payment = $this->service->update($id, $dto, $employee->id, $request->file('attachments'));
+        return $this->useResource($payment, PaymentResource::class, __('messages.common.updated'));
+    }
+
+    public function changeStatus(int $id, UpdatePaymentStatusRequest $request)
+    {
+        $employee = Auth::user()->employee;
+        $dto = UpdatePaymentDTO::fromRequest($request->toArray());
+        $payment = $this->service->update($id, $dto, $employee->id);
         return $this->useResource($payment, PaymentResource::class, __('messages.common.updated'));
     }
 

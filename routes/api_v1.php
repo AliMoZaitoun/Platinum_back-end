@@ -416,6 +416,9 @@ Route::prefix('payment')->middleware('auth:sanctum')->group(function () {
     Route::put('{id}', [PaymentController::class, 'update'])
         ->middleware('permission:update.payment');
 
+    Route::put('changeStatus/{id}', [PaymentController::class, 'changeStatus'])
+        ->middleware('permission:update.payment');
+
     Route::get('showByContract/{contractId}', [PaymentController::class, 'byContract']);
     Route::post('byContract/{contractId}/custom', [PaymentController::class, 'payCustomAmount']);
 
