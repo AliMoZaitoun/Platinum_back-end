@@ -236,7 +236,7 @@ class PaymentService
                         "status"        => 'pending'
                     ];
 
-                    $unitId = $contract->order?->unit_id ?? $contract->unit_id;
+                    $unitId = $contract?->unit_id ?? $contract->order?->unit_id;
 
                     $dtoOwnerShip = CreateUnitOwnershipDTO::fromRequest($unitId, $data);
                     $this->ownershipService->store($dtoOwnerShip);
