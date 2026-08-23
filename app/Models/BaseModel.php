@@ -13,7 +13,10 @@ class BaseModel extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
+        $attributes = array_keys($this->getAttributes());
+
         return LogOptions::defaults()
+            ->logOnly($attributes)
             ->logOnlyDirty()
             ->dontLogEmptyChanges();
     }
