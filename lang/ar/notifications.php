@@ -38,4 +38,21 @@ return [
 
     'order_transfer_title' => 'طلب جديد محول',
     'order_transfer_body'  => 'تم تحويل الطلب رقم #:order_id إلى قسمكم.',
+
+    'contract_created_title' => 'تم إنشاء عقد جديد',
+    'contract_created_body'  => 'تم إنشاء عقد جديد بنجاح برقم المرجع :reference.',
+
+    // Finance/Payment Notifications
+    'payment_success_title'  => 'تم الدفع بنجاح',
+    'payment_success_body'   => 'تم استلام دفعتك بقيمة :amount بنجاح. شكراً لك.',
+
+    // Lottery Notifications
+    'lottery_participation_title' => 'الدخول في السحب',
+    'lottery_participation_body'  => 'تمت إضافتك بنجاح للسحب على الوحدة العقارية :unit. نتمنى لك التوفيق!',
+
+    'lottery_winner_title' => 'تهانينا! لقد ربحت',
+    'lottery_winner_body'  => 'أنت الفائز المحظوظ في سحب القرعة العقارية! سيتم التواصل معك قريباً لاستكمال الإجراءات.',
+
+    'lottery_loser_title'  => 'نتائج القرعة العقارية',
+    'lottery_loser_body'   => 'لم يحالفك الحظ في هذا السحب. نتمنى لك التوفيق في السحوبات القادمة!',
 ];

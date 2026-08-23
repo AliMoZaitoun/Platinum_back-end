@@ -40,6 +40,8 @@ class LotteryService
 
             if ($eligibleClientIds->isNotEmpty()) {
                 $this->participantDAO->addParticipants($lottery->id, $eligibleClientIds->toArray());
+
+                event(new \App\Events\Lottery\ClientsAddedToLottery($lottery, $eligibleClientIds->toArray()));
             }
 
             return $lottery;
@@ -114,6 +116,8 @@ class LotteryService
                 'winner_client_id' => $luckyParticipant->client_id,
                 'status' => 'completed'
             ]);
+
+            event(new \App\Events\Lottery\LotteryWinnerDrawn($lottery));
 
             return $lottery;
         });

@@ -36,4 +36,21 @@ return [
 
     'order_transfer_title' => 'New Order Transferred',
     'order_transfer_body'  => 'Order #:order_id has been transferred to your department.',
+
+    'contract_created_title' => 'New Contract Created',
+    'contract_created_body'  => 'A new contract with reference number :reference has been successfully created.',
+
+    // Finance/Payment Notifications
+    'payment_success_title'  => 'Payment Successful',
+    'payment_success_body'   => 'Your payment of :amount has been successfully received.',
+
+    // Lottery Notifications
+    'lottery_participation_title' => 'Added to Lottery',
+    'lottery_participation_body'  => 'You have been successfully added to the draw for unit :unit. Good luck!',
+
+    'lottery_winner_title' => 'Congratulations! You Won!',
+    'lottery_winner_body'  => 'You are the lucky winner of the real estate lottery draw. We will contact you soon with further details.',
+
+    'lottery_loser_title'  => 'Lottery Results',
+    'lottery_loser_body'   => 'Unfortunately, you did not win this time. Better luck in our upcoming draws!',
 ];

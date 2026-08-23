@@ -34,39 +34,55 @@ class AppServiceProvider extends ServiceProvider
         ConstructionReport::observe(\App\Observers\V1\ConstructionReportObserver::class);
         Message::observe(\App\Observers\V1\Chat\MessageObserver::class);
 
-        Event::listen(
-            OrderTransferred::class,
-            SendOrderTransferNotification::class
-        );
+        // Event::listen(
+        //     OrderTransferred::class,
+        //     SendOrderTransferNotification::class
+        // );
 
-        Event::listen(
-            OrderCreated::class,
-            SendNewOrderNotification::class
-        );
+        // Event::listen(
+        //     OrderCreated::class,
+        //     SendNewOrderNotification::class
+        // );
 
-        Event::listen(
-            ComplaintCreated::class,
-            SendNewComplaintNotification::class
-        );
+        // Event::listen(
+        //     ComplaintCreated::class,
+        //     SendNewComplaintNotification::class
+        // );
 
-        Event::listen(
-            ComplaintStatusUpdated::class,
-            SendComplaintStatusNotification::class
-        );
+        // Event::listen(
+        //     ComplaintStatusUpdated::class,
+        //     SendComplaintStatusNotification::class
+        // );
 
-        Event::listen(
-            OrderStatusUpdated::class,
-            SendOrderStatusNotification::class
-        );
+        // Event::listen(
+        //     OrderStatusUpdated::class,
+        //     SendOrderStatusNotification::class
+        // );
 
-        Event::listen(
-            EngineerAllocated::class,
-            SendEngineerAllocationNotification::class
-        );
+        // Event::listen(
+        //     EngineerAllocated::class,
+        //     SendEngineerAllocationNotification::class
+        // );
 
-        Event::listen(
-            PaymentStatusChanged::class,
-            SendPaymentStatusNotification::class
-        );
+        // Event::listen(
+        //     PaymentStatusChanged::class,
+        //     SendPaymentStatusNotification::class
+        // );
+
+        // Event::listen(
+        //     \App\Events\Contract\ContractCreated::class,
+        //     \App\Listeners\V1\Contract\SendContractCreatedNotification::class
+        // );
+
+        // // إشعارات القرعة
+        // Event::listen(
+        //     \App\Events\Lottery\ClientsAddedToLottery::class,
+        //     \App\Listeners\V1\Lottery\SendLotteryParticipationNotification::class
+        // );
+
+        // Event::listen(
+        //     \App\Events\Lottery\LotteryWinnerDrawn::class,
+        //     \App\Listeners\V1\Lottery\SendLotteryResultNotification::class
+        // );
     }
 }

@@ -77,6 +77,7 @@ class ContractService
                 );
             } else {
                 $this->generatePayments($contract);
+                event(new \App\Events\Contract\ContractCreated($contract));
             }
 
             return $contract->load(['latestException', 'payments']);
