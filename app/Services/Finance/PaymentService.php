@@ -75,7 +75,7 @@ class PaymentService
         return $this->transaction->execute(function () use ($id, $dto, $attachments, $employeeId) {
             $pay = $this->dao->show($id);
 
-            if ($pay->status !== 'pending') {
+            if ($pay->status !== 'pending' || $pay->status !== 'pending_approval') {
                 throw new PaymentImmutableException();
             }
 
