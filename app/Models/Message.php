@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Spatie\Activitylog\Support\LogOptions;
 
 #[Fillable(['chat_room_id', 'sender_id', 'sender_type', 'content', 'is_read'])]
 class Message extends BaseModel
@@ -20,10 +19,5 @@ class Message extends BaseModel
     public function chatRoom(): BelongsTo
     {
         return $this->belongsTo(ChatRoom::class);
-    }
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()->dontLogIfAttributesChangedOnly(['*']);
     }
 }
