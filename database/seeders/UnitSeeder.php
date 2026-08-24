@@ -67,35 +67,35 @@ class UnitSeeder extends Seeder
 
                 $totalUnitsCreated++;
 
-                $images = ['floor_plan' => '230, 126, 34', 'interior_view' => '142, 68, 173'];
+                // $images = ['floor_plan' => '230, 126, 34', 'interior_view' => '142, 68, 173'];
 
-                foreach ($images as $nameType => $rgb) {
-                    $imagePath = 'units/' . $nameType . '_' . Str::random(5) . '.png';
-                    $colors = explode(', ', $rgb);
+                // foreach ($images as $nameType => $rgb) {
+                //     $imagePath = 'units/' . $nameType . '_' . Str::random(5) . '.png';
+                //     $colors = explode(', ', $rgb);
 
-                    ob_start();
-                    $im = imagecreatetruecolor(400, 250);
-                    $bg = imagecolorallocate($im, (int)$colors[0], (int)$colors[1], (int)$colors[2]);
-                    imagefill($im, 0, 0, $bg);
-                    imagestring($im, 5, 20, 110, "Unit {$unitNumber} - {$nameType}", imagecolorallocate($im, 255, 255, 255));
-                    imagepng($im);
-                    $imgContent = ob_get_clean();
-                    imagedestroy($im);
+                //     ob_start();
+                //     $im = imagecreatetruecolor(400, 250);
+                //     $bg = imagecolorallocate($im, (int)$colors[0], (int)$colors[1], (int)$colors[2]);
+                //     imagefill($im, 0, 0, $bg);
+                //     imagestring($im, 5, 20, 110, "Unit {$unitNumber} - {$nameType}", imagecolorallocate($im, 255, 255, 255));
+                //     imagepng($im);
+                //     $imgContent = ob_get_clean();
+                //     imagedestroy($im);
 
-                    try {
-                        Storage::disk($disk)->put($imagePath, $imgContent, 'public');
-                        $unit->attachments()->create([
-                            'uuid'              => (string) Str::uuid(),
-                            'path'              => $imagePath,
-                            'original_name'     => "{$nameType}.png",
-                            'type'              => 'image',
-                            'custom_properties' => ['size_bytes' => 1024 * rand(50, 200)],
-                            'recorded_at'       => now(),
-                        ]);
-                    } catch (\Exception $e) {
-                        // تجاهل الخطأ في حال تعذر الاتصال بـ S3 أثناء التطوير المحلي
-                    }
-                }
+                //     try {
+                //         Storage::disk($disk)->put($imagePath, $imgContent, 'public');
+                //         $unit->attachments()->create([
+                //             'uuid'              => (string) Str::uuid(),
+                //             'path'              => $imagePath,
+                //             'original_name'     => "{$nameType}.png",
+                //             'type'              => 'image',
+                //             'custom_properties' => ['size_bytes' => 1024 * rand(50, 200)],
+                //             'recorded_at'       => now(),
+                //         ]);
+                //     } catch (\Exception $e) {
+                //         // تجاهل الخطأ في حال تعذر الاتصال بـ S3 أثناء التطوير المحلي
+                //     }
+                // }
             }
         }
 

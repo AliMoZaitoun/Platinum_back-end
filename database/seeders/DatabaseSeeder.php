@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             BuildingSeeder::class,
             UnitSeeder::class,
             ClientSeeder::class,
-            // EngineerSystemSeeder::class,
+            EngineerSystemSeeder::class,
 
             //            AvailabilitySlotSeeder::class,
             //            OrderSeeder::class,

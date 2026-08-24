@@ -8,6 +8,7 @@ use App\Models\Engineer\ConstructionReport;
 use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Translatable\HasTranslations;
 
 #[Fillable([
     'building_id',
@@ -24,7 +25,14 @@ use Illuminate\Database\Eloquent\Model;
 ])]
 class ConstructionInsight extends BaseModel
 {
+    use HasTranslations;
+
+    public $translatable = ['title', 'diagnosis', 'recommendation', 'metrics'];
+
     protected $casts = [
+        'title'          => 'array',
+        'diagnosis'      => 'array',
+        'recommendation' => 'array',
         'type'        => InsightType::class,
         'severity'    => InsightSeverity::class,
         'metrics'     => 'array',

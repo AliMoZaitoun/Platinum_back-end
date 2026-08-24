@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('type')->default(InsightType::LABOR_OVERCROWDING->value);
             $table->string('severity')->default(InsightSeverity::WARNING->value);
 
-            $table->string('title');
-            $table->text('diagnosis');
-            $table->text('recommendation')->nullable();
+            $table->json('title');
+            $table->json('diagnosis');
+            $table->json('recommendation')->nullable();
             $table->json('metrics')->nullable();
 
             $table->boolean('is_read')->default(false);

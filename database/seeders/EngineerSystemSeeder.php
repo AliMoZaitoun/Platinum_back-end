@@ -22,7 +22,6 @@ class EngineerSystemSeeder extends Seeder
     {
         $disk = 's3';
 
-        // 1️⃣ رفع صورة وهمية كـ Test
         $dummyImagePath = 'buildings/dummy_building_' . Str::random(5) . '.png';
         ob_start();
         $im = imagecreatetruecolor(200, 200);
@@ -38,7 +37,6 @@ class EngineerSystemSeeder extends Seeder
             $this->command->error("❌ Upload Exception: " . $e->getMessage());
         }
 
-        // 2️⃣ جلب المشاريع الشغالة مع أبنيتها
         $activeProjects = Project::where('status', 'in_progress')
             ->with(['buildings' => fn($q) => $q->where('status', 'in_progress')])
             ->get();
@@ -48,88 +46,82 @@ class EngineerSystemSeeder extends Seeder
             return;
         }
 
-        // 3️⃣ طاقم المهندسين
         $engineersData = [
             [
                 'user' => [
-                    'first_name' => 'Tommy',
-                    'last_name'  => 'Shelby',
-                    'email'      => 'ts@eng.com',
-                    'phone'      => '+963911111111',
-                    'address'    => 'Damascus',
+                    'first_name' => 'Samer',
+                    'last_name'  => 'Haddad',
+                    'email'      => 'samer.h@eng.com',
+                    'phone'      => '+963944123456',
+                    'address'    => 'Damascus - Al Mazzeh',
                     'gender'     => 'male',
                     'type'       => 'engineer',
                     'password'   => Hash::make('password'),
                     'email_verified_at' => now(),
                 ],
-                'profile' => ['specialization' => 'Civil Engineering', 'experience_years' => 8],
+                'profile' => ['specialization' => 'Civil Engineering', 'experience_years' => 12],
                 'allocation_type' => 'project_wide'
             ],
             [
                 'user' => [
-                    'first_name' => 'Arthur',
-                    'last_name'  => 'Shelby',
-                    'email'      => 'as@eng.com',
-                    'phone'      => '+963922222222',
-                    'address'    => 'Aleppo',
+                    'first_name' => 'Youssef',
+                    'last_name'  => 'Al-Shami',
+                    'email'      => 'youssef.s@eng.com',
+                    'phone'      => '+963955987654',
+                    'address'    => 'Damascus - Kafr Sousa',
                     'gender'     => 'male',
                     'type'       => 'engineer',
                     'password'   => Hash::make('password'),
                     'email_verified_at' => now(),
                 ],
-                'profile' => ['specialization' => 'Architectural Engineering', 'experience_years' => 5],
+                'profile' => ['specialization' => 'Architectural Engineering', 'experience_years' => 8],
                 'allocation_type' => 'specific_building'
             ],
             [
                 'user' => [
-                    'first_name' => 'Ada',
-                    'last_name'  => 'Thorne',
-                    'email'      => 'at@eng.com',
-                    'phone'      => '+963933333333',
-                    'address'    => 'Homs',
+                    'first_name' => 'Laila',
+                    'last_name'  => 'Kaddour',
+                    'email'      => 'laila.k@eng.com',
+                    'phone'      => '+963966654321',
+                    'address'    => 'Damascus - Malki',
                     'gender'     => 'female',
                     'type'       => 'engineer',
                     'password'   => Hash::make('password'),
                     'email_verified_at' => now(),
                 ],
-                'profile' => ['specialization' => 'Electrical Engineering', 'experience_years' => 4],
+                'profile' => ['specialization' => 'Electrical Engineering', 'experience_years' => 6],
                 'allocation_type' => 'multiple_buildings'
             ]
         ];
 
-        // 🎯 4️⃣ تعريف السيناريوهات الثلاثة لتغطية كافة مستويات الخطورة (WARNING, DANGER, SUCCESS)
-
-        // 🟡 سيناريو 1: الاكتظاظ وهبوط الإنتاجية (WARNING)
         $warningScenario = [
-            ['days_back' => 6, 'manpower' => 10, 'progress' => 5.0, 'status' => 'on_track'],
-            ['days_back' => 5, 'manpower' => 10, 'progress' => 5.2, 'status' => 'on_track'],
-            ['days_back' => 4, 'manpower' => 12, 'progress' => 4.8, 'status' => 'on_track'],
-            ['days_back' => 3, 'manpower' => 11, 'progress' => 5.1, 'status' => 'on_track'],
-            ['days_back' => 2, 'manpower' => 30, 'progress' => 2.0, 'status' => 'on_track'],
-            ['days_back' => 1, 'manpower' => 35, 'progress' => 1.5, 'status' => 'on_track'],
-            ['days_back' => 0, 'manpower' => 40, 'progress' => 1.0, 'status' => 'on_track'],
+            ['days_back' => 6, 'manpower' => 40, 'progress' => 1.5, 'status' => 'on_track'],
+            ['days_back' => 5, 'manpower' => 45, 'progress' => 1.6, 'status' => 'on_track'],
+            ['days_back' => 4, 'manpower' => 42, 'progress' => 1.5, 'status' => 'on_track'],
+            ['days_back' => 3, 'manpower' => 45, 'progress' => 1.7, 'status' => 'on_track'],
+            ['days_back' => 2, 'manpower' => 90, 'progress' => 0.8, 'status' => 'delayed'],
+            ['days_back' => 1, 'manpower' => 95, 'progress' => 0.6, 'status' => 'delayed'],
+            ['days_back' => 0, 'manpower' => 100, 'progress' => 0.5, 'status' => 'delayed'],
         ];
 
-        // 🔴 سيناريو 2: توقف وتجمّد العمل بالكامل رغم وجود عمالة (DANGER)
         $dangerScenario = [
-            ['days_back' => 6, 'manpower' => 15, 'progress' => 4.0, 'status' => 'on_track'],
-            ['days_back' => 5, 'manpower' => 15, 'progress' => 4.0, 'status' => 'on_track'],
-            ['days_back' => 4, 'manpower' => 15, 'progress' => 3.5, 'status' => 'on_track'],
-            ['days_back' => 3, 'manpower' => 15, 'progress' => 3.8, 'status' => 'on_track'],
-            ['days_back' => 2, 'manpower' => 20, 'progress' => 0.0, 'status' => 'delayed'],
-            ['days_back' => 1, 'manpower' => 20, 'progress' => 0.0, 'status' => 'delayed'],
-            ['days_back' => 0, 'manpower' => 20, 'progress' => 0.0, 'status' => 'delayed'],
+            ['days_back' => 6, 'manpower' => 60, 'progress' => 2.0, 'status' => 'on_track'],
+            ['days_back' => 5, 'manpower' => 60, 'progress' => 2.2, 'status' => 'on_track'],
+            ['days_back' => 4, 'manpower' => 60, 'progress' => 1.8, 'status' => 'on_track'],
+            ['days_back' => 3, 'manpower' => 60, 'progress' => 2.0, 'status' => 'on_track'],
+            ['days_back' => 2, 'manpower' => 55, 'progress' => 0.0, 'status' => 'blocked'],
+            ['days_back' => 1, 'manpower' => 55, 'progress' => 0.0, 'status' => 'blocked'],
+            ['days_back' => 0, 'manpower' => 55, 'progress' => 0.0, 'status' => 'blocked'],
         ];
 
-        // 🟢 سيناريو 3: قفزة وتسارع ممتاز بالإنتاجية (SUCCESS)
         $successScenario = [
-            ['days_back' => 6, 'manpower' => 20, 'progress' => 2.0, 'status' => 'on_track'],
-            ['days_back' => 5, 'manpower' => 20, 'progress' => 2.1, 'status' => 'on_track'],
-            ['days_back' => 4, 'manpower' => 20, 'progress' => 1.9, 'status' => 'on_track'],
-            ['days_back' => 3, 'manpower' => 20, 'progress' => 2.0, 'status' => 'on_track'],
-            ['days_back' => 2, 'manpower' => 20, 'progress' => 6.0, 'status' => 'on_track'],
-            ['days_back' => 1, 'manpower' => 20, 'progress' => 6.5, 'status' => 'on_track'],
-            ['days_back' => 0, 'manpower' => 20, 'progress' => 7.0, 'status' => 'on_track'],
+            ['days_back' => 6, 'manpower' => 50, 'progress' => 1.5, 'status' => 'on_track'],
+            ['days_back' => 5, 'manpower' => 50, 'progress' => 1.4, 'status' => 'on_track'],
+            ['days_back' => 4, 'manpower' => 50, 'progress' => 1.6, 'status' => 'on_track'],
+            ['days_back' => 3, 'manpower' => 50, 'progress' => 1.5, 'status' => 'on_track'],
+            ['days_back' => 2, 'manpower' => 55, 'progress' => 3.5, 'status' => 'on_track'],
+            ['days_back' => 1, 'manpower' => 55, 'progress' => 3.8, 'status' => 'on_track'],
+            ['days_back' => 0, 'manpower' => 55, 'progress' => 4.0, 'status' => 'on_track'],
         ];
 
         $allScenarios = [$warningScenario, $dangerScenario, $successScenario];
@@ -183,36 +175,29 @@ class EngineerSystemSeeder extends Seeder
                 }
             }
 
-            // اختيار السيناريو المناسب لهذا المهندس
             $currentScenario = $allScenarios[$index % count($allScenarios)];
 
-            // =================================================================
-            // 📊 إنشاء بيانات التواريخ والتقارير وتفعيل الـ Job التحليلي
-            // =================================================================
             foreach ($allocations as $targetBuildingId) {
                 $cumulativePercentage = 10.00;
 
                 foreach ($currentScenario as $day) {
-                    // توحيد تاريخ اليوم عند الساعة 10:00 صباحاً
                     $currentLoopDate = Carbon::now()->subDays($day['days_back'])->setTime(10, 0, 0);
                     $cumulativePercentage += $day['progress'];
 
-                    // 1️⃣ سجل الحضور
                     Attendance::create([
                         'uuid'           => (string) Str::uuid(),
                         'engineer_id'    => $engineer->id,
                         'project_id'     => $project->id,
                         'building_id'    => $targetBuildingId,
-                        'check_in_lat'   => (string) ($project->latitude ?? 33.5138),
-                        'check_in_lng'   => (string) ($project->longitude ?? 36.2765),
-                        'check_out_lat'  => (string) ($project->latitude ?? 33.5138),
+                        'check_in_lat'   => (string) ($project->latitude ?? 33.4988),
+                        'check_in_lng'   => (string) ($project->longitude ?? 36.2625),
+                        'check_out_lat'  => (string) ($project->latitude ?? 33.4988),
                         'device_id'      => 'Device_' . Str::slug($user->first_name) . '_Test',
                         'checked_in_at'  => $currentLoopDate->copy()->setTime(8, 0, 0)->format('Y-m-d H:i:s'),
                         'checked_out_at' => $currentLoopDate->copy()->setTime(16, 30, 0)->format('Y-m-d H:i:s'),
                         'total_hours'    => 8.5,
                     ]);
 
-                    // 2️⃣ التقرير الهندسي
                     $report = ConstructionReport::create([
                         'uuid'                  => (string) Str::uuid(),
                         'project_id'            => $project->id,
@@ -229,7 +214,6 @@ class EngineerSystemSeeder extends Seeder
                         'description'           => "Report generated for manpower analysis testing by Eng. {$user->first_name}.",
                     ]);
 
-                    // 🎯 3️⃣ تشغيل الـ Job التحليلي في آخر يوم حصراً لحساب النتائج كاملة لـ 7 أيام
                     if ($day['days_back'] === 0) {
                         AnalyzeLaborProductivityJob::dispatchSync($report);
                     }

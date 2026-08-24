@@ -59,7 +59,11 @@ class AnalyzeLaborProductivityJob implements ShouldQueue
         $pastWorkerProd    = $analytics->past_avg_manpower > 0 ? ($analytics->past_avg_progress / $analytics->past_avg_manpower) : 0;
         $currentWorkerProd = $analytics->current_avg_manpower > 0 ? ($analytics->current_avg_progress / $analytics->current_avg_manpower) : 0;
 
-        // 🔴 1. حالة الخطر الشديد (DANGER): توقف وتجمّد العمل بالكامل (STAGNATION_GAP)
+        $curManpower = round($analytics->current_avg_manpower, 1);
+        $curProgress = round($analytics->current_avg_progress, 2);
+        $pastManpower = round($analytics->past_avg_manpower, 1);
+        $pastProgress = round($analytics->past_avg_progress, 2);
+
         if ($analytics->current_avg_manpower > 0 && $analytics->current_avg_progress <= 0.05) {
             $insightDAO->updateOrCreate([
                 'building_id'            => $report->building_id,
@@ -67,16 +71,23 @@ class AnalyzeLaborProductivityJob implements ShouldQueue
                 'phase'                  => $report->phase,
                 'type'                   => InsightType::STAGNATION_GAP,
                 'severity'               => InsightSeverity::DANGER,
-                'title'                  => 'خطر حرج: توقف العمل وهدر الأجور',
-                'diagnosis'              => "يتواجد متوسط " . round($analytics->current_avg_manpower, 1) . " عامل بالموقع في آخر 3 أيام، ولكن نسبة الإنجاز اليومي شبه معدومة (" . round($analytics->current_avg_progress, 2) . "%). هناك هدر مالي مباشر بدون تقدم زمني.",
-                'recommendation'         => "يُرجى إيقاف استنزاف أجور العمالة فوراً وفحص أسباب التوقف (مثل تأخر التوريد أو القرارات الميدانية).",
+                'title'                  => [
+                    'ar' => 'خطر حرج: توقف العمل وهدر الأجور',
+                    'en' => 'Critical Danger: Work Stagnation and Wage Waste'
+                ],
+                'diagnosis'              => [
+                    'ar' => "يتواجد متوسط {$curManpower} عامل بالموقع في آخر 3 أيام، ولكن نسبة الإنجاز اليومي شبه معدومة ({$curProgress}%). هناك هدر مالي مباشر بدون تقدم زمني.",
+                    'en' => "An average of {$curManpower} workers are on site over the last 3 days, but daily progress is almost zero ({$curProgress}%). Direct financial waste with no timeline progress."
+                ],
+                'recommendation'         => [
+                    'ar' => "يُرجى إيقاف استنزاف أجور العمالة فوراً وفحص أسباب التوقف (مثل تأخر التوريد أو القرارات الميدانية).",
+                    'en' => "Please stop labor wage drainage immediately and investigate stagnation causes (e.g., supply delays or field decisions)."
+                ],
                 'metrics'                => [
-                    'current_avg_manpower' => round($analytics->current_avg_manpower, 1),
-                    'current_avg_progress' => round($analytics->current_avg_progress, 2),
+                    'current_avg_manpower' => $curManpower,
+                    'current_avg_progress' => $curProgress,
                 ]
             ]);
-
-            Log::error("🔴 [Stagnation Gap Danger] Created for Report ID: {$report->id}");
         } elseif (
             $analytics->current_avg_manpower > $analytics->past_avg_manpower &&
             $analytics->current_avg_progress < $analytics->past_avg_progress &&
@@ -90,19 +101,26 @@ class AnalyzeLaborProductivityJob implements ShouldQueue
                 'phase'                  => $report->phase,
                 'type'                   => InsightType::LABOR_OVERCROWDING,
                 'severity'               => InsightSeverity::WARNING,
-                'title'                  => 'تنبيه اكتظاظ عمالة وتراجع الإنتاجية',
-                'diagnosis'              => "ارتفع متوسط عدد العمال من " . round($analytics->past_avg_manpower, 1) . " إلى " . round($analytics->current_avg_manpower, 1) . " عامل، بينما انخفض متوسط الإنجاز اليومي من " . round($analytics->past_avg_progress, 2) . "% إلى " . round($analytics->current_avg_progress, 2) . "%. تراجعت إنتاجية العامل الفردي بنسبة {$dropPercentage}%.",
-                'recommendation'         => "يُوصى بتقليل حجم العمالة بالمنطقة أو إعادة توزيع العمال على مراحل أخرى لمنع الازداحام وهدر التكلفة.",
+                'title'                  => [
+                    'ar' => 'تنبيه اكتظاظ عمالة وتراجع الإنتاجية',
+                    'en' => 'Warning: Labor Overcrowding and Productivity Drop'
+                ],
+                'diagnosis'              => [
+                    'ar' => "ارتفع متوسط عدد العمال من {$pastManpower} إلى {$curManpower} عامل، بينما انخفض متوسط الإنجاز اليومي من {$pastProgress}% إلى {$curProgress}%. تراجعت إنتاجية العامل الفردي بنسبة {$dropPercentage}%.",
+                    'en' => "Average manpower increased from {$pastManpower} to {$curManpower} workers, while average daily progress dropped from {$pastProgress}% to {$curProgress}%. Individual productivity decreased by {$dropPercentage}%."
+                ],
+                'recommendation'         => [
+                    'ar' => "يُوصى بتقليل حجم العمالة بالمنطقة أو إعادة توزيع العمال على مراحل أخرى لمنع الازداحام وهدر التكلفة.",
+                    'en' => "It is recommended to reduce labor volume in the area or redistribute workers to other phases to prevent overcrowding and cost waste."
+                ],
                 'metrics'                => [
-                    'past_avg_manpower'    => round($analytics->past_avg_manpower, 1),
-                    'current_avg_manpower' => round($analytics->current_avg_manpower, 1),
-                    'past_avg_progress'    => round($analytics->past_avg_progress, 2),
-                    'current_avg_progress' => round($analytics->current_avg_progress, 2),
+                    'past_avg_manpower'    => $pastManpower,
+                    'current_avg_manpower' => $curManpower,
+                    'past_avg_progress'    => $pastProgress,
+                    'current_avg_progress' => $curProgress,
                     'productivity_drop'    => $dropPercentage,
                 ]
             ]);
-
-            Log::warning("⚠️ [Labor Overcrowding Insight] Created for Report ID: {$report->id}");
         } elseif ($currentWorkerProd >= ($pastWorkerProd * 1.30) && $analytics->current_avg_progress > $analytics->past_avg_progress) {
             $increasePercentage = $pastWorkerProd > 0 ? round((($currentWorkerProd - $pastWorkerProd) / $pastWorkerProd) * 100, 1) : 0;
 
@@ -112,12 +130,21 @@ class AnalyzeLaborProductivityJob implements ShouldQueue
                 'phase'                  => $report->phase,
                 'type'                   => InsightType::HIGH_PRODUCTIVITY,
                 'severity'               => InsightSeverity::SUCCESS,
-                'title'                  => 'ارتفاع ملموس بإنتاجية العمالة',
-                'diagnosis'              => "ارتفعت إنتاجية العمالة الفردية بمقدار {$increasePercentage}% مع تسارع نسبة الإنجاز اليومي إلى " . round($analytics->current_avg_progress, 2) . "%.",
-                'recommendation'         => "خط سير العمل ممتاز بهذه المرحلة، يُنصح بالاستمرار على نفس توزيع المهام.",
+                'title'                  => [
+                    'ar' => 'ارتفاع ملموس بإنتاجية العمالة',
+                    'en' => 'Significant Rise in Labor Productivity'
+                ],
+                'diagnosis'              => [
+                    'ar' => "ارتفعت إنتاجية العمالة الفردية بمقدار {$increasePercentage}% مع تسارع نسبة الإنجاز اليومي إلى {$curProgress}%.",
+                    'en' => "Individual labor productivity increased by {$increasePercentage}% with daily progress accelerating to {$curProgress}%."
+                ],
+                'recommendation'         => [
+                    'ar' => "خط سير العمل ممتاز بهذه المرحلة، يُنصح بالاستمرار على نفس توزيع المهام.",
+                    'en' => "Workflow is excellent at this phase. It is advised to maintain the current task distribution."
+                ],
                 'metrics'                => [
                     'productivity_increase' => $increasePercentage,
-                    'current_avg_progress'  => round($analytics->current_avg_progress, 2),
+                    'current_avg_progress'  => $curProgress,
                 ]
             ]);
         }

@@ -14,7 +14,7 @@ class ActivityLogResource extends JsonResource
             'description'  => $this->description,
             'subject_type' => class_basename($this->subject_type),
             'subject_id'   => $this->subject_id,
-            'causer'       => $this->causer ? $this->causer->name : 'System',
+            'causer' => $this->causer ? $this->causer->full_name : 'System',
             'attribute_changes' => $this->attribute_changes,
             'created_at'   => $this->created_at->format('Y-m-d H:i:s'),
         ];
